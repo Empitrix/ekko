@@ -1,3 +1,4 @@
+import 'package:ekko/components/note_item.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -22,7 +23,9 @@ class _HomePageState extends State<HomePage> {
 		await updateDbPath();
 		await DB().init();
 		ThemeMode mode = await DB().readTheme();
+		bool aMode = await DB().readAcrylicMode();
 		setState(() => dMode = mode == ThemeMode.dark);
+		setState(() => acrylicMode = aMode);
 		if(mounted) Provider.of<ProviderManager>(context, listen: false).changeTmode(mode);
 	}
 	
@@ -52,22 +55,10 @@ class _HomePageState extends State<HomePage> {
 						},
 					),
 				),
-				body: Center(
-					child: Switch(
-						value: dMode,
-						onChanged: (bool? val) async {
-							setState(() {
-								dMode = val!;
-							});
-							Provider.of<ProviderManager>(
-								context, listen: false).changeTmode(
-								val! ? ThemeMode.dark : ThemeMode.light
-							);
-							await DB().updateTheme(val ? ThemeMode.dark : ThemeMode.light);
-							ThemeMode mode = await DB().readTheme();
-							print("MODE: $mode");
-						},
-					),
+				body: ListView.builder(
+					itemBuilder: (context, index){
+						return NoteItem(index: index);
+					},
 				),
 			),
 		);

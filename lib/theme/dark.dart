@@ -8,7 +8,6 @@ ThemeData dark(){
 		colorScheme: ColorScheme.fromSeed(
 			seedColor: Colors.cyan,
 			brightness: Brightness.dark,
-			background: const Color(0xff17212b),
 		)
 	);
 }

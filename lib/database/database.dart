@@ -28,6 +28,7 @@ class DB {
 	}
 
 
+	/* Theme Mode */
 	Future<ThemeMode> readTheme() async {
 		Map data = await getQuery("local");
 		return data["darkMode"] == 1 ?
@@ -35,10 +36,19 @@ class DB {
 	}
 
 	Future<void> updateTheme(ThemeMode newMode) async {
-    print("NewMode: $newMode");
 		await updateTable('local',
 			{"darkMode": newMode == ThemeMode.dark ? 1 : 0});
 	}
 
+	/* Acrylic Mode */
+	Future<bool> readAcrylicMode() async {
+		Map data = await getQuery("local");
+		return data["acrylicMode"] == 1;
+	}
+
+	Future<void> updateAcrylicMode(bool newMode) async {
+		await updateTable('local',
+			{"acrylicMode": newMode ? 1 : 0});
+	}
 
 }
