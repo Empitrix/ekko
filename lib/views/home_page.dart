@@ -1,6 +1,9 @@
+import 'package:ekko/config/manager.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/utils/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
 	const HomePage({super.key});
@@ -17,7 +20,8 @@ class _HomePageState extends State<HomePage> {
 		await updateDbPath();
 		await DB().init();
 		ThemeMode mode = await DB().readTheme();
-		debugPrint("Mode: $mode");
+		setState(() => dMode = mode == ThemeMode.dark);
+		if(mounted) Provider.of<ProviderManager>(context, listen: false).changeTmode(mode);
 	}
 	
 	
@@ -30,8 +34,24 @@ class _HomePageState extends State<HomePage> {
 	Widget build(BuildContext context) {
 		return WillPopScope(
 			onWillPop: () async { return false; },
-			child: const Scaffold(
-				body: Center(child: Text("Awesome")),
+			child: Scaffold(
+				body: Center(
+					child: Switch(
+						value: dMode,
+						onChanged: (bool? val) async {
+							setState(() {
+								dMode = val!;
+							});
+							Provider.of<ProviderManager>(
+								context, listen: false).changeTmode(
+								val! ? ThemeMode.dark : ThemeMode.light
+							);
+							await DB().updateTheme(val ? ThemeMode.dark : ThemeMode.light);
+							ThemeMode mode = await DB().readTheme();
+							print("MODE: $mode");
+						},
+					),
+				),
 			),
 		);
 	}

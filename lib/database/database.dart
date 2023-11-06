@@ -29,12 +29,13 @@ class DB {
 
 
 	Future<ThemeMode> readTheme() async {
-		Map data  = await getQuery("local");
+		Map data = await getQuery("local");
 		return data["darkMode"] == 1 ?
 			ThemeMode.dark : ThemeMode.light;
 	}
 
 	Future<void> updateTheme(ThemeMode newMode) async {
+    print("NewMode: $newMode");
 		await updateTable('local',
 			{"darkMode": newMode == ThemeMode.dark ? 1 : 0});
 	}

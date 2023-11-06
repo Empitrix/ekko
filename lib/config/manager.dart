@@ -1,3 +1,4 @@
+import 'package:ekko/config/public.dart';
 import 'package:ekko/theme/light.dart';
 import 'package:ekko/theme/dark.dart';
 import 'package:flutter/material.dart';

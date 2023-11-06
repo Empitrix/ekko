@@ -3,7 +3,7 @@ import 'package:ekko/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
 	runApp(const EkkoApp());
 }
 
@@ -17,6 +17,7 @@ class EkkoApp extends StatefulWidget {
 class _EkkoAppState extends State<EkkoApp> {
 	@override
 	Widget build(BuildContext context) {
+		
 		return MultiProvider(
 			providers: [
 				ChangeNotifierProvider(
