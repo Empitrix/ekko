@@ -2,6 +2,7 @@ import 'package:ekko/components/note_item.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/models/note.dart';
 import 'package:ekko/utils/loading.dart';
 import 'package:ekko/views/drawer_page.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 	
 	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-	
+	bool isLoaded = false;
+	ValueNotifier<List<Note>> notes = ValueNotifier<List<Note>>([]);
+
+
 	Future<void> init() async {
+		setState(() => isLoaded = false);
 		// Just for testing
 		await updateDbPath();
 		await DB().init();
@@ -27,6 +32,8 @@ class _HomePageState extends State<HomePage> {
 		setState(() => dMode = mode == ThemeMode.dark);
 		setState(() => acrylicMode = aMode);
 		if(mounted) Provider.of<ProviderManager>(context, listen: false).changeTmode(mode);
+		notes.value = await DB().getNotes();
+		setState(() => isLoaded = true);
 	}
 	
 	
@@ -35,6 +42,7 @@ class _HomePageState extends State<HomePage> {
 		init();
 		super.initState();
 	}
+
 	@override
 	Widget build(BuildContext context) {
 		return WillPopScope(
@@ -55,10 +63,18 @@ class _HomePageState extends State<HomePage> {
 						},
 					),
 				),
-				body: ListView.builder(
-					itemBuilder: (context, index){
-						return NoteItem(index: index);
-					},
+				body: isLoaded ? ValueListenableBuilder(
+					valueListenable: notes,
+					builder: (context, value, child){
+						return ListView.builder(
+							itemCount: value.length,
+							itemBuilder: (context, index){
+								return NoteItem(note: value[index]);
+							},
+						);
+					}
+				) : const Center(
+					child: CircularProgressIndicator(),
 				),
 			),
 		);
