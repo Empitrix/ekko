@@ -39,6 +39,7 @@ DateTime _fromDate(String dateStr) {
 
 
 class Note {
+	final int id;
 	final String title;
 	final String description;
 	final String content;
@@ -51,6 +52,7 @@ class Note {
 	final bool isVisible;
 
 	Note({
+		required this.id,
 		required this.title,
 		required this.description,
 		required this.content,
@@ -63,22 +65,24 @@ class Note {
 
 	static toNote(Map input){
 		return Note(
+			id: input["id"],
 			title: input["title"],
 			description: input["description"],
 			content: input["content"],
 			lastEdit: _fromDate(input["lastEdit"]),
-			isPinned: input["isPinned"],
+			isPinned: input["isPinned"] == 1,  // get bit
 			mode: _fromNode(input["mode"])
 		);
 	}
 
 	Map toJson(){
 		return {
+			// "id": id,  // SQL will create a unique one
 			"title": title,
 			"description": description,
 			"content": content,
 			"lastEdit": _parseDate(lastEdit),
-			"isPinned": isPinned,
+			"isPinned": isPinned ? 1 : 0,  // convert to bit
 			"mode": _parseMode(mode)
 		};
 	}
