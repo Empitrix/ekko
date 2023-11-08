@@ -1,10 +1,12 @@
 import 'package:ekko/components/note_item.dart';
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/utils/loading.dart';
 import 'package:ekko/views/drawer_page.dart';
+import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,6 +52,10 @@ class _HomePageState extends State<HomePage> {
 			child: Scaffold(
 				key: scaffoldKey,
 				drawer: const DrawerPage(),
+				floatingActionButton: FloatingActionButton(
+					child: const Icon(Icons.add),
+					onPressed: () => changeView(context, const ModifyPage(), isPush: true),
+				),
 				appBar: AppBar(
 					automaticallyImplyLeading: false,
 					title: const Text("Notes"),
