@@ -1,47 +1,35 @@
 import 'package:ekko/components/note_item.dart';
-import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
-import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
-import 'package:ekko/utils/loading.dart';
 import 'package:ekko/views/drawer_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class HomePage extends StatefulWidget {
 	const HomePage({super.key});
 
-	@override
-	State<HomePage> createState() => _HomePageState();
+	@override State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
 	
 	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-	bool isLoaded = false;
 	ValueNotifier<List<Note>> notes = ValueNotifier<List<Note>>([]);
+	bool isLoaded = true;
 
 
-	Future<void> init() async {
-		setState(() => isLoaded = false);
-		// Just for testing
-		await updateDbPath();
-		await DB().init();
-		ThemeMode mode = await DB().readTheme();
-		bool aMode = await DB().readAcrylicMode();
-		setState(() => dMode = mode == ThemeMode.dark);
-		setState(() => acrylicMode = aMode);
-		if(mounted) Provider.of<ProviderManager>(context, listen: false).changeTmode(mode);
+	Future<void> loadAll() async {
+		// setState(() => isLoaded = true);
 		notes.value = await DB().getNotes();
-		setState(() => isLoaded = true);
+		// setState(() => isLoaded = true);
 	}
 	
 	
 	@override
 	void initState() {
-		init();
+		loadAll();
 		super.initState();
 	}
 
@@ -72,6 +60,12 @@ class _HomePageState extends State<HomePage> {
 				body: isLoaded ? ValueListenableBuilder(
 					valueListenable: notes,
 					builder: (context, value, child){
+						// if(!isLoaded){
+						// 	return const Center(child: CircularProgressIndicator());
+						// }
+						if(value.isEmpty){
+							return const Center(child: Text("Add Note"));
+						}
 						return ListView.builder(
 							itemCount: value.length,
 							itemBuilder: (context, index){

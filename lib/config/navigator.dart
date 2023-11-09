@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-void changeView(BuildContext context, Widget view, {bool isPush = true}){
+void changeView(
+	BuildContext context, Widget view, {bool isPush = true, isReplace = false}){
 	if(isPush){
-		Navigator.push(
-			context,
-			MaterialPageRoute(
-				builder: (context){
-					return view;
-				}
-			)
-		);
+		if(isReplace){
+			Navigator.pushReplacement(
+				context,
+				MaterialPageRoute(builder: (_) => view)
+			);
+		} else {
+			Navigator.push(
+				context,
+				MaterialPageRoute(builder: (_) => view)
+			);
+		}
 	} else {
 		Navigator.pop(context);
 	}
