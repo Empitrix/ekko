@@ -31,6 +31,7 @@ class TitleTextField extends StatelessWidget {
 			child: ValueListenableBuilder(
 				valueListenable: index,
 				builder: (context, value, child) => TextField(
+					controller: controller,
 					onSubmitted: (_) => onSubmitted(),
 					focusNode: focusNode,
 					autofocus: true,

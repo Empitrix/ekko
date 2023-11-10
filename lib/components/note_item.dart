@@ -1,4 +1,6 @@
+import 'package:ekko/config/navigator.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
 class NoteItem extends StatelessWidget {
@@ -14,7 +16,8 @@ class NoteItem extends StatelessWidget {
 					children: [
 						IconButton(
 							icon: const Icon(Icons.edit),
-							onPressed: (){/* Modify Page */},
+							onPressed: () => 
+								changeView(context, ModifyPage(note: note), isPush: true),
 						),
 						const SizedBox(width: 12),
 						Expanded(
