@@ -64,9 +64,18 @@ class ModifyPageState extends State<ModifyPage> {
 						TitleTextField(
 							controller: title,
 							focusNode: titleF,
-							onSubmitted: (){},
+							onSubmitted: () => descriptionF.requestFocus(),
 						),
-
+						DescriptionTextFiled(
+							controller: description,
+							focusNode: descriptionF,
+							onSubmitted: () => contentF.requestFocus()
+						),
+						ContentTextFiled(
+							controller: content,
+							focusNode: contentF,
+							onSubmitted: (){}
+						)
 					],
 				),
 			),

@@ -68,3 +68,91 @@ class TitleTextField extends StatelessWidget {
 		);
 	}
 }
+
+
+
+class DescriptionTextFiled extends StatelessWidget {
+	final TextEditingController controller;
+	final FocusNode focusNode;
+	final Function onSubmitted;
+	const DescriptionTextFiled({
+		super.key,
+		required this.controller,
+		required this.focusNode,
+		required this.onSubmitted
+	});
+
+	@override
+	Widget build(BuildContext context) {
+		return SizedBox(
+			height: 30,
+			child: TextField(
+				controller: controller,
+				focusNode: focusNode,
+				style: Theme.of(context).primaryTextTheme.titleLarge!
+					.copyWith(
+						color: Theme.of(context).colorScheme.inverseSurface),
+				onSubmitted: (_) => onSubmitted(),
+				decoration: const InputDecoration(
+					border: InputBorder.none,
+					hintText: "Description"
+				),
+			),
+		);
+	}
+}
+
+
+class ContentTextFiled extends StatelessWidget {
+	final TextEditingController controller;
+	final FocusNode focusNode;
+	final Function onSubmitted;
+	const ContentTextFiled({
+		super.key,
+		required this.controller,
+		required this.focusNode,
+		required this.onSubmitted
+	});
+
+	@override
+	Widget build(BuildContext context) {
+		return SizedBox(
+			child: Column(
+				mainAxisAlignment: MainAxisAlignment.start,
+				children: [
+					TextField(
+						controller: controller,
+						focusNode: focusNode,
+						maxLines: null,
+						style: Theme.of(context).primaryTextTheme.bodyLarge!
+							.copyWith(
+								color: Theme.of(context).colorScheme.inverseSurface),
+						onSubmitted: (_) => onSubmitted(),
+						decoration: const InputDecoration(
+							border: InputBorder.none,
+							hintText: "Content"
+						),
+					),
+
+					MouseRegion(
+						cursor: SystemMouseCursors.text,
+						child: SizedBox(
+							height: MediaQuery.of(context).size.height - 125,
+							child: GestureDetector(
+								onTap: (){
+									controller.value = TextEditingValue(
+										text: controller.value.text,
+										selection: const TextSelection.collapsed(offset: -1),
+									);
+									focusNode.requestFocus();
+								},
+							),
+						),
+					)
+
+				],
+			),
+		);
+	}
+}
+
