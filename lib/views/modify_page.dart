@@ -60,9 +60,11 @@ class ModifyPageState extends State<ModifyPage> {
 				body: ListView(
 					padding: const EdgeInsets.all(12),
 					children: [
-						ModifyField(
+
+						TitleTextField(
 							controller: title,
-							name: "Title"
+							focusNode: titleF,
+							onSubmitted: (){},
 						),
 
 					],

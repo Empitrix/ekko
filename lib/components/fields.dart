@@ -1,63 +1,67 @@
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
 
-// int _index = 0;
-ValueNotifier<int> _index = ValueNotifier<int>(0);
-int _contentLength = 0;
-
-TextStyle _indexStyle(BuildContext context, int index){
-	return [
-		Theme.of(context).primaryTextTheme.headlineLarge!,
-		Theme.of(context).primaryTextTheme.headlineMedium!,
-		Theme.of(context).primaryTextTheme.headlineSmall!,
-	][index].copyWith(
-		color: Theme.of(context).colorScheme.inverseSurface
-	);
-}
-
-class ModifyField extends StatelessWidget {
+class TitleTextField extends StatelessWidget {
 	final TextEditingController controller;
-	final String name;
-	const ModifyField({
+	final Function onSubmitted;
+	final FocusNode focusNode;
+	const TitleTextField({
 		super.key,
 		required this.controller,
-		required this.name
+		required this.onSubmitted,
+		required this.focusNode
 	});
 
 	@override
 	Widget build(BuildContext context) {
-		return Container(
+		ValueNotifier<int> index = ValueNotifier<int>(0);
+		int contentLength = 0;
+
+		TextStyle indexStyle(BuildContext context, int index){
+			return [
+				Theme.of(context).primaryTextTheme.headlineLarge!,
+				Theme.of(context).primaryTextTheme.headlineMedium!,
+				Theme.of(context).primaryTextTheme.headlineSmall!,
+			][index].copyWith(
+				color: Theme.of(context).colorScheme.inverseSurface
+			);
+		}
+		// Convert SizedBox to Container just in case of padding/margin
+		return SizedBox(
 			child: ValueListenableBuilder(
-				valueListenable: _index,
+				valueListenable: index,
 				builder: (context, value, child) => TextField(
-					style: _indexStyle(context, value),
+					onSubmitted: (_) => onSubmitted(),
+					focusNode: focusNode,
+					autofocus: true,
+					style: indexStyle(context, value),
 					// maxLines: _index.value == 2 ? 2 : 1,
 					onChanged: (txt){
 						double width = calcTextSize(
 							context,
 							txt,
-							_indexStyle(context, _index.value)).width;
+							indexStyle(context, index.value)).width;
 						if(txt.isEmpty){
-							_index.value = 0;
+							index.value = 0;
 							return;
 						}
 						if(
 								(width + 24) > (MediaQuery.of(context).size.width - 24) &&
-								(_contentLength < txt.length)
+								(contentLength < txt.length)
 							){
-							if(_index.value < 2){
-								_index.value++;
+							if(index.value < 2){
+								index.value++;
 							}
 						} else {
-							if(_index.value > 0 && (_contentLength > txt.length)){
-								_index.value--;
+							if(index.value > 0 && (contentLength > txt.length)){
+								index.value--;
 							}
 						}
-						_contentLength = txt.length;
+						contentLength = txt.length;
 					},
-					decoration: InputDecoration(
+					decoration: const InputDecoration(
 						border: InputBorder.none,
-						hintText: name,
+						hintText: "Title",
 					),
 				),
 			)
