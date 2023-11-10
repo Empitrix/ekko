@@ -17,13 +17,13 @@ class _HomePageState extends State<HomePage> {
 	
 	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 	ValueNotifier<List<Note>> notes = ValueNotifier<List<Note>>([]);
-	bool isLoaded = true;
+	bool isLoaded = false;
 
 
 	Future<void> loadAll() async {
-		// setState(() => isLoaded = true);
+		setState(() => isLoaded = true);
 		notes.value = await DB().getNotes();
-		// setState(() => isLoaded = true);
+		setState(() => isLoaded = true);
 	}
 	
 	
