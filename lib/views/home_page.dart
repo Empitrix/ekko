@@ -20,8 +20,8 @@ class _HomePageState extends State<HomePage> {
 	bool isLoaded = false;
 
 
-	Future<void> loadAll() async {
-		setState(() => isLoaded = true);
+	Future<void> loadAll([bool isNew = true]) async {
+		if(isNew) setState(() => isLoaded = false);
 		notes.value = await DB().getNotes();
 		setState(() => isLoaded = true);
 	}
@@ -42,7 +42,8 @@ class _HomePageState extends State<HomePage> {
 				drawer: const DrawerPage(),
 				floatingActionButton: FloatingActionButton(
 					child: const Icon(Icons.add),
-					onPressed: () => changeView(context, const ModifyPage()),
+					onPressed: () => changeView(
+						context, ModifyPage(backLoad: (){loadAll(false);})),
 				),
 				appBar: AppBar(
 					automaticallyImplyLeading: false,

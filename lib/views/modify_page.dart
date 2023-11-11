@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 
 class ModifyPage extends StatefulWidget {
 	final Note? note;
-	const ModifyPage({super.key, this.note});
+	final Function? backLoad;
+	const ModifyPage({super.key, this.note, this.backLoad});
 
 	@override
 	State<ModifyPage> createState() => ModifyPageState();
@@ -28,14 +29,20 @@ class ModifyPageState extends State<ModifyPage> {
 	NoteMode mode = NoteMode.copy;
 
 
-	Future<void> submit() async {
+	void _backClose(){
+		if(widget.backLoad != null){
+			widget.backLoad!();
+		}
+		changeView(context, const HomePage(), isPush: false);
+	}
 
+
+	Future<void> submit() async {
 		DB db = DB();
 		SNK snk = SNK(context);
 
-
+		// Make sure that all the filed are fulled
 		if(!TxtCtrl.isAllFilled(title, description, content)){
-			// Fill all the fileds
 			debugPrint("Fill all the forms!");
 			snk.message(
 				const Icon(Icons.close), "Fill all the forms");
@@ -62,13 +69,10 @@ class ModifyPageState extends State<ModifyPage> {
 			// snk.message(icon, message);
 		}
 
-		if(mounted) changeView(context, const HomePage(), isPush: false);
+		if(mounted) _backClose();
 
 	}
 
-	void _backClose(){
-		changeView(context, const HomePage(), isPush: false);
-	}
 
 	@override
 	void initState() {
