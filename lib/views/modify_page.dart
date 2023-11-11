@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
@@ -29,11 +30,15 @@ class ModifyPageState extends State<ModifyPage> {
 
 	Future<void> submit() async {
 
-		DB _db = DB();
+		DB db = DB();
+		SNK snk = SNK(context);
+
 
 		if(!TxtCtrl.isAllFilled(title, description, content)){
 			// Fill all the fileds
 			debugPrint("Fill all the forms!");
+			snk.message(
+				const Icon(Icons.close), "Fill all the forms");
 			return;
 		}
 
@@ -49,10 +54,12 @@ class ModifyPageState extends State<ModifyPage> {
 
 		if(widget.note == null){
 			// Add
-			await _db.addNote(note);
+			await db.addNote(note);
+			// snk.message(icon, message);
 		} else {
 			// Edit
-			await _db.updateNote(widget.note!, note);
+			await db.updateNote(widget.note!, note);
+			// snk.message(icon, message);
 		}
 
 		if(mounted) changeView(context, const HomePage());
