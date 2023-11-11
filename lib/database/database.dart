@@ -106,4 +106,15 @@ class DB {
 		await db.close();
 	}
 
+	Future<Note> loadThisNote(int id) async {
+		Database db = await createDB();
+		List<Map> noteJson = await db.query(
+			'notes',
+			where: "id = ?",
+			whereArgs: [id]
+		);
+		await db.close();
+		return Note.toNote(noteJson.first);
+	}
+
 }

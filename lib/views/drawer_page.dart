@@ -14,7 +14,7 @@ class _DrawerPageState extends State<DrawerPage> {
 	final double roundness = 5;
 	
 	void _newView(Widget view){
-		Navigator.pop(context);
+		Navigator.pop(context);  // Close the drawer
 		changeView(context, view, isPush: true);
 	}
 

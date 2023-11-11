@@ -62,8 +62,12 @@ class ModifyPageState extends State<ModifyPage> {
 			// snk.message(icon, message);
 		}
 
-		if(mounted) changeView(context, const HomePage());
+		if(mounted) changeView(context, const HomePage(), isPush: false);
 
+	}
+
+	void _backClose(){
+		changeView(context, const HomePage(), isPush: false);
 	}
 
 	@override
@@ -83,7 +87,7 @@ class ModifyPageState extends State<ModifyPage> {
 	Widget build(BuildContext context) {
 		return WillPopScope(
 			onWillPop: () async {
-				changeView(context, const HomePage());
+				_backClose();
 				return false;
 			},
 			child: Scaffold(
@@ -91,7 +95,7 @@ class ModifyPageState extends State<ModifyPage> {
 					title: const Text("Modify"),
 					leading: IconButton(
 						icon: const Icon(Icons.arrow_back),
-						onPressed: () => changeView(context, const HomePage()),
+						onPressed: () => _backClose(),
 					),
 					actions: [
 						Container(

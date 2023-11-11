@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 				drawer: const DrawerPage(),
 				floatingActionButton: FloatingActionButton(
 					child: const Icon(Icons.add),
-					onPressed: () => changeView(context, const ModifyPage(), isPush: true),
+					onPressed: () => changeView(context, const ModifyPage()),
 				),
 				appBar: AppBar(
 					automaticallyImplyLeading: false,
