@@ -146,9 +146,10 @@ class ContentTextFiled extends StatelessWidget {
 			focusNode: FocusNode(),
 			onKey: (RawKeyEvent event) async {
 				await Future.delayed(const Duration(milliseconds: 150));
-				if(event.logicalKey.keyId == 4294968068){
-					previousFocus();
-				}
+				if(
+						event.logicalKey.keyId == 4294968068 &&
+						controller.selection.baseOffset == 0
+					){ previousFocus(); }
 			},
 			child: SizedBox(
 				child: Column(

@@ -1,3 +1,4 @@
+import 'package:ekko/database/database.dart';
 import 'package:intl/intl.dart';
 
 enum NoteMode {
@@ -85,5 +86,39 @@ class Note {
 			"isPinned": isPinned ? 1 : 0,  // convert to bit
 			"mode": _parseMode(mode)
 		};
+	}
+}
+
+
+
+// Lighter version of notes without contents
+class SmallNote {
+	final String title;
+	final String subtitle;
+	final int id;
+	SmallNote({
+		required this.title,
+		required this.subtitle,
+		required this.id
+	});
+
+	toJson(){
+		return {
+			"title": title,
+			"subtitle": subtitle,
+			"id": id
+		};
+	}
+
+	Future<Note> toRealNote() async {
+		return (await DB().loadThisNote(id));
+	}
+
+	static SmallNote toSmallNote(Map input){
+		return SmallNote(
+			title: input["title"],
+			subtitle: input["subtitle"],
+			id: input["id"]
+		);
 	}
 }

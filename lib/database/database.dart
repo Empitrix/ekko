@@ -85,6 +85,17 @@ class DB {
 		return notes;
 	}
 
+	Future<List<SmallNote>> getSmallNotes() async {
+		List<SmallNote> notes = [];
+		Database db = await createDB();
+		List<Map<String, Object?>> data = await db.query("notes");
+		for(Map note in data){
+			notes.add(SmallNote.toSmallNote(note));
+		}
+		await db.close();
+		return notes;
+	}
+
 	Future<void> updateNote(Note old, Note newOne) async {
 		Database db = await createDB();
 		await db.update(
