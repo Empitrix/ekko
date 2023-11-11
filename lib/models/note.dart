@@ -94,18 +94,18 @@ class Note {
 // Lighter version of notes without contents
 class SmallNote {
 	final String title;
-	final String subtitle;
+	final String description;
 	final int id;
 	SmallNote({
 		required this.title,
-		required this.subtitle,
+		required this.description,
 		required this.id
 	});
 
 	toJson(){
 		return {
 			"title": title,
-			"subtitle": subtitle,
+			"description": description,
 			"id": id
 		};
 	}
@@ -117,7 +117,7 @@ class SmallNote {
 	static SmallNote toSmallNote(Map input){
 		return SmallNote(
 			title: input["title"],
-			subtitle: input["subtitle"],
+			description: input["description"],
 			id: input["id"]
 		);
 	}

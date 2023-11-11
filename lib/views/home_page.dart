@@ -16,13 +16,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 	
 	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-	ValueNotifier<List<Note>> notes = ValueNotifier<List<Note>>([]);
+	// ValueNotifier<List<Note>> notes = ValueNotifier<List<Note>>([]);
+	ValueNotifier<List<SmallNote>> notes = ValueNotifier<List<SmallNote>>([]);
 	bool isLoaded = false;
 
 
 	Future<void> loadAll([bool isNew = true]) async {
 		if(isNew) setState(() => isLoaded = false);
-		notes.value = await DB().getNotes();
+		// notes.value = await DB().getNotes();
+		notes.value = await DB().getSmallNotes();
 		setState(() => isLoaded = true);
 	}
 	
