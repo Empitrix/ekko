@@ -20,7 +20,7 @@ class NoteItem extends StatelessWidget {
 							onPressed: () async {
 								changeView(
 									context,
-									ModifyPage(note: (await note.toRealNote())), isPush: true);
+									ModifyPage(note: note), isPush: true);
 							}
 						),
 						const SizedBox(width: 12),

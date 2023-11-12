@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 
 class ModifyPage extends StatefulWidget {
-	final Note? note;
+	final SmallNote? note;
 	final Function? backLoad;
 	const ModifyPage({super.key, this.note, this.backLoad});
 
@@ -27,10 +27,11 @@ class ModifyPageState extends State<ModifyPage> {
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;
+	bool isLoaded = true;  // For imported notes
 
 
-	void _backClose(){
-		if(widget.backLoad != null){
+	void _backClose({bool isNew = false}){
+		if(widget.backLoad != null && isNew){
 			widget.backLoad!();
 		}
 		changeView(context, const HomePage(), isPush: false);
@@ -65,24 +66,45 @@ class ModifyPageState extends State<ModifyPage> {
 			// snk.message(icon, message);
 		} else {
 			// Edit
-			await db.updateNote(widget.note!, note);
+			await db.updateNote(note);
 			// snk.message(icon, message);
 		}
 
-		if(mounted) _backClose();
+		if(mounted) _backClose(isNew: true);
 
 	}
 
+	Future<void> loadTheNote() async {
+		setState(() { isLoaded = false; });
+		Note toNote = await widget.note!.toRealNote();
+		// Update fileds
+		title.text = toNote.title;
+		description.text = toNote.description;
+		content.text = toNote.content;
+		mode = toNote.mode;
+		isPinned = toNote.isPinned;
+		setState(() { isLoaded = true; });
+		// port.send(true);
+	}
+
+	/*Future<void> loadWithIsolate() async {
+		ReceivePort port = ReceivePort();
+		await Isolate.spawn(
+			loadImportedNote, IsoImportNote(
+				port: port.sendPort, note: widget.note!));
+
+		// port.listen((message) {
+		// 	if(message is LoadedNote){
+		// 		debugPrint("World is beatiful and awesome!");
+		// 	}
+		// });
+	}*/
 
 	@override
 	void initState() {
 		if(widget.note != null){
-			// Update fileds
-			title.text = widget.note!.title;
-			description.text = widget.note!.description;
-			content.text = widget.note!.content;
-			mode = widget.note!.mode;
-			isPinned = widget.note!.isPinned;
+			// loadWithIsolate();
+			loadTheNote();
 		}  // EDIT
 		super.initState();
 	}
@@ -117,10 +139,9 @@ class ModifyPageState extends State<ModifyPage> {
 						)
 					],
 				),
-				body: ListView(
+				body: isLoaded ? ListView(
 					padding: const EdgeInsets.all(12),
 					children: [
-
 						TitleTextField(
 							controller: title,
 							focusNode: titleF,
@@ -138,7 +159,9 @@ class ModifyPageState extends State<ModifyPage> {
 							previousFocus: () => descriptionF.requestFocus()
 						)
 					],
-				),
+				) : const Center(
+					child: CircularProgressIndicator(),
+				)
 			),
 		);
 	}

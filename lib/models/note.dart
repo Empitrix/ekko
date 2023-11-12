@@ -122,3 +122,21 @@ class SmallNote {
 		);
 	}
 }
+
+
+
+class LoadedNote {
+	final String title;
+	final String description;
+	final String content;
+	final NoteMode mode;
+	final bool isPinned;
+
+	LoadedNote({
+		required this.title,
+		required this.description,
+		required this.content,
+		required this.mode,
+		required this.isPinned
+	});
+}

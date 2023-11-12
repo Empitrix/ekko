@@ -96,13 +96,13 @@ class DB {
 		return notes;
 	}
 
-	Future<void> updateNote(Note old, Note newOne) async {
+	Future<void> updateNote(Note newOne) async {
 		Database db = await createDB();
 		await db.update(
 			'notes', 
 			Map<String, Object?>.from(newOne.toJson()),
 			where: "id = ?",
-			whereArgs: [old.id]
+			whereArgs: [newOne.id]
 		);
 		await db.close();
 	}
