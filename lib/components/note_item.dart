@@ -20,14 +20,16 @@ class NoteItem extends StatelessWidget {
 				padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
 				child: Row(
 					children: [
-						IconButton(
-							icon: const Icon(Icons.edit),
-							onPressed: () async {
-								changeView(
+						IconTheme(
+							data: IconThemeData(
+								color: Theme.of(context).primaryColor),
+							child: IconButton(
+								icon: const Icon(Icons.edit),
+								onPressed: () => changeView(
 									context,
 									ModifyPage(note: note, backLoad: backLoad),
-									isPush: true);
-							}
+									isPush: true)
+							)
 						),
 						const SizedBox(width: 12),
 						Expanded(
@@ -61,9 +63,13 @@ class NoteItem extends StatelessWidget {
 							)
 						),
 						const SizedBox(width: 12),
-						IconButton(
-							icon: const Icon(Icons.copy),
-							onPressed: (){/* Note Actons */},
+						IconTheme(
+							data: IconThemeData(
+								color: Theme.of(context).primaryColor),
+							child: IconButton(
+								icon: const Icon(Icons.copy),
+								onPressed: (){/* Note Actons */},
+							)
 						),
 					],
 				),

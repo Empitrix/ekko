@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ProviderManager extends ChangeNotifier {
 	ThemeMode tMode = ThemeMode.system;
-	ThemeData lightTheme = ligth();
+	ThemeData lightTheme = light();
 	ThemeData darkTheme = dark();
 
 	void changeTmode(ThemeMode newMode){

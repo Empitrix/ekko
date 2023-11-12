@@ -124,16 +124,23 @@ class ModifyPageState extends State<ModifyPage> {
 						onPressed: () => _backClose(),
 					),
 					actions: [
-						Container(
+						SizedBox(
 							height: double.infinity,
-							margin: const EdgeInsets.all(8),
-							child: TextButton(
-								style: ButtonStyle(
+							child: TextButton.icon(
+								style: const ButtonStyle(
 									shape: MaterialStatePropertyAll(
 										RoundedRectangleBorder(
-											borderRadius: BorderRadius.circular(5)))
+											borderRadius: BorderRadius.only(
+												topRight: Radius.zero,
+												topLeft: Radius.zero,
+												bottomLeft: Radius.circular(14),
+												bottomRight: Radius.zero
+											)
+										)
+									)
 								),
-								child: const Text("Submit"),
+								label: const Text("Submit"),
+								icon: const Icon(Icons.check),
 								onPressed: () => submit(),
 							),
 						)
