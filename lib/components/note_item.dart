@@ -4,9 +4,14 @@ import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
 class NoteItem extends StatelessWidget {
-	// final Note note;
 	final SmallNote note;
-	const NoteItem({super.key, required this.note});
+	final Function backLoad;
+	
+	const NoteItem({
+		super.key,
+		required this.note,
+		required this.backLoad
+	});
 
 	@override
 	Widget build(BuildContext context) {
@@ -20,7 +25,8 @@ class NoteItem extends StatelessWidget {
 							onPressed: () async {
 								changeView(
 									context,
-									ModifyPage(note: note), isPush: true);
+									ModifyPage(note: note, backLoad: backLoad),
+									isPush: true);
 							}
 						),
 						const SizedBox(width: 12),

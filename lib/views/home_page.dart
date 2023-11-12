@@ -14,20 +14,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-	
-	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-	// ValueNotifier<List<Note>> notes = ValueNotifier<List<Note>>([]);
-	ValueNotifier<List<SmallNote>> notes = ValueNotifier<List<SmallNote>>([]);
-	bool isLoaded = false;
 
+	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+	ValueNotifier<List<SmallNote>> notes = ValueNotifier<List<SmallNote>>([]);
+	ValueNotifier<bool> isLoaded = ValueNotifier<bool>(false);
 
 	Future<void> loadAll([bool isNew = true]) async {
-		if(isNew) setState(() => isLoaded = false);
-		// notes.value = await DB().getNotes();
+		if(isNew) isLoaded.value = false;
 		notes.value = await DB().getSmallNotes();
-		setState(() => isLoaded = true);
+		isLoaded.value = true;
 	}
-	
 	
 	@override
 	void initState() {
@@ -60,24 +56,43 @@ class _HomePageState extends State<HomePage> {
 						},
 					),
 				),
-				body: isLoaded ? ValueListenableBuilder(
-					valueListenable: notes,
-					builder: (context, value, child){
-						// if(!isLoaded){
-						// 	return const Center(child: CircularProgressIndicator());
-						// }
-						if(value.isEmpty){
-							return const Center(child: Text("Add Note"));
+				body: ValueListenableBuilder(
+					valueListenable: isLoaded,
+					builder: (_, load, __) {
+						
+						// for loading
+						if(!load){
+							return const Center(
+								child: CircularProgressIndicator()
+							);
 						}
-						return ListView.builder(
-							itemCount: value.length,
-							itemBuilder: (context, index){
-								return NoteItem(note: value[index]);
-							},
+						
+						// If there is no notes
+						if(notes.value.isEmpty){
+							return const Center(
+								child: Text("Add Note!"),
+							);
+						}
+						
+						// Mian List-View
+						return ValueListenableBuilder(
+							valueListenable: notes,
+							builder: (context, value, child){
+								if(value.isEmpty){
+									return const Center(child: Text("Add Note"));
+								}
+								return ListView.builder(
+									itemCount: value.length,
+									itemBuilder: (context, index){
+										return NoteItem(
+											note: value[index],
+											backLoad: (){loadAll(false);},
+										);
+									},
+								);
+							}
 						);
 					}
-				) : const Center(
-					child: CircularProgressIndicator(),
 				),
 			),
 		);
