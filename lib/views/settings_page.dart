@@ -30,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
 					automaticallyImplyLeading: false,
 					title: const Text("Settings"),
 					leading: IconButton(
-						icon: const Icon(Icons.arrow_back),
+						icon: const Icon(Icons.close),
 						onPressed: () => changeView(context, const HomePage(), isPush: false),
 					),
 				),

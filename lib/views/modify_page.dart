@@ -120,7 +120,7 @@ class ModifyPageState extends State<ModifyPage> {
 				appBar: AppBar(
 					title: const Text("Modify"),
 					leading: IconButton(
-						icon: const Icon(Icons.arrow_back),
+						icon: const Icon(Icons.close),
 						onPressed: () => _backClose(),
 					),
 					actions: [
