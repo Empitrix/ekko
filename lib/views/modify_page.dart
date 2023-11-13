@@ -132,8 +132,8 @@ class ModifyPageState extends State<ModifyPage> {
 										RoundedRectangleBorder(
 											borderRadius: BorderRadius.only(
 												topRight: Radius.zero,
-												topLeft: Radius.zero,
-												bottomLeft: Radius.circular(14),
+												topLeft: Radius.circular(15),
+												bottomLeft: Radius.circular(15),
 												bottomRight: Radius.zero
 											)
 										)

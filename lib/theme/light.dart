@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Color _bgColor = const Color(0xffffffff);
 Color _pColor = const Color(0xff517da2);
+Color _navBgColor = const Color(0xff517da2);
 
 ThemeData light(){
 	return ThemeData(
@@ -14,7 +15,17 @@ ThemeData light(){
 			brightness: Brightness.light,
 		),
 		appBarTheme: AppBarTheme(
-			backgroundColor: _bgColor
+			backgroundColor: _navBgColor,
+			titleTextStyle: const TextStyle(
+				fontFamily: "Rubik",
+				fontWeight: FontWeight.bold,
+				letterSpacing: 0.3,
+				fontSize: 20
+			),
+			iconTheme: const IconThemeData(
+				color: Colors.white
+			),
+			surfaceTintColor: Colors.transparent
 		),
 		drawerTheme: DrawerThemeData(
 			backgroundColor: _bgColor

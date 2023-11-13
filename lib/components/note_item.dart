@@ -15,6 +15,9 @@ class NoteItem extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
+		if(!note.isVisible){
+			return Container();
+		}
 		return InkWell(
 			child: Container(
 				padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

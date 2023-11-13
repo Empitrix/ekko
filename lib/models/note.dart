@@ -49,8 +49,8 @@ class Note {
 	final NoteMode mode;
 
 	// Visuals
-	final bool isSelected;
-	final bool isVisible;
+	late bool isSelected;
+	late bool isVisible;
 
 	Note({
 		required this.id,
@@ -93,33 +93,53 @@ class Note {
 
 // Lighter version of notes without contents
 class SmallNote {
+	final int id;
 	final String title;
 	final String description;
-	final int id;
+	final DateTime lastEdit;
+	final bool isPinned;
+	final NoteMode mode;
+
+	// Visuals
+	late bool isSelected;
+	late bool isVisible;
+
 	SmallNote({
+		required this.id,
 		required this.title,
 		required this.description,
-		required this.id
+		required this.lastEdit,
+		required this.isPinned,
+		required this.mode,
+		this.isSelected = false,
+		this.isVisible = true
 	});
 
-	toJson(){
-		return {
-			"title": title,
-			"description": description,
-			"id": id
-		};
-	}
 
 	Future<Note> toRealNote() async {
 		return (await DB().loadThisNote(id));
 	}
 
-	static SmallNote toSmallNote(Map input){
+	static toSmallNote(Map input){
 		return SmallNote(
+			id: input["id"],
 			title: input["title"],
 			description: input["description"],
-			id: input["id"]
+			lastEdit: _fromDate(input["lastEdit"]),
+			isPinned: input["isPinned"] == 1,  // get bit
+			mode: _fromNode(input["mode"])
 		);
+	}
+
+	Map toJson(){
+		return {
+			// "id": id,  // SQL will create a unique one
+			"title": title,
+			"description": description,
+			"lastEdit": _parseDate(lastEdit),
+			"isPinned": isPinned ? 1 : 0,  // convert to bit
+			"mode": _parseMode(mode)
+		};
 	}
 }
 
