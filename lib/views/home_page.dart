@@ -1,4 +1,5 @@
 import 'package:ekko/animation/expand.dart';
+import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/note_item.dart';
 import 'package:ekko/components/search_bar.dart';
@@ -24,8 +25,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	ValueNotifier<List<SmallNote>> notes = ValueNotifier<List<SmallNote>>([]);
 	ValueNotifier<bool> isLoaded = ValueNotifier<bool>(false);
 	TextEditingController searchCtrl = TextEditingController();
+	ScrollController scrollCtrl = ScrollController();
 	// Animations
 	GenAnimation? searchAnim;
+	GenAnimation? floatingButtonAnim;
 
 
 	Future<void> loadAll([bool isNew = true]) async {
@@ -38,6 +41,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	void initAnimations(){
 		searchAnim = generateLinearAnimation(
 			ticket: this, initialValue: 0);
+		floatingButtonAnim = generateLinearAnimation(
+			ticket: this, initialValue: 1, durations: [1000]);
 	}
 
 
@@ -107,16 +112,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 				return false;
 			},
 			child: Scaffold(
+				resizeToAvoidBottomInset: false,
 				key: scaffoldKey,
 				drawer: const DrawerPage(),
-				floatingActionButton: FloatingActionButton(
+				floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+				floatingActionButton: AnimatedFloatingButton(
+					controller: scrollCtrl,
+					animation: floatingButtonAnim!,
 					child: const Icon(Icons.add),
 					onPressed: () => changeView(
 						context, ModifyPage(backLoad: (){loadAll(false);})),
 				),
 				appBar: AppBar(
 					automaticallyImplyLeading: false,
-					// title: const Text("Notes"),
 					title: CustomSearchBar(
 						title: "Notes",
 						searchAnim: searchAnim!,
@@ -168,6 +176,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 								}
 								return ListView.builder(
 									itemCount: value.length,
+									controller: scrollCtrl,
 									itemBuilder: (context, index){
 										return NoteItem(
 											note: value[index],

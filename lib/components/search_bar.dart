@@ -38,7 +38,7 @@ class CustomSearchBar extends StatelessWidget {
 						animation: searchAnim.animation,
 						mode: ExpandMode.width,
 						body: Container(
-							width: MediaQuery.of(context).size.width - 128 - 5,
+							width: MediaQuery.of(context).size.width - 137,
 							height: 40,
 							padding: const EdgeInsets.all(10),
 							decoration: BoxDecoration(
@@ -72,7 +72,7 @@ class CustomSearchBar extends StatelessWidget {
 						mode: ExpandMode.width,
 						reverse: true,
 						body: SizedBox(
-							width: MediaQuery.of(context).size.width - 188 - 5)
+							width: MediaQuery.of(context).size.width - 193)
 					),
 					const SizedBox(width: 5),
 					
