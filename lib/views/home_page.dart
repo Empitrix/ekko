@@ -123,24 +123,42 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 					onPressed: () => changeView(
 						context, ModifyPage(backLoad: (){loadAll(false);})),
 				),
-				appBar: AppBar(
+				/*appBar: AppBar(
 					automaticallyImplyLeading: false,
 					title: CustomSearchBar(
 						title: "Notes",
 						searchAnim: searchAnim!,
 						controller: searchCtrl,
 						onChange: (String words) => _filterSearch(words),
-						onClose: () => _closeSearch()
-					),
-					leading: IconButton(
-						icon: const Icon(Icons.menu),
-						onPressed: (){
-							// Open drawer
+						onClose: () => _closeSearch(),
+						leading: const Icon(Icons.menu),
+						onLoading: (){
 							if(scaffoldKey.currentState != null){
 								scaffoldKey.currentState!.openDrawer();
 							}
 						},
 					),
+					// leading: IconButton(
+					// 	icon: const Icon(Icons.menu),
+					// 	onPressed: (){
+					// 		// Open drawer
+					//
+					// 	},
+					// ),
+				),*/
+				appBar: customSearchBar(
+					context: context,
+					title: "Notes",
+					searchAnim: searchAnim!,
+					controller: searchCtrl,
+					onChange: (String words) => _filterSearch(words),
+					onClose: () => _closeSearch(),
+					leading: const Icon(Icons.menu),
+					onLoading: (){
+						if(scaffoldKey.currentState != null){
+							scaffoldKey.currentState!.openDrawer();
+						}
+					},
 				),
 				body: ValueListenableBuilder(
 					valueListenable: isLoaded,
