@@ -101,8 +101,8 @@ AppBar customSearchBar({
 											focus.unfocus();
 											onClose();
 										}else{
-											searchAnim.controller.forward();
 											focus.requestFocus();
+											searchAnim.controller.forward();
 										}
 									}
 								);

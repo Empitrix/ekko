@@ -6,6 +6,7 @@ import 'package:ekko/components/search_bar.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/utils/loading.dart';
 import 'package:ekko/views/drawer_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	Future<void> loadAll([bool isNew = true]) async {
 		if(isNew) isLoaded.value = false;
 		notes.value = await DB().getSmallNotes();
+		if(notesKey.currentState != null){
+			notesKey.currentState!.setState(() {});
+		}
 		isLoaded.value = true;
+		if(!isNew) setState(() {});
 	}
 
 
@@ -44,7 +49,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		floatingButtonAnim = generateLinearAnimation(
 			ticket: this, initialValue: 1, durations: [1000]);
 	}
-
 
 	// Inner functions
 	void _filterSearch(String words){
@@ -83,8 +87,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 	@override
 	void initState() {
-		loadAll();
 		initAnimations();
+		WidgetsBinding.instance.addPostFrameCallback((_) async {
+			await essentialLoading(context);
+			await loadAll();
+		});
 		super.initState();
 	}
 
@@ -92,6 +99,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	Widget build(BuildContext context) {
 		return WillPopScope(
 			onWillPop: () async {
+				// Close Drawer
+				if(scaffoldKey.currentState != null){
+					if(scaffoldKey.currentState!.isDrawerOpen){
+						scaffoldKey.currentState!.closeDrawer();
+						return false;
+					}
+				}
 				// Close Search-Bar
 				if(searchAnim != null){
 					if(searchAnim!.animation.value == 1){
@@ -100,15 +114,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 						return false;
 					}
 				}
-				// Close Drawer
-				if(scaffoldKey.currentState != null){
-					if(scaffoldKey.currentState!.isDrawerOpen){
-						scaffoldKey.currentState!.closeDrawer();
-						return false;
-					}
-				}
 				// Minimize the app
-
 				return false;
 			},
 			child: Scaffold(
@@ -123,29 +129,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 					onPressed: () => changeView(
 						context, ModifyPage(backLoad: (){loadAll(false);})),
 				),
-				/*appBar: AppBar(
-					automaticallyImplyLeading: false,
-					title: CustomSearchBar(
-						title: "Notes",
-						searchAnim: searchAnim!,
-						controller: searchCtrl,
-						onChange: (String words) => _filterSearch(words),
-						onClose: () => _closeSearch(),
-						leading: const Icon(Icons.menu),
-						onLoading: (){
-							if(scaffoldKey.currentState != null){
-								scaffoldKey.currentState!.openDrawer();
-							}
-						},
-					),
-					// leading: IconButton(
-					// 	icon: const Icon(Icons.menu),
-					// 	onPressed: (){
-					// 		// Open drawer
-					//
-					// 	},
-					// ),
-				),*/
 				appBar: customSearchBar(
 					context: context,
 					title: "Notes",

@@ -67,7 +67,7 @@ class NoteItem extends StatelessWidget {
 						),
 						const SizedBox(width: 12),
 						IconButton(
-							icon: const Icon(Icons.copy),
+							icon: Icon(noteModeIcon(note.mode)),
 							color: Theme.of(context).primaryColor,
 							onPressed: (){/* Note Actons */},
 						),

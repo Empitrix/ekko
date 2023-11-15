@@ -1,5 +1,6 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
+import 'package:ekko/components/custom_buttons.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
@@ -126,19 +127,7 @@ class ModifyPageState extends State<ModifyPage> {
 					actions: [
 						SizedBox(
 							height: double.infinity,
-							child: TextButton.icon(
-								style: const ButtonStyle(
-									shape: MaterialStatePropertyAll(
-										RoundedRectangleBorder(
-											borderRadius: BorderRadius.only(
-												topRight: Radius.zero,
-												topLeft: Radius.circular(15),
-												bottomLeft: Radius.circular(15),
-												bottomRight: Radius.zero
-											)
-										)
-									)
-								),
+							child: CustomModifyButton(
 								label: const Text("Submit"),
 								icon: const Icon(Icons.check),
 								onPressed: () => submit(),

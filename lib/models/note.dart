@@ -1,4 +1,5 @@
 import 'package:ekko/database/database.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 enum NoteMode {
@@ -159,4 +160,19 @@ class LoadedNote {
 		required this.mode,
 		required this.isPinned
 	});
+}
+
+
+IconData noteModeIcon(NoteMode mode){
+	switch(mode){
+		case NoteMode.copy:{
+			return Icons.copy;
+		}
+		case NoteMode.web:{
+			return Icons.language;
+		}
+		default:{
+			return Icons.copy;
+		}
+	}
 }
