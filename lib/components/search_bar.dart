@@ -9,11 +9,13 @@ AppBar customSearchBar({
 	required GenAnimation searchAnim,
 	required TextEditingController controller,
 	required ValueChanged<String> onChange,
+	required FocusNode focus,
 	required Function onClose,
+	required Function onOpen,
 	required Function onLoading,
 	required Widget leading}){
 
-	FocusNode focus = FocusNode();
+	// FocusNode focus = FocusNode();
 	ValueNotifier<double> openNotifier =
 	ValueNotifier<double>(searchAnim.animation.value);
 	ValueNotifier<bool> textNotifier = ValueNotifier(true);
@@ -90,19 +92,21 @@ AppBar customSearchBar({
 										Icons.close :
 										Icons.search
 									),
-									onPressed: (){
+									onPressed: () async {
 										if(!isEmpty){
 											controller.text = "";
 											onChange(controller.text);
 											return;
 										}
 										if(searchAnim.animation.value == 1){
-											searchAnim.controller.reverse();
-											focus.unfocus();
+											await searchAnim.controller.reverse();
+											// focus.unfocus();
 											onClose();
+											// FocusManager.instance.primaryFocus!.unfocus();
 										}else{
-											focus.requestFocus();
-											searchAnim.controller.forward();
+											await searchAnim.controller.forward();
+											onOpen();
+											// focus.requestFocus();
 										}
 									}
 								);

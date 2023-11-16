@@ -88,19 +88,6 @@ class ModifyPageState extends State<ModifyPage> {
 		// port.send(true);
 	}
 
-	/*Future<void> loadWithIsolate() async {
-		ReceivePort port = ReceivePort();
-		await Isolate.spawn(
-			loadImportedNote, IsoImportNote(
-				port: port.sendPort, note: widget.note!));
-
-		// port.listen((message) {
-		// 	if(message is LoadedNote){
-		// 		debugPrint("World is beatiful and awesome!");
-		// 	}
-		// });
-	}*/
-
 	@override
 	void initState() {
 		if(widget.note != null){

@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	ValueNotifier<bool> isLoaded = ValueNotifier<bool>(false);
 	TextEditingController searchCtrl = TextEditingController();
 	ScrollController scrollCtrl = ScrollController();
+	FocusNode searchBarFocus = FocusNode();
 	// Animations
 	GenAnimation? searchAnim;
 	GenAnimation? floatingButtonAnim;
@@ -82,6 +83,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	
 	void _closeSearch(){
 		searchCtrl.text = "";
+		searchBarFocus.unfocus();
 		_releaseAllNotes();
 	}
 
@@ -135,7 +137,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 					searchAnim: searchAnim!,
 					controller: searchCtrl,
 					onChange: (String words) => _filterSearch(words),
+					focus: searchBarFocus,
 					onClose: () => _closeSearch(),
+					onOpen: () => searchBarFocus.requestFocus(),
 					leading: const Icon(Icons.menu),
 					onLoading: (){
 						if(scaffoldKey.currentState != null){
