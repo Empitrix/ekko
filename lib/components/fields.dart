@@ -5,11 +5,13 @@ class TitleTextField extends StatelessWidget {
 	final TextEditingController controller;
 	final Function nextFocus;
 	final FocusNode focusNode;
+	final bool autofocus;
 	const TitleTextField({
 		super.key,
 		required this.controller,
 		required this.nextFocus,
-		required this.focusNode
+		required this.focusNode,
+		required this.autofocus
 	});
 
 	@override
@@ -44,7 +46,7 @@ class TitleTextField extends StatelessWidget {
 						controller: controller,
 						onSubmitted: (_) => nextFocus(),
 						focusNode: focusNode,
-						autofocus: true,
+						autofocus: autofocus,
 						style: indexStyle(context, value),
 						// maxLines: _index.value == 2 ? 2 : 1,
 						onChanged: (txt){

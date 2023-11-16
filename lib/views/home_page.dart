@@ -123,11 +123,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 				resizeToAvoidBottomInset: false,
 				key: scaffoldKey,
 				drawer: const DrawerPage(),
-				floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+				// floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
 				floatingActionButton: AnimatedFloatingButton(
 					controller: scrollCtrl,
 					animation: floatingButtonAnim!,
-					child: const Icon(Icons.add),
+					child: const Icon(Icons.add_rounded, size: 28),
 					onPressed: () => changeView(
 						context, ModifyPage(backLoad: (){loadAll(false);})),
 				),

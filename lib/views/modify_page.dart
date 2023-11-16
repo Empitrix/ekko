@@ -128,6 +128,7 @@ class ModifyPageState extends State<ModifyPage> {
 						TitleTextField(
 							controller: title,
 							focusNode: titleF,
+							autofocus: widget.note == null,
 							nextFocus: () => descriptionF.requestFocus(),
 						),
 						DescriptionTextFiled(
