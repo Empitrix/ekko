@@ -1,5 +1,6 @@
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/views/display_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +75,8 @@ class NoteItem extends StatelessWidget {
 					],
 				),
 			),
-			onTap: (){/* Present the Note contents */},
+			onTap: () => changeView(
+				context, DisplayPage(smallNote: note), isPush: true),
 		);
 	}
 }
