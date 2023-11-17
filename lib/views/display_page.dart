@@ -16,8 +16,20 @@ class DisplayPage extends StatefulWidget {
 
 class _DisplayPageState extends State<DisplayPage> {
 
+	Note? note;
+	bool isLoaded = false;
+
 	@override
 	void initState() {
+		// Load async
+		WidgetsBinding.instance.addPostFrameCallback((_) async {
+			setState(() => isLoaded = false);
+			note = await widget.smallNote.toRealNote();
+			if(note!.content.length > 420){
+				await Future.delayed(const Duration(seconds: 1));
+			}
+			setState(() => isLoaded = true);
+		});
 		super.initState();
 	}
 
@@ -39,8 +51,57 @@ class _DisplayPageState extends State<DisplayPage> {
 						},
 					),
 				),
-				body: const Center(child: Text("Display Page!")),
+				body: Builder(
+					builder: (BuildContext context){
+
+						if(!isLoaded){
+							return const Center(
+								child: CircularProgressIndicator(),
+							);
+						}
+
+						return SelectionArea(
+							child: ListView(
+								padding: const EdgeInsets.all(12),
+								children: [
+									/* Title */
+									Text(
+										note!.title,
+										style: const TextStyle(
+											fontSize: 25,
+											fontWeight: FontWeight.w500,
+											height: 0
+										),
+									),
+									const SizedBox(height: 5),
+									/* Description */
+									Text(
+										note!.description,
+										style: TextStyle(
+											fontSize: 20,
+											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.73),
+											fontWeight: FontWeight.w500,
+											height: 0
+										),
+									),
+									const SizedBox(height: 10),
+									Text(
+										note!.content,
+										style: TextStyle(
+											fontSize: Theme.of(context).primaryTextTheme.bodyLarge!.fontSize,
+											fontWeight: FontWeight.w500,
+											height: 0
+										),
+									),
+
+								],
+							),
+						);
+
+					},
+				)
 			),
 		);
 	}
+	
 }
