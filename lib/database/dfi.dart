@@ -11,7 +11,7 @@ Future<Database> createDB({String? dPath}) async {
 		sq.sqfliteFfiInit();
 		db = await sq.databaseFactoryFfi.openDatabase(dPath);
 	} else {
-		db = await sq.openDatabase(dPath);
+		db = await openDatabase(dPath);
 	}
 	return db;
 }

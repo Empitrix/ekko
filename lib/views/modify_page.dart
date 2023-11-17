@@ -5,10 +5,10 @@ import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
-import 'package:ekko/utils/isolates/modify.dart';
 import 'package:ekko/views/home_page.dart';
 import 'package:flutter/material.dart';
-import 'dart:isolate';
+// import 'package:ekko/utils/isolates/modify.dart';
+// import 'dart:isolate';
 
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
@@ -76,7 +76,7 @@ class ModifyPageState extends State<ModifyPage> {
 
 	}
 
-	Future<void> loadTheNote() async {
+	/*Future<void> loadTheNote() async {
 		setState(() { isLoaded = false; });
 		ReceivePort getPort = (await loadModifyWithIsolates(note: widget.note!));
 		getPort.listen((note) async {
@@ -103,6 +103,44 @@ class ModifyPageState extends State<ModifyPage> {
 				}
 			}
 		});
+	}*/
+
+
+	Future<void> loadTheNote() async {
+		setState(() { isLoaded = false; });
+		
+		Note note = await widget.note!.toRealNote();
+		
+		title.text = note.title;
+		description.text = note.description;
+		content.text = note.content;
+		mode = note.mode;
+		isPinned = note.isPinned;
+		
+		if(note.content.length > 420){
+			await Future.delayed(const Duration(seconds: 1));
+			setState(() { isLoaded = true; });
+		} else {
+			setState(() { isLoaded = true; });
+		}
+
+		/*
+		ReceivePort getPort = (await loadModifyWithIsolates(note: widget.note!));
+		getPort.listen((note) async {
+			if(note is Note){
+				// Update fields
+				if(note.content.length > 420){
+					await Future.delayed(const Duration(seconds: 1)).then((value){
+						setState(() { isLoaded = true; });
+						getPort.close();
+					});
+				} else {
+					setState(() { isLoaded = true; });
+					getPort.close();
+				}
+			}
+		});
+		*/
 	}
 
 	@override
