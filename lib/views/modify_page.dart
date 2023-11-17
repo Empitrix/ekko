@@ -5,9 +5,10 @@ import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/utils/isolates/modify.dart';
 import 'package:ekko/views/home_page.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:isolate';
 
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
@@ -77,21 +78,36 @@ class ModifyPageState extends State<ModifyPage> {
 
 	Future<void> loadTheNote() async {
 		setState(() { isLoaded = false; });
-		Note toNote = await widget.note!.toRealNote();
-		// Update fileds
-		title.text = toNote.title;
-		description.text = toNote.description;
-		content.text = toNote.content;
-		mode = toNote.mode;
-		isPinned = toNote.isPinned;
-		setState(() { isLoaded = true; });
-		// port.send(true);
+		ReceivePort getPort = (await loadModifyWithIsolates(note: widget.note!));
+		getPort.listen((note) async {
+			if(note is Note){
+				// Update fields
+				title.text = note.title;
+				description.text = note.description;
+				content.text = note.content;
+				mode = note.mode;
+				isPinned = note.isPinned;
+				/*
+					Waiting if content length is too long!
+					for performance, and wait for animations
+					to complete!
+				*/
+				if(note.content.length > 420){
+					await Future.delayed(const Duration(seconds: 1)).then((value){
+						setState(() { isLoaded = true; });
+						getPort.close();
+					});
+				} else {
+					setState(() { isLoaded = true; });
+					getPort.close();
+				}
+			}
+		});
 	}
 
 	@override
 	void initState() {
 		if(widget.note != null){
-			// loadWithIsolate();
 			loadTheNote();
 		}  // EDIT
 		super.initState();

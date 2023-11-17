@@ -4,13 +4,14 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sq;
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
-Future<Database> createDB() async {
+Future<Database> createDB({String? dPath}) async {
+	dPath ??= dbPath;
 	Database? db;
 	if(Platform.isWindows || Platform.isLinux){
 		sq.sqfliteFfiInit();
-		db = await sq.databaseFactoryFfi.openDatabase(dbPath);
+		db = await sq.databaseFactoryFfi.openDatabase(dPath);
 	} else {
-		db = await sq.openDatabase(dbPath);
+		db = await sq.openDatabase(dPath);
 	}
 	return db;
 }

@@ -5,9 +5,11 @@ import 'package:ekko/database/dfi.dart';
 
 
 class DB {
+	final String? dPath;
+	DB({this.dPath});
 	Future<void> init() async {
 		/* Initialized database */
-		Database db = await createDB();
+		Database db = await createDB(dPath: dPath);
 		await db.execute("""
 			CREATE TABLE IF NOT EXISTS local (
 				darkMode BIT,
@@ -66,7 +68,7 @@ class DB {
 
 	/* Notes CRUD */
 	Future<void> addNote(Note note) async {
-		Database db = await createDB();
+		Database db = await createDB(dPath: dPath);
 		await db.insert(
 			"notes",
 			Map<String, Object?>.from(note.toJson())
@@ -76,7 +78,7 @@ class DB {
 
 	Future<List<Note>> getNotes() async {
 		List<Note> notes = [];
-		Database db = await createDB();
+		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> data = await db.query("notes");
 		for(Map note in data){
 			notes.add(Note.toNote(note));
@@ -87,7 +89,7 @@ class DB {
 
 	Future<List<SmallNote>> getSmallNotes() async {
 		List<SmallNote> notes = [];
-		Database db = await createDB();
+		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> data = await db.query("notes");
 		for(Map note in data){
 			notes.add(SmallNote.toSmallNote(note));
@@ -97,7 +99,7 @@ class DB {
 	}
 
 	Future<void> updateNote(Note newOne) async {
-		Database db = await createDB();
+		Database db = await createDB(dPath: dPath);
 		await db.update(
 			'notes', 
 			Map<String, Object?>.from(newOne.toJson()),
@@ -108,7 +110,7 @@ class DB {
 	}
 
 	Future<void> deleteNote(Note note) async {
-		Database db = await createDB();
+		Database db = await createDB(dPath: dPath);
 		await db.delete(
 			'notes',
 			where: "id = ?",
@@ -117,8 +119,8 @@ class DB {
 		await db.close();
 	}
 
-	Future<Note> loadThisNote(int id) async {
-		Database db = await createDB();
+	Future<Note> loadThisNote(int id, [String? newPath]) async {
+		Database db = await createDB(dPath: newPath);
 		List<Map> noteJson = await db.query(
 			'notes',
 			where: "id = ?",

@@ -117,8 +117,8 @@ class SmallNote {
 	});
 
 
-	Future<Note> toRealNote() async {
-		return (await DB().loadThisNote(id));
+	Future<Note> toRealNote([String? newPath]) async {
+		return (await DB().loadThisNote(id, newPath));
 	}
 
 	static toSmallNote(Map input){

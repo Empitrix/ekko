@@ -24,7 +24,7 @@ class AnimatedFloatingButton extends StatelessWidget {
 			if(controller.offset > lastOffset){
 				animation.controller.reverse();
 			} else {
-				animation.controller.forward(from: 0.7);
+				animation.controller.forward();
 			}
 			lastOffset = controller.offset;
 		});
