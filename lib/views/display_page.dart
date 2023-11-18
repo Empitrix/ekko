@@ -79,7 +79,9 @@ class _DisplayPageState extends State<DisplayPage> {
 										note!.description,
 										style: TextStyle(
 											fontSize: 20,
-											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.73),
+											color: Theme.of(context)
+												.colorScheme.inverseSurface
+												.withOpacity(0.73),
 											fontWeight: FontWeight.w500,
 											height: 0
 										),
@@ -88,8 +90,10 @@ class _DisplayPageState extends State<DisplayPage> {
 									Text(
 										note!.content,
 										style: TextStyle(
-											fontSize: Theme.of(context).primaryTextTheme.bodyLarge!.fontSize,
+											fontSize: Theme.of(context)
+												.primaryTextTheme.bodyLarge!.fontSize,
 											fontWeight: FontWeight.w500,
+											// height: 1.25
 											height: 0
 										),
 									),
