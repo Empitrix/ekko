@@ -128,9 +128,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 				floatingActionButton: AnimatedFloatingButton(
 					controller: scrollCtrl,
 					animation: floatingButtonAnim!,
-					child: const Icon(Icons.add_rounded, size: 28),
+					child: const Icon(Icons.add_rounded),
 					onPressed: () => changeView(
-						context, ModifyPage(backLoad: (){loadAll(false);})),
+						context, ModifyPage(
+							backLoad: (){loadAll(false);},
+							previousPage: widget,
+						)),
 				),
 				appBar: customSearchBar(
 					context: context,

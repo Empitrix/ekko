@@ -1,35 +1,65 @@
+import 'package:ekko/animation/expand.dart';
+import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/views/home_page.dart';
+import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
 class DisplayPage extends StatefulWidget {
 	final SmallNote smallNote;
+	final Widget previousPage;
+	final Function loadAll;
 	const DisplayPage({
 		super.key,
-		required this.smallNote
+		required this.smallNote,
+		required this.previousPage,
+		required this.loadAll
 	});
 
 	@override
 	State<DisplayPage> createState() => _DisplayPageState();
 }
 
-class _DisplayPageState extends State<DisplayPage> {
+class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin{
 
 	Note? note;
 	bool isLoaded = false;
 
-	@override
-	void initState() {
-		// Load async
+	// Floating Action Button
+	ScrollController scrollCtrl = ScrollController();
+	GenAnimation? floatingButtonAnim;
+
+
+	void _backToPreviousPage(){
+		widget.loadAll();
+		changeView(context, const HomePage(), isPush: false);
+	}
+
+	void initAnimations(){
+		floatingButtonAnim = generateLinearAnimation(
+			ticket: this, initialValue: 1, durations: [1000]);
+	}
+
+	Future<void> loadAll([int? id]) async {
+		id ??= widget.smallNote.id;
 		WidgetsBinding.instance.addPostFrameCallback((_) async {
 			setState(() => isLoaded = false);
-			note = await widget.smallNote.toRealNote();
+			// note = await widget.smallNote.toRealNote();
+			note = await DB().loadThisNote(id!);
 			if(note!.content.length > 420){
 				await Future.delayed(const Duration(seconds: 1));
 			}
 			setState(() => isLoaded = true);
 		});
+	}
+
+	@override
+	void initState() {
+		// Load async
+		initAnimations();
+		loadAll();
 		super.initState();
 	}
 
@@ -37,17 +67,29 @@ class _DisplayPageState extends State<DisplayPage> {
 	Widget build(BuildContext context) {
 		return WillPopScope(
 			onWillPop: () async {
-				changeView(context, const HomePage(), isPush: false);
+				_backToPreviousPage();
 				return false;
 			},
 			child: Scaffold(
+				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+				floatingActionButton: AnimatedFloatingButton(
+					controller: scrollCtrl,
+					animation: floatingButtonAnim!,
+					child: const Icon(Icons.edit),
+					onPressed: () => changeView(
+						context, ModifyPage(
+							note: widget.smallNote,
+							backLoad: (){loadAll();},
+							previousPage: widget,
+						)),
+				),
 				appBar: AppBar(
 					automaticallyImplyLeading: false,
 					title: const Text("Dispaly"),
 					leading: IconButton(
 						icon: const Icon(Icons.close),
 						onPressed: (){
-							changeView(context, const HomePage(), isPush: false);
+							_backToPreviousPage();
 						},
 					),
 				),

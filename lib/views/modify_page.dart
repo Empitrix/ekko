@@ -5,15 +5,18 @@ import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
-import 'package:ekko/views/home_page.dart';
 import 'package:flutter/material.dart';
-// import 'package:ekko/utils/isolates/modify.dart';
-// import 'dart:isolate';
 
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
 	final Function? backLoad;
-	const ModifyPage({super.key, this.note, this.backLoad});
+	final Widget previousPage;
+	const ModifyPage({
+		super.key,
+		this.note,
+		this.backLoad,
+		required this.previousPage
+	});
 
 	@override
 	State<ModifyPage> createState() => ModifyPageState();
@@ -36,7 +39,8 @@ class ModifyPageState extends State<ModifyPage> {
 		if(widget.backLoad != null && isNew){
 			widget.backLoad!();
 		}
-		changeView(context, const HomePage(), isPush: false);
+		// changeView(context, const HomePage(), isPush: false);
+		changeView(context, widget.previousPage, isPush: false);
 	}
 
 
