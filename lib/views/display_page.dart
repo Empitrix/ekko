@@ -2,6 +2,7 @@ import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/markdown/generator.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/views/home_page.dart';
 import 'package:ekko/views/modify_page.dart';
@@ -104,6 +105,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 
 						return SelectionArea(
 							child: ListView(
+								controller: scrollCtrl,
 								padding: const EdgeInsets.all(12),
 								children: [
 									/* Title */
@@ -129,17 +131,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										),
 									),
 									const SizedBox(height: 10),
-									Text(
-										note!.content,
-										style: TextStyle(
-											fontSize: Theme.of(context)
-												.primaryTextTheme.bodyLarge!.fontSize,
-											fontWeight: FontWeight.w500,
-											// height: 1.25
-											height: 0
-										),
-									),
-
+									MDGenerator(content: note!.content)
 								],
 							),
 						);

@@ -2,9 +2,12 @@ import 'package:ekko/config/manager.dart';
 import 'package:ekko/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
+
 
 Future<void> main() async {
 	WidgetsFlutterBinding.ensureInitialized();
+	await Window.initialize();
 	runApp(const EkkoApp());
 }
 

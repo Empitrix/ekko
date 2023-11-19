@@ -56,6 +56,13 @@ class _SettingsPageState extends State<SettingsPage> {
 								style: TextStyle(fontWeight: FontWeight.bold)),
 							value: acrylicMode,
 							onChange: (bool value) async {
+								// if(value){
+								// 	await Window.setEffect(
+								// 		effect: WindowEffect.acrylic,
+								// 		color: const Color(0xff17212b).withOpacity(0.5)
+								// 		// color: const Color(0xCC222222),
+								// 	);
+								// }
 								setState(() { acrylicMode = value; });
 								await db.updateAcrylicMode(value);
 							}
