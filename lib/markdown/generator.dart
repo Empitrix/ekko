@@ -1,47 +1,57 @@
+import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/models/rule.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class MDGenerator extends StatelessWidget {
 	final String content;
+	final double textHeight;
 	const MDGenerator({
 		super.key,
-		required this.content
+		required this.content,
+		this.textHeight = 0.0
 	});
 
 	@override
 	Widget build(BuildContext context) {
 		/* All the regex rules */
 		List<HighlightRule> rules = [
+			// Markdown
 			HighlightRule(
 				tag: "markdown",
-				// action: (_){return Container();},
-				action: (String text){
-					// return Container(
-					// 	width: double.infinity,
-					// 	decoration: BoxDecoration(
-					// 		borderRadius: BorderRadius.circular(5),
-					// 		color: Colors.purple,
-					// 	),
-					// 	child: Text.rich(TextSpan(text: text)),
-					// );
-					// return MarkdownWidget(content: content);
-					return MarkdownWidget(content: text);
-				},
+				action: (String text) => MarkdownWidget(
+					content: text, height: textHeight),
 				regex: RegExp(r'```([^`]+)```'),
 				style: const TextStyle(color: Colors.cyan)
 			),
+			// URL
+			HighlightRule(
+				tag: "url",
+				action: null,
+				regex: RegExp(r'(https?://\S+)'),
+				style: const TextStyle(
+					color: Colors.blue,
+					decorationColor: Colors.blue,
+					decoration: TextDecoration.underline
+				)
+			)
 
 		];
 
 		List<Widget> widgetTree = [];
 		List<TextSpan> spans = [];
 
+		void _updateSpans(){
+			widgetTree.add(Text.rich(TextSpan(children: spans)));
+			spans = [];
+		}
+
 		TextStyle defaultStyle = TextStyle(
 			fontSize: Theme.of(context)
 				.primaryTextTheme.bodyLarge!.fontSize,
 			fontWeight: FontWeight.w500,
-			height: 0
+			height: textHeight
 		);
 
 		content.splitMapJoin(
@@ -52,11 +62,22 @@ class MDGenerator extends StatelessWidget {
 
 				switch (matchingRule.tag) {
 					case 'markdown': {
-						// Add collected spans
-						widgetTree.add(Text.rich(TextSpan(children: spans)));
-						spans = [];
-						// Add current widget
-						widgetTree.add(matchingRule.action(matchedText));
+						_updateSpans();
+						widgetTree.add(matchingRule.action!(matchedText));
+						break;
+					}
+					case 'url': {
+						spans.add(
+							TextSpan(
+								text: matchedText,
+								style: matchingRule.style.merge(defaultStyle),
+								recognizer: TapGestureRecognizer()..onTap = () async {
+									await launchThis(
+										context: context, url: matchedText);
+									debugPrint(matchedText); 
+								},
+							)
+						);
 						break;
 					}
 				}  // Switch
@@ -71,9 +92,7 @@ class MDGenerator extends StatelessWidget {
 
 		// Remaining Spans
 		if(spans.isNotEmpty){
-			widgetTree.add(Text.rich(TextSpan(children: spans)));
-			spans = [];
-		}
+			_updateSpans();}
 
 		return Container(
 			margin: const EdgeInsets.all(0),

@@ -1,3 +1,4 @@
+import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
@@ -6,9 +7,13 @@ import 'package:flutter_highlight/themes/gruvbox-dark.dart';
 
 class MarkdownWidget extends StatelessWidget {
 	final String content;
+	final double radius;
+	final double height;
 	const MarkdownWidget({
 		super.key,
-		required this.content
+		required this.content,
+		this.radius = 5,
+		this.height = 0.0
 	});
 
 	/* Strings */
@@ -37,7 +42,7 @@ class MarkdownWidget extends StatelessWidget {
 	}
 
 	TextStyle markdownStyle(){
-		return const TextStyle(height: 0);
+		return TextStyle(height: height);
 	}
 
 	/* Widgets */
@@ -51,9 +56,9 @@ class MarkdownWidget extends StatelessWidget {
 			),
 			decoration: BoxDecoration(
 				color: Theme.of(context).colorScheme.background,
-				borderRadius: const BorderRadius.only(
-					topLeft: Radius.circular(5),
-					topRight: Radius.circular(5),
+				borderRadius: BorderRadius.only(
+					topLeft: Radius.circular(radius),
+					topRight: Radius.circular(radius),
 					bottomLeft: Radius.zero,
 					bottomRight: Radius.zero
 				)
@@ -71,11 +76,10 @@ class MarkdownWidget extends StatelessWidget {
 						)
 					),
 					Container(
-						margin: const EdgeInsets.all(5),
-						width: 20, height: 20,
-						child: InkWell(
-							radius: 20,
-							child: ValueListenableBuilder(
+						margin: const EdgeInsets.all(2),
+						width: 34, height: 34,
+						child: IconButton(
+							icon: ValueListenableBuilder(
 								valueListenable: onCopyNotifier,
 								builder: (_, onCopy, __) => Icon(
 									onCopy ? Icons.check : Icons.copy,
@@ -83,7 +87,8 @@ class MarkdownWidget extends StatelessWidget {
 									size: 17,
 								),
 							),
-							onTap: () async {
+							onPressed: () async {
+								CCB.copy(_markdownData());
 								onCopyNotifier.value = true;
 								await Future.delayed(const Duration(seconds: 1));
 								onCopyNotifier.value = false;
@@ -101,11 +106,11 @@ class MarkdownWidget extends StatelessWidget {
 			padding: const EdgeInsets.all(10),
 			decoration: BoxDecoration(
 				color: highlightView().getBG(),
-				borderRadius: const BorderRadius.only(
+				borderRadius: BorderRadius.only(
 					topLeft: Radius.zero,
 					topRight: Radius.zero,
-					bottomLeft: Radius.circular(5),
-					bottomRight: Radius.circular(5)
+					bottomLeft: Radius.circular(radius),
+					bottomRight: Radius.circular(radius)
 				)
 			),
 			child: Text.rich(highlightView().getSpan(
