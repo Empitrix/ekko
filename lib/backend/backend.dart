@@ -22,3 +22,5 @@ bool isDesktop(){
 	if(Platform.isIOS){ return false; }
 	return true;
 }
+
+

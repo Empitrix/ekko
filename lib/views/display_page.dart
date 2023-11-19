@@ -106,7 +106,10 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 						return SelectionArea(
 							child: ListView(
 								controller: scrollCtrl,
-								padding: const EdgeInsets.all(12),
+								padding: const EdgeInsets.only(
+									right: 12, left: 12,
+									top: 12, bottom: 85  // :)
+								),
 								children: [
 									/* Title */
 									Text(
