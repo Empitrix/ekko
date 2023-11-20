@@ -1,5 +1,6 @@
 import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/gruvbox-dark.dart';
@@ -55,7 +56,9 @@ class MarkdownWidget extends StatelessWidget {
 				right: 5
 			),
 			decoration: BoxDecoration(
-				color: Theme.of(context).colorScheme.background,
+				color: dMode ?
+					Theme.of(context).colorScheme.background :
+					Theme.of(context).colorScheme.onBackground,
 				borderRadius: BorderRadius.only(
 					topLeft: Radius.circular(radius),
 					topRight: Radius.circular(radius),

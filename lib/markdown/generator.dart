@@ -22,6 +22,7 @@ class MDGenerator extends StatelessWidget {
 				tag: "markdown",
 				action: (String text) => MarkdownWidget(
 					content: text, height: textHeight),
+				// regex: RegExp(r'```([^`]+)```'),
 				regex: RegExp(r'```([^`]+)```'),
 				style: const TextStyle(color: Colors.cyan)
 			),
@@ -40,61 +41,67 @@ class MDGenerator extends StatelessWidget {
 				tag: "headline6",
 				action: null,
 				regex: RegExp(r'(###### \w+)(..)'),
-				// ignore: deprecated_member_use
-				style: Theme.of(context).primaryTextTheme.headline6!.copyWith(
+				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
-					fontWeight: FontWeight.bold
+					fontWeight: FontWeight.w100,
+					fontSize: 13.6
 				),
 			),
 			HighlightRule(
 				tag: "headline5",
 				action: null,
 				regex: RegExp(r'(##### \w+)(..)'),
-				// ignore: deprecated_member_use
-				style: Theme.of(context).primaryTextTheme.headline5!.copyWith(
+				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
-					fontWeight: FontWeight.bold
+					fontWeight: FontWeight.w200,
+					fontSize: 14
 				),
 			),
 			HighlightRule(
 				tag: "headline4",
 				action: null,
 				regex: RegExp(r'(#### \w+)(..)'),
-				// ignore: deprecated_member_use
-				style: Theme.of(context).primaryTextTheme.headline4!.copyWith(
+				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
-					fontWeight: FontWeight.bold
+					fontWeight: FontWeight.w300,
+					fontSize: 16
 				),
 			),
 			HighlightRule(
 				tag: "headline3",
 				action: null,
 				regex: RegExp(r'(### \w+)(..)'),
-				// ignore: deprecated_member_use
-				style: Theme.of(context).primaryTextTheme.headline3!.copyWith(
+				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
-					fontWeight: FontWeight.bold
+					fontWeight: FontWeight.w400,
+					fontSize: 20
 				),
 			),
 			HighlightRule(
 				tag: "headline2",
 				action: null,
 				regex: RegExp(r'(## \w+)(..)'),
-				// ignore: deprecated_member_use
-				style: Theme.of(context).primaryTextTheme.headline2!.copyWith(
+				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
-					fontWeight: FontWeight.bold
+					fontWeight: FontWeight.w500,
+					fontSize: 24
 				),
 			),
 			HighlightRule(
 				tag: "headline1",
 				action: null,
 				regex: RegExp(r'(# \w+)(..)'),
-				// ignore: deprecated_member_use
-				style: Theme.of(context).primaryTextTheme.headline1!.copyWith(
+				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
-					fontWeight: FontWeight.bold
+					fontWeight: FontWeight.w600,
+					fontSize: 32
 				)
+			),
+			HighlightRule(
+				tag: "divider",
+				action: (_) => const Divider(height: 12),
+				regex: RegExp(r'\s(?<=\n|^)\s*---\s*(?=\n|$)', multiLine: true),
+				style: const TextStyle()
 			),
 		];
 
@@ -107,8 +114,7 @@ class MDGenerator extends StatelessWidget {
 		}
 
 		TextStyle defaultStyle = TextStyle(
-			fontSize: Theme.of(context)
-				.primaryTextTheme.bodyLarge!.fontSize,
+			fontSize: 16,
 			fontWeight: FontWeight.w500,
 			height: textHeight
 		);
@@ -181,6 +187,11 @@ class MDGenerator extends StatelessWidget {
 								style: matchingRule.style));
 						break;
 					}
+					case 'divider': {
+						updateSpans();
+						widgetTree.add(matchingRule.action!(""));
+						break;
+					}
 				}  // Switch
 
 				return matchedText;
@@ -198,6 +209,7 @@ class MDGenerator extends StatelessWidget {
 		return Container(
 			margin: const EdgeInsets.all(0),
 			child: Column(
+				mainAxisAlignment: MainAxisAlignment.start,
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: widgetTree,
 			),
