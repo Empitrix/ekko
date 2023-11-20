@@ -183,15 +183,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 										child: Text("Not Found!"),
 									);
 								}
-								return ListView.builder(
-									itemCount: value.length,
+								return Scrollbar(
 									controller: scrollCtrl,
-									itemBuilder: (context, index){
-										return NoteItem(
-											note: value[index],
-											backLoad: (){loadAll(false);},
-										);
-									},
+									child: ListView.builder(
+										itemCount: value.length,
+										controller: scrollCtrl,
+										itemBuilder: (context, index){
+											return NoteItem(
+												note: value[index],
+												backLoad: (){loadAll(false);},
+											);
+										},
+									),
 								);
 							}
 						);

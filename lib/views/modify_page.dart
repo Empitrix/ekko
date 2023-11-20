@@ -3,6 +3,7 @@ import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/custom_buttons.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
@@ -121,8 +122,9 @@ class ModifyPageState extends State<ModifyPage> {
 		mode = note.mode;
 		isPinned = note.isPinned;
 		
-		if(note.content.length > 420){
-			await Future.delayed(const Duration(seconds: 1));
+		if(note.content.length > waitForLoading){
+			await Future.delayed(Duration(
+				milliseconds: waitLoadingSize));
 			setState(() { isLoaded = true; });
 		} else {
 			setState(() { isLoaded = true; });

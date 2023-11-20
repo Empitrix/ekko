@@ -1,6 +1,7 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/generator.dart';
 import 'package:ekko/models/note.dart';
@@ -49,8 +50,9 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 			setState(() => isLoaded = false);
 			// note = await widget.smallNote.toRealNote();
 			note = await DB().loadThisNote(id!);
-			if(note!.content.length > 420){
-				await Future.delayed(const Duration(seconds: 1));
+			if(note!.content.length > waitForLoading){
+				await Future.delayed(Duration(
+					milliseconds: waitLoadingSize));
 			}
 			setState(() => isLoaded = true);
 		});
@@ -134,7 +136,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										),
 									),
 									const SizedBox(height: 10),
-									MDGenerator(content: note!.content)
+									MDGenerator(content: note!.content, textHeight: 1.4)
 								],
 							),
 						);

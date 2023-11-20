@@ -35,14 +35,23 @@ class MDGenerator extends StatelessWidget {
 					decorationColor: Colors.blue,
 					decoration: TextDecoration.underline
 				)
-			)
-
+			),
+			HighlightRule(
+				tag: "headline1",
+				action: null,
+				regex: RegExp(r'(https?://\S+)'),
+				style: const TextStyle(
+					color: Colors.blue,
+					decorationColor: Colors.blue,
+					decoration: TextDecoration.underline
+				)
+			),
 		];
 
 		List<Widget> widgetTree = [];
 		List<TextSpan> spans = [];
 
-		void _updateSpans(){
+		void updateSpans(){
 			widgetTree.add(Text.rich(TextSpan(children: spans)));
 			spans = [];
 		}
@@ -62,7 +71,7 @@ class MDGenerator extends StatelessWidget {
 
 				switch (matchingRule.tag) {
 					case 'markdown': {
-						_updateSpans();
+						updateSpans();
 						widgetTree.add(matchingRule.action!(matchedText));
 						break;
 					}
@@ -92,7 +101,7 @@ class MDGenerator extends StatelessWidget {
 
 		// Remaining Spans
 		if(spans.isNotEmpty){
-			_updateSpans();}
+			updateSpans();}
 
 		return Container(
 			margin: const EdgeInsets.all(0),
