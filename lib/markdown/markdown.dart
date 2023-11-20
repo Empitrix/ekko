@@ -121,7 +121,6 @@ class MarkdownWidget extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		return Container(
-			margin: const EdgeInsets.all(0),
 			child: Column(
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: [

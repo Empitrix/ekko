@@ -37,13 +37,63 @@ class MDGenerator extends StatelessWidget {
 				)
 			),
 			HighlightRule(
+				tag: "headline6",
+				action: null,
+				regex: RegExp(r'(###### \w+)(..)'),
+				// ignore: deprecated_member_use
+				style: Theme.of(context).primaryTextTheme.headline6!.copyWith(
+					color: Theme.of(context).colorScheme.inverseSurface,
+					fontWeight: FontWeight.bold
+				),
+			),
+			HighlightRule(
+				tag: "headline5",
+				action: null,
+				regex: RegExp(r'(##### \w+)(..)'),
+				// ignore: deprecated_member_use
+				style: Theme.of(context).primaryTextTheme.headline5!.copyWith(
+					color: Theme.of(context).colorScheme.inverseSurface,
+					fontWeight: FontWeight.bold
+				),
+			),
+			HighlightRule(
+				tag: "headline4",
+				action: null,
+				regex: RegExp(r'(#### \w+)(..)'),
+				// ignore: deprecated_member_use
+				style: Theme.of(context).primaryTextTheme.headline4!.copyWith(
+					color: Theme.of(context).colorScheme.inverseSurface,
+					fontWeight: FontWeight.bold
+				),
+			),
+			HighlightRule(
+				tag: "headline3",
+				action: null,
+				regex: RegExp(r'(### \w+)(..)'),
+				// ignore: deprecated_member_use
+				style: Theme.of(context).primaryTextTheme.headline3!.copyWith(
+					color: Theme.of(context).colorScheme.inverseSurface,
+					fontWeight: FontWeight.bold
+				),
+			),
+			HighlightRule(
+				tag: "headline2",
+				action: null,
+				regex: RegExp(r'(## \w+)(..)'),
+				// ignore: deprecated_member_use
+				style: Theme.of(context).primaryTextTheme.headline2!.copyWith(
+					color: Theme.of(context).colorScheme.inverseSurface,
+					fontWeight: FontWeight.bold
+				),
+			),
+			HighlightRule(
 				tag: "headline1",
 				action: null,
-				regex: RegExp(r'(https?://\S+)'),
-				style: const TextStyle(
-					color: Colors.blue,
-					decorationColor: Colors.blue,
-					decoration: TextDecoration.underline
+				regex: RegExp(r'(# \w+)(..)'),
+				// ignore: deprecated_member_use
+				style: Theme.of(context).primaryTextTheme.headline1!.copyWith(
+					color: Theme.of(context).colorScheme.inverseSurface,
+					fontWeight: FontWeight.bold
 				)
 			),
 		];
@@ -87,6 +137,48 @@ class MDGenerator extends StatelessWidget {
 								},
 							)
 						);
+						break;
+					}
+					case 'headline1': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(2),
+								style: matchingRule.style));
+						break;
+					}
+					case 'headline2': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(3),
+								style: matchingRule.style));
+						break;
+					}
+					case 'headline3': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(4),
+								style: matchingRule.style));
+						break;
+					}
+					case 'headline4': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(5),
+								style: matchingRule.style));
+						break;
+					}
+					case 'headline5': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(6),
+								style: matchingRule.style));
+						break;
+					}
+					case 'headline6': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(7),
+								style: matchingRule.style));
 						break;
 					}
 				}  // Switch
