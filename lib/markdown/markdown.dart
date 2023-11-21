@@ -19,12 +19,12 @@ class MarkdownWidget extends StatelessWidget {
 
 	/* Strings */
 	String _content(){
-		return content
-			.substring(3, content.length - 3);
+		return content.trim()
+			.substring(3, content.trim().length - 3);
 	}
 	String _langName() {
-		return _content().substring(
-			0, _content().indexOf("\n")
+		return _content().trim().substring(
+			0, _content().trim().indexOf("\n")
 		).trim();
 	}
 	String _markdownData(){
@@ -36,7 +36,7 @@ class MarkdownWidget extends StatelessWidget {
 	HighlightView highlightView(){
 		return HighlightView(
 			_markdownData(),
-			language: _langName(),
+			language: _langName().toLowerCase(),
 			tabSize: 2,
 			theme: gruvboxDarkTheme,
 		);

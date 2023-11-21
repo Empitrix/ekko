@@ -22,8 +22,7 @@ class MDGenerator extends StatelessWidget {
 				tag: "markdown",
 				action: (String text) => MarkdownWidget(
 					content: text, height: textHeight),
-				// regex: RegExp(r'```([^`]+)```'),
-				regex: RegExp(r'```([^`]+)```'),
+				regex: RegExp(r'\s```([\s\S]*?)```\s'),
 				style: const TextStyle(color: Colors.cyan)
 			),
 			// URL
@@ -99,8 +98,8 @@ class MDGenerator extends StatelessWidget {
 			),
 			HighlightRule(
 				tag: "divider",
-				action: (_) => const Divider(height: 12),
-				regex: RegExp(r'\s(?<=\n|^)\s*---\s*(?=\n|$)', multiLine: true),
+				action: (_) => const Divider(height: 1),
+				regex: RegExp(r'^\s*---\s*$'),
 				style: const TextStyle()
 			),
 		];
@@ -120,7 +119,7 @@ class MDGenerator extends StatelessWidget {
 		);
 
 		content.splitMapJoin(
-			RegExp(rules.map((rule) => rule.regex.pattern).join('|')),
+			RegExp(rules.map((rule) => rule.regex.pattern).join('|'), multiLine: true),
 			onMatch: (match) {
 				String matchedText = match.group(0)!;
 				HighlightRule matchingRule = rules.firstWhere((rule) => rule.regex.hasMatch(matchedText));
