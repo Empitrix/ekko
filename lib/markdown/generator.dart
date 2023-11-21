@@ -3,6 +3,7 @@ import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_html/flutter_html.dart' as htmlWidget;
 
 class MDGenerator extends StatelessWidget {
 	final String content;
@@ -102,6 +103,21 @@ class MDGenerator extends StatelessWidget {
 				regex: RegExp(r'^\s*---\s*$'),
 				style: const TextStyle()
 			),
+			/*HighlightRule(
+				tag: "html_content",
+				action: (_) => const Divider(height: 1),
+				regex: RegExp(r'\s###---([\s\S]*?)---###\s'),
+				style: const TextStyle()
+			),*/
+			HighlightRule(
+				tag: "boldness",
+				action: (_) => const SizedBox(),
+				regex: RegExp(r'\*\*(.*?)\*\*'),
+				style: const TextStyle(
+					fontSize: 16,
+					fontWeight: FontWeight.bold
+				)
+			),
 		];
 
 		List<Widget> widgetTree = [];
@@ -191,6 +207,33 @@ class MDGenerator extends StatelessWidget {
 						widgetTree.add(matchingRule.action!(""));
 						break;
 					}
+					case 'boldness': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(2, matchedText.length-2),
+								style: matchingRule.style
+							)
+						);
+						break;
+					}
+					/*case 'html_content': {
+						updateSpans();
+						widgetTree.add(
+							// Html(data: """<div>
+							// 	<h1>Demo Page</h1>
+							// 	<p>This is a fantastic product that you should buy!</p>
+							// 	<h3>Features</h3>
+							// 	<ul>
+							// 		<li>It actually works</li>
+							// 		<li>It exists</li>
+							// 		<li>It doesn't cost much!</li>
+							// 	</ul>
+							// 	<!--You can pretty much put any html in here!-->
+							// </div>""")
+							Container()
+						);
+						break;
+					}*/
 				}  // Switch
 
 				return matchedText;
