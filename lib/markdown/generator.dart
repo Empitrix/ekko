@@ -39,7 +39,7 @@ class MDGenerator extends StatelessWidget {
 			HighlightRule(
 				tag: "headline6",
 				action: null,
-				regex: RegExp(r'(###### \w+)(..)'),
+				regex: RegExp(r'^###### [\s\S]*?$'),
 				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
 					fontWeight: FontWeight.w100,
@@ -49,7 +49,7 @@ class MDGenerator extends StatelessWidget {
 			HighlightRule(
 				tag: "headline5",
 				action: null,
-				regex: RegExp(r'(##### \w+)(..)'),
+				regex: RegExp(r'^##### [\s\S]*?$'),
 				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
 					fontWeight: FontWeight.w200,
@@ -59,7 +59,7 @@ class MDGenerator extends StatelessWidget {
 			HighlightRule(
 				tag: "headline4",
 				action: null,
-				regex: RegExp(r'(#### \w+)(..)'),
+				regex: RegExp(r'^#### [\s\S]*?$'),
 				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
 					fontWeight: FontWeight.w300,
@@ -69,7 +69,7 @@ class MDGenerator extends StatelessWidget {
 			HighlightRule(
 				tag: "headline3",
 				action: null,
-				regex: RegExp(r'(### \w+)(..)'),
+				regex: RegExp(r'^### [\s\S]*?$'),
 				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
 					fontWeight: FontWeight.w400,
@@ -79,7 +79,7 @@ class MDGenerator extends StatelessWidget {
 			HighlightRule(
 				tag: "headline2",
 				action: null,
-				regex: RegExp(r'(## \w+)(..)'),
+				regex: RegExp(r'^## [\s\S]*?$'),
 				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
 					fontWeight: FontWeight.w500,
@@ -89,7 +89,7 @@ class MDGenerator extends StatelessWidget {
 			HighlightRule(
 				tag: "headline1",
 				action: null,
-				regex: RegExp(r'(# \w+)(..)'),
+				regex: RegExp(r'^# [\s\S]*?$'),
 				style: TextStyle(
 					color: Theme.of(context).colorScheme.inverseSurface,
 					fontWeight: FontWeight.w600,
