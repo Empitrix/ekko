@@ -57,8 +57,8 @@ class MarkdownWidget extends StatelessWidget {
 			),
 			decoration: BoxDecoration(
 				color: dMode ?
-					Theme.of(context).colorScheme.background :
-					Theme.of(context).colorScheme.onBackground,
+					Theme.of(context).colorScheme.background.aae(context) :
+					Theme.of(context).colorScheme.onBackground.aae(context),
 				borderRadius: BorderRadius.only(
 					topLeft: Radius.circular(radius),
 					topRight: Radius.circular(radius),
@@ -108,7 +108,7 @@ class MarkdownWidget extends StatelessWidget {
 			width: double.infinity,
 			padding: const EdgeInsets.all(10),
 			decoration: BoxDecoration(
-				color: highlightView().getBG(),
+				color: highlightView().getBG().aae(context),
 				borderRadius: BorderRadius.only(
 					topLeft: Radius.zero,
 					topRight: Radius.zero,

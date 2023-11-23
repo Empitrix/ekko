@@ -1,5 +1,6 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:flutter/material.dart';
 
 
@@ -50,7 +51,7 @@ AppBar customSearchBar({
 						),
 						decoration: BoxDecoration(
 							borderRadius: BorderRadius.circular(5),
-							color: Theme.of(context).scaffoldBackgroundColor
+							color: Theme.of(context).scaffoldBackgroundColor.aae(context)
 						),
 						child: TextField(
 							focusNode: focus,

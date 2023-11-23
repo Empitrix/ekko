@@ -34,8 +34,8 @@ class _EkkoAppState extends State<EkkoApp> {
 							title: "Ekko",
 							debugShowCheckedModeBanner: false,
 							themeMode: Provider.of<ProviderManager>(context).tMode,
-							theme: Provider.of<ProviderManager>(context).lightTheme,
-							darkTheme: Provider.of<ProviderManager>(context).darkTheme,
+							theme: Provider.of<ProviderManager>(context).lightTheme(context),
+							darkTheme: Provider.of<ProviderManager>(context).darkTheme(context),
 							home: const HomePage(),
 							// home: const LoadingPage(),
 						);
