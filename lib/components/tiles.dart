@@ -32,3 +32,65 @@ class SwitchTile extends StatelessWidget {
 		);
 	}
 }
+
+
+
+
+class SliderTile extends StatelessWidget {
+	final String text;
+	final double value;
+	final ValueChanged<double> onChanged;
+	final Widget leading;
+	const SliderTile({
+		super.key,
+		required this.leading,
+		required this.text,
+		required this.value,
+		required this.onChanged
+	});
+
+	@override
+	Widget build(BuildContext context) {
+		return Container(
+			// margin: const EdgeInsets.all(18),
+			margin: const EdgeInsets.only(
+				top: 5, bottom: 5,
+				right: 18, left: 15
+			),
+			child: Row(
+				mainAxisAlignment: MainAxisAlignment.start,
+				crossAxisAlignment: CrossAxisAlignment.start,
+				children: [
+					const SizedBox(width: 12),
+					const SizedBox(
+						height: 55,
+						child: VerticalDivider(width: 2),
+					),
+					const SizedBox(width: 12),
+					Expanded(
+						child: Column(
+							children: [
+								Row(
+									children: [
+										leading,
+										const SizedBox(width: 12),
+										Text(
+											text,
+											style: const TextStyle(
+												fontSize: 14,
+												fontWeight: FontWeight.bold),
+										),
+									],
+								),
+								Slider(
+									value: value,
+									onChanged: onChanged
+								)
+							],
+						),
+					)
+				],
+			)
+		);
+	}
+}

@@ -1,3 +1,4 @@
+import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/tiles.dart';
@@ -17,10 +18,23 @@ class SettingsPage extends StatefulWidget {
 	State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
 	
 	DB db = DB();
+	GenAnimation? sliderAnim;
 	
+	void initAnimations(){
+		sliderAnim = generateLinearAnimation(
+			ticket: this, initialValue: acrylicMode ? 1: 0);
+	}
+
+
+	@override
+  void initState() {
+		initAnimations();
+    super.initState();
+  }
+
 	@override
 	Widget build(BuildContext context) {
 		return WillPopScope(
@@ -60,35 +74,41 @@ class _SettingsPageState extends State<SettingsPage> {
 							value: acrylicMode,
 							onChange: (bool value) async {
 								if(value){
+									await sliderAnim!.controller.forward();
 									await Window.setEffect(
 										effect: WindowEffect.acrylic,
+										// ignore: use_build_context_synchronously
 										color: const Color(0xff17212b).aae(context)
-										// color: const Color(0xCC222222),
 									);
-									// Window.addToolbar();
 								} else {
-									// Provider.of<ProviderManager>(context, listen: false).changeTmode(
-									// 	dMode ? ThemeMode.dark : ThemeMode.light
-									// );
+									await sliderAnim!.controller.reverse();
+									// ignore: use_build_context_synchronously
 									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(1);
 									await Window.setEffect(
 										effect: WindowEffect.disabled,
-										// color: const Color(0xff17212b).aae()
+										// ignore: use_build_context_synchronously
 										color: const Color(0xff17212b).aae(context)
-										// color: const Color(0xCC222222),
 									);
-									// // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, use_build_context_synchronously
-									// Provider.of<ProviderManager>(context, listen: false).notifyListeners();
-									// ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member, use_build_context_synchronously
-									// Provider.of<ProviderManager>(context, listen: false).changeTmode(
-									// 	dMode ? ThemeMode.dark : ThemeMode.light
-									// );
-									
 								}
 								setState(() { acrylicMode = value; });
 								await db.updateAcrylicMode(value);
 							}
 						),  // Acrylic mode
+
+						if(isDesktop()) expandAnimation(
+							animation: sliderAnim!.animation,
+							mode: ExpandMode.height,
+							body: SliderTile(
+								leading: const Icon(Icons.opacity),
+								text: "Acrylic Opacity",
+								value: Provider.of<ProviderManager>(context, listen: false).acrylicOpacity,
+								onChanged: (double newData){
+									setState(() {});  // Rebuild the page
+									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(
+										newData);
+								} 
+							)
+						)
 
 					],
 				),
