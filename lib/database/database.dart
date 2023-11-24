@@ -13,7 +13,8 @@ class DB {
 		await db.execute("""
 			CREATE TABLE IF NOT EXISTS local (
 				darkMode BIT,
-				acrylicMode BIT
+				acrylicMode BIT,
+				acrylicOpacity FLOAT
 			)
 		""");
 		await db.execute("""
@@ -30,7 +31,8 @@ class DB {
 		if(List.from(await db.query("local")).isEmpty){
 			Map<String, Object?> initData = {
 				"darkMode": 0,
-				"acrylicMode": 0
+				"acrylicMode": 0,
+				"acrylicOpacity": 1.0,
 			};  // Init table
 			// Set parameters on db 
 			await db.insert("local", initData);
@@ -65,6 +67,16 @@ class DB {
 			{"acrylicMode": newMode ? 1 : 0});
 	}
 
+	/* Acrylic Opacity */ 
+	Future<double> readAcrylicOpacity() async {
+		Map data = await getQuery("local");
+		return data["acrylicOpacity"];
+	}
+
+	Future<void> updateAcrylicOpacity(double newValue) async {
+		await updateTable('local',
+			{"acrylicOpacity": newValue});
+	}
 
 	/* Notes CRUD */
 	Future<void> addNote(Note note) async {

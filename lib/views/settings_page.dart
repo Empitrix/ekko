@@ -80,15 +80,18 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 										// ignore: use_build_context_synchronously
 										color: const Color(0xff17212b).aae(context)
 									);
+									double _op = await db.readAcrylicOpacity();
+									// ignore: use_build_context_synchronously
+									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(_op);
 								} else {
 									await sliderAnim!.controller.reverse();
-									// ignore: use_build_context_synchronously
-									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(1);
 									await Window.setEffect(
 										effect: WindowEffect.disabled,
 										// ignore: use_build_context_synchronously
 										color: const Color(0xff17212b).aae(context)
 									);
+									// ignore: use_build_context_synchronously
+									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(1);
 								}
 								setState(() { acrylicMode = value; });
 								await db.updateAcrylicMode(value);
@@ -102,10 +105,13 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 								leading: const Icon(Icons.opacity),
 								text: "Acrylic Opacity",
 								value: Provider.of<ProviderManager>(context, listen: false).acrylicOpacity,
-								onChanged: (double newData){
+								onChanged: (double newData) async {
 									setState(() {});  // Rebuild the page
 									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(
 										newData);
+									Future.microtask(() async {
+										await db.updateAcrylicOpacity(newData);
+									});
 								} 
 							)
 						)
