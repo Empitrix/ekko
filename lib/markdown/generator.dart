@@ -17,6 +17,15 @@ class MDGenerator extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		/* All the regex rules */
+		
+		
+		TextStyle defaultStyle = TextStyle(
+			fontSize: 16,
+			fontWeight: FontWeight.w500,
+			height: textHeight
+		);
+		
+		
 		List<HighlightRule> rules = [
 			// Markdown
 			HighlightRule(
@@ -130,28 +139,50 @@ class MDGenerator extends StatelessWidget {
 					fontStyle: FontStyle.italic
 				)
 			),
+			HighlightRule(
+				tag: "item",
+				action: (txt) => Row(
+					children: [
+						const Icon(Icons.circle, size: 10),
+						const SizedBox(width: 12),
+						Expanded(
+							child: Text.rich(
+								TextSpan(
+									text: txt.trim().substring(1).trim(),
+									// text: txt.trim().replaceRange(0, 1, "•").trim(),
+									style: defaultStyle
+								)
+							)
+						)
+					],
+				),
+				regex: RegExp(r'^-\s.+$'),
+				// regex: RegExp(r'\s^-\s.+$\s'),
+				style: const TextStyle()
+			),
 		];
 
+		
 		List<Widget> widgetTree = [];
 		List<TextSpan> spans = [];
-
+		
+		bool inOrderColumn = false;
+		
+		
 		void updateSpans(){
-			widgetTree.add(Text.rich(TextSpan(children: spans)));
-			spans = [];
+			if(spans.isNotEmpty){
+				widgetTree.add(Text.rich(TextSpan(children: spans)));
+				spans = [];
+			}
 		}
 
-		TextStyle defaultStyle = TextStyle(
-			fontSize: 16,
-			fontWeight: FontWeight.w500,
-			height: textHeight
-		);
 
 		content.splitMapJoin(
 			RegExp(rules.map((rule) => rule.regex.pattern).join('|'), multiLine: true),
 			onMatch: (match) {
 				String matchedText = match.group(0)!;
 				HighlightRule matchingRule = rules.firstWhere((rule) => rule.regex.hasMatch(matchedText));
-
+				inOrderColumn = false;
 				switch (matchingRule.tag) {
 					case 'markdown': {
 						updateSpans();
@@ -173,6 +204,7 @@ class MDGenerator extends StatelessWidget {
 						break;
 					}
 					case 'headline1': {
+						inOrderColumn = true;
 						spans.add(
 							TextSpan(
 								text: matchedText.substring(2),
@@ -247,12 +279,24 @@ class MDGenerator extends StatelessWidget {
 						break;
 					}
 
+					case 'item': {
+						updateSpans();
+						inOrderColumn = true;
+						widgetTree.add(matchingRule.action!(matchedText));
+						break;
+					}
+
 
 				}  // Switch
-
+				
+				// updateColumnTree();
+				
 				return matchedText;
 			},
 			onNonMatch: (nonMatchedText) {
+				// columnSplinter = false;
+				if(nonMatchedText == "\n" && inOrderColumn) return "";
+				inOrderColumn = false;
 				spans.add(TextSpan(text: nonMatchedText, style: defaultStyle));
 				return nonMatchedText;
 			},
