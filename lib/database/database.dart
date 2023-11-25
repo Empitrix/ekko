@@ -14,6 +14,7 @@ class DB {
 			CREATE TABLE IF NOT EXISTS local (
 				darkMode BIT,
 				acrylicMode BIT,
+				wrapCodeMode BIT,
 				acrylicOpacity FLOAT
 			)
 		""");
@@ -32,6 +33,7 @@ class DB {
 			Map<String, Object?> initData = {
 				"darkMode": 0,
 				"acrylicMode": 0,
+				"wrapCodeMode": 1,
 				"acrylicOpacity": 1.0,
 			};  // Init table
 			// Set parameters on db 
@@ -60,6 +62,18 @@ class DB {
 	Future<bool> readAcrylicMode() async {
 		Map data = await getQuery("local");
 		return data["acrylicMode"] == 1;
+	}
+
+	/* Wrap Mode */
+	Future<void> updateWrapCodeMode(bool newMode) async {
+		await updateTable('local',
+			{"wrapCodeMode": newMode == true ? 1 : 0});
+	}
+
+	/* Acrylic Mode */
+	Future<bool> readWrapCodeMode() async {
+		Map data = await getQuery("local");
+		return data["wrapCodeMode"] == 1;
 	}
 
 	Future<void> updateAcrylicMode(bool newMode) async {

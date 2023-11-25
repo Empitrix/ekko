@@ -4,6 +4,8 @@ String dbPath = "";
 bool dMode = false;
 // Acrylic Mode
 bool acrylicMode = false;
+// Wrap code Mode
+bool wrapCodeMode = false;
 // Wait for loading size (Page Navigator Loadings)
 int waitForLoading = 420;
 int waitLoadingSize = 300; // ms

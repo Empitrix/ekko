@@ -9,6 +9,7 @@ ThemeData light(BuildContext context){
 	return ThemeData(
 		useMaterial3: true,
 		fontFamily: "Rubik",
+		// fontFamily: "SauceCodeProNerdFont",
 		scaffoldBackgroundColor: _bgColor.aae(context),
 		primaryColor: _pColor,
 		colorScheme: ColorScheme.fromSeed(

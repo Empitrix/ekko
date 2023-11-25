@@ -9,10 +9,10 @@ ThemeData dark(BuildContext context){
 	Color bgColor = const Color(0xff17212b);
 	Color pColor = const Color(0xff00bbd4);
 	Color navBgColor = const Color(0xff242f3d);
-
 	return ThemeData(
 		useMaterial3: true,
 		fontFamily: "Rubik",
+		// fontFamily: "SauceCodeProNerdFont",
 		scaffoldBackgroundColor: bgColor.aae(context),
 		primaryColor: pColor,
 		colorScheme: ColorScheme.fromSeed(

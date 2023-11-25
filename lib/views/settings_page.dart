@@ -7,6 +7,7 @@ import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/views/home_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
@@ -114,7 +115,17 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 									});
 								} 
 							)
-						)
+						),
+						// Wrap Mode
+						SwitchTile(
+							leading: const Icon(Icons.wrap_text),
+							title: const Text("Syntax Wrap Mode"),
+							value: wrapCodeMode,
+							onChange: (bool newMode) async {
+								setState(() => wrapCodeMode = newMode );
+								await db.updateWrapCodeMode(newMode);
+							}
+						),
 
 					],
 				),

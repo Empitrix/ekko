@@ -14,8 +14,9 @@ class MarkdownWidget extends StatelessWidget {
 		super.key,
 		required this.content,
 		this.radius = 5,
-		this.height = 0.0
+		this.height = 0.0,
 	});
+
 
 	/* Strings */
 	String _content(){
@@ -103,8 +104,8 @@ class MarkdownWidget extends StatelessWidget {
 		);
 	}
 
-	Widget markdown(BuildContext context){
-		return Container(
+	Widget markdown(BuildContext context, ScrollController controller){
+		Widget container = Container(
 			width: double.infinity,
 			padding: const EdgeInsets.all(10),
 			decoration: BoxDecoration(
@@ -116,19 +117,62 @@ class MarkdownWidget extends StatelessWidget {
 					bottomRight: Radius.circular(radius)
 				)
 			),
-			child: Text.rich(highlightView().getSpan(
-				style: markdownStyle())),
+			// child: Text.rich(highlightView().getSpan(
+			// 	style: markdownStyle())),
+			// child: Expanded(child: Text.rich(highlightView().getSpan(style: markdownStyle()))),
+			// child: Text.rich(highlightView().getSpan(style: markdownStyle())),
+			
+			// child: SingleChildScrollView(child: Row(
+			// 	children: [
+			// 		// Expanded(child: Text.rich(highlightView().getSpan(style: markdownStyle())) )
+			// 		SingleChildScrollView(child: Text.rich(highlightView().getSpan(style: markdownStyle())) )
+			// 	],
+			// )),
+			
+			// child: Text.rich(highlightView().getSpan(style: markdownStyle()))
+			// child: SingleChildScrollView(
+			// 	child: Column(
+			// 		children: [
+			// 			Text.rich(highlightView().getSpan(style: markdownStyle()))
+			// 		],
+			// 	),
+			// )
+
+			// child: Text.rich(highlightView().getSpan(style: markdownStyle()))
+		
+			child: wrapCodeMode ?
+				Text.rich(highlightView().getSpan(style: markdownStyle())):
+				Column(
+					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						Scrollbar(
+							controller: controller,
+							child: SingleChildScrollView(
+								controller: controller,
+								scrollDirection: Axis.horizontal,
+								child: Column(
+									children: [
+										Text.rich(highlightView().getSpan(style: markdownStyle()))
+									],
+								),
+							),
+						)
+					],
+				)
 		);
+		return container;
 	}
 
 	@override
 	Widget build(BuildContext context) {
+		ScrollController horizontalMarkdown = ScrollController();
 		return Container(
 			child: Column(
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: [
 					header(context),
-					markdown(context),
+					markdown(context, horizontalMarkdown),
 				],
 			),
 		);

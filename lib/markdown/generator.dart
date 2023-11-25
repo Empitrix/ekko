@@ -103,12 +103,15 @@ class MDGenerator extends StatelessWidget {
 				regex: RegExp(r'^\s*---\s*$'),
 				style: const TextStyle()
 			),
-			/*HighlightRule(
-				tag: "html_content",
-				action: (_) => const Divider(height: 1),
-				regex: RegExp(r'\s###---([\s\S]*?)---###\s'),
-				style: const TextStyle()
-			),*/
+			HighlightRule(
+				tag: "italic_bold",
+				action: (_) => const SizedBox(),
+				regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
+				style: const TextStyle(
+					fontSize: 16,
+					fontWeight: FontWeight.bold,
+					fontStyle: FontStyle.italic
+				)),
 			HighlightRule(
 				tag: "boldness",
 				action: (_) => const SizedBox(),
@@ -116,6 +119,15 @@ class MDGenerator extends StatelessWidget {
 				style: const TextStyle(
 					fontSize: 16,
 					fontWeight: FontWeight.bold
+				)
+			),
+			HighlightRule(
+				tag: "italic",
+				action: (_) => const SizedBox(),
+				regex: RegExp(r'\*(.*?)\*'),
+				style: const TextStyle(
+					fontSize: 16,
+					fontStyle: FontStyle.italic
 				)
 			),
 		];
@@ -210,30 +222,32 @@ class MDGenerator extends StatelessWidget {
 					case 'boldness': {
 						spans.add(
 							TextSpan(
-								text: matchedText.substring(2, matchedText.length-2),
+								text: matchedText.substring(2, matchedText.length - 2),
+								style: matchingRule.style
+							)
+						);
+						break;
+					} 
+					case 'italic_bold': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(3, matchedText.length - 3),
 								style: matchingRule.style
 							)
 						);
 						break;
 					}
-					/*case 'html_content': {
-						updateSpans();
-						widgetTree.add(
-							// Html(data: """<div>
-							// 	<h1>Demo Page</h1>
-							// 	<p>This is a fantastic product that you should buy!</p>
-							// 	<h3>Features</h3>
-							// 	<ul>
-							// 		<li>It actually works</li>
-							// 		<li>It exists</li>
-							// 		<li>It doesn't cost much!</li>
-							// 	</ul>
-							// 	<!--You can pretty much put any html in here!-->
-							// </div>""")
-							Container()
+					case 'italic': {
+						spans.add(
+							TextSpan(
+								text: matchedText.substring(1, matchedText.length - 1),
+								style: matchingRule.style
+							)
 						);
 						break;
-					}*/
+					}
+
+
 				}  // Switch
 
 				return matchedText;

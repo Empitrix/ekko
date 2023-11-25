@@ -32,4 +32,6 @@ flutter:
     - family: Rubik
       fonts:
         - asset: assets\fonts\Rubik-Regular.ttf
-
+    - family: SauceCodeProNerdFont
+      fonts:
+        - asset: assets\fonts\SauceCodeProNerdFont-Regular.ttf
