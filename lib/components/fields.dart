@@ -160,7 +160,6 @@ class ContentTextFiled extends StatelessWidget {
 						TextField(
 							controller: controller,
 							focusNode: focusNode,
-							cursorHeight: cursorHeight,
 							maxLines: null,
 							style: Theme.of(context).primaryTextTheme.bodyLarge!
 								.copyWith(
