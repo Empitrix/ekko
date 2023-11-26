@@ -148,7 +148,8 @@ class MDGenerator extends StatelessWidget {
 						Expanded(
 							child: Text.rich(
 								TextSpan(
-									text: txt.trim().substring(1).trim(),
+									text: txt.trim().substring(1),
+									// text: "\n" + txt.substring(1),
 									// text: txt.trim().replaceRange(0, 1, "•").trim(),
 									style: defaultStyle
 								)
@@ -157,6 +158,7 @@ class MDGenerator extends StatelessWidget {
 					],
 				),
 				regex: RegExp(r'^-\s.+$'),
+				// regex: RegExp(r'^-\s.+\n'),
 				// regex: RegExp(r'\s^-\s.+$\s'),
 				style: const TextStyle()
 			),
@@ -294,8 +296,10 @@ class MDGenerator extends StatelessWidget {
 				return matchedText;
 			},
 			onNonMatch: (nonMatchedText) {
-				// columnSplinter = false;
-				if(nonMatchedText == "\n" && inOrderColumn) return "";
+				if(inOrderColumn){
+					nonMatchedText = nonMatchedText.replaceFirst("\n", "");
+					if(nonMatchedText.isEmpty) return "";
+				}
 				inOrderColumn = false;
 				spans.add(TextSpan(text: nonMatchedText, style: defaultStyle));
 				return nonMatchedText;
