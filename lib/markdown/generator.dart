@@ -27,12 +27,12 @@ class MDGenerator extends StatelessWidget {
 		);
 		
 
-    // Load highlight rules
-    List<HighlightRule> rules = allSyntaxRules(
-      context: context,
-      textHeight: textHeight,
-      defaultStyle: defaultStyle
-    );
+		// Load highlight rules
+		List<HighlightRule> rules = allSyntaxRules(
+			context: context,
+			textHeight: textHeight,
+			defaultStyle: defaultStyle
+		);
 
 
 		List<Widget> widgetTree = [];
