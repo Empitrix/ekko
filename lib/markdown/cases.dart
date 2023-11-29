@@ -147,6 +147,14 @@ List<Widget> applyRules({
 					break;
 				}
 
+				// Checkbox
+				case 'checkbox': {
+					updateSpans();
+					inOrderColumn = true;
+					widgetTree.add(matchingRule.action!(matchedText));
+					break;
+				}
+
 
 			}  // Switch
 			return matchedText;

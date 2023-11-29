@@ -1,4 +1,5 @@
 import 'package:ekko/markdown/markdown.dart';
+import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 
@@ -132,29 +133,54 @@ List<HighlightRule> allSyntaxRules({
 				fontStyle: FontStyle.italic
 			)
 		),
+		
+
+		// Sublist CheckedBox
+		HighlightRule(
+			tag: "checkbox",
+			action: (txt){
+				bool isChecked = 
+					txt.trim().substring(0, 5).contains("x");
+				return onLeadingText(
+					leading: SizedBox(
+						// height: 20,
+						width: 15,
+						child: Transform.scale(
+							scale: 0.8,
+							child: IgnorePointer(
+								child: Checkbox(
+									value: isChecked,
+									onChanged: (_){} 
+								),
+							),
+						) ,
+					),
+					text: TextSpan(
+						text: txt.trim().substring(5),
+						style: defaultStyle
+					)
+				);
+			},
+			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
+			style: const TextStyle()
+		),
+
 
 		// Sublist - Item
 		HighlightRule(
 			tag: "item",
-			action: (txt) => Row(
-				children: [
-					const Icon(Icons.circle, size: 10),
-					const SizedBox(width: 12),
-					Expanded(
-						child: Text.rich(
-							TextSpan(
-								text: txt.trim().substring(1),
-								// text: "\n" + txt.substring(1),
-								// text: txt.trim().replaceRange(0, 1, "•").trim(),
-								style: defaultStyle
-							)
-						)
-					)
-				],
+			action: (txt) => onLeadingText(
+				leading: const Icon(Icons.circle, size: 10),
+				text: TextSpan(
+					text: txt.trim().substring(1),
+					style: defaultStyle
+				)
 			),
 			regex: RegExp(r'^-\s.+$'),
 			style: const TextStyle()
 		),
+
+
 
 
 	];
