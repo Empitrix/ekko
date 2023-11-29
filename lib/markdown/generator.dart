@@ -10,14 +10,14 @@ class MDGenerator extends StatelessWidget {
 	const MDGenerator({
 		super.key,
 		required this.content,
-		this.textHeight = 0.0
+		this.textHeight = 0.0  // 1.5
 	});
 
 	@override
 	Widget build(BuildContext context) {
 
 		List<Widget> widgetTree = [];
-		
+
 		TextStyle defaultStyle = TextStyle(
 			fontSize: 16,
 			fontWeight: FontWeight.w500,
@@ -38,7 +38,6 @@ class MDGenerator extends StatelessWidget {
 			defaultStyle: defaultStyle,
 			rules: rules
 		);
-
 
 		return Container(
 			margin: const EdgeInsets.all(0),

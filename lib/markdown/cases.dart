@@ -28,9 +28,11 @@ List<Widget> applyRules({
 		onMatch: (match) {
 			String matchedText = match.group(0)!;
 			HighlightRule matchingRule = rules.firstWhere((rule) => rule.regex.hasMatch(matchedText));
-			inOrderColumn = false;
-			switch (matchingRule.tag) {
 
+			// Initial for loop
+			inOrderColumn = false;
+
+			switch (matchingRule.tag) {
 				case 'markdown': {
 					updateSpans();
 					widgetTree.add(matchingRule.action!(matchedText));
@@ -58,13 +60,18 @@ List<Widget> applyRules({
 						TextSpan(
 							text: matchedText.substring(2),
 							style: matchingRule.style));
+					updateSpans();
+					widgetTree.add(const Divider());
 					break;
 				}
 				case 'headline2': {
+					inOrderColumn = true;
 					spans.add(
 						TextSpan(
 							text: matchedText.substring(3),
 							style: matchingRule.style));
+					updateSpans();
+					widgetTree.add(const Divider());
 					break;
 				}
 				case 'headline3': {
@@ -97,6 +104,7 @@ List<Widget> applyRules({
 				}
 
 				case 'divider': {
+					inOrderColumn = true;
 					updateSpans();
 					widgetTree.add(matchingRule.action!(""));
 					break;

@@ -30,10 +30,18 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 
 
 	@override
-  void initState() {
+	void initState() {
 		initAnimations();
-    super.initState();
-  }
+		super.initState();
+	}
+
+	@override
+		void dispose() {
+			if(sliderAnim != null){
+				sliderAnim!.controller.dispose();
+			}
+			super.dispose();
+		}
 
 	@override
 	Widget build(BuildContext context) {
@@ -97,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 								setState(() { acrylicMode = value; });
 								await db.updateAcrylicMode(value);
 							}
-						),  // Acrylic mode
+						),	// Acrylic mode
 
 						if(isDesktop()) expandAnimation(
 							animation: sliderAnim!.animation,
@@ -107,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 								text: "Acrylic Opacity",
 								value: Provider.of<ProviderManager>(context, listen: false).acrylicOpacity,
 								onChanged: (double newData) async {
-									setState(() {});  // Rebuild the page
+									setState(() {});	// Rebuild the page
 									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(
 										newData);
 									Future.microtask(() async {

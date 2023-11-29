@@ -16,6 +16,7 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'\s```([\s\S]*?)```\s'),
 			style: const TextStyle(color: Colors.cyan)
 		),
+
 		// URL
 		HighlightRule(
 			tag: "url",
@@ -27,6 +28,8 @@ List<HighlightRule> allSyntaxRules({
 				decoration: TextDecoration.underline
 			)
 		),
+
+		// Headlines
 		HighlightRule(
 			tag: "headline6",
 			action: null,
@@ -87,12 +90,16 @@ List<HighlightRule> allSyntaxRules({
 				fontSize: 32
 			)
 		),
+
+		// Divider
 		HighlightRule(
 			tag: "divider",
 			action: (_) => const Divider(height: 1),
 			regex: RegExp(r'^\s*---\s*$'),
 			style: const TextStyle()
 		),
+
+		// Italic & Bold
 		HighlightRule(
 			tag: "italic_bold",
 			action: (_) => const SizedBox(),
@@ -101,7 +108,10 @@ List<HighlightRule> allSyntaxRules({
 				fontSize: 16,
 				fontWeight: FontWeight.bold,
 				fontStyle: FontStyle.italic
-			)),
+			)
+		),
+
+		// Bold
 		HighlightRule(
 			tag: "boldness",
 			action: (_) => const SizedBox(),
@@ -111,6 +121,8 @@ List<HighlightRule> allSyntaxRules({
 				fontWeight: FontWeight.bold
 			)
 		),
+
+		// Italic
 		HighlightRule(
 			tag: "italic",
 			action: (_) => const SizedBox(),
@@ -120,6 +132,8 @@ List<HighlightRule> allSyntaxRules({
 				fontStyle: FontStyle.italic
 			)
 		),
+
+		// Sublist - Item
 		HighlightRule(
 			tag: "item",
 			action: (txt) => Row(
@@ -139,9 +153,9 @@ List<HighlightRule> allSyntaxRules({
 				],
 			),
 			regex: RegExp(r'^-\s.+$'),
-			// regex: RegExp(r'^-\s.+\n'),
-			// regex: RegExp(r'\s^-\s.+$\s'),
 			style: const TextStyle()
 		),
+
+
 	];
 }

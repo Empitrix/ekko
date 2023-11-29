@@ -98,6 +98,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	}
 
 	@override
+		void dispose() {
+			if(searchAnim != null){
+				searchAnim!.controller.dispose();
+			}
+			if(floatingButtonAnim != null){
+				floatingButtonAnim!.controller.dispose();
+			}
+			super.dispose();
+		}
+
+	@override
 	Widget build(BuildContext context) {
 		return PopScope(
 			canPop: false,

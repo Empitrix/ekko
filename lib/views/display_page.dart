@@ -1,6 +1,5 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -84,6 +83,18 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	}
 
 	@override
+	void dispose() {
+		// Dispose animations/tickes
+		if(floatingButtonAnim != null){
+			floatingButtonAnim!.controller.dispose();
+		}
+		if(appbarHideAnimation != null){
+			appbarHideAnimation!.controller.dispose();
+		}
+		super.dispose();
+	}
+
+	@override
 	Widget build(BuildContext context) {
 		return PopScope(
 			canPop: false,
@@ -106,15 +117,15 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 						)),
 				),
 				// appBar: AppBar(
-				// 	automaticallyImplyLeading: false,
-				// 	// toolbarHeight: 56,
-				// 	title: const Text("Dispaly"),
-				// 	leading: IconButton(
-				// 		icon: const Icon(Icons.close),
-				// 		onPressed: (){
-				// 			_backToPreviousPage();
-				// 		},
-				// 	),
+				//	automaticallyImplyLeading: false,
+				//	// toolbarHeight: 56,
+				//	title: const Text("Dispaly"),
+				//	leading: IconButton(
+				//		icon: const Icon(Icons.close),
+				//		onPressed: (){
+				//			_backToPreviousPage();
+				//		},
+				//	),
 				// ),
 
 				body: Builder(
