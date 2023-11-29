@@ -47,14 +47,14 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	}
 
 	void initListeners(){
-		double _lastOffest = 0.0;
+		double lastOffest = 0.0;
 		scrollCtrl.addListener(() {
-			if(scrollCtrl.offset > _lastOffest){
+			if(scrollCtrl.offset > lastOffest){
 				appbarHideAnimation!.controller.reverse();
 			} else {
 				appbarHideAnimation!.controller.forward();
 			}
-			_lastOffest = scrollCtrl.offset;
+			lastOffest = scrollCtrl.offset;
 		});
 	}
 
@@ -84,10 +84,10 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 
 	@override
 	Widget build(BuildContext context) {
-		return WillPopScope(
-			onWillPop: () async {
+		return PopScope(
+			canPop: false,
+			onPopInvoked: (_) async {
 				_backToPreviousPage();
-				return false;
 			},
 			child: Scaffold(
 				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,

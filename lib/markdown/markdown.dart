@@ -168,6 +168,7 @@ class MarkdownWidget extends StatelessWidget {
 	Widget build(BuildContext context) {
 		ScrollController horizontalMarkdown = ScrollController();
 		return Container(
+			margin: const EdgeInsets.all(0),
 			child: Column(
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: [

@@ -7,7 +7,6 @@ import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/views/home_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
@@ -38,10 +37,10 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 
 	@override
 	Widget build(BuildContext context) {
-		return WillPopScope(
-			onWillPop: () async {
+		return PopScope(
+			canPop: false,
+			onPopInvoked: (_) async {
 				changeView(context, const HomePage(), isPush: false);
-				return false;
 			},
 			child: Scaffold(
 				appBar: AppBar(
@@ -81,9 +80,9 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 										// ignore: use_build_context_synchronously
 										color: const Color(0xff17212b).aae(context)
 									);
-									double _op = await db.readAcrylicOpacity();
+									double op = await db.readAcrylicOpacity();
 									// ignore: use_build_context_synchronously
-									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(_op);
+									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(op);
 								} else {
 									await sliderAnim!.controller.reverse();
 									await Window.setEffect(

@@ -159,10 +159,10 @@ class ModifyPageState extends State<ModifyPage> {
 
 	@override
 	Widget build(BuildContext context) {
-		return WillPopScope(
-			onWillPop: () async {
+		return PopScope(
+			canPop: false,
+			onPopInvoked: (_) async {
 				_backClose();
-				return false;
 			},
 			child: Scaffold(
 				appBar: AppBar(

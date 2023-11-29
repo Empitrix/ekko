@@ -99,13 +99,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 	@override
 	Widget build(BuildContext context) {
-		return WillPopScope(
-			onWillPop: () async {
+		return PopScope(
+			canPop: false,
+			onPopInvoked: (_) async {
 				// Close Drawer
 				if(scaffoldKey.currentState != null){
 					if(scaffoldKey.currentState!.isDrawerOpen){
 						scaffoldKey.currentState!.closeDrawer();
-						return false;
 					}
 				}
 				// Close Search-Bar
@@ -113,11 +113,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 					if(searchAnim!.animation.value == 1){
 						_closeSearch();
 						searchAnim!.controller.reverse();
-						return false;
 					}
 				}
 				// Minimize the app
-				return false;
 			},
 			child: Scaffold(
 				resizeToAvoidBottomInset: false,
