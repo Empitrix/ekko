@@ -161,7 +161,8 @@ class ModifyPageState extends State<ModifyPage> {
 	Widget build(BuildContext context) {
 		return PopScope(
 			canPop: false,
-			onPopInvoked: (_) async {
+			onPopInvoked: (bool didPop) async {
+				if(didPop) { return; }
 				_backClose();
 			},
 			child: Scaffold(

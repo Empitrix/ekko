@@ -1,5 +1,6 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -86,7 +87,9 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	Widget build(BuildContext context) {
 		return PopScope(
 			canPop: false,
-			onPopInvoked: (_) async {
+			onPopInvoked: (bool didPop) async {
+				if(didPop){ return; }
+				debugPrint("Did-Pop: $didPop");
 				_backToPreviousPage();
 			},
 			child: Scaffold(
