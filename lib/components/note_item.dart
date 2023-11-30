@@ -1,3 +1,5 @@
+import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/views/display_page.dart';
@@ -20,72 +22,88 @@ class NoteItem extends StatelessWidget {
 		if(!note.isVisible){
 			return Container();
 		}
-		return InkWell(
-			child: Container(
-				padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-				child: Row(
-					children: [
-						IconButton(
-							icon: const Icon(Icons.edit),
-							color: Theme.of(context).primaryColor,
-							onPressed: (){
-								changeView(
-									context,
-									ModifyPage(
-										note: note,
-										backLoad: backLoad,
-										previousPage: const HomePage(),
-									),
-									isPush: true
-								);
-							}
-						),
-						const SizedBox(width: 12),
-						Expanded(
-							child: Column(
-								mainAxisAlignment: MainAxisAlignment.start,
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children: [
-									Text(
-										note.title,
-										overflow: TextOverflow.ellipsis,
-										style: TextStyle(
-											fontSize: 16,
-											color: Theme.of(context)
-												.colorScheme
-												.inverseSurface,
-											fontWeight: FontWeight.bold,
-										),
-									),
-									Text(
-										note.description,
-										overflow: TextOverflow.ellipsis,
-										style: TextStyle(
-											fontSize: 14,
-											color: Theme.of(context)
-												.colorScheme.
-												inverseSurface
-												.withOpacity(0.5)
-										),
-									),
-								],
-							)
-						),
-						const SizedBox(width: 12),
-						IconButton(
-							icon: Icon(noteModeIcon(note.mode)),
-							color: Theme.of(context).primaryColor,
-							onPressed: (){/* Note Actons */},
-						),
-					],
+		return Listener(
+			onPointerDown: isDesktop() ? (pointer){
+				if(pointer.buttons == 2){
+					// show
+					generalSmallNoteSheet(
+						context: context, load: backLoad, note: note);
+				}
+			} : null,
+			child: InkWell(
+				onTap: () => changeView(
+					context, DisplayPage(
+						smallNote: note,
+						previousPage: const HomePage(),
+						loadAll: backLoad,
+					), isPush: true
 				),
-			),
-			onTap: () => changeView(
-				context, DisplayPage(
-					smallNote: note,
-					previousPage: const HomePage(),
-					loadAll: backLoad,
-				), isPush: true),
+				onLongPress: isDesktop() ? null : (){
+					generalSmallNoteSheet(
+						context: context, load: backLoad, note: note);
+				},
+				
+				// Child widget
+				child: Container(
+					padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+					child: Row(
+						children: [
+							IconButton(
+								icon: const Icon(Icons.edit),
+								color: Theme.of(context).primaryColor,
+								onPressed: (){
+									changeView(
+										context,
+										ModifyPage(
+											note: note,
+											backLoad: backLoad,
+											previousPage: const HomePage(),
+										),
+										isPush: true
+									);
+								}
+							),
+							const SizedBox(width: 12),
+							Expanded(
+								child: Column(
+									mainAxisAlignment: MainAxisAlignment.start,
+									crossAxisAlignment: CrossAxisAlignment.start,
+									children: [
+										Text(
+											note.title,
+											overflow: TextOverflow.ellipsis,
+											style: TextStyle(
+												fontSize: 16,
+												color: Theme.of(context)
+													.colorScheme
+													.inverseSurface,
+												fontWeight: FontWeight.bold,
+											),
+										),
+										Text(
+											note.description,
+											overflow: TextOverflow.ellipsis,
+											style: TextStyle(
+												fontSize: 14,
+												color: Theme.of(context)
+													.colorScheme.
+													inverseSurface
+													.withOpacity(0.5)
+											),
+										),
+									],
+								)
+							),
+							const SizedBox(width: 12),
+							IconButton(
+								icon: Icon(noteModeIcon(note.mode)),
+								color: Theme.of(context).primaryColor,
+								onPressed: (){/* Note Actons */},
+							),
+						],
+					),
+				),
+			)
 		);
 	}
 }

@@ -135,12 +135,12 @@ class DB {
 		await db.close();
 	}
 
-	Future<void> deleteNote(Note note) async {
+	Future<void> deleteNote(int noteId) async {
 		Database db = await createDB(dPath: dPath);
 		await db.delete(
 			'notes',
 			where: "id = ?",
-			whereArgs: [note.id]
+			whereArgs: [noteId]
 		);
 		await db.close();
 	}
