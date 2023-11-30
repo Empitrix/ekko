@@ -103,25 +103,35 @@ class DB {
 	}
 
 	Future<List<Note>> getNotes() async {
-		List<Note> notes = [];
+		List<Note> other = [];
+		List<Note> pinned = [];
 		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> data = await db.query("notes");
 		for(Map note in data){
-			notes.add(Note.toNote(note));
+			if(note["isPinned"] == 1){
+				pinned.add(Note.toNote(note));
+			} else {
+				other.add(Note.toNote(note));
+			}
 		}
 		await db.close();
-		return notes;
+		return [...pinned, ...other];
 	}
 
 	Future<List<SmallNote>> getSmallNotes() async {
-		List<SmallNote> notes = [];
+		List<SmallNote> otherNotes = [];
+		List<SmallNote> pinnedNotes = [];
 		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> data = await db.query("notes");
 		for(Map note in data){
-			notes.add(SmallNote.toSmallNote(note));
+			if(note["isPinned"] == 1){
+				pinnedNotes.add(SmallNote.toSmallNote(note));
+			} else {
+				otherNotes.add(SmallNote.toSmallNote(note));
+			}
 		}
 		await db.close();
-		return notes;
+		return [...pinnedNotes, ...otherNotes];
 	}
 
 	Future<void> updateNote(Note newOne) async {

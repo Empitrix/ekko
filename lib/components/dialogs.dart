@@ -21,7 +21,7 @@ class Dialogs {
 		);
 	}
 
-	void askDialog({
+	void ask({
 		required String title, content,
 		required Function action,
 		String fillAct = "Ok",

@@ -36,15 +36,9 @@ void generalSmallNoteSheet({
 					mainAxisAlignment: MainAxisAlignment.start,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: [
-						// Text(
-						// 	"    ${note.title}",
-						// 	style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
-						// 		color: Theme.of(context).colorScheme.inverseSurface
-						// 	)
-						// ),
 						Container(
 							width: double.infinity,
-							margin: const EdgeInsets.symmetric(horizontal: 12),
+							margin: const EdgeInsets.symmetric(horizontal: 16),
 							child: Text(
 								note.title,
 								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
@@ -57,13 +51,16 @@ void generalSmallNoteSheet({
 							margin: const EdgeInsets.symmetric(horizontal: 12),
 							child: const Divider(),
 						),
-						// Sheet items
+
+						// Delete
 						ListTile(
-							leading: const Icon(Icons.delete),
-							title: const Text("Delete"),
+							leading: const Icon(
+								Icons.delete, color: Colors.red),
+							title: const Text("Delete",
+								style: TextStyle(color: Colors.red)),
 							onTap: (){
 								Navigator.pop(context); // close current 
-								Dialogs(context).askDialog(
+								Dialogs(context).ask(
 									title: "Delete",
 									content: "Did you want to delete this item?",
 									action: () async {
