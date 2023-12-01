@@ -46,7 +46,7 @@ class Note {
 	final String description;
 	final String content;
 	final DateTime lastEdit;
-	final bool isPinned;
+	late bool isPinned;
 	final NoteMode mode;
 
 	// Visuals
@@ -98,7 +98,7 @@ class SmallNote {
 	final String title;
 	final String description;
 	final DateTime lastEdit;
-	final bool isPinned;
+	late bool isPinned;
 	final NoteMode mode;
 
 	// Visuals

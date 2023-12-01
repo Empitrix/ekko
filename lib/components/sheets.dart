@@ -1,3 +1,4 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/database/database.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,23 @@ void generalSmallNoteSheet({
 										load(); // load again
 									}
 								);
+							}
+						),
+
+
+						ListTile(
+							// leading: Icon(note.isPinned ? Icons.push_pin : Icons.push_pin),
+							leading: Transform.rotate(
+								angle: note.isPinned ? getAngle(45) : 0,
+								child: const Icon(Icons.push_pin)
+							), 
+							title: Text(note.isPinned ? "Unpin" : "Pin"),
+							onTap: () async {
+								Navigator.pop(context);
+								Note rNote = await note.toRealNote();
+								rNote.isPinned = !rNote.isPinned;
+								await DB().updateNote(rNote);
+								load(); // load again
 							}
 						),
 

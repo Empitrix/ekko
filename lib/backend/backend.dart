@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:math' as math;
 
 
 String vStr(String input){
@@ -23,4 +24,6 @@ bool isDesktop(){
 	return true;
 }
 
-
+double getAngle(int d){
+	return (d / (180 / math.pi));
+}
