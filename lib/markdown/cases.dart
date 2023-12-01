@@ -31,6 +31,7 @@ List<Widget> applyRules({
 
 			// Initial for loop
 			inOrderColumn = false;
+			// inOrderColumnTween = false;
 
 			switch (matchingRule.tag) {
 				case 'markdown': {
@@ -47,7 +48,7 @@ List<Widget> applyRules({
 							recognizer: TapGestureRecognizer()..onTap = () async {
 								await launchThis(
 									context: context, url: matchedText);
-								debugPrint(matchedText); 
+								debugPrint("Opening: $matchedText"); 
 							},
 						)
 					);
@@ -164,7 +165,6 @@ List<Widget> applyRules({
 				nonMatchedText = nonMatchedText.replaceFirst("\n", "");
 				if(nonMatchedText.isEmpty) return "";
 			}
-			inOrderColumn = false;
 			spans.add(TextSpan(text: nonMatchedText, style: defaultStyle));
 			return nonMatchedText;
 		},

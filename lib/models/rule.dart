@@ -28,3 +28,44 @@ class HighlightRule {
 		required this.style
 	});
 }
+
+enum InnerMethod {
+	both,
+	right,
+	left
+}
+
+typedef InnerAction = String Function(String input, int n);
+
+class InnerHighlightRule extends HighlightRule {
+	// final InnerAction innerAction;
+	final int innerNum;
+	final InnerMethod innerMethod;
+
+	InnerHighlightRule({
+		required String tag,
+		RuleAction? acton,
+		required RegExp regex,
+		required TextStyle style,
+		// required this.innerAction,
+		required this.innerNum,
+		required this.innerMethod,
+	}): super(
+		style: style,
+		regex: regex,
+		tag: tag
+	);
+	
+	// String getMiddle(String txt, int n){
+	String getContext(String txt){
+		if(innerMethod == InnerMethod.right){
+			return txt.substring(innerNum, txt.length);
+		} else if(innerMethod == InnerMethod.left){
+			return txt.substring(0, txt.length - innerNum);
+		} else {
+			return txt.substring(innerNum, txt.length - innerNum);
+		}
+	}
+
+}
+

@@ -1,3 +1,4 @@
+import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
@@ -8,7 +9,7 @@ List<HighlightRule> allSyntaxRules({
 	required double textHeight,
 	required TextStyle defaultStyle,
 }){
-	return [
+	List<HighlightRule> rules = [
 		// Markdown
 		HighlightRule(
 			tag: "markdown",
@@ -21,7 +22,6 @@ List<HighlightRule> allSyntaxRules({
 		// URL
 		HighlightRule(
 			tag: "url",
-			action: null,
 			regex: RegExp(r'(https?://\S+)'),
 			style: const TextStyle(
 				color: Colors.blue,
@@ -33,7 +33,7 @@ List<HighlightRule> allSyntaxRules({
 		// Headlines
 		HighlightRule(
 			tag: "headline6",
-			action: null,
+			action: (_) => const SizedBox(),
 			regex: RegExp(r'^###### [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
@@ -43,7 +43,7 @@ List<HighlightRule> allSyntaxRules({
 		),
 		HighlightRule(
 			tag: "headline5",
-			action: null,
+			action: (_) => const SizedBox(),
 			regex: RegExp(r'^##### [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
@@ -53,7 +53,7 @@ List<HighlightRule> allSyntaxRules({
 		),
 		HighlightRule(
 			tag: "headline4",
-			action: null,
+			action: (_) => const SizedBox(),
 			regex: RegExp(r'^#### [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
@@ -63,7 +63,7 @@ List<HighlightRule> allSyntaxRules({
 		),
 		HighlightRule(
 			tag: "headline3",
-			action: null,
+			action: (_) => const SizedBox(),
 			regex: RegExp(r'^### [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
@@ -73,7 +73,7 @@ List<HighlightRule> allSyntaxRules({
 		),
 		HighlightRule(
 			tag: "headline2",
-			action: null,
+			action: (_) => const SizedBox(),
 			regex: RegExp(r'^## [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
@@ -83,7 +83,7 @@ List<HighlightRule> allSyntaxRules({
 		),
 		HighlightRule(
 			tag: "headline1",
-			action: null,
+			action: (_) => const SizedBox(),
 			regex: RegExp(r'^# [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
@@ -99,40 +99,6 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'^\s*---\s*$'),
 			style: const TextStyle()
 		),
-
-		// Italic & Bold
-		HighlightRule(
-			tag: "italic_bold",
-			action: (_) => const SizedBox(),
-			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontWeight: FontWeight.bold,
-				fontStyle: FontStyle.italic
-			)
-		),
-
-		// Bold
-		HighlightRule(
-			tag: "boldness",
-			action: (_) => const SizedBox(),
-			regex: RegExp(r'\*\*(.*?)\*\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontWeight: FontWeight.bold
-			)
-		),
-
-		// Italic
-		HighlightRule(
-			tag: "italic",
-			action: (_) => const SizedBox(),
-			regex: RegExp(r'\*(.*?)\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontStyle: FontStyle.italic
-			)
-		),
 		
 
 		// Sublist CheckedBox
@@ -143,7 +109,6 @@ List<HighlightRule> allSyntaxRules({
 					txt.trim().substring(0, 5).contains("x");
 				return onLeadingText(
 					leading: SizedBox(
-						// height: 20,
 						width: 15,
 						child: Transform.scale(
 							scale: 0.8,
@@ -165,23 +130,67 @@ List<HighlightRule> allSyntaxRules({
 			style: const TextStyle()
 		),
 
-
 		// Sublist - Item
 		HighlightRule(
 			tag: "item",
 			action: (txt) => onLeadingText(
 				leading: const Icon(Icons.circle, size: 10),
 				text: TextSpan(
-					text: txt.trim().substring(1),
-					style: defaultStyle
+					children: formattingTexts(
+						context: context,
+						content: txt.trim().substring(1),
+						defaultStyle: defaultStyle
+					)
 				)
+				// text: TextSpan(
+				// 	text: txt.trim().substring(1),
+				// 	style: defaultStyle
+				// )
 			),
 			regex: RegExp(r'^-\s.+$'),
 			style: const TextStyle()
 		),
+		
+
+
+		// Italic & Bold
+		HighlightRule(
+			tag: "italic_bold",
+			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
+			style: const TextStyle(
+				fontSize: 16,
+				fontWeight: FontWeight.bold,
+				fontStyle: FontStyle.italic
+			)
+		),
+
+		// Bold
+		HighlightRule(
+			tag: "boldness",
+			regex: RegExp(r'\*\*(.*?)\*\*'),
+			// regex: RegExp(r'\*\*(\w+)\*\*'),
+			style: const TextStyle(
+				fontSize: 16,
+				fontWeight: FontWeight.bold
+			)
+		),
+
+		// Italic
+		HighlightRule(
+			tag: "italic",
+			regex: RegExp(r'\*(.*?)\*'),
+			style: const TextStyle(
+				fontSize: 16,
+				fontStyle: FontStyle.italic
+			)
+		),
+		
+
 
 
 
 
 	];
+
+	return rules;
 }
