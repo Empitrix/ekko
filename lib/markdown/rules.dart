@@ -252,6 +252,15 @@ List<HighlightRule> allSyntaxRules({
 			)
 		),
 
+		HighlightRule(
+			tag: "strike",
+			regex: RegExp(r'~~.*~~'),
+			style: TextStyle(
+				fontSize: 16,
+				decorationColor: Theme.of(context).colorScheme.inverseSurface,
+				decoration: TextDecoration.lineThrough
+			),
+		),
 
 
 

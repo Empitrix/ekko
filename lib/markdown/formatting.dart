@@ -49,6 +49,18 @@ List<TextSpan> formattingTexts({
 				fontStyle: FontStyle.italic
 			).merge(mergeStyle),
 		),
+
+		InnerHighlightRule(
+			tag: "strike",
+			innerMethod: InnerMethod.both,
+			innerNum: 2,
+			regex: RegExp(r'~~.*~~'),
+			style: TextStyle(
+				fontSize: 16,
+				decoration: TextDecoration.lineThrough,
+				decorationColor: Theme.of(context).colorScheme.inverseSurface,
+			).merge(mergeStyle),
+		),
 	];
 
 	content.splitMapJoin(

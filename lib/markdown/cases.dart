@@ -162,6 +162,17 @@ List<Widget> applyRules({
 					widgetTree.add(matchingRule.action!(matchedText));
 					break;
 				}
+				
+
+				case 'strike': {
+					spans.add(
+						TextSpan(
+							text: matchedText.substring(2, matchedText.length - 2),
+							style: matchingRule.style
+						)
+					);
+					break;
+				}
 
 			}  // Switch
 			return matchedText;
