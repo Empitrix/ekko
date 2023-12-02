@@ -1,10 +1,13 @@
 import 'package:ekko/models/rule.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
 List<TextSpan> formattingTexts({
 	required BuildContext context,
 	required String content,
+	TextStyle? mergeStyle,
+	TapGestureRecognizer? recognizer,
 	required TextStyle defaultStyle}){
 
 	List<TextSpan> spans = [];
@@ -20,7 +23,7 @@ List<TextSpan> formattingTexts({
 				fontSize: 16,
 				fontWeight: FontWeight.bold,
 				fontStyle: FontStyle.italic
-			),
+			).merge(mergeStyle),
 		),
 	
 		// Bold
@@ -32,7 +35,7 @@ List<TextSpan> formattingTexts({
 			style: const TextStyle(
 				fontSize: 16,
 				fontWeight: FontWeight.bold
-			)
+			).merge(mergeStyle),
 		),
 	
 		// Italic
@@ -44,7 +47,7 @@ List<TextSpan> formattingTexts({
 			style: const TextStyle(
 				fontSize: 16,
 				fontStyle: FontStyle.italic
-			)
+			).merge(mergeStyle),
 		),
 	];
 
@@ -60,6 +63,7 @@ List<TextSpan> formattingTexts({
 			if(mRule.action == null){
 				spans.add(
 					TextSpan(
+						recognizer: recognizer,
 						text: mRule.getContext(mText),
 						style: mRule.style
 					)
@@ -71,7 +75,9 @@ List<TextSpan> formattingTexts({
 		onNonMatch: (nonMatchedText) {
 			spans.add(
 				TextSpan(
-					text: nonMatchedText, style: defaultStyle)
+					text: nonMatchedText,
+					recognizer: recognizer,
+					style: defaultStyle.merge(mergeStyle))
 			);
 			return nonMatchedText;
 		},

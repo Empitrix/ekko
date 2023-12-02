@@ -1,7 +1,9 @@
+import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 List<HighlightRule> allSyntaxRules({
@@ -18,6 +20,66 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'\s```([\s\S]*?)```\s'),
 			style: const TextStyle(color: Colors.cyan)
 		),
+
+
+		// Links
+		HighlightRule(
+			tag: "links",
+			action: (txt){
+				String name = txt.split("](")[0]
+					.substring(1).trim();
+				String link = txt.split("](")[1].trim();
+				link = link.substring(0, link.length - 1).trim();
+				
+				TextStyle linkStyle = const TextStyle(
+					fontSize: 16,
+					decoration: TextDecoration.underline,
+					decorationColor: Colors.blue,
+					color: Colors.blue,
+				);
+
+
+				TextSpan linkSpan = TextSpan(
+					children: formattingTexts(
+						context: context,
+						content: name,
+						recognizer: TapGestureRecognizer()..onTap = () async {
+							await launchThis(
+								context: context, url: link);
+							debugPrint("Opening: $link"); 
+						},
+						mergeStyle: linkStyle,
+						defaultStyle: defaultStyle,
+					),
+				);
+
+				return Row(
+					children: [
+						Expanded(
+							child: Text.rich(linkSpan)
+							// Text.rich(
+							// 	TextSpan(
+							// 		children: [linkSpan], 
+							// 		recognizer: TapGestureRecognizer()..onTap = () async {
+							// 			await launchThis(
+							// 				context: context, url: link);
+							// 			debugPrint("Opening: $link"); 
+							// 		},
+							// 	)
+							// )
+						)
+					],
+				);
+			},
+			regex: RegExp(r'^\[.*\]\(.*\)$'),
+			style: const TextStyle(
+				fontSize: 16,
+				decoration: TextDecoration.underline,
+				color: Colors.blue
+			)
+		),
+
+
 
 		// URL
 		HighlightRule(
@@ -189,7 +251,8 @@ List<HighlightRule> allSyntaxRules({
 				fontStyle: FontStyle.italic
 			)
 		),
-		
+
+
 
 
 

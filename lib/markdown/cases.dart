@@ -156,6 +156,12 @@ List<Widget> applyRules({
 					break;
 				}
 
+				case 'links': {
+					updateSpans();
+					inOrderColumn = true;
+					widgetTree.add(matchingRule.action!(matchedText));
+					break;
+				}
 
 			}  // Switch
 			return matchedText;
