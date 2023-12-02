@@ -133,21 +133,26 @@ List<HighlightRule> allSyntaxRules({
 		// Sublist - Item
 		HighlightRule(
 			tag: "item",
-			action: (txt) => onLeadingText(
-				leading: const Icon(Icons.circle, size: 10),
-				text: TextSpan(
-					children: formattingTexts(
-						context: context,
-						content: txt.trim().substring(1),
-						defaultStyle: defaultStyle
+			action: (txt){
+				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
+				return onLeadingText(
+					leading: Icon(
+						indentedLvl == 0 ? Icons.circle :
+						indentedLvl == 2 ? Icons.circle_outlined :
+						Icons.square,
+						size: 10),
+					spacing: (indentedLvl ~/ 2) * 20,
+					text: TextSpan(
+						children: formattingTexts(
+							context: context,
+							content: txt.trim().substring(1),
+							defaultStyle: defaultStyle
+						)
 					)
-				)
-				// text: TextSpan(
-				// 	text: txt.trim().substring(1),
-				// 	style: defaultStyle
-				// )
-			),
-			regex: RegExp(r'^-\s.+$'),
+				);
+			},
+			// regex: RegExp(r'^-\s.+$'),
+			regex: RegExp(r'^\s*-\s+.+$'),
 			style: const TextStyle()
 		),
 		
