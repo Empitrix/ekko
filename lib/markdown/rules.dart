@@ -171,13 +171,17 @@ List<HighlightRule> allSyntaxRules({
 					txt.trim().substring(0, 5).contains("x");
 				return onLeadingText(
 					leading: SizedBox(
-						width: 15,
+						// width: 15,
+						width: 18,
+						height: 0,
 						child: Transform.scale(
 							scale: 0.8,
+							// scale: 1,
 							child: IgnorePointer(
 								child: Checkbox(
 									value: isChecked,
-									onChanged: (_){} 
+									// onChanged: (_){} 
+									onChanged: null
 								),
 							),
 						) ,
