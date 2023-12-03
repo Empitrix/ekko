@@ -146,16 +146,13 @@ class MarkdownWidget extends StatelessWidget {
 					mainAxisSize: MainAxisSize.min,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: [
-						Scrollbar(
+						SingleChildScrollView(
 							controller: controller,
-							child: SingleChildScrollView(
-								controller: controller,
-								scrollDirection: Axis.horizontal,
-								child: Column(
-									children: [
-										Text.rich(highlightView().getSpan(style: markdownStyle()))
-									],
-								),
+							scrollDirection: Axis.horizontal,
+							child: Column(
+								children: [
+									Text.rich(highlightView().getSpan(style: markdownStyle()))
+								],
 							),
 						)
 					],

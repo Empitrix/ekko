@@ -33,7 +33,7 @@ List<HighlightRule> allSyntaxRules({
 				
 				TextStyle linkStyle = const TextStyle(
 					fontSize: 16,
-					decoration: TextDecoration.underline,
+					// decoration: TextDecoration.underline,
 					decorationColor: Colors.blue,
 					color: Colors.blue,
 				);
@@ -58,14 +58,14 @@ List<HighlightRule> allSyntaxRules({
 						Expanded(
 							child: Text.rich(linkSpan)
 							// Text.rich(
-							// 	TextSpan(
-							// 		children: [linkSpan], 
-							// 		recognizer: TapGestureRecognizer()..onTap = () async {
-							// 			await launchThis(
-							// 				context: context, url: link);
-							// 			debugPrint("Opening: $link"); 
-							// 		},
-							// 	)
+							//	TextSpan(
+							//		children: [linkSpan], 
+							//		recognizer: TapGestureRecognizer()..onTap = () async {
+							//			await launchThis(
+							//				context: context, url: link);
+							//			debugPrint("Opening: $link"); 
+							//		},
+							//	)
 							// )
 						)
 					],
@@ -258,12 +258,40 @@ List<HighlightRule> allSyntaxRules({
 			style: TextStyle(
 				fontSize: 16,
 				decorationColor: Theme.of(context).colorScheme.inverseSurface,
+				decorationStyle: TextDecorationStyle.solid,
 				decoration: TextDecoration.lineThrough
 			),
 		),
 
-
-
+		HighlightRule(
+			tag: "backqoute",
+			action: (txt){
+				txt = txt.trim().substring(1);
+				return Column(
+					mainAxisSize: MainAxisSize.min,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						Row(
+							children: [
+								const SizedBox(
+									height: 30,
+									child: VerticalDivider()),
+								const SizedBox(width: 10),
+								Expanded( child: SingleChildScrollView(
+									controller: ScrollController(),
+									scrollDirection: Axis.horizontal,
+									child: Column(
+										children: [ Text(txt) ],
+									),
+								))
+							],
+						),
+					],
+				);
+			},
+			regex: RegExp(r'^\s*>\s+.+$'),
+			style: const TextStyle()
+		),
 
 
 

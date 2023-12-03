@@ -162,7 +162,14 @@ List<Widget> applyRules({
 					widgetTree.add(matchingRule.action!(matchedText));
 					break;
 				}
-				
+
+
+				case 'backqoute': {
+					updateSpans();
+					inOrderColumn = true;
+					widgetTree.add(matchingRule.action!(matchedText));
+					break;
+				}
 
 				case 'strike': {
 					spans.add(
