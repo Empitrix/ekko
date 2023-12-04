@@ -201,12 +201,16 @@ List<HighlightRule> allSyntaxRules({
 			tag: "item",
 			action: (txt){
 				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
+				// // int indentedLvl = (tillFirstLetter(txt) / 2).ceil();
+				// int indentedLvl = (tillFirstLetter(txt) / 2).toInt();
+				// print(indentedLvl);
 				return onLeadingText(
 					leading: Icon(
 						indentedLvl == 0 ? Icons.circle :
 						indentedLvl == 2 ? Icons.circle_outlined :
 						Icons.square,
 						size: 10),
+					// spacing: (indentedLvl ~/ 2) * 20,
 					spacing: (indentedLvl ~/ 2) * 20,
 					text: TextSpan(
 						children: formattingTexts(

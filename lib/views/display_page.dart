@@ -32,7 +32,8 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	// Floating Action Button
 	ScrollController scrollCtrl = ScrollController();
 	GenAnimation? floatingButtonAnim;
-	GenAnimation? appbarHideAnimation;
+	
+	// GenAnimation? appbarHideAnimation;
 
 	void _backToPreviousPage(){
 		widget.loadAll();
@@ -42,21 +43,21 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	void initAnimations(){
 		floatingButtonAnim = generateLinearAnimation(
 			ticket: this, initialValue: 1, durations: [1000]);
-		appbarHideAnimation = generateLinearAnimation(
-			ticket: this, initialValue: 56, durations: [100], range: {0, 56});
+		// appbarHideAnimation = generateLinearAnimation(
+		// 	ticket: this, initialValue: 56, durations: [100], range: {0, 56});
 	}
 
-	void initListeners(){
-		double lastOffest = 0.0;
-		scrollCtrl.addListener(() {
-			if(scrollCtrl.offset > lastOffest){
-				appbarHideAnimation!.controller.reverse();
-			} else {
-				appbarHideAnimation!.controller.forward();
-			}
-			lastOffest = scrollCtrl.offset;
-		});
-	}
+	// void initListeners(){
+	// 	double lastOffest = 0.0;
+	// 	scrollCtrl.addListener(() {
+	// 		if(scrollCtrl.offset > lastOffest){
+	// 			appbarHideAnimation!.controller.reverse();
+	// 		} else {
+	// 			appbarHideAnimation!.controller.forward();
+	// 		}
+	// 		lastOffest = scrollCtrl.offset;
+	// 	});
+	// }
 
 
 	Future<void> loadAll([int? id]) async {
@@ -77,7 +78,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	void initState() {
 		// Load async
 		initAnimations();
-		initListeners();
+		// initListeners();
 		loadAll();
 		super.initState();
 	}
@@ -88,9 +89,9 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 		if(floatingButtonAnim != null){
 			floatingButtonAnim!.controller.dispose();
 		}
-		if(appbarHideAnimation != null){
-			appbarHideAnimation!.controller.dispose();
-		}
+		// if(appbarHideAnimation != null){
+		// 	appbarHideAnimation!.controller.dispose();
+		// }
 		super.dispose();
 	}
 
@@ -128,7 +129,77 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 				//	),
 				// ),
 
-				body: Builder(
+
+				body: NestedScrollView(
+					// floatHeaderSlivers: true,
+					physics: const ScrollPhysics(),
+					headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
+						return <Widget>[
+							SliverAppBar(
+								// floating: false,
+								// pinned: false,
+								title: const Text("Display"),
+								forceElevated: false,
+								leading: IconButton(
+									icon: const Icon(Icons.close),
+									onPressed: (){
+										_backToPreviousPage();
+									},
+								),
+
+							)
+						];
+					},
+					body: Builder(
+						builder: (context){
+							if(!isLoaded){
+								return const Center(
+									child: CircularProgressIndicator(),
+								);
+							}
+
+
+							return SelectionArea(
+								child: ListView(
+									controller: scrollCtrl,
+									padding: const EdgeInsets.only(
+										right: 12, left: 12,
+										top: 12, bottom: 85  // :)
+									),
+									children: [
+										/* Title */
+										Text(
+											note!.title,
+											style: const TextStyle(
+												fontSize: 25,
+												fontWeight: FontWeight.w500,
+												height: 0
+											),
+										),
+										const SizedBox(height: 5),
+										/* Description */
+										Text(
+											note!.description,
+											style: TextStyle(
+												fontSize: 20,
+												color: Theme.of(context)
+													.colorScheme.inverseSurface
+													.withOpacity(0.73),
+												fontWeight: FontWeight.w500,
+												height: 0
+											),
+										),
+										const SizedBox(height: 10),
+										MDGenerator(content: note!.content, textHeight: 1.4)
+									],
+								),
+							);
+
+						},
+					)
+				),
+
+				/* body: Builder(
 					builder: (BuildContext context){
 						if(!isLoaded){
 							return const Center(
@@ -197,7 +268,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 						);
 
 					},
-				)
+				) */
 			),
 		);
 	}
