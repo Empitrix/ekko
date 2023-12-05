@@ -1,4 +1,5 @@
 import 'package:ekko/backend/launcher.dart';
+import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -157,9 +158,33 @@ List<Widget> applyRules({
 				}
 
 				case 'links': {
-					updateSpans();
-					inOrderColumn = true;
-					widgetTree.add(matchingRule.action!(matchedText));
+					String name = matchedText.split("](")[0]
+						.substring(1).trim();
+					String link = matchedText.split("](")[1].trim();
+					link = link.substring(0, link.length - 1).trim();
+					
+					TextStyle linkStyle = const TextStyle(
+						fontSize: 16,
+						decorationColor: Colors.blue,
+						color: Colors.blue,
+					);
+					TextSpan linkSpan = TextSpan(
+						children: formattingTexts(
+							context: context,
+							content: name,
+							recognizer: TapGestureRecognizer()..onTap = () async {
+								await launchThis(
+									context: context, url: link);
+								debugPrint("Opening: $link"); 
+							},
+							mergeStyle: linkStyle,
+							defaultStyle: defaultStyle,
+						),
+					);
+					spans.add(linkSpan);
+					// updateSpans();
+					// inOrderColumn = true;
+					// widgetTree.add(matchingRule.action!(matchedText));
 					break;
 				}
 

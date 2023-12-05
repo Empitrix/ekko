@@ -32,15 +32,19 @@ class HighlightRule {
 enum InnerMethod {
 	both,
 	right,
-	left
+	left,
+	custom
 }
 
 typedef InnerAction = String Function(String input, int n);
+
+typedef InnerSpan = TextSpan Function(String input);
 
 class InnerHighlightRule extends HighlightRule {
 	// final InnerAction innerAction;
 	final int innerNum;
 	final InnerMethod innerMethod;
+	final InnerSpan? innerSpan;
 
 	InnerHighlightRule({
 		required String tag,
@@ -50,6 +54,7 @@ class InnerHighlightRule extends HighlightRule {
 		// required this.innerAction,
 		required this.innerNum,
 		required this.innerMethod,
+		this.innerSpan
 	}): super(
 		style: style,
 		regex: regex,
@@ -58,6 +63,8 @@ class InnerHighlightRule extends HighlightRule {
 	
 	// String getMiddle(String txt, int n){
 	String getContext(String txt){
+		if(innerMethod == InnerMethod.custom){ return ""; }
+
 		if(innerMethod == InnerMethod.right){
 			return txt.substring(innerNum, txt.length);
 		} else if(innerMethod == InnerMethod.left){
@@ -67,5 +74,12 @@ class InnerHighlightRule extends HighlightRule {
 		}
 	}
 
+
+	TextSpan getSpan(String txt){
+		if(innerMethod == InnerMethod.custom){
+			return innerSpan!(txt);
+		}
+		return const TextSpan();
+	}
 }
 
