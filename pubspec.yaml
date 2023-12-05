@@ -35,3 +35,6 @@ flutter:
     - family: SauceCodeProNerdFont
       fonts:
         - asset: assets\fonts\SauceCodeProNerdFont-Regular.ttf
+    - family: RobotoMono
+      fonts:
+        - asset: assets\fonts\RobotoMono-Regular.ttf

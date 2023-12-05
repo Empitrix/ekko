@@ -25,7 +25,8 @@ class TitleTextField extends StatelessWidget {
 				Theme.of(context).primaryTextTheme.headlineMedium!,
 				Theme.of(context).primaryTextTheme.headlineSmall!,
 			][index].copyWith(
-				color: Theme.of(context).colorScheme.inverseSurface
+				color: Theme.of(context).colorScheme.inverseSurface,
+				// fontFamily: "RobotoMono"
 			);
 		}
 		// Convert SizedBox to Container just in case of padding/margin
@@ -163,7 +164,9 @@ class ContentTextFiled extends StatelessWidget {
 							maxLines: null,
 							style: Theme.of(context).primaryTextTheme.bodyLarge!
 								.copyWith(
-									color: Theme.of(context).colorScheme.inverseSurface),
+									color: Theme.of(context).colorScheme.inverseSurface,
+									fontFamily: "RobotoMono"
+								),
 							// onSubmitted: (_) => onSubmitted(),
 							decoration: const InputDecoration(
 								border: InputBorder.none,
