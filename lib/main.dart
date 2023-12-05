@@ -4,13 +4,29 @@ import 'package:ekko/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+// import 'package:window_manager/window_manager.dart';
 
 
 Future<void> main() async {
 	if(isDesktop()){
 		WidgetsFlutterBinding.ensureInitialized();
-		await Window.initialize();
-	}
+		await Window.initialize();  // Acrylic Window
+		// await windowManager.ensureInitialized();  // Window manager
+
+		// WindowOptions windowOptions = WindowOptions(
+		// 	// size: const Size(800, 600),
+		// 	size: const Size(600, 500),
+		// 	center: true,
+		// 	backgroundColor: Colors.transparent.withOpacity(1),
+		// 	// skipTaskbar: true,
+		// 	titleBarStyle: TitleBarStyle.normal,
+		// );
+		// windowManager.waitUntilReadyToShow(windowOptions, () async {
+		// 	await windowManager.show();
+		// 	await windowManager.focus();
+		// });
+
+	}  // isDesktop
 	runApp(const EkkoApp());
 }
 
