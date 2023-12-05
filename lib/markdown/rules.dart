@@ -139,7 +139,7 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'^## [\s\S]*?$'),
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.w500,
+				fontWeight: FontWeight.bold,
 				fontSize: 24
 			),
 		),

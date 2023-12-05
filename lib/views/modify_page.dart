@@ -166,6 +166,7 @@ class ModifyPageState extends State<ModifyPage> {
 				_backClose();
 			},
 			child: Scaffold(
+				resizeToAvoidBottomInset: false,
 				appBar: AppBar(
 					title: const Text("Modify"),
 					leading: IconButton(
@@ -192,12 +193,14 @@ class ModifyPageState extends State<ModifyPage> {
 							autofocus: widget.note == null,
 							nextFocus: () => descriptionF.requestFocus(),
 						),
+						// const SizedBox(height: 20),
 						DescriptionTextFiled(
 							controller: description,
 							focusNode: descriptionF,
 							previousFocus: () => titleF.requestFocus(),
 							nextFocus: () => contentF.requestFocus()
 						),
+						const SizedBox(height: 20),
 						ContentTextFiled(
 							controller: content,
 							focusNode: contentF,

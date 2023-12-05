@@ -113,7 +113,7 @@ class DescriptionTextFiled extends StatelessWidget {
 				}
 			},
 			child: SizedBox(
-				height: 30,
+				// height: 30,
 				child: TextField(
 					controller: controller,
 					focusNode: focusNode,
@@ -177,7 +177,8 @@ class ContentTextFiled extends StatelessWidget {
 						MouseRegion(
 							cursor: SystemMouseCursors.text,
 							child: SizedBox(
-								height: MediaQuery.of(context).size.height - 125,
+								// height: MediaQuery.of(context).size.height - 125,
+								height: MediaQuery.of(context).size.height - 200,
 								child: GestureDetector(
 									onTap: (){
 										controller.value = TextEditingValue(

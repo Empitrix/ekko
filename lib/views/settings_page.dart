@@ -65,8 +65,8 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 
 						SwitchTile(
 							leading: const Icon(Icons.dark_mode),
-							title: const Text("Dark Mode",
-								style: TextStyle(fontWeight: FontWeight.bold)),
+								// style: TextStyle(fontWeight: FontWeight.bold)
+							title: const Text("Dark Mode"),
 							value: dMode,
 							onChange: (bool value) async {
 								setState(() { dMode = value; });

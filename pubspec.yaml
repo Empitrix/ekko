@@ -19,6 +19,7 @@ dependencies:
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0+3
   url_launcher: ^6.2.1
+  window_manager: ^0.3.7
 
 dev_dependencies:
   flutter_test:
