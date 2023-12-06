@@ -14,57 +14,7 @@ List<TextSpan> formattingTexts({
 	List<TextSpan> spans = [];
 
 	List<InnerHighlightRule> innerRules = [
-		// Italic & Bold
-		InnerHighlightRule(
-			tag: "italic_bold",
-			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
-			innerMethod: InnerMethod.both,
-			innerNum: 3,
-			style: const TextStyle(
-				fontSize: 16,
-				fontWeight: FontWeight.bold,
-				fontStyle: FontStyle.italic
-			).merge(mergeStyle),
-		),
-	
-		// Bold
-		InnerHighlightRule(
-			tag: "boldness",
-			innerMethod: InnerMethod.both,
-			innerNum: 2,
-			regex: RegExp(r'\*\*(.*?)\*\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontWeight: FontWeight.bold
-			).merge(mergeStyle),
-		),
-	
-		// Italic
-		InnerHighlightRule(
-			tag: "italic",
-			innerMethod: InnerMethod.both,
-			innerNum: 1,
-			regex: RegExp(r'\*(.*?)\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontStyle: FontStyle.italic
-			).merge(mergeStyle),
-		),
-
-		InnerHighlightRule(
-			tag: "strike",
-			innerMethod: InnerMethod.both,
-			innerNum: 2,
-			regex: RegExp(r'~~.*~~'),
-			style: TextStyle(
-				fontSize: 16,
-				decoration: TextDecoration.lineThrough,
-				decorationColor: Theme.of(context).colorScheme.inverseSurface,
-			).merge(mergeStyle),
-		),
-
-
-
+		// Links
 		InnerHighlightRule(
 			tag: "links",
 			innerNum: 0,
@@ -105,8 +55,54 @@ List<TextSpan> formattingTexts({
 			)
 		),
 
+		// Italic & Bold
+		InnerHighlightRule(
+			tag: "italic_bold",
+			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
+			innerMethod: InnerMethod.both,
+			innerNum: 3,
+			style: const TextStyle(
+				fontSize: 16,
+				fontWeight: FontWeight.bold,
+				fontStyle: FontStyle.italic
+			).merge(mergeStyle),
+		),
 
+		// Bold
+		InnerHighlightRule(
+			tag: "boldness",
+			innerMethod: InnerMethod.both,
+			innerNum: 2,
+			regex: RegExp(r'\*\*(.*?)\*\*'),
+			style: const TextStyle(
+				fontSize: 16,
+				fontWeight: FontWeight.bold
+			).merge(mergeStyle),
+		),
 
+		// Italic
+		InnerHighlightRule(
+			tag: "italic",
+			innerMethod: InnerMethod.both,
+			innerNum: 1,
+			regex: RegExp(r'\*(.*?)\*'),
+			style: const TextStyle(
+				fontSize: 16,
+				fontStyle: FontStyle.italic
+			).merge(mergeStyle),
+		),
+
+		InnerHighlightRule(
+			tag: "strike",
+			innerMethod: InnerMethod.both,
+			innerNum: 2,
+			regex: RegExp(r'~~.*~~'),
+			style: TextStyle(
+				fontSize: 16,
+				decoration: TextDecoration.lineThrough,
+				decorationColor: Theme.of(context).colorScheme.inverseSurface,
+			).merge(mergeStyle),
+		),
 
 	];
 
