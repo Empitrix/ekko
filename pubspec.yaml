@@ -16,6 +16,7 @@ dependencies:
   path: ^1.8.3
   path_provider: ^2.1.1
   provider: ^6.0.5
+  regex_pattern_text_field: ^1.0.7
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0+3
   url_launcher: ^6.2.1

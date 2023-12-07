@@ -1,12 +1,14 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/custom_buttons.dart';
+import 'package:ekko/components/editing_controller.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
+import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
@@ -29,11 +31,13 @@ class ModifyPageState extends State<ModifyPage> {
 	FocusNode titleF = FocusNode();
 	TextEditingController description = TextEditingController();
 	FocusNode descriptionF = FocusNode();
-	TextEditingController content = TextEditingController();
+	// TextEditingController? content;
+	RegexPatternTextEditingController content = RegexPatternTextEditingController();
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;
-	bool isLoaded = true;  // For imported notes
+	// bool isLoaded = true;  // For imported notes
+	bool isLoaded = false;  // For imported notes
 
 
 	void _backClose({bool isNew = false}){
@@ -61,7 +65,7 @@ class ModifyPageState extends State<ModifyPage> {
 			id: widget.note == null ? -1 : widget.note!.id,
 			title: title.text,
 			description: description.text,
-			content: content.text,
+			content: content!.text,
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
 			mode: mode
@@ -114,11 +118,20 @@ class ModifyPageState extends State<ModifyPage> {
 	Future<void> loadTheNote() async {
 		setState(() { isLoaded = false; });
 		
+		// await Future.microtask((){
+		// 	content = getContentTextEditingController(context);
+		// });
+
+		if(widget.note == null){
+			setState(() { isLoaded = true; });
+			return;
+		}
+
 		Note note = await widget.note!.toRealNote();
 		
 		title.text = note.title;
 		description.text = note.description;
-		content.text = note.content;
+		content!.text = note.content;
 		mode = note.mode;
 		isPinned = note.isPinned;
 		
@@ -130,7 +143,7 @@ class ModifyPageState extends State<ModifyPage> {
 			setState(() { isLoaded = true; });
 		}
 
-		/*
+		/*!
 		ReceivePort getPort = (await loadModifyWithIsolates(note: widget.note!));
 		getPort.listen((note) async {
 			if(note is Note){
@@ -151,9 +164,7 @@ class ModifyPageState extends State<ModifyPage> {
 
 	@override
 	void initState() {
-		if(widget.note != null){
-			loadTheNote();
-		}  // EDIT
+		loadTheNote();
 		super.initState();
 	}
 
@@ -184,32 +195,68 @@ class ModifyPageState extends State<ModifyPage> {
 						)
 					],
 				),
-				body: isLoaded ? ListView(
-					padding: const EdgeInsets.all(12),
-					children: [
-						TitleTextField(
-							controller: title,
-							focusNode: titleF,
-							autofocus: widget.note == null,
-							nextFocus: () => descriptionF.requestFocus(),
-						),
-						// const SizedBox(height: 20),
-						DescriptionTextFiled(
-							controller: description,
-							focusNode: descriptionF,
-							previousFocus: () => titleF.requestFocus(),
-							nextFocus: () => contentF.requestFocus()
-						),
-						const SizedBox(height: 20),
-						ContentTextFiled(
-							controller: content,
-							focusNode: contentF,
-							previousFocus: () => descriptionF.requestFocus()
-						)
-					],
-				) : const Center(
-					child: CircularProgressIndicator(),
+				body: Builder(
+					builder: (BuildContext context){
+
+						if(!isLoaded){
+							return const Center(
+								child: CircularProgressIndicator(),
+							);
+						}
+
+						return ListView(
+							padding: const EdgeInsets.all(12),
+							children: [
+								TitleTextField(
+									controller: title,
+									focusNode: titleF,
+									autofocus: widget.note == null,
+									nextFocus: () => descriptionF.requestFocus(),
+								),
+								// const SizedBox(height: 20),
+								DescriptionTextFiled(
+									controller: description,
+									focusNode: descriptionF,
+									previousFocus: () => titleF.requestFocus(),
+									nextFocus: () => contentF.requestFocus()
+								),
+								const SizedBox(height: 20),
+								ContentTextFiled(
+									controller: content!,
+									focusNode: contentF,
+									previousFocus: () => descriptionF.requestFocus()
+								)
+							],
+						);
+
+					}
 				)
+			// 	body: isLoaded ? ListView(
+			// 		padding: const EdgeInsets.all(12),
+			// 		children: [
+			// 			TitleTextField(
+			// 				controller: title,
+			// 				focusNode: titleF,
+			// 				autofocus: widget.note == null,
+			// 				nextFocus: () => descriptionF.requestFocus(),
+			// 			),
+			// 			// const SizedBox(height: 20),
+			// 			DescriptionTextFiled(
+			// 				controller: description,
+			// 				focusNode: descriptionF,
+			// 				previousFocus: () => titleF.requestFocus(),
+			// 				nextFocus: () => contentF.requestFocus()
+			// 			),
+			// 			const SizedBox(height: 20),
+			// 			ContentTextFiled(
+			// 				controller: content!,
+			// 				focusNode: contentF,
+			// 				previousFocus: () => descriptionF.requestFocus()
+			// 			)
+			// 		],
+			// 	) : const Center(
+			// 		child: CircularProgressIndicator(),
+			// 	)
 			),
 		);
 	}

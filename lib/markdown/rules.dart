@@ -1,3 +1,4 @@
+import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/parsers.dart';
@@ -6,8 +7,6 @@ import 'package:flutter/material.dart';
 
 List<HighlightRule> allSyntaxRules({
 	required BuildContext context,
-	required double textHeight,
-	required TextStyle defaultStyle,
 }){
 	List<HighlightRule> rules = [
 		// Markdown
@@ -16,7 +15,7 @@ List<HighlightRule> allSyntaxRules({
 			action: (String text) => MarkdownWidget(
 				content: text, height: textHeight),
 			regex: RegExp(r'\s```([\s\S]*?)```\s'),
-			style: const TextStyle(color: Colors.cyan)
+			style: const TextStyle(color: Colors.teal)
 		),
 
 

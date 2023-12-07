@@ -1,3 +1,4 @@
+import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/models/rule.dart';
@@ -6,11 +7,9 @@ import 'package:flutter/material.dart';
 
 class MDGenerator extends StatelessWidget {
 	final String content;
-	final double textHeight;
 	const MDGenerator({
 		super.key,
 		required this.content,
-		this.textHeight = 0.0  // 1.5
 	});
 
 	@override
@@ -18,17 +17,9 @@ class MDGenerator extends StatelessWidget {
 
 		List<Widget> widgetTree = [];
 
-		TextStyle defaultStyle = TextStyle(
-			fontSize: 16,
-			fontWeight: FontWeight.w500,
-			height: textHeight
-		);
-
 		// Load highlight rules
 		List<HighlightRule> rules = allSyntaxRules(
 			context: context,
-			textHeight: textHeight,
-			defaultStyle: defaultStyle
 		);
 
 		// Apply rules and add to widgetTree

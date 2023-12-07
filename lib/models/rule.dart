@@ -1,4 +1,6 @@
+import 'package:ekko/components/editing_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:regex_pattern_text_field/models/regex_pattern_text_style.dart';
 
 // class WidgetBox {
 // 	final bool isRenderable;
@@ -27,6 +29,13 @@ class HighlightRule {
 		required this.regex,
 		required this.style
 	});
+	
+	TextPartStyleDefinition getDefinition(){
+		return TextPartStyleDefinition(pattern: regex.pattern, style: style);
+	}
+	RegexPatternTextStyle getTextStyle(){
+		return RegexPatternTextStyle(regexPattern: regex.pattern, textStyle: style);
+	}
 }
 
 enum InnerMethod {

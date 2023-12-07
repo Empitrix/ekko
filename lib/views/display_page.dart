@@ -156,7 +156,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 													),
 												),
 												const SizedBox(height: 10),
-												MDGenerator(content: note!.content, textHeight: 1.4)
+												MDGenerator(content: note!.content)
 											],
 										),
 									);

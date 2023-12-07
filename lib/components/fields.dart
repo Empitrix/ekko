@@ -1,5 +1,8 @@
+import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/models/rule.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
+import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
 
 class TitleTextField extends StatelessWidget {
 	final TextEditingController controller;
@@ -133,7 +136,8 @@ class DescriptionTextFiled extends StatelessWidget {
 
 
 class ContentTextFiled extends StatelessWidget {
-	final TextEditingController controller;
+	// final TextEditingController controller;
+	final RegexPatternTextEditingController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
 	const ContentTextFiled({
@@ -158,8 +162,14 @@ class ContentTextFiled extends StatelessWidget {
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: [
-						TextField(
-							controller: controller,
+						// TextField(
+						RegexPatternTextField(
+						defaultRegexPatternStyles: false,
+							// controller: controller,
+							regexPatternStyles: [
+								for(HighlightRule rule in allSyntaxRules(context: context)) rule.getTextStyle()
+							],
+							regexPatternController: controller,
 							focusNode: focusNode,
 							maxLines: null,
 							style: Theme.of(context).primaryTextTheme.bodyLarge!

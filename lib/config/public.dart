@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 // Will update when app started
 String dbPath = "";
 // Dark mode
@@ -10,5 +12,15 @@ bool wrapCodeMode = false;
 int waitForLoading = 420;
 int waitLoadingSize = 300; // ms
 
+double textHeight = 1.4;
+
+TextStyle defaultStyle = TextStyle(
+	fontSize: 16,
+	// fontSize: 16 * 1.5,
+	// shadows: const [BoxShadow(offset: Offset(1, 1), blurRadius: 2)],
+	// shadows: const [BoxShadow(offset: Offset(0.5, 0.5), blurRadius: 100)],
+	fontWeight: FontWeight.w500,
+	height: textHeight
+);
 // // Acyrlic Opacity
 // double acrylicOpacity = 0.5;
