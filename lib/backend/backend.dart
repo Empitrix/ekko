@@ -18,9 +18,16 @@ class TxtCtrl{
 }
 
 
-bool isDesktop(){
+bool isDesktop([List<String>? platforms]){
 	if(Platform.isAndroid){ return false; }
 	if(Platform.isIOS){ return false; }
+	if(platforms != null){
+		for(String p in platforms){
+			if(p == "linux"){ if(Platform.isLinux){ return false; } }
+			if(p == "windows"){ if(Platform.isWindows){ return false; } }
+			if(p == "macos"){ if(Platform.isMacOS){ return false; } }
+		}
+	}
 	return true;
 }
 

@@ -76,7 +76,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							}
 						), // Dark mode
 
-						if(isDesktop()) SwitchTile(
+						if(isDesktop(["linux"])) SwitchTile(
 							leading: const Icon(Icons.window),
 							title: const Text("Acrylic Mode",
 								style: TextStyle(fontWeight: FontWeight.bold)),
