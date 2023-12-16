@@ -87,7 +87,7 @@ List<HighlightRule> allSyntaxRules({
 			tag: "divider",
 			action: (_) => const Divider(height: 1),
 			regex: RegExp(r'^\s*---\s*$'),
-			style: const TextStyle()
+			style: const TextStyle(color: Colors.red)
 		),
 		
 
@@ -121,7 +121,7 @@ List<HighlightRule> allSyntaxRules({
 				);
 			},
 			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
-			style: const TextStyle()
+			style: const TextStyle(color: Colors.indigoAccent)
 		),
 
 		// Sublist - Item
@@ -151,7 +151,7 @@ List<HighlightRule> allSyntaxRules({
 			},
 			// regex: RegExp(r'^-\s.+$'),
 			regex: RegExp(r'^\s*-\s+.+$'),
-			style: const TextStyle()
+			style: const TextStyle(color: Colors.deepOrange)
 		),
 		
 
@@ -251,7 +251,7 @@ List<HighlightRule> allSyntaxRules({
 				);
 			},
 			regex: RegExp(r'^\s*>\s+.+$'),
-			style: const TextStyle()
+			style: const TextStyle(fontStyle: FontStyle.italic)
 		),
 
 
