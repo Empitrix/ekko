@@ -212,7 +212,10 @@ List<Widget> applyRules({
 		onNonMatch: (nonMatchedText) {
 			if(inOrderColumn){
 				nonMatchedText = nonMatchedText.replaceFirst("\n", "");
-				if(nonMatchedText.isEmpty) return "";
+				// if(nonMatchedText.isEmpty) return "";
+				TextSpan endLine = const TextSpan(text: "\u000A", style:TextStyle(fontSize: 1.44763171673));
+				// TextSpan endLine = const TextSpan(text: "\u000A", style:TextStyle(fontSize: 0.44763171673));
+				spans.add(endLine);
 			}
 			spans.add(TextSpan(text: nonMatchedText, style: defaultStyle));
 			return nonMatchedText;
