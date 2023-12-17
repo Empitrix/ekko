@@ -1,7 +1,4 @@
 // SOURCE: https://www.flutterclutter.dev/flutter/tutorials/styling-parts-of-a-textfield/2021/101326/
-
-import 'package:ekko/markdown/rules.dart';
-import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 
 class TextPartStyleDefinition {

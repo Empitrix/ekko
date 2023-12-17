@@ -30,7 +30,7 @@ AppBar customSearchBar({
 	});
 
 
-	Future<void> __toggle() async {
+	Future<void> toggle() async {
 		if(!textNotifier.value){
 			controller.text = "";
 			onChange(controller.text);
@@ -74,20 +74,10 @@ AppBar customSearchBar({
 							borderRadius: BorderRadius.circular(5),
 							color: Theme.of(context).scaffoldBackgroundColor.aae(context)
 						),
-						// child: TextField(
-						// 	focusNode: focus,
-						// 	controller: controller,
-						// 	onChanged: (value) => onChange(value),
-						// 	decoration: const InputDecoration(
-						// 		border: InputBorder.none,
-						// 		hintText: "Search..."
-						// 	),
-						// ),
 						child: CallbackShortcuts(
 								bindings: <ShortcutActivator, VoidCallback>{
 									const SingleActivator(LogicalKeyboardKey.keyF, control: true): () async {
-										await __toggle();
-										// debugPrint("Awesome");
+										await toggle();
 								},
 							},
 							child: Focus(
@@ -119,54 +109,6 @@ AppBar customSearchBar({
 			],
 		),
 		actions: [
-			// CallbackShortcuts(
-			// 	bindings: <ShortcutActivator, VoidCallback>{
-			// 		const SingleActivator(LogicalKeyboardKey.keyF, control: true): () {
-			// 		},
-			// 	},
-			// 	child: Focus(
-			// 		autofocus: true,
-			// 		child: Container(
-			// 			margin: const EdgeInsets.all(8),
-			// 			child: ValueListenableBuilder(
-			// 				valueListenable: openNotifier,
-			// 				builder: (_, isOpenV, __){
-			// 					bool isOpen = isOpenV == 1;
-			// 					return ValueListenableBuilder(
-			// 						valueListenable: textNotifier,
-			// 						builder: (_, isEmpty, __){
-			// 							return IconButton(
-			// 								icon: Icon(
-			// 									isOpen ?
-			// 									isEmpty ? Icons.search :
-			// 									Icons.close :
-			// 									Icons.search
-			// 								),
-			// 								onPressed: () async {
-			// 									await __toggle();
-			// 									// if(!isEmpty){
-			// 									// 	controller.text = "";
-			// 									// 	onChange(controller.text);
-			// 									// 	return;
-			// 									// }
-			// 									// if(searchAnim.animation.value == 1){
-			// 									// 	await searchAnim.controller.reverse();
-			// 									// 	onClose();
-			// 									// }else{
-			// 									// 	await searchAnim.controller.forward();
-			// 									// 	onOpen();
-			// 									// }
-			// 								}
-			// 							);
-			// 						}
-			// 					);
-			// 				},
-			// 			),
-			// 		)
-			// 	)
-			// ),
-
-
 			Container(
 				margin: const EdgeInsets.all(8),
 				child: ValueListenableBuilder(
@@ -205,7 +147,7 @@ AppBar customSearchBar({
 					},
 				),
 			)
-
 		],
 	);
 }
+

@@ -1,7 +1,6 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/custom_buttons.dart';
-import 'package:ekko/components/editing_controller.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
@@ -65,7 +64,7 @@ class ModifyPageState extends State<ModifyPage> {
 			id: widget.note == null ? -1 : widget.note!.id,
 			title: title.text,
 			description: description.text,
-			content: content!.text,
+			content: content.text,
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
 			mode: mode

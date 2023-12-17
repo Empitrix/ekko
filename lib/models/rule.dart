@@ -56,18 +56,22 @@ class InnerHighlightRule extends HighlightRule {
 	final InnerSpan? innerSpan;
 
 	InnerHighlightRule({
-		required String tag,
+		// required String tag,
+		// required String tag,
+		required super.tag,
+		required super.regex,
+		required super.style,
+		// required TextStyle style,
+		// required RegExp regex,
 		RuleAction? acton,
-		required RegExp regex,
-		required TextStyle style,
 		// required this.innerAction,
 		required this.innerNum,
 		required this.innerMethod,
 		this.innerSpan
 	}): super(
-		style: style,
-		regex: regex,
-		tag: tag
+		// style: style,
+		// regex: regex,
+		// tag: tag
 	);
 	
 	// String getMiddle(String txt, int n){
