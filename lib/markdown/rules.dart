@@ -116,9 +116,17 @@ List<HighlightRule> allSyntaxRules({
 							),
 						) ,
 					),
+					// text: TextSpan(
+					// 	text: txt.trim().substring(5),
+					// 	style: defaultStyle
+					// ),
 					text: TextSpan(
-						text: txt.trim().substring(5),
-						style: defaultStyle
+						children: formattingTexts(
+							context: context,
+							// content: txt.trim().substring(5),
+							content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
+							defaultStyle: defaultStyle
+						)
 					)
 				);
 			},
