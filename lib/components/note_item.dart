@@ -74,6 +74,7 @@ class NoteItem extends StatelessWidget {
 											overflow: TextOverflow.ellipsis,
 											style: TextStyle(
 												fontSize: 16,
+												letterSpacing: 0.9,
 												color: Theme.of(context)
 													.colorScheme
 													.inverseSurface,
@@ -85,6 +86,7 @@ class NoteItem extends StatelessWidget {
 											overflow: TextOverflow.ellipsis,
 											style: TextStyle(
 												fontSize: 14,
+												letterSpacing: 0.9,
 												color: Theme.of(context)
 													.colorScheme.
 													inverseSurface

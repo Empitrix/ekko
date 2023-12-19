@@ -68,6 +68,7 @@ List<HighlightRule> allSyntaxRules({
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
 				fontWeight: FontWeight.bold,
+				letterSpacing: 0.9,
 				fontSize: 24
 			),
 		),
@@ -78,6 +79,7 @@ List<HighlightRule> allSyntaxRules({
 			style: TextStyle(
 				color: Theme.of(context).colorScheme.inverseSurface,
 				fontWeight: FontWeight.w600,
+				letterSpacing: 0.9,
 				fontSize: 32
 			)
 		),
