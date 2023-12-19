@@ -1,6 +1,8 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/views/display_page.dart';
 import 'package:ekko/views/home_page.dart';
@@ -48,21 +50,49 @@ class NoteItem extends StatelessWidget {
 					padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
 					child: Row(
 						children: [
-							IconButton(
-								icon: const Icon(Icons.edit),
-								color: Theme.of(context).primaryColor,
-								onPressed: (){
-									changeView(
-										context,
-										ModifyPage(
-											note: note,
-											backLoad: backLoad,
-											previousPage: const HomePage(),
-										),
-										isPush: true
-									);
-								}
+							Badge(
+								backgroundColor: dMode ? 
+									const Color(0xffed3232):
+									const Color(0xffbf1111),
+								label: Transform.rotate(
+									angle: getAngle(45),
+									child: NfFont(
+										unicode: "\udb81\udc03",
+										color: Colors.white,
+										format:false).widget(),
+								),
+								isLabelVisible: note.isPinned,
+								child: IconButton(
+									icon: const Icon(Icons.edit),
+									color: Theme.of(context).primaryColor,
+									onPressed: (){
+										changeView(
+											context,
+											ModifyPage(
+												note: note,
+												backLoad: backLoad,
+												previousPage: const HomePage(),
+											),
+											isPush: true
+										);
+									}
+								),
 							),
+							// IconButton(
+							// 	icon: const Icon(Icons.edit),
+							// 	color: Theme.of(context).primaryColor,
+							// 	onPressed: (){
+							// 		changeView(
+							// 			context,
+							// 			ModifyPage(
+							// 				note: note,
+							// 				backLoad: backLoad,
+							// 				previousPage: const HomePage(),
+							// 			),
+							// 			isPush: true
+							// 		);
+							// 	}
+							// ),
 							const SizedBox(width: 12),
 							Expanded(
 								child: Column(
