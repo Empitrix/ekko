@@ -204,9 +204,15 @@ class DB {
 	Future<List<Folder>> loadFolders() async {
 		Database db = await createDB(dPath: dPath);
 		List<Folder> folders = [];
-		List<Map<String, Object?>> data = await db.query("folders");
-		for(Map<String, dynamic> folder in data){
-			// TODO: load all the foldes note
+		List<Map<String, Object?>> fs = await db.query("folders");
+		// List<Map<String, Object?>> ns = await db.query("folder_items");
+		// List<SmallNote> allNotes = [];
+
+		// get all the notes
+		// for(Map<String, dynamic> note in ns){
+		// }
+
+		for(Map<String, dynamic> folder in fs){
 			List<SmallNote> folderNote = [];
 			folders.add(
 				Folder(

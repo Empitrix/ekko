@@ -32,6 +32,10 @@ class Dialogs {
 				title: Text(title),
 				content: Text(content),
 				actions: [
+					OutlinedButton(
+						child: Text(outAct),
+						onPressed: () => Navigator.pop(context),
+					),
 					FilledButton(
 						child: Text(fillAct),
 						onPressed: (){
@@ -39,10 +43,6 @@ class Dialogs {
 							action();
 						},
 					),
-					OutlinedButton(
-						child: Text(outAct),
-						onPressed: () => Navigator.pop(context),
-					)
 				],
 			)
 		);
@@ -73,6 +73,10 @@ class Dialogs {
 						),
 					),
 					actions: [
+						OutlinedButton(
+							child: Text(outAct),
+							onPressed: () => Navigator.pop(context),
+						),
 						FilledButton(
 							child: Text(fillAct),
 							onPressed: (){
@@ -80,10 +84,6 @@ class Dialogs {
 								action(ctrl.text);
 							},
 						),
-						OutlinedButton(
-							child: Text(outAct),
-							onPressed: () => Navigator.pop(context),
-						)
 					],
 				);
 			}

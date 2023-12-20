@@ -57,6 +57,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 				if(didPop){ return; }
 			},
 			child: Scaffold(
+				resizeToAvoidBottomInset: false,
 				appBar: AppBar(
 					title: const Text("Folders"),
 					leading: IconButton(

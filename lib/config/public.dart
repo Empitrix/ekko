@@ -13,6 +13,7 @@ int waitForLoading = 420;
 int waitLoadingSize = 300; // ms
 
 double textHeight = 1.4;
+double letterSpacing = 0.7;
 
 TextStyle defaultStyle = TextStyle(
 	fontSize: 16,
