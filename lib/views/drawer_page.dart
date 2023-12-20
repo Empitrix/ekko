@@ -1,4 +1,5 @@
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/views/folders_page.dart';
 import 'package:ekko/views/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,11 @@ class _DrawerPageState extends State<DrawerPage> {
 						leading: const Icon(Icons.settings),
 						title: const Text("Settings"),
 						onTap: () => _newView(const SettingsPage()),
+					),
+					ListTile(
+						leading: const Icon(Icons.folder),
+						title: const Text("Folders"),
+						onTap: () => _newView(const FoldersPage()),
 					)
 				],
 			),

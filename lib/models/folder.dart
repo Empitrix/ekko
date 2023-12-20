@@ -2,10 +2,11 @@ import 'package:ekko/models/note.dart';
 
 
 class Folder {
+	final int id;
 	final String name;
 	final List<SmallNote> notes;
 	late bool isSelected;  // Visual
-	Folder({required this.name, required this.notes, this.isSelected = false});
+	Folder({required this.id, required this.name, required this.notes, this.isSelected = false});
 
 
 	Future<List<Note>> allNotes() async {
@@ -36,7 +37,11 @@ class Folder {
 			// convertedNotes.add(Note.toNote(nt));
 			convertedNotes.add(SmallNote.toSmallNote(nt));
 		}
-		return Folder(name: input["name"], notes: convertedNotes);
+		return Folder(
+			id: input["id"],
+			name: input["name"],
+			notes: convertedNotes
+		);
 	}
 }
 

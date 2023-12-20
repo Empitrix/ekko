@@ -48,4 +48,48 @@ class Dialogs {
 		);
 	}
 
+
+	void textFieldDialog({
+		required String title,
+		required String hint,
+		required ValueChanged<String> action,
+		String fillAct = "Ok",
+		String outAct = "Cancel"}){
+		showDialog(
+			context: context,
+			builder: (BuildContext context){
+				TextEditingController ctrl = TextEditingController();
+				return AlertDialog(
+					title: Text(title),
+					content: TextField(
+						controller: ctrl,
+						autofocus: true,
+						onSubmitted: (txt){
+							Navigator.pop(context);
+							action(txt);
+						},
+						decoration: InputDecoration(
+							hintText: hint
+						),
+					),
+					actions: [
+						FilledButton(
+							child: Text(fillAct),
+							onPressed: (){
+								Navigator.pop(context);  // Close current bottom
+								action(ctrl.text);
+							},
+						),
+						OutlinedButton(
+							child: Text(outAct),
+							onPressed: () => Navigator.pop(context),
+						)
+					],
+				);
+			}
+		);
+	}  // textFieldDialog
+
+
 }
+

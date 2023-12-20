@@ -1,3 +1,4 @@
+import 'package:ekko/models/folder.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,6 +30,30 @@ class DB {
 				mode Text
 			)
 		""");
+		
+		// FOLDERS
+		await db.execute("""
+			CREATE TABLE IF NOT EXISTS folders (
+				id INTEGER PRIMARY KEY,
+				name TEXT
+			)
+		""");
+
+		await db.execute("""
+			CREATE TABLE IF NOT EXISTS folder_items (
+				id INTEGER PRIMARY KEY,
+				title TEXT,
+				description TEXT,
+				content TEXT,
+				lastEdit Text,
+				isPinned BIT,
+				mode Text,
+				folderId INTEGER,
+				FOREIGN KEY (folderId) REFERENCES folders(id)
+			)
+		""");
+
+
 		if(List.from(await db.query("local")).isEmpty){
 			Map<String, Object?> initData = {
 				"darkMode": 0,
@@ -165,5 +190,61 @@ class DB {
 		await db.close();
 		return Note.toNote(noteJson.first);
 	}
+
+	/* FOLDER */
+	Future<void> createFolder({required String folderName}) async {
+		Database db = await createDB(dPath: dPath);
+		await db.insert(
+			"folders",
+			Map<String, Object?>.from({"name": folderName})
+		);
+		await db.close();
+	}
+
+	Future<List<Folder>> loadFolders() async {
+		Database db = await createDB(dPath: dPath);
+		List<Folder> folders = [];
+		List<Map<String, Object?>> data = await db.query("folders");
+		for(Map<String, dynamic> folder in data){
+			// TODO: load all the foldes note
+			List<SmallNote> folderNote = [];
+			folders.add(
+				Folder(
+					id: folder["id"],
+					name: folder["name"],
+					isSelected: false,
+					notes: folderNote
+				)
+			);
+		}
+		await db.close();
+		return folders;
+	}
+
+
+	// Future<void> createNoteFolder({required Folder folder, required Note note}) async {
+	// 	Database db = await createDB(dPath: dPath);
+	// 	Map<String, Object?> data = Map<String, Object?>.from(note.toJson());
+	// 	// Setup folder-id that are note in <NOTES> by default
+	// 	data["folderId"] = folder.id;
+	// 	await db.insert(
+	// 		"folder_items",
+	// 		Map<String, Object?>.from(data)
+	// 	);
+	// 	await db.close();
+	// }
+
+	// Future<void> updateFolder({required Folder folder}) async {
+	// 	Database db = await createDB(dPath: dPath);
+	// 	await db.update(
+	// 		"folders",
+	// 		Map<String, Object?>.from({"name": folder.name}),
+	// 		where: "id = ?",
+	// 		whereArgs: [folder.id]
+	// 	);
+	// 	await db.close();
+	// }
+
+
 
 }

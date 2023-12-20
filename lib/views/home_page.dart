@@ -1,6 +1,7 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/note_item.dart';
 import 'package:ekko/components/search_bar.dart';
 import 'package:ekko/config/navigator.dart';
@@ -143,7 +144,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 						context, ModifyPage(
 							backLoad: (){loadAll(false);},
 							previousPage: widget,
-						)),
+						)
+					),
 				),
 				appBar: customSearchBar(
 					context: context,
