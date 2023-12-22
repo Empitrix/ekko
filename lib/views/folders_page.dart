@@ -55,6 +55,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 			canPop: false,
 			onPopInvoked: (bool didPop){
 				if(didPop){ return; }
+				changeView(context, const LandPage(), isPush: false);
 			},
 			child: Scaffold(
 				resizeToAvoidBottomInset: false,
@@ -63,7 +64,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 					leading: IconButton(
 						icon: const Icon(Icons.close),
 						onPressed: (){
-							changeView(context, const  LandPage(), isPush: false);
+							changeView(context, const LandPage(), isPush: false);
 						},
 					),
 				),

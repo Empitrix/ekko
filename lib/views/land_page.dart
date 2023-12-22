@@ -23,6 +23,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 
 	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 	final GlobalKey notesKey = GlobalKey();
+	String titleName = "Notes";
+	DB db = DB();
 
 	ValueNotifier<List<SmallNote>> notes = ValueNotifier<List<SmallNote>>([]);
 	ValueNotifier<bool> isLoaded = ValueNotifier<bool>(false);
@@ -33,9 +35,16 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	GenAnimation? searchAnim;
 	GenAnimation? floatingButtonAnim;
 
+	Future<void> _updateTitle() async {
+		String dummyTitle = await db.getFolderName(id: widget.folderId);
+		setState(() { titleName = dummyTitle; });
+	}
+
 	Future<void> loadAll([bool isNew = true]) async {
 		if(isNew) isLoaded.value = false;
-		notes.value = await DB().getSmallNotes(folderId: widget.folderId);
+		// Update Title
+		_updateTitle();
+		notes.value = await db.getSmallNotes(folderId: widget.folderId);
 		if(notesKey.currentState != null){
 			notesKey.currentState!.setState(() {});
 		}
@@ -150,7 +159,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 				),
 				appBar: customSearchBar(
 					context: context,
-					title: "Notes",
+					
+					title: titleName,
 					searchAnim: searchAnim!,
 					controller: searchCtrl,
 					onChange: (String words) => _filterSearch(words),

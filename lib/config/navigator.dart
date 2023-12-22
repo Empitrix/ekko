@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// List<String> _historyPage = ["LandPage0Index"];
 
 class CustomPageRoute extends PageRouteBuilder{
 	final Widget view;
@@ -34,25 +35,39 @@ class CustomPageRoute extends PageRouteBuilder{
 	);
 }
 
-
 void changeView(
 	BuildContext context, Widget view,
 	{bool isPush = true, isReplace = false}){
+
 	if(isPush){
 		if(isReplace){
+			/* 
+				There is an issue for ../l/c/folder_item taht can' replace page 
+				SOLVING:
+					- Remove current one using .pop
+					- Remove Until current one (currently selected)
+			*/
+			// Remove All the previus views
+			Navigator.of(context).popUntil((route) => route.isFirst); 
+			// Navigator.pop(context);  // Remove Current (Another way of solving issue)
+			// Replace Current one with the new one
 			Navigator.pushReplacement(
 				context,
-				// MaterialPageRoute(builder: (_) => view)
 				CustomPageRoute(view: view)
 			);
 		} else {
 			Navigator.push(
 				context,
-				// MaterialPageRoute(builder: (_) => view)
 				CustomPageRoute(view: view)
 			);
+			// _historyPage.add(view.toString());
 		}
+
 	} else {
 		Navigator.pop(context);
+		// _historyPage.removeLast();
 	}
+	
+
+	// debugPrint("[HISTORY]: $_historyPage");
 }

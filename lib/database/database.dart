@@ -67,7 +67,9 @@ class DB {
 			};  // Init table
 			// Set parameters on db 
 			await db.insert("local", initData);
-			await DB().createFolder(folderName: "~");  // Root Folder
+			
+			await DB().createFolder(folderName: "~", isPrime: true);  // Root Folder
+
 			debugPrint("[DATABASE INITIALIZED]");
 		}{
 			debugPrint("[RUNNING DATABASE]");
@@ -202,16 +204,32 @@ class DB {
 
 
 	/* FOLDER */
-	Future<void> createFolder({required String folderName}) async {
+	Future<void> createFolder({required String folderName, bool isPrime = false}) async {
 		Database db = await createDB(dPath: dPath);
+		Map data = {"name": folderName};
+		if(isPrime){ data["id"] = 0; }  // Check for prime folder
 		await db.insert(
 			"folders",
-			Map<String, Object?>.from({"name": folderName})
+			Map<String, Object?>.from(data)
+		);
+		await db.close();
+	}
+
+
+	Future<void> deleteFolder({required int folderId}) async {
+		/* Remove the folder if it's not the PRIME folder*/
+		if(folderId == 0 ){ return; }
+		Database db = await createDB(dPath: dPath);
+		await db.delete(
+			"folders",
+			where: "id = ?",
+			whereArgs: [folderId]
 		);
 		await db.close();
 	}
 
 	Future<String> getFolderName({required int id}) async {
+		if(id == 0){ return "Notes"; }
 		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> folders = await db.query("folders");
 		for(Map f in folders){
@@ -226,15 +244,12 @@ class DB {
 		Database db = await createDB(dPath: dPath);
 		List<Folder> folders = [];
 		List<Map<String, Object?>> fs = await db.query("folders");
-		// List<Map<String, Object?>> ns = await db.query("folder_items");
-		// List<SmallNote> allNotes = [];
-
-		// get all the notes
-		// for(Map<String, dynamic> note in ns){
-		// }
 
 		for(Map<String, dynamic> folder in fs){
+			
 			List<SmallNote> folderNote = [];
+			folderNote = await DB().getSmallNotes(folderId: folder["id"]);
+
 			folders.add(
 				Folder(
 					id: folder["id"],

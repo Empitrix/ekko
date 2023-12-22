@@ -19,8 +19,8 @@ Widget folderItem({
 		child: ListTile(
 			leading: Icon(
 				Icons.folder,
-				color: Theme.of(context).colorScheme
-					.surfaceTint.withAlpha(dMode ? 255:200),
+				color: folder.id != 0 ? Theme.of(context).colorScheme
+					.surfaceTint.withAlpha(dMode ? 255:200): Colors.orange,
 				size: 34
 			),
 			dense: true,
