@@ -219,7 +219,19 @@ class DB {
 	Future<void> deleteFolder({required int folderId}) async {
 		/* Remove the folder if it's not the PRIME folder*/
 		if(folderId == 0 ){ return; }
+		
+		// Delete all the folder's items
+		List<Folder> folders = await DB().loadFolders();
+		for(Folder f in folders){
+			if(f.id == folderId){
+				for(SmallNote n in f.notes){
+					await DB().deleteNote(n.id);
+				}
+			}
+		}
+		
 		Database db = await createDB(dPath: dPath);
+		// Delete folder
 		await db.delete(
 			"folders",
 			where: "id = ?",
@@ -227,6 +239,33 @@ class DB {
 		);
 		await db.close();
 	}
+
+	Future<void> renameFolder({required int folderId, required String newName}) async {
+		Folder currentFolder = await loadThisFolder(id: folderId);
+		currentFolder.name = newName;
+		// Convert folder to json
+		Map data = await currentFolder.toJson();
+		
+		Database db = await createDB(dPath: dPath);
+		await db.update(
+			'folders', 
+			Map<String, Object?>.from(data),
+			where: "id = ?",
+			whereArgs: [folderId]
+		);
+		await db.close();
+	}
+
+	Future<Folder> loadThisFolder({required int id}) async {
+		List<Folder> folders = await DB().loadFolders();
+		for(Folder f in folders){
+			if(f.id == id){
+				return f;
+			}
+		}
+		return folders.first;  // Root
+	}
+
 
 	Future<String> getFolderName({required int id}) async {
 		if(id == 0){ return "Notes"; }

@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/models/folder.dart';
@@ -10,10 +11,24 @@ Widget folderItem({
 	required Folder folder,
 	required Function update 
 
-	}){ return Listener(
+	}){
+
+	void longAction(){
+		// NO ACTION FOR ROOT FOLDER
+		if(folder.id == 0){ return; }  
+
+		// Show general-dialog
+		generalFolderSheet(
+			context: context,
+			load: update,
+			folder: folder
+		);
+	}
+
+	return Listener(
 		onPointerDown: (pointer){
 			if(pointer.buttons == 2 && isDesktop()){
-
+				longAction();
 			}
 		},
 		child: ListTile(
@@ -47,7 +62,7 @@ Widget folderItem({
 					isReplace: true
 				);
 			},
-			onLongPress: isDesktop() ? (){} : null 
+			onLongPress: isDesktop() ? null : longAction 
 		),
 	);
 }

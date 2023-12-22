@@ -3,7 +3,7 @@ import 'package:ekko/models/note.dart';
 
 class Folder {
 	final int id;
-	final String name;
+	late String name;
 	final List<SmallNote> notes;
 	late bool isSelected;  // Visual
 	Folder({required this.id, required this.name, required this.notes, this.isSelected = false});
@@ -26,7 +26,9 @@ class Folder {
 		}
 		return {
 			"name": name,
-			"notes": convertedNotes,
+			"id": id,
+			// "notes": convertedNotes,
+			// "notes": List<Map<String, Object?>>.from(convertedNotes),
 		};
 	}
 
