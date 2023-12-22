@@ -1,7 +1,6 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
-import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/note_item.dart';
 import 'package:ekko/components/search_bar.dart';
 import 'package:ekko/config/navigator.dart';
@@ -13,13 +12,14 @@ import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
 
-class HomePage extends StatefulWidget {
-	const HomePage({super.key});
+class LandPage extends StatefulWidget {
+	final int folderId;
+	const LandPage({super.key, this.folderId = 0});
 
-	@override State<HomePage> createState() => _HomePageState();
+	@override State<LandPage> createState() => _LandPageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
+class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 
 	final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 	final GlobalKey notesKey = GlobalKey();
@@ -33,10 +33,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 	GenAnimation? searchAnim;
 	GenAnimation? floatingButtonAnim;
 
-
 	Future<void> loadAll([bool isNew = true]) async {
 		if(isNew) isLoaded.value = false;
-		notes.value = await DB().getSmallNotes();
+		notes.value = await DB().getSmallNotes(folderId: widget.folderId);
 		if(notesKey.currentState != null){
 			notesKey.currentState!.setState(() {});
 		}
@@ -70,7 +69,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 		for(int i = 0; i < notes.value.length; i++){
 			notes.value[i].isVisible = true;
 		}
-		notesKey.currentState!.setState(() {});
+		if(notesKey.currentState != null){
+			notesKey.currentState!.setState(() {});
+		}
 	}
 
 	bool _isAllSearchHide(){
@@ -134,7 +135,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 				resizeToAvoidBottomInset: false,
 				key: scaffoldKey,
 				drawer: const DrawerPage(),
-				// floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
 				floatingActionButton: AnimatedFloatingButton(
 					controller: scrollCtrl,
@@ -144,6 +144,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 						context, ModifyPage(
 							backLoad: (){loadAll(false);},
 							previousPage: widget,
+							folderId: widget.folderId,
 						)
 					),
 				),

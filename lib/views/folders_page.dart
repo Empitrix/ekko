@@ -5,7 +5,7 @@ import 'package:ekko/components/folder_item.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/folder.dart';
-import 'package:ekko/views/home_page.dart';
+import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -63,7 +63,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 					leading: IconButton(
 						icon: const Icon(Icons.close),
 						onPressed: (){
-							changeView(context, const  HomePage(), isPush: false);
+							changeView(context, const  LandPage(), isPush: false);
 						},
 					),
 				),

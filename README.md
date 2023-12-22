@@ -12,6 +12,7 @@ A cross-platform, open source note-taking app that written in flutter
 - [ ] Change font / size / weight 
 - [x] Acrylic Theme
 - [ ] Acrylic high proformance on changing
+- [ ] Mix IN-FOLDER-PAGE with main HOME-PAGE for loaing notes
 
 ## Build
 you can run the following code to create your own

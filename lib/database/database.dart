@@ -19,17 +19,6 @@ class DB {
 				acrylicOpacity FLOAT
 			)
 		""");
-		await db.execute("""
-			CREATE TABLE IF NOT EXISTS notes (
-				id INTEGER PRIMARY KEY,
-				title TEXT,
-				description TEXT,
-				content TEXT,
-				lastEdit Text,
-				isPinned BIT,
-				mode Text
-			)
-		""");
 		
 		// FOLDERS
 		await db.execute("""
@@ -40,7 +29,7 @@ class DB {
 		""");
 
 		await db.execute("""
-			CREATE TABLE IF NOT EXISTS folder_items (
+			CREATE TABLE IF NOT EXISTS notes (
 				id INTEGER PRIMARY KEY,
 				title TEXT,
 				description TEXT,
@@ -54,6 +43,21 @@ class DB {
 		""");
 
 
+		// await db.execute("""
+		// 	CREATE TABLE IF NOT EXISTS folder_items (
+		// 		id INTEGER PRIMARY KEY,
+		// 		title TEXT,
+		// 		description TEXT,
+		// 		content TEXT,
+		// 		lastEdit Text,
+		// 		isPinned BIT,
+		// 		mode Text,
+		// 		folderId INTEGER,
+		// 		FOREIGN KEY (folderId) REFERENCES folders(id)
+		// 	)
+		// """);
+
+
 		if(List.from(await db.query("local")).isEmpty){
 			Map<String, Object?> initData = {
 				"darkMode": 0,
@@ -63,6 +67,7 @@ class DB {
 			};  // Init table
 			// Set parameters on db 
 			await db.insert("local", initData);
+			await DB().createFolder(folderName: "~");  // Root Folder
 			debugPrint("[DATABASE INITIALIZED]");
 		}{
 			debugPrint("[RUNNING DATABASE]");
@@ -127,12 +132,13 @@ class DB {
 		await db.close();
 	}
 
-	Future<List<Note>> getNotes() async {
+	Future<List<Note>> getNotes({required int folderId}) async {
 		List<Note> other = [];
 		List<Note> pinned = [];
 		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> data = await db.query("notes");
 		for(Map note in data){
+			if(note["folderId"] != folderId){ continue; }
 			if(note["isPinned"] == 1){
 				pinned.add(Note.toNote(note));
 			} else {
@@ -143,12 +149,13 @@ class DB {
 		return [...pinned, ...other];
 	}
 
-	Future<List<SmallNote>> getSmallNotes() async {
+	Future<List<SmallNote>> getSmallNotes({required int folderId}) async {
 		List<SmallNote> otherNotes = [];
 		List<SmallNote> pinnedNotes = [];
 		Database db = await createDB(dPath: dPath);
 		List<Map<String, Object?>> data = await db.query("notes");
 		for(Map note in data){
+			if(note["folderId"] != folderId){ continue; }
 			if(note["isPinned"] == 1){
 				pinnedNotes.add(SmallNote.toSmallNote(note));
 			} else {
@@ -191,6 +198,9 @@ class DB {
 		return Note.toNote(noteJson.first);
 	}
 
+
+
+
 	/* FOLDER */
 	Future<void> createFolder({required String folderName}) async {
 		Database db = await createDB(dPath: dPath);
@@ -199,6 +209,17 @@ class DB {
 			Map<String, Object?>.from({"name": folderName})
 		);
 		await db.close();
+	}
+
+	Future<String> getFolderName({required int id}) async {
+		Database db = await createDB(dPath: dPath);
+		List<Map<String, Object?>> folders = await db.query("folders");
+		for(Map f in folders){
+			if(f["id"] == id){
+				return f["name"];
+			}
+		}
+		return "";
 	}
 
 	Future<List<Folder>> loadFolders() async {

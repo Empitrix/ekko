@@ -6,7 +6,7 @@ import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
-import 'package:ekko/views/home_page.dart';
+import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +49,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 			canPop: false,
 			onPopInvoked: (bool didPop) async {
 				if(didPop) { return; }
-				changeView(context, const HomePage(), isPush: false);
+				changeView(context, const LandPage(), isPush: false);
 			},
 			child: Scaffold(
 				appBar: AppBar(
@@ -57,7 +57,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 					title: const Text("Settings"),
 					leading: IconButton(
 						icon: const Icon(Icons.close),
-						onPressed: () => changeView(context, const HomePage(), isPush: false),
+						onPressed: () => changeView(context, const LandPage(), isPush: false),
 					),
 				),
 				body: ListView(

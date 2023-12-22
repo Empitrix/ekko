@@ -5,7 +5,7 @@ import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/views/display_page.dart';
-import 'package:ekko/views/home_page.dart';
+import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class NoteItem extends StatelessWidget {
 				onTap: () => changeView(
 					context, DisplayPage(
 						smallNote: note,
-						previousPage: const HomePage(),
+						previousPage: const LandPage(),
 						loadAll: backLoad,
 					), isPush: true
 				),
@@ -71,7 +71,7 @@ class NoteItem extends StatelessWidget {
 											ModifyPage(
 												note: note,
 												backLoad: backLoad,
-												previousPage: const HomePage(),
+												previousPage: const LandPage(),
 											),
 											isPush: true
 										);

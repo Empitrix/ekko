@@ -1,6 +1,6 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/manager.dart';
-import 'package:ekko/views/home_page.dart';
+import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
@@ -52,7 +52,7 @@ class _EkkoAppState extends State<EkkoApp> {
 							themeMode: Provider.of<ProviderManager>(context).tMode,
 							theme: Provider.of<ProviderManager>(context).lightTheme(context),
 							darkTheme: Provider.of<ProviderManager>(context).darkTheme(context),
-							home: const HomePage(),
+							home: const LandPage(folderId: 0),
 							// home: const LoadingPage(),
 						);
 					},

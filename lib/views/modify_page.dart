@@ -11,11 +11,13 @@ import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_
 
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
+	final int folderId;
 	final Function? backLoad;
 	final Widget previousPage;
 	const ModifyPage({
 		super.key,
 		this.note,
+		this.folderId = 0,
 		this.backLoad,
 		required this.previousPage
 	});
@@ -62,6 +64,7 @@ class ModifyPageState extends State<ModifyPage> {
 
 		Note note = Note(
 			id: widget.note == null ? -1 : widget.note!.id,
+			folderId: widget.folderId,
 			title: title.text,
 			description: description.text,
 			content: content.text,
@@ -130,7 +133,7 @@ class ModifyPageState extends State<ModifyPage> {
 		
 		title.text = note.title;
 		description.text = note.description;
-		content!.text = note.content;
+		content.text = note.content;
 		mode = note.mode;
 		isPinned = note.isPinned;
 		
@@ -221,7 +224,7 @@ class ModifyPageState extends State<ModifyPage> {
 								),
 								const SizedBox(height: 20),
 								ContentTextFiled(
-									controller: content!,
+									controller: content,
 									focusNode: contentF,
 									previousFocus: () => descriptionF.requestFocus()
 								)

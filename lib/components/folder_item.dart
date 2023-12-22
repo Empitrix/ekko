@@ -1,6 +1,8 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/models/folder.dart';
+import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 
 Widget folderItem({
@@ -37,7 +39,14 @@ Widget folderItem({
 			subtitle: folder.notes.isNotEmpty ?
 				Text('${folder.notes.length} Item${folder.notes.length > 1 ? "s" : ""}'):
 				const Text("No Item"),
-			onTap:(){},
+			onTap:(){
+				changeView(
+					context,
+					LandPage(folderId: folder.id),
+					isPush: true,
+					isReplace: true
+				);
+			},
 			onLongPress: isDesktop() ? (){} : null 
 		),
 	);

@@ -5,7 +5,7 @@ import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/generator.dart';
 import 'package:ekko/models/note.dart';
-import 'package:ekko/views/home_page.dart';
+import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	
 	void _backToPreviousPage(){
 		widget.loadAll();
-		changeView(context, const HomePage(), isPush: false);
+		changeView(context, const LandPage(), isPush: false);
 	}
 
 	void initAnimations(){

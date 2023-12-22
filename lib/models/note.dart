@@ -42,6 +42,7 @@ DateTime _fromDate(String dateStr) {
 
 class Note {
 	final int id;
+	final int folderId;
 	final String title;
 	final String description;
 	final String content;
@@ -55,6 +56,7 @@ class Note {
 
 	Note({
 		required this.id,
+		required this.folderId,
 		required this.title,
 		required this.description,
 		required this.content,
@@ -68,6 +70,7 @@ class Note {
 	static toNote(Map input){
 		return Note(
 			id: input["id"],
+			folderId: input["folderId"],
 			title: input["title"],
 			description: input["description"],
 			content: input["content"],
@@ -81,6 +84,7 @@ class Note {
 		return {
 			// "id": id,  // SQL will create a unique one
 			"title": title,
+			"folderId": folderId,
 			"description": description,
 			"content": content,
 			"lastEdit": _parseDate(lastEdit),
@@ -95,6 +99,7 @@ class Note {
 // Lighter version of notes without contents
 class SmallNote {
 	final int id;
+	final int folderId;
 	final String title;
 	final String description;
 	final DateTime lastEdit;
@@ -107,6 +112,7 @@ class SmallNote {
 
 	SmallNote({
 		required this.id,
+		required this.folderId,
 		required this.title,
 		required this.description,
 		required this.lastEdit,
@@ -124,6 +130,7 @@ class SmallNote {
 	static toSmallNote(Map input){
 		return SmallNote(
 			id: input["id"],
+			folderId: input["folderId"],
 			title: input["title"],
 			description: input["description"],
 			lastEdit: _fromDate(input["lastEdit"]),
@@ -136,6 +143,7 @@ class SmallNote {
 		return {
 			// "id": id,  // SQL will create a unique one
 			"title": title,
+			"folderId": folderId,
 			"description": description,
 			"lastEdit": _parseDate(lastEdit),
 			"isPinned": isPinned ? 1 : 0,  // convert to bit
