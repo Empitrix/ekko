@@ -42,7 +42,8 @@ DateTime _fromDate(String dateStr) {
 
 class Note {
 	final int id;
-	final int folderId;
+	// final int folderId;
+	late int folderId;
 	final String title;
 	final String description;
 	final String content;

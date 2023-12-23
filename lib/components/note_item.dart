@@ -70,6 +70,7 @@ class NoteItem extends StatelessWidget {
 											context,
 											ModifyPage(
 												note: note,
+												folderId: note.folderId,
 												backLoad: backLoad,
 												previousPage: const LandPage(),
 											),

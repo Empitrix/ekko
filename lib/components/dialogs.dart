@@ -54,11 +54,13 @@ class Dialogs {
 		required String hint,
 		required ValueChanged<String> action,
 		String fillAct = "Ok",
+		String loadedText = "",
 		String outAct = "Cancel"}){
 		showDialog(
 			context: context,
 			builder: (BuildContext context){
 				TextEditingController ctrl = TextEditingController();
+				ctrl.text = loadedText;
 				return AlertDialog(
 					title: Text(title),
 					content: TextField(

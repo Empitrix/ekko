@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/folder.dart';
@@ -90,12 +91,83 @@ void generalSmallNoteSheet({
 							}
 						),
 
+						ListTile(
+							leading: const Icon(Icons.move_to_inbox), 
+							trailing: const Icon(Icons.arrow_right), 
+							title: const Text("Move to another folder"),
+							onTap: () async {
+								Navigator.pop(context);
+								selectFolderSheet(
+									context: context,
+									noteFolderId: note.folderId,
+									action: (BuildContext context, FolderInfo folder) async {
+										SNK snk = SNK(context, duration: const Duration(seconds: 2));
+										Note newNote = await note.toRealNote();
+										newNote.folderId = folder.id;
+										await DB().addNote(newNote);
+										snk.message(
+											const Icon(Icons.create_new_folder),
+											"Added to: ${folder.name}");
+										// Don't need >load();< because nothing will change in current folder
+										// load(); // load again
+									}
+								);
+							}
+						),
 
+						// Footer
 						const SizedBox(height: 12)
 					],
 				),
 			),
 		)
+	);
+}
+
+
+
+
+
+
+typedef ContextFolderInfoAction = Function(BuildContext context, FolderInfo);
+
+void selectFolderSheet({
+	required BuildContext context,
+	required int noteFolderId,
+	// required ValueChanged<FolderInfo> action
+	required ContextFolderInfoAction action
+	}){
+	// Start future can't be inside builder because will start again
+	Future<List<FolderInfo>> listFuture = DB().loadFoldersInfo();
+	_showSheet(
+		context: context,
+		builder: (context){
+			return FutureBuilder<List<FolderInfo>>(
+				future: listFuture,
+				builder: (context, snapshot){
+					if(snapshot.connectionState != ConnectionState.done){
+						return const Center(child: CircularProgressIndicator());}
+
+					if(snapshot.data!.length == 1){
+						return const Center(child: Text("No Folder"));}
+
+					return ListView.builder(
+						itemCount: snapshot.data!.length,
+						itemBuilder: (BuildContext context, int index) => ListTile(
+							leading: const Icon(Icons.folder),
+							iconColor: snapshot.data![index].id == 0 ? Colors.orange : null,
+							title: Text(snapshot.data![index].name),
+							// onTap: () => action(snapshot.data![index]),
+							enabled: noteFolderId != snapshot.data![index].id,
+							onTap: (){
+								action(context, snapshot.data![index]);
+								Navigator.pop(context);
+							},
+						)
+					);
+				}
+			);
+		}
 	);
 }
 
@@ -159,6 +231,7 @@ void generalFolderSheet({
 								Dialogs(context).textFieldDialog(
 									title: "New Name",
 									hint: "Name",
+									loadedText: folder.name,
 									action: (String newName) async {
 										await DB().renameFolder(folderId: folder.id, newName: newName);
 										load(); // load again

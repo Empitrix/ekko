@@ -37,7 +37,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 
 	Future<void> _updateTitle() async {
 		String dummyTitle = await db.getFolderName(id: widget.folderId);
-		setState(() { titleName = dummyTitle; });
+		if (mounted) setState(() { titleName = dummyTitle; });
 	}
 
 	Future<void> loadAll([bool isNew = true]) async {
@@ -143,7 +143,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 			child: Scaffold(
 				resizeToAvoidBottomInset: false,
 				key: scaffoldKey,
-				drawer: const DrawerPage(),
+				// drawer: const DrawerPage(),
+				drawer: DrawerPage(closeLoading: _updateTitle,),
 				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
 				floatingActionButton: AnimatedFloatingButton(
 					controller: scrollCtrl,

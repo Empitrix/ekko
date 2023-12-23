@@ -32,6 +32,10 @@ class Folder {
 		};
 	}
 
+	FolderInfo info(){
+		return FolderInfo(name: name, id: id);
+	}
+
 	static Folder toFolder({required Map input}){
 		/*Get input JSON folder and return Folder type data*/
 		List<SmallNote> convertedNotes = [];
@@ -46,4 +50,17 @@ class Folder {
 		);
 	}
 }
+
+
+
+
+class FolderInfo{
+	final String name;
+	final int id;
+	FolderInfo({
+		required this.name,
+		required this.id
+	});
+}
+
 

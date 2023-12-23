@@ -95,6 +95,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 							onPressed: () => changeView(
 								context, ModifyPage(
 									note: widget.smallNote,
+									folderId: widget.smallNote.folderId,
 									backLoad: (){loadAll();},
 									previousPage: widget,
 								)),

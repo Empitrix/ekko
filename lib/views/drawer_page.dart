@@ -4,7 +4,8 @@ import 'package:ekko/views/settings_page.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
-	const DrawerPage({super.key});
+	final Function? closeLoading;
+	const DrawerPage({super.key, this.closeLoading});
 
 	@override
 	State<DrawerPage> createState() => _DrawerPageState();
@@ -17,6 +18,14 @@ class _DrawerPageState extends State<DrawerPage> {
 	void _newView(Widget view){
 		Navigator.pop(context);  // Close the drawer
 		changeView(context, view, isPush: true);
+	}
+
+	@override
+	void dispose() {
+		// if(widget.closeLoading != null){
+		// 	widget.closeLoading!();
+		// }
+		super.dispose();
 	}
 
 	@override
@@ -40,7 +49,7 @@ class _DrawerPageState extends State<DrawerPage> {
 					ListTile(
 						leading: const Icon(Icons.folder),
 						title: const Text("Folders"),
-						onTap: () => _newView(const FoldersPage()),
+						onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading)),
 					)
 				],
 			),

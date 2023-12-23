@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 
 
 class FoldersPage extends StatefulWidget {
-	const FoldersPage({super.key});
+	final Function? closeLoading;
+	const FoldersPage({super.key, this.closeLoading});
  
 	@override
 	State<FoldersPage> createState() => _FoldersPageState();
@@ -32,7 +33,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 	Future<void> primalLoading([bool isNew = false]) async {
 		debugPrint("[LOADING FOLDERS]");
 		if(isNew) setState(() => isLoading = true);
-		// await Future.delayed(const Duration(seconds: 2));  // Async Test
+		// await Future.delayed(const Duration(seconds: 2));	// Async Test
 		// Load all the folders
 		foldersNotifier.value = await db.loadFolders();
 		if(isNew) setState(() => isLoading = false);
@@ -48,6 +49,14 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 		});
 		super.initState();
 	}
+
+	@override
+		void dispose() {
+			if(widget.closeLoading != null){
+				widget.closeLoading!();
+			}
+			super.dispose();
+		}
 
 	@override
 	Widget build(BuildContext context) {

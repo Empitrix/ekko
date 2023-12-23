@@ -303,6 +303,23 @@ class DB {
 	}
 
 
+	Future<List<FolderInfo>> loadFoldersInfo() async {
+		Database db = await createDB(dPath: dPath);
+		List<FolderInfo> folders = [];
+		List<Map<String, Object?>> fs = await db.query("folders");
+
+		for(Map<String, dynamic> folder in fs){
+			folders.add(
+				FolderInfo(
+					id: folder["id"],
+					name: folder["name"],
+				)
+			);
+		}
+		await db.close();
+		return folders;
+	}
+
 	// Future<void> createNoteFolder({required Folder folder, required Note note}) async {
 	// 	Database db = await createDB(dPath: dPath);
 	// 	Map<String, Object?> data = Map<String, Object?>.from(note.toJson());

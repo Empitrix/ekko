@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 class SNK {
 	final BuildContext context;
-	SNK(this.context);
+	final Duration duration;
+	SNK(this.context, {this.duration = const Duration(seconds: 1)});
 	
 	void message(Widget icon, String message){
 		ScaffoldMessenger.of(context).showSnackBar(
 			SnackBar(
-				duration: const Duration(seconds: 1),
+				duration: duration,
 				backgroundColor: Theme.of(context).colorScheme.inversePrimary,
 				content: Row(
 					mainAxisAlignment: MainAxisAlignment.start,
