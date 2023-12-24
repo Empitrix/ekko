@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 
 class FoldersPage extends StatefulWidget {
 	final Function? closeLoading;
-	const FoldersPage({super.key, this.closeLoading});
+	final int previousId;
+	const FoldersPage({super.key, this.closeLoading, required this.previousId});
  
 	@override
 	State<FoldersPage> createState() => _FoldersPageState();
@@ -39,7 +40,16 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 		if(isNew) setState(() => isLoading = false);
 	}
 
-
+	void _back() async {
+		List<FolderInfo> fInfo = await DB().loadFoldersInfo();
+		if(fInfo.any((e) => e.id == widget.previousId)){
+			if(!mounted){ return; }
+			changeView(context, const LandPage(), isPush: false);
+			return;
+		}
+		if(!mounted){ return; }
+		changeView(context, const LandPage(folderId: 0), isPush: true, isReplace: true);
+	}
 
 	@override
 	void initState() {
@@ -64,7 +74,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 			canPop: false,
 			onPopInvoked: (bool didPop){
 				if(didPop){ return; }
-				changeView(context, const LandPage(), isPush: false);
+				_back();
 			},
 			child: Scaffold(
 				resizeToAvoidBottomInset: false,
@@ -73,7 +83,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 					leading: IconButton(
 						icon: const Icon(Icons.close),
 						onPressed: (){
-							changeView(context, const LandPage(), isPush: false);
+							_back();
 						},
 					),
 				),

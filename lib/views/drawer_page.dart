@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
 	final Function? closeLoading;
-	const DrawerPage({super.key, this.closeLoading});
+	final int currentFolderId;
+	const DrawerPage({super.key, this.closeLoading, required this.currentFolderId});
 
 	@override
 	State<DrawerPage> createState() => _DrawerPageState();
@@ -49,7 +50,7 @@ class _DrawerPageState extends State<DrawerPage> {
 					ListTile(
 						leading: const Icon(Icons.folder),
 						title: const Text("Folders"),
-						onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading)),
+						onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading, previousId: widget.currentFolderId,)),
 					)
 				],
 			),

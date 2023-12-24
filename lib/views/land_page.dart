@@ -144,7 +144,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 				resizeToAvoidBottomInset: false,
 				key: scaffoldKey,
 				// drawer: const DrawerPage(),
-				drawer: DrawerPage(closeLoading: _updateTitle,),
+				drawer: DrawerPage(closeLoading: _updateTitle, currentFolderId: widget.folderId),
 				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
 				floatingActionButton: AnimatedFloatingButton(
 					controller: scrollCtrl,
