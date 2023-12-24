@@ -16,7 +16,7 @@ List<HighlightRule> allSyntaxRules({
 				content: text, height: textHeight),
 			// regex: RegExp(r'\s```([\s\S]*?)```\s'),
 			// regex: RegExp(r'\s*```\s*\w+\n*([\s\S]*?)\n\s*```\s*', multiLine: true),
-			regex: RegExp(r'\s*```([\s\S]*?)\n\s*```\s*', multiLine: true),
+			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
 			style: const TextStyle(color: Colors.teal)
 		),
 

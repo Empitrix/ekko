@@ -164,6 +164,28 @@ class ContentTextFiled extends StatelessWidget {
 					children: [
 						// TextField(
 						RegexPatternTextField(
+						contextMenuBuilder: (context, editableTextState){
+							// Source: https://stackoverflow.com/questions/74868518/how-to-have-a-custom-context-menu-for-textfields-in-flutter
+							// final TextEditingValue value = editableTextState.textEditingValue;
+							final List<ContextMenuButtonItem> buttonItems = editableTextState.contextMenuButtonItems;
+							// //if (isValidEmail(value.selection.textInside(value.text))) {
+							// if (true) {
+							// 	buttonItems.insert(
+							// 		0,
+							// 		ContextMenuButtonItem(
+							// 			label: 'Send email',
+							// 			onPressed: () {
+							// 				ContextMenuController.removeAny();
+							// 				// Navigator.of(context).push();
+							// 			},
+							// 		)
+							// 	);
+							// }
+							return AdaptiveTextSelectionToolbar.buttonItems(
+								anchors: editableTextState.contextMenuAnchors,
+								buttonItems: buttonItems,
+							);
+						},
 						defaultRegexPatternStyles: false,
 							// controller: controller,
 							regexPatternStyles: [
