@@ -20,15 +20,31 @@ class MarkdownWidget extends StatelessWidget {
 
 	/* Strings */
 	String _content(){
+		// return content.trim()
+		// 	.substring(3, content.trim().length - 3);
 		return content.trim()
-			.substring(3, content.trim().length - 3);
+			.substring(3, content.trim().length - 3).trim();
 	}
-	String _langName() {
-		return _content().trim().substring(
-			0, _content().trim().indexOf("\n")
-		).trim();
+	// String _langName() {
+	// 	return _content().trim().substring(
+	// 		0, _content().trim().indexOf("\n")
+	// 	).trim();
+	// 	// return "N/A";
+	// }
+
+	String _langName(String input){
+		RegExp regex = RegExp(r"```\s*\w+");
+		RegExpMatch? out = regex.firstMatch(input);
+		if(out == null){ return "N/A"; }
+		String lang = out.group(0)!.trim().substring(3);
+		lang = lang.trim();
+		if(lang.trim().isEmpty){ return "N/A"; }
+		return lang;
 	}
+
 	String _markdownData(){
+		// return _content()
+		// 	.replaceRange(0, _content().indexOf("\n") + 1, "");
 		return _content()
 			.replaceRange(0, _content().indexOf("\n") + 1, "");
 	}
@@ -37,7 +53,7 @@ class MarkdownWidget extends StatelessWidget {
 	HighlightView highlightView(){
 		return HighlightView(
 			_markdownData(),
-			language: _langName().toLowerCase(),
+			language: _langName(content).toLowerCase(),
 			tabSize: 2,
 			theme: gruvboxDarkTheme,
 		);
@@ -72,7 +88,7 @@ class MarkdownWidget extends StatelessWidget {
 				children: [
 					RichText(
 						text: TextSpan(
-							text: _langName().title(),
+							text: _langName(content).title(),
 							style: const TextStyle(
 								fontWeight: FontWeight.w600,
 								letterSpacing: 0.2
