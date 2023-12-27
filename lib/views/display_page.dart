@@ -32,6 +32,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	// Floating Action Button
 	ScrollController scrollCtrl = ScrollController();
 	GenAnimation? floatingButtonAnim;
+	FocusNode contextFocus = FocusNode();
 	
 	void _backToPreviousPage(){
 		widget.loadAll();
@@ -62,6 +63,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 		// Load async
 		initAnimations();
 		loadAll();
+		contextFocus.requestFocus();
 		super.initState();
 	}
 
@@ -128,6 +130,19 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										);
 									}
 									return SelectionArea(
+										// onSelectionChanged: (SelectedContent? txt){
+										// 	if(txt != null){
+										// 		debugPrint(txt.plainText);
+										// 	}
+										// },
+										focusNode: contextFocus,
+										contextMenuBuilder: (context, editableTextState){
+											final List<ContextMenuButtonItem> buttonItems = editableTextState.contextMenuButtonItems;
+											return AdaptiveTextSelectionToolbar.buttonItems(
+												anchors: editableTextState.contextMenuAnchors,
+												buttonItems: buttonItems,
+											);
+										},
 										child: ListView(
 											padding: const EdgeInsets.only(
 												right: 12, left: 12,

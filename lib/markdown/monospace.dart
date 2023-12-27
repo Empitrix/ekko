@@ -4,25 +4,31 @@ import 'package:flutter/material.dart';
 
 
 TextSpan getMonospaceTag(String txt, [double radius = 5]){
+	// txt = txt.trim();
 	List<String> words = breakPhrase(txt);
 	List<WidgetSpan> tags = [];
-	for(String i in words){
+	for(String w in words){
 		tags.add(
 			WidgetSpan(child: Container(
 				decoration: BoxDecoration(
 					borderRadius: BorderRadius.only(
 						topLeft: Radius.circular(
-							words.indexOf(i) == 0 ? radius : 0),
+							words.indexOf(w) == 0 ? radius : 0),
 						bottomLeft: Radius.circular(
-							words.indexOf(i) == 0 ? radius : 0),
+							words.indexOf(w) == 0 ? radius : 0),
 						topRight: Radius.circular(
-							words.indexOf(i) == words.length - 1 ? radius : 0),
+							words.indexOf(w) == words.length - 1 ? radius : 0),
 						bottomRight: Radius.circular(
-							words.indexOf(i) == words.length - 1 ? radius : 0)
+							words.indexOf(w) == words.length - 1 ? radius : 0)
 					),
 					color: getMonoBgColor()
 				),
-				child: Text(i),
+				// child: Text.rich(TextSpan(text: w, style: const TextStyle(
+				// 	fontFamily: "RobotoMono" 
+				// ))),
+				child: Text(w, style: const TextStyle(
+					fontFamily: "RobotoMono" 
+				)),
 			)
 		));
 	}
