@@ -1,5 +1,6 @@
 import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,35 @@ List<Widget> applyRules({
 				case 'markdown': {
 					updateSpans();
 					widgetTree.add(matchingRule.action!(matchedText));
+					break;
+				}
+
+				case 'monospace': {
+					spans.add(getMonospaceTag(
+						" ${matchedText.substring(1, matchedText.length - 1)} "
+					));
+					// spans.add(const TextSpan(text: " "));
+					// TextSpan monoSpan = TextSpan(children: [
+					// 	// RoundedBackgroundTextSpan(
+					// 	// RoundedBackgroundTextSpan(
+					// 	TextSpan(
+					// 		// text: " ${matchedText.substring(1, matchedText.length - 1)} ",
+					// 		text: matchedText.substring(1, matchedText.length - 1),
+					// 		style: TextStyle(
+					// 			fontFamily: "RobotoMono",
+					// 			// backgroundColor: getMonoBgColor(),
+					// 			background: Paint()
+					// 				..color = getMonoBgColor()
+					// 				..strokeWidth = 5
+					// 				..strokeJoin = StrokeJoin.round
+					// 				..strokeCap = StrokeCap.round
+					// 				..style = PaintingStyle.stroke,
+					// 			// backgroundColor: getMonoBgColor()
+					// 		),
+					// 	),
+					// ]);
+					// spans.add(monoSpan);
+					// spans.add(const TextSpan(text: " "));
 					break;
 				}
 

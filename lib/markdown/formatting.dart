@@ -1,4 +1,5 @@
 import 'package:ekko/backend/launcher.dart';
+import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,29 @@ List<TextSpan> formattingTexts({
 				decorationColor: Theme.of(context).colorScheme.inverseSurface,
 			).merge(mergeStyle),
 		),
+
+
+
+		InnerHighlightRule(
+			tag: "monospace",
+			innerMethod: InnerMethod.custom,
+			innerNum: 1,
+			regex: RegExp(r'\`.*?\`'),
+			style: const TextStyle(
+				fontSize: 16,
+			).merge(mergeStyle),
+			innerSpan: (txt){
+				return getMonospaceTag(" ${txt.substring(1, txt.length - 1)} ");
+				// return TextSpan(children: [
+				// 	RoundedBackgroundTextSpan(
+				// 		text: txt.substring(1, txt.length - 1),
+				// 		// backgroundColor: Theme.of(context).backgroundColor
+				// 		backgroundColor: getMonoBgColor()
+				// 	),
+				// ]);
+			}
+		),
+
 
 	];
 

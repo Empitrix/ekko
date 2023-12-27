@@ -10,6 +10,7 @@ import 'package:ekko/utils/loading.dart';
 import 'package:ekko/views/drawer_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
 class LandPage extends StatefulWidget {
@@ -139,6 +140,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 					}
 				}
 				// Minimize the app
+				// T-O-D-O: save current page state (folder-id)
+				SystemNavigator.pop(animated: true);
 			},
 			child: Scaffold(
 				resizeToAvoidBottomInset: false,

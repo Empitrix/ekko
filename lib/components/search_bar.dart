@@ -100,10 +100,13 @@ AppBar customSearchBar({
 					animation: searchAnim.animation,
 					reverse: true,
 					mode: ExpandMode.width,
-					body: Text(
-						title,
-						overflow: TextOverflow.ellipsis,
-						style: Theme.of(context).appBarTheme.titleTextStyle
+					body: SizedBox(
+						width: MediaQuery.of(context).size.width - 145,
+						child: Text(
+							title,
+							overflow: TextOverflow.ellipsis,
+							style: Theme.of(context).appBarTheme.titleTextStyle
+						),
 					),
 				)
 			],

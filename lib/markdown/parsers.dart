@@ -9,6 +9,8 @@ Widget onLeadingText({
 	double spacing = 0
 }){
 	return Row(
+		// mainAxisAlignment: MainAxisAlignment.start,
+		crossAxisAlignment: CrossAxisAlignment.center,
 		children: [
 			SizedBox(width: spacing),
 			leading,

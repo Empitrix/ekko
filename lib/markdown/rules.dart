@@ -167,6 +167,14 @@ List<HighlightRule> allSyntaxRules({
 		),
 		
 
+		HighlightRule(
+			tag: "monospace",
+			// regex: RegExp(r'\`(.*?)\`', multiLine: true),
+			regex: RegExp(r'\`.*?\`', multiLine: true),
+			style: const TextStyle(color: Colors.pink)
+		),
+
+
 		// Links
 		HighlightRule(
 			tag: "links",
