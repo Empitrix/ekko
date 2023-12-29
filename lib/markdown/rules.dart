@@ -1,3 +1,4 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
@@ -102,6 +103,8 @@ List<HighlightRule> allSyntaxRules({
 				bool isChecked = 
 					txt.trim().substring(0, 5).contains("x");
 				return onLeadingText(
+					// topMargin: isDesktop() ? 10.8 : 10.8,
+					topMargin: 11,
 					leading: SizedBox(
 						// width: 15,
 						width: 18,
@@ -152,6 +155,8 @@ List<HighlightRule> allSyntaxRules({
 						size: 10),
 					// spacing: (indentedLvl ~/ 2) * 20,
 					spacing: (indentedLvl ~/ 2) * 20,
+					// topMargin: 6.5,
+					topMargin: 7,
 					text: TextSpan(
 						children: formattingTexts(
 							context: context,
