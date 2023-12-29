@@ -10,10 +10,17 @@ Widget onLeadingText({
 }){
 	return Row(
 		// mainAxisAlignment: MainAxisAlignment.start,
-		crossAxisAlignment: CrossAxisAlignment.center,
+		crossAxisAlignment: CrossAxisAlignment.start,
 		children: [
 			SizedBox(width: spacing),
-			leading,
+			Column(
+				mainAxisAlignment: MainAxisAlignment.start,
+				crossAxisAlignment: CrossAxisAlignment.start,
+				children:[
+					const SizedBox(height: 6.5),
+					leading
+				]
+			),
 			SizedBox(width: widgetSpacing),
 			Expanded(child: Text.rich(text))
 		],
