@@ -101,7 +101,8 @@ AppBar customSearchBar({
 					reverse: true,
 					mode: ExpandMode.width,
 					body: SizedBox(
-						width: MediaQuery.of(context).size.width - 145,
+						// width: MediaQuery.of(context).size.width - 145,
+						width: MediaQuery.of(context).size.width - (isDesktop() ? 145 : 152),
 						child: Text(
 							title,
 							overflow: TextOverflow.ellipsis,

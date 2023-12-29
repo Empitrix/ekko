@@ -1,3 +1,4 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:flutter/material.dart';
 
 
@@ -17,7 +18,7 @@ Widget onLeadingText({
 				mainAxisAlignment: MainAxisAlignment.start,
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children:[
-					const SizedBox(height: 6.5),
+					SizedBox(height: isDesktop() ? 6.5 : 12),
 					leading
 				]
 			),
