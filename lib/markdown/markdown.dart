@@ -99,14 +99,14 @@ class MarkdownWidget extends StatelessWidget {
 					),
 					Container(
 						margin: const EdgeInsets.all(2),
-						width: 34, height: 34,
+						width: 30, height: 30,
 						child: IconButton(
 							icon: ValueListenableBuilder(
 								valueListenable: onCopyNotifier,
 								builder: (_, onCopy, __) => Icon(
 									onCopy ? Icons.check : Icons.copy,
 									color: onCopy ? Colors.green : Colors.white,
-									size: 17,
+									size: 15,  // DFLT:17
 								),
 							),
 							onPressed: () async {
@@ -164,15 +164,30 @@ class MarkdownWidget extends StatelessWidget {
 					mainAxisSize: MainAxisSize.min,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: [
-						SingleChildScrollView(
+						Scrollbar(
 							controller: controller,
-							scrollDirection: Axis.horizontal,
-							child: Column(
-								children: [
-									Text.rich(highlightView().getSpan(style: markdownStyle()))
-								],
-							),
+							radius: const Radius.circular(2.4),
+							thumbVisibility: false,
+							child: SingleChildScrollView(
+								controller: controller,
+								scrollDirection: Axis.horizontal,
+								child: Column(
+									children: [
+										Text.rich(highlightView().getSpan(style: markdownStyle())),
+										const SizedBox(height: 10.5)  // Scroll-Bar size + 2.5 additional
+									],
+								),
+							)
 						)
+						// SingleChildScrollView(
+						// 	controller: controller,
+						// 	scrollDirection: Axis.horizontal,
+						// 	child: Column(
+						// 		children: [
+						// 			Text.rich(highlightView().getSpan(style: markdownStyle()))
+						// 		],
+						// 	),
+						// )
 					],
 				)
 		);
