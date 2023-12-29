@@ -22,6 +22,7 @@ Future<void> essentialLoading(BuildContext context)async{
 	await updateDbPath();
 	await _db.init();
 	dMode = (await _db.readTheme()) == ThemeMode.dark;
+	markdownThemeName = await _db.readMarkdownTheme();
 	acrylicMode = await _db.readAcrylicMode();
 	wrapCodeMode = await _db.readWrapCodeMode();
 	double opacity = await _db.readAcrylicOpacity();

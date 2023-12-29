@@ -12,6 +12,8 @@ bool wrapCodeMode = false;
 int waitForLoading = 420;
 int waitLoadingSize = 300; // ms
 
+String markdownThemeName = "gruvbox-dark";
+
 double textHeight = 1.4;
 double letterSpacing = 0.7;
 

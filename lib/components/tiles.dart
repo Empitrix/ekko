@@ -94,3 +94,35 @@ class SliderTile extends StatelessWidget {
 		);
 	}
 }
+
+
+
+class TwoColorPalette extends StatelessWidget {
+	final Color? baseColor;
+	final Color borderColor;
+	final double radius;
+	final double size;
+	final double padding;
+	const TwoColorPalette({
+		super.key,
+		required this.baseColor,
+		required this.borderColor,
+		this.radius = 5,
+		this.size = 18,
+		this.padding = 2
+	});
+
+	@override
+	Widget build(BuildContext context) {
+		return Container(
+			height: size,
+			width: size,
+			decoration: BoxDecoration(
+				color: baseColor,
+				borderRadius: BorderRadius.circular(radius),
+				border: Border.all(width: padding, color: borderColor)
+			),
+		);
+	}
+}
+

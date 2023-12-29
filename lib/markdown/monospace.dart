@@ -3,29 +3,32 @@ import 'package:ekko/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 
-TextSpan getMonospaceTag(String txt, [double radius = 5]){
-	// txt = txt.trim();
+TextSpan getMonospaceTag(String txt, [double radius = 5, double padding = 5]){
 	List<String> words = breakPhrase(txt);
 	List<WidgetSpan> tags = [];
 	for(String w in words){
+		bool isFirst = words.indexOf(w) == 0;
+		bool isLast = words.indexOf(w) == words.length - 1;
 		tags.add(
 			WidgetSpan(child: Container(
+				padding: EdgeInsets.only(
+					left: isFirst ? padding : 0,
+					right: isLast ? padding : 0
+				),
+				margin: EdgeInsets.zero,
 				decoration: BoxDecoration(
 					borderRadius: BorderRadius.only(
 						topLeft: Radius.circular(
-							words.indexOf(w) == 0 ? radius : 0),
+							isFirst ? radius : 0),
 						bottomLeft: Radius.circular(
-							words.indexOf(w) == 0 ? radius : 0),
+							isFirst ? radius : 0),
 						topRight: Radius.circular(
-							words.indexOf(w) == words.length - 1 ? radius : 0),
+							isLast ? radius : 0),
 						bottomRight: Radius.circular(
-							words.indexOf(w) == words.length - 1 ? radius : 0)
+							isLast ? radius : 0)
 					),
 					color: getMonoBgColor()
 				),
-				// child: Text.rich(TextSpan(text: w, style: const TextStyle(
-				// 	fontFamily: "RobotoMono" 
-				// ))),
 				child: Text(w, style: const TextStyle(
 					fontFamily: "RobotoMono" 
 				)),
@@ -33,9 +36,7 @@ TextSpan getMonospaceTag(String txt, [double radius = 5]){
 		));
 	}
 	return TextSpan(children: [
-		// const TextSpan(text: " "),
 		...tags,
-		// const TextSpan(text: " "),
 	]);
 }
 

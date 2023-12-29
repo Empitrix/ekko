@@ -16,7 +16,8 @@ class DB {
 				darkMode BIT,
 				acrylicMode BIT,
 				wrapCodeMode BIT,
-				acrylicOpacity FLOAT
+				acrylicOpacity FLOAT,
+				markdownThemeName TEXT
 			)
 		""");
 		
@@ -60,10 +61,11 @@ class DB {
 
 		if(List.from(await db.query("local")).isEmpty){
 			Map<String, Object?> initData = {
-				"darkMode": 0,
+				"darkMode": 1,  // Default: DARK-MODE
 				"acrylicMode": 0,
-				"wrapCodeMode": 1,
+				"wrapCodeMode": 0,
 				"acrylicOpacity": 1.0,
+				"markdownThemeName": "gruvbox-dark"
 			};  // Init table
 			// Set parameters on db 
 			await db.insert("local", initData);
@@ -320,28 +322,18 @@ class DB {
 		return folders;
 	}
 
-	// Future<void> createNoteFolder({required Folder folder, required Note note}) async {
-	// 	Database db = await createDB(dPath: dPath);
-	// 	Map<String, Object?> data = Map<String, Object?>.from(note.toJson());
-	// 	// Setup folder-id that are note in <NOTES> by default
-	// 	data["folderId"] = folder.id;
-	// 	await db.insert(
-	// 		"folder_items",
-	// 		Map<String, Object?>.from(data)
-	// 	);
-	// 	await db.close();
-	// }
 
-	// Future<void> updateFolder({required Folder folder}) async {
-	// 	Database db = await createDB(dPath: dPath);
-	// 	await db.update(
-	// 		"folders",
-	// 		Map<String, Object?>.from({"name": folder.name}),
-	// 		where: "id = ?",
-	// 		whereArgs: [folder.id]
-	// 	);
-	// 	await db.close();
-	// }
+	// Makrdown themes
+	Future<String> readMarkdownTheme() async {
+		Map data = await getQuery("local");
+		return data["markdownThemeName"];
+	}
+
+	/* Acrylic Opacity */ 
+	Future<void> updateMarkdownTheme(String newName) async {
+		await updateTable('local',
+			{"markdownThemeName": newName});
+	}
 
 
 

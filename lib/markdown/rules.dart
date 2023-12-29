@@ -155,7 +155,8 @@ List<HighlightRule> allSyntaxRules({
 					text: TextSpan(
 						children: formattingTexts(
 							context: context,
-							content: txt.trim().substring(1),
+							// content: txt.trim().substring(1),
+							content: txt.trim().substring(1).trim(),
 							defaultStyle: defaultStyle
 						)
 					)
@@ -183,6 +184,7 @@ List<HighlightRule> allSyntaxRules({
 			style: const TextStyle(
 				fontSize: 16,
 				decoration: TextDecoration.underline,
+				decorationColor: Colors.blue,
 				color: Colors.blue
 			)
 		),

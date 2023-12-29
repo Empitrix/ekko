@@ -44,30 +44,8 @@ List<Widget> applyRules({
 
 				case 'monospace': {
 					spans.add(getMonospaceTag(
-						" ${matchedText.substring(1, matchedText.length - 1)} "
+						matchedText.substring(1, matchedText.length - 1)
 					));
-					// spans.add(const TextSpan(text: " "));
-					// TextSpan monoSpan = TextSpan(children: [
-					// 	// RoundedBackgroundTextSpan(
-					// 	// RoundedBackgroundTextSpan(
-					// 	TextSpan(
-					// 		// text: " ${matchedText.substring(1, matchedText.length - 1)} ",
-					// 		text: matchedText.substring(1, matchedText.length - 1),
-					// 		style: TextStyle(
-					// 			fontFamily: "RobotoMono",
-					// 			// backgroundColor: getMonoBgColor(),
-					// 			background: Paint()
-					// 				..color = getMonoBgColor()
-					// 				..strokeWidth = 5
-					// 				..strokeJoin = StrokeJoin.round
-					// 				..strokeCap = StrokeCap.round
-					// 				..style = PaintingStyle.stroke,
-					// 			// backgroundColor: getMonoBgColor()
-					// 		),
-					// 	),
-					// ]);
-					// spans.add(monoSpan);
-					// spans.add(const TextSpan(text: " "));
 					break;
 				}
 

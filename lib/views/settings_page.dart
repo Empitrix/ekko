@@ -1,11 +1,13 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/components/sheets.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
@@ -78,8 +80,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 
 						if(isDesktop(["linux"])) SwitchTile(
 							leading: const Icon(Icons.window),
-							title: const Text("Acrylic Mode",
-								style: TextStyle(fontWeight: FontWeight.bold)),
+							title: const Text("Acrylic Mode"),
 							value: acrylicMode,
 							onChange: (bool value) async {
 								if(value){
@@ -134,6 +135,35 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 								await db.updateWrapCodeMode(newMode);
 							}
 						),
+
+						// Markdown theme
+						ListTile(
+							leading: const Icon(Icons.color_lens),
+							title: const Text("Markdown Theme"),
+							// subtitle: Text(markdownThemeName),
+							subtitle: Row(
+								children: [
+									TwoColorPalette(
+										baseColor: allMarkdownThemes[markdownThemeName]!["root"]!.backgroundColor,
+										borderColor: allMarkdownThemes[markdownThemeName]!["meta"]!.color!
+									),
+									const SizedBox(width: 12),
+									// Text('${(for String n in markdownThemeName.split("-")) n.title()}')
+									Text(markdownThemeName.replaceAll("-"," ").title())
+								],
+							),
+							onTap: (){
+								selectMarkdownTheme(
+									context: context,
+									onSelect: (String name) async {
+										debugPrint("Selected Name: $name");
+										setState(() { markdownThemeName = name; });
+										await db.updateMarkdownTheme(name);
+									}
+								);
+								
+							},
+						)
 
 					],
 				),

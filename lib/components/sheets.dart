@@ -1,7 +1,11 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/dialogs.dart';
+import 'package:ekko/components/tiles.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/models/note.dart';
@@ -238,6 +242,48 @@ void generalFolderSheet({
 									}
 								);
 							}
+						),
+
+						const SizedBox(height: 12)
+					],
+				),
+			),
+		)
+	);
+}
+
+
+
+
+
+void selectMarkdownTheme({
+	required BuildContext context,
+	required ValueChanged<String> onSelect,
+	}){
+	_showSheet(
+		context: context,
+		builder: (BuildContext context) => SizedBox(
+			width: MediaQuery.of(context).size.width,
+			child: SingleChildScrollView(
+				child: Column(
+					mainAxisAlignment: MainAxisAlignment.start,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+
+						for(String name in allMarkdownThemes.keys)  ListTile(
+							leading: TwoColorPalette(
+								baseColor: allMarkdownThemes[name]!["root"]!.backgroundColor,
+								borderColor: allMarkdownThemes[name]!["meta"]!.color!
+							),
+							title: Text(
+								name.replaceAll("-", " ").title()),
+							trailing: markdownThemeName == name ?
+								const Icon(Icons.check) :
+								null,
+							onTap: (){
+								Navigator.pop(context);
+								onSelect(name);
+							},
 						),
 
 						const SizedBox(height: 12)

@@ -1,9 +1,9 @@
 import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/public.dart';
+import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/gruvbox-dark.dart';
 
 
 class MarkdownWidget extends StatelessWidget {
@@ -55,7 +55,9 @@ class MarkdownWidget extends StatelessWidget {
 			_markdownData(),
 			language: _langName(content).toLowerCase(),
 			tabSize: 2,
-			theme: gruvboxDarkTheme,
+			// theme: gruvboxDarkTheme,
+			theme: allMarkdownThemes[markdownThemeName]!,
+			
 		);
 	}
 
