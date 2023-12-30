@@ -1,7 +1,9 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/dialogs.dart';
+import 'package:ekko/components/general_widgets.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -285,7 +287,59 @@ void selectMarkdownTheme({
 								onSelect(name);
 							},
 						),
+						const SizedBox(height: 12)
+					],
+				),
+			),
+		)
+	);
+}
 
+
+
+
+
+void inViewNoteSheet({
+	required BuildContext context,
+	required Note note,
+	}){
+	_showSheet(
+		context: context,
+		builder: (BuildContext context) => SizedBox(
+			width: MediaQuery.of(context).size.width,
+			child: SingleChildScrollView(
+				child: Column(
+					mainAxisAlignment: MainAxisAlignment.start,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						SheetText(
+							text: SelectableText(
+								note.title,
+								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+									color: Theme.of(context).colorScheme.inverseSurface
+								)
+							),
+						),
+						SheetText(
+							text: SelectableText(
+								note.description,
+								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+									color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5)
+								)
+							),
+						),
+						const SizedBox(height: 10),
+						const Divider(),
+						const SizedBox(height: 10),
+						ListTile(
+							leading: const Icon(Icons.copy),
+							title: const Text("Copy"),
+							onTap:(){
+								Navigator.pop(context);
+								CCB.copy(note.content);
+								SNK(context).message(const Icon(Icons.copy), "Copied!");
+							}
+						),
 						const SizedBox(height: 12)
 					],
 				),

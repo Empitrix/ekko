@@ -1,5 +1,6 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
+import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -165,7 +166,12 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 														margin: const EdgeInsets.all(5),
 														child: IconButton(
 															icon: const Icon(Icons.more_vert),
-															onPressed: (){}
+															onPressed: (){
+																inViewNoteSheet(
+																	context: context,
+																	note: note!
+																);
+															}
 														),
 													)
 												],
