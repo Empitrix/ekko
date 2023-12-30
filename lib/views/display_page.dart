@@ -136,31 +136,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 														))
 													],
 												),
-												// flexibleSpace: FlexibleSpaceBar(
-												// 	stretchModes: const <StretchMode>[
-												// 		StretchMode.zoomBackground,
-												// 		StretchMode.blurBackground,
-												// 	],
-												// 	background: Column(
-												// 		mainAxisAlignment: MainAxisAlignment.start,
-												// 		crossAxisAlignment: CrossAxisAlignment.start,
-												// 		children: [
-												// 			Text(
-												// 				note!.title,
-												// 				overflow: TextOverflow.fade,
-												// 				style: Theme.of(context).appBarTheme.titleTextStyle
-												// 			),
-												// 			Text(note!.description, style: TextStyle(
-												// 				fontSize: 16,
-												// 				overflow: TextOverflow.fade,
-												// 				color: dMode ? Colors.grey : Colors.grey[400]
-												// 			))
-												// 		],
-												// 	),
-												// ),
-												// 
-												// bottom: AppBar(title: const Text("Awesome")),
-												// expandedHeight: 200,
 												actions: [
 													Container(
 														margin: const EdgeInsets.all(5),
@@ -200,28 +175,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 												top: 12, bottom: 85  // :)
 											),
 											children: [
-												// /* Title */
-												// Text(
-												// 	note!.title,
-												// 	style: const TextStyle(
-												// 		fontSize: 25,
-												// 		fontWeight: FontWeight.w500,
-												// 		height: 0
-												// 	),
-												// ),
-												// const SizedBox(height: 5),
-												// /* Description */
-												// Text(
-												// 	note!.description,
-												// 	style: TextStyle(
-												// 		fontSize: 20,
-												// 		color: Theme.of(context)
-												// 			.colorScheme.inverseSurface
-												// 			.withOpacity(0.73),
-												// 		fontWeight: FontWeight.w500,
-												// 		height: 0
-												// 	),
-												// ),
 												const SizedBox(height: 10),
 												MDGenerator(content: note!.content)
 											],

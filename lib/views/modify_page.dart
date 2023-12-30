@@ -45,7 +45,6 @@ class ModifyPageState extends State<ModifyPage> {
 		if(widget.backLoad != null && isNew){
 			widget.backLoad!();
 		}
-		// changeView(context, const HomePage(), isPush: false);
 		changeView(context, widget.previousPage, isPush: false);
 	}
 
@@ -84,45 +83,11 @@ class ModifyPageState extends State<ModifyPage> {
 		}
 
 		if(mounted) _backClose(isNew: true);
-
 	}
-
-	/*Future<void> loadTheNote() async {
-		setState(() { isLoaded = false; });
-		ReceivePort getPort = (await loadModifyWithIsolates(note: widget.note!));
-		getPort.listen((note) async {
-			if(note is Note){
-				// Update fields
-				title.text = note.title;
-				description.text = note.description;
-				content.text = note.content;
-				mode = note.mode;
-				isPinned = note.isPinned;
-				/*
-					Waiting if content length is too long!
-					for performance, and wait for animations
-					to complete!
-				*/
-				if(note.content.length > 420){
-					await Future.delayed(const Duration(seconds: 1)).then((value){
-						setState(() { isLoaded = true; });
-						getPort.close();
-					});
-				} else {
-					setState(() { isLoaded = true; });
-					getPort.close();
-				}
-			}
-		});
-	}*/
 
 
 	Future<void> loadTheNote() async {
 		setState(() { isLoaded = false; });
-		
-		// await Future.microtask((){
-		// 	content = getContentTextEditingController(context);
-		// });
 
 		if(widget.note == null){
 			setState(() { isLoaded = true; });
@@ -144,24 +109,6 @@ class ModifyPageState extends State<ModifyPage> {
 		} else {
 			setState(() { isLoaded = true; });
 		}
-
-		/*!
-		ReceivePort getPort = (await loadModifyWithIsolates(note: widget.note!));
-		getPort.listen((note) async {
-			if(note is Note){
-				// Update fields
-				if(note.content.length > 420){
-					await Future.delayed(const Duration(seconds: 1)).then((value){
-						setState(() { isLoaded = true; });
-						getPort.close();
-					});
-				} else {
-					setState(() { isLoaded = true; });
-					getPort.close();
-				}
-			}
-		});
-		*/
 	}
 
 	@override
@@ -199,13 +146,12 @@ class ModifyPageState extends State<ModifyPage> {
 				),
 				body: Builder(
 					builder: (BuildContext context){
-
+						// Loading
 						if(!isLoaded){
 							return const Center(
-								child: CircularProgressIndicator(),
-							);
-						}
+								child: CircularProgressIndicator());}
 
+						// Widgets
 						return ListView(
 							padding: const EdgeInsets.all(12),
 							children: [
@@ -230,35 +176,8 @@ class ModifyPageState extends State<ModifyPage> {
 								)
 							],
 						);
-
 					}
 				)
-			// 	body: isLoaded ? ListView(
-			// 		padding: const EdgeInsets.all(12),
-			// 		children: [
-			// 			TitleTextField(
-			// 				controller: title,
-			// 				focusNode: titleF,
-			// 				autofocus: widget.note == null,
-			// 				nextFocus: () => descriptionF.requestFocus(),
-			// 			),
-			// 			// const SizedBox(height: 20),
-			// 			DescriptionTextFiled(
-			// 				controller: description,
-			// 				focusNode: descriptionF,
-			// 				previousFocus: () => titleF.requestFocus(),
-			// 				nextFocus: () => contentF.requestFocus()
-			// 			),
-			// 			const SizedBox(height: 20),
-			// 			ContentTextFiled(
-			// 				controller: content!,
-			// 				focusNode: contentF,
-			// 				previousFocus: () => descriptionF.requestFocus()
-			// 			)
-			// 		],
-			// 	) : const Center(
-			// 		child: CircularProgressIndicator(),
-			// 	)
 			),
 		);
 	}

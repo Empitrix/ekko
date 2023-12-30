@@ -14,10 +14,12 @@ class ImportedToModify {
 	});
 }
 
+
 Future<void> __loadModifyNote(ImportedToModify iso) async {
 	Note loaded = await iso.smallNote.toRealNote(iso.path);
 	iso.port.send(loaded);
 }
+
 
 Future<ReceivePort> loadModifyWithIsolates({required SmallNote note}) async {
 	ReceivePort receivePort = ReceivePort();
@@ -32,3 +34,4 @@ Future<ReceivePort> loadModifyWithIsolates({required SmallNote note}) async {
 	thisIso.kill();
 	return receivePort;
 }
+

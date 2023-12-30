@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TickerProviderStateMixin
 
 class GenAnimation {
 	final Animation<double> animation;
@@ -41,6 +40,7 @@ enum ExpandMode {
 	width
 }
 
+
 typedef CustomBuilder = Widget Function(BuildContext context, Widget? child);
 
 Widget expandAnimation({
@@ -48,7 +48,6 @@ Widget expandAnimation({
 	required ExpandMode mode,
 	required Widget body,
 	BorderRadius? borderRadius,
-	// double roundness = 5,
 	bool reverse = false
 }){
 	return AnimatedBuilder(
@@ -67,3 +66,4 @@ Widget expandAnimation({
 		)
 	);
 }
+

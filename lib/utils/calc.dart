@@ -7,6 +7,5 @@ Size calcTextSize(
 		text: TextSpan(text: text, style: style),
 		maxLines: 1,
 		textScaler: MediaQuery.of(context).textScaler,
-		// textScaleFactor: MediaQuery.of(context).textScaleFactor,
 		textDirection: TextDirection.ltr)..layout()).size;
 }

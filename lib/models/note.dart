@@ -39,10 +39,8 @@ DateTime _fromDate(String dateStr) {
 }
 
 
-
 class Note {
 	final int id;
-	// final int folderId;
 	late int folderId;
 	final String title;
 	final String description;
@@ -83,7 +81,6 @@ class Note {
 
 	Map toJson(){
 		return {
-			// "id": id,  // SQL will create a unique one
 			"title": title,
 			"folderId": folderId,
 			"description": description,
@@ -142,7 +139,6 @@ class SmallNote {
 
 	Map toJson(){
 		return {
-			// "id": id,  // SQL will create a unique one
 			"title": title,
 			"folderId": folderId,
 			"description": description,
@@ -185,3 +181,4 @@ IconData noteModeIcon(NoteMode mode){
 		}
 	}
 }
+

@@ -12,6 +12,7 @@ import 'package:ekko/models/folder.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/models/note.dart';
 
+
 // Custom context builder
 typedef ContextBuilder = Widget Function(BuildContext context);
 
@@ -120,7 +121,6 @@ void generalSmallNoteSheet({
 								);
 							}
 						),
-
 						// Footer
 						const SizedBox(height: 12)
 					],
@@ -131,16 +131,11 @@ void generalSmallNoteSheet({
 }
 
 
-
-
-
-
 typedef ContextFolderInfoAction = Function(BuildContext context, FolderInfo);
 
 void selectFolderSheet({
 	required BuildContext context,
 	required int noteFolderId,
-	// required ValueChanged<FolderInfo> action
 	required ContextFolderInfoAction action
 	}){
 	// Start future can't be inside builder because will start again
@@ -245,7 +240,6 @@ void generalFolderSheet({
 								);
 							}
 						),
-
 						const SizedBox(height: 12)
 					],
 				),
@@ -271,7 +265,6 @@ void selectMarkdownTheme({
 					mainAxisAlignment: MainAxisAlignment.start,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: [
-
 						for(String name in allMarkdownThemes.keys)  ListTile(
 							leading: TwoColorPalette(
 								baseColor: allMarkdownThemes[name]!["root"]!.backgroundColor,
@@ -347,3 +340,4 @@ void inViewNoteSheet({
 		)
 	);
 }
+

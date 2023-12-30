@@ -10,6 +10,7 @@ Future<void> launchThis({
 			mode: LaunchMode.externalApplication
 		);
 	}catch(e){
-		//
+		// Failed to launch URL
 	}
 }
+

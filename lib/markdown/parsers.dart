@@ -10,7 +10,6 @@ Widget onLeadingText({
 	double topMargin = 0
 }){
 	return Row(
-		// mainAxisAlignment: MainAxisAlignment.start,
 		crossAxisAlignment: CrossAxisAlignment.start,
 		children: [
 			SizedBox(width: spacing),
@@ -18,7 +17,6 @@ Widget onLeadingText({
 				mainAxisAlignment: MainAxisAlignment.start,
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children:[
-					// SizedBox(height: isDesktop() ? 6.5 : 12),
 					SizedBox(height: topMargin),
 					leading
 				]

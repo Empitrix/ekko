@@ -30,10 +30,7 @@ List<Widget> applyRules({
 		onMatch: (match) {
 			String matchedText = match.group(0)!;
 			HighlightRule matchingRule = rules.firstWhere((rule) => rule.regex.hasMatch(matchedText));
-
-			// Initial for loop
 			inOrderColumn = false;
-			// inOrderColumnTween = false;
 
 			switch (matchingRule.tag) {
 				case 'markdown': {
@@ -190,9 +187,6 @@ List<Widget> applyRules({
 						),
 					);
 					spans.add(linkSpan);
-					// updateSpans();
-					// inOrderColumn = true;
-					// widgetTree.add(matchingRule.action!(matchedText));
 					break;
 				}
 

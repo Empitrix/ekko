@@ -20,17 +20,9 @@ class MarkdownWidget extends StatelessWidget {
 
 	/* Strings */
 	String _content(){
-		// return content.trim()
-		// 	.substring(3, content.trim().length - 3);
 		return content.trim()
 			.substring(3, content.trim().length - 3).trim();
 	}
-	// String _langName() {
-	// 	return _content().trim().substring(
-	// 		0, _content().trim().indexOf("\n")
-	// 	).trim();
-	// 	// return "N/A";
-	// }
 
 	String _langName(String input){
 		RegExp regex = RegExp(r"```\s*\w+");
@@ -43,8 +35,6 @@ class MarkdownWidget extends StatelessWidget {
 	}
 
 	String _markdownData(){
-		// return _content()
-		// 	.replaceRange(0, _content().indexOf("\n") + 1, "");
 		return _content()
 			.replaceRange(0, _content().indexOf("\n") + 1, "");
 	}
@@ -135,28 +125,6 @@ class MarkdownWidget extends StatelessWidget {
 					bottomRight: Radius.circular(radius)
 				)
 			),
-			// child: Text.rich(highlightView().getSpan(
-			// 	style: markdownStyle())),
-			// child: Expanded(child: Text.rich(highlightView().getSpan(style: markdownStyle()))),
-			// child: Text.rich(highlightView().getSpan(style: markdownStyle())),
-			
-			// child: SingleChildScrollView(child: Row(
-			// 	children: [
-			// 		// Expanded(child: Text.rich(highlightView().getSpan(style: markdownStyle())) )
-			// 		SingleChildScrollView(child: Text.rich(highlightView().getSpan(style: markdownStyle())) )
-			// 	],
-			// )),
-			
-			// child: Text.rich(highlightView().getSpan(style: markdownStyle()))
-			// child: SingleChildScrollView(
-			// 	child: Column(
-			// 		children: [
-			// 			Text.rich(highlightView().getSpan(style: markdownStyle()))
-			// 		],
-			// 	),
-			// )
-
-			// child: Text.rich(highlightView().getSpan(style: markdownStyle()))
 		
 			child: wrapCodeMode ?
 				Text.rich(highlightView().getSpan(style: markdownStyle())):
@@ -179,15 +147,6 @@ class MarkdownWidget extends StatelessWidget {
 								),
 							)
 						)
-						// SingleChildScrollView(
-						// 	controller: controller,
-						// 	scrollDirection: Axis.horizontal,
-						// 	child: Column(
-						// 		children: [
-						// 			Text.rich(highlightView().getSpan(style: markdownStyle()))
-						// 		],
-						// 	),
-						// )
 					],
 				)
 		);

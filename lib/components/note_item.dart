@@ -79,21 +79,6 @@ class NoteItem extends StatelessWidget {
 									}
 								),
 							),
-							// IconButton(
-							// 	icon: const Icon(Icons.edit),
-							// 	color: Theme.of(context).primaryColor,
-							// 	onPressed: (){
-							// 		changeView(
-							// 			context,
-							// 			ModifyPage(
-							// 				note: note,
-							// 				backLoad: backLoad,
-							// 				previousPage: const HomePage(),
-							// 			),
-							// 			isPush: true
-							// 		);
-							// 	}
-							// ),
 							const SizedBox(width: 12),
 							Expanded(
 								child: Column(

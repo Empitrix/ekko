@@ -10,3 +10,4 @@ class HorizontalScrollBehavior extends MaterialScrollBehavior {
 		PointerDeviceKind.unknown,
 	};
 }
+

@@ -44,21 +44,6 @@ class DB {
 		""");
 
 
-		// await db.execute("""
-		// 	CREATE TABLE IF NOT EXISTS folder_items (
-		// 		id INTEGER PRIMARY KEY,
-		// 		title TEXT,
-		// 		description TEXT,
-		// 		content TEXT,
-		// 		lastEdit Text,
-		// 		isPinned BIT,
-		// 		mode Text,
-		// 		folderId INTEGER,
-		// 		FOREIGN KEY (folderId) REFERENCES folders(id)
-		// 	)
-		// """);
-
-
 		if(List.from(await db.query("local")).isEmpty){
 			Map<String, Object?> initData = {
 				"darkMode": 1,  // Default: DARK-MODE
@@ -201,8 +186,6 @@ class DB {
 		await db.close();
 		return Note.toNote(noteJson.first);
 	}
-
-
 
 
 	/* FOLDER */

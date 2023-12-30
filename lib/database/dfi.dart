@@ -29,3 +29,4 @@ Future<void> updateTable(String tName, Map<String, Object?> data) async {
 	await db.update(tName, data);
 	await db.close();
 }
+

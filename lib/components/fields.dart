@@ -29,7 +29,6 @@ class TitleTextField extends StatelessWidget {
 				Theme.of(context).primaryTextTheme.headlineSmall!,
 			][index].copyWith(
 				color: Theme.of(context).colorScheme.inverseSurface,
-				// fontFamily: "RobotoMono"
 			);
 		}
 		// Convert SizedBox to Container just in case of padding/margin
@@ -165,29 +164,13 @@ class ContentTextFiled extends StatelessWidget {
 						// TextField(
 						RegexPatternTextField(
 						contextMenuBuilder: (context, editableTextState){
-							// Source: https://stackoverflow.com/questions/74868518/how-to-have-a-custom-context-menu-for-textfields-in-flutter
-							// final TextEditingValue value = editableTextState.textEditingValue;
 							final List<ContextMenuButtonItem> buttonItems = editableTextState.contextMenuButtonItems;
-							// //if (isValidEmail(value.selection.textInside(value.text))) {
-							// if (true) {
-							// 	buttonItems.insert(
-							// 		0,
-							// 		ContextMenuButtonItem(
-							// 			label: 'Send email',
-							// 			onPressed: () {
-							// 				ContextMenuController.removeAny();
-							// 				// Navigator.of(context).push();
-							// 			},
-							// 		)
-							// 	);
-							// }
 							return AdaptiveTextSelectionToolbar.buttonItems(
 								anchors: editableTextState.contextMenuAnchors,
 								buttonItems: buttonItems,
 							);
 						},
 						defaultRegexPatternStyles: false,
-							// controller: controller,
 							regexPatternStyles: [
 								for(HighlightRule rule in allSyntaxRules(context: context)) rule.getTextStyle()
 							],
@@ -199,7 +182,6 @@ class ContentTextFiled extends StatelessWidget {
 									color: Theme.of(context).colorScheme.inverseSurface,
 									fontFamily: "RobotoMono"
 								),
-							// onSubmitted: (_) => onSubmitted(),
 							decoration: const InputDecoration(
 								border: InputBorder.none,
 								hintText: "Content"
@@ -209,7 +191,6 @@ class ContentTextFiled extends StatelessWidget {
 						MouseRegion(
 							cursor: SystemMouseCursors.text,
 							child: SizedBox(
-								// height: MediaQuery.of(context).size.height - 125,
 								height: MediaQuery.of(context).size.height - 200,
 								child: GestureDetector(
 									onTap: (){

@@ -34,7 +34,6 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 	Future<void> primalLoading([bool isNew = false]) async {
 		debugPrint("[LOADING FOLDERS]");
 		if(isNew) setState(() => isLoading = true);
-		// await Future.delayed(const Duration(seconds: 2));	// Async Test
 		// Load all the folders
 		foldersNotifier.value = await db.loadFolders();
 		if(isNew) setState(() => isLoading = false);
@@ -116,6 +115,7 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 						if(folders.isEmpty){
 							return const Center(child: Text("Add New Folder!"));}
 
+						// Folder's list
 						return ListView.builder(
 							controller: scrollCtrl,
 							itemCount: folders.length,

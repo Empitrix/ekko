@@ -27,8 +27,6 @@ class Folder {
 		return {
 			"name": name,
 			"id": id,
-			// "notes": convertedNotes,
-			// "notes": List<Map<String, Object?>>.from(convertedNotes),
 		};
 	}
 
@@ -40,7 +38,6 @@ class Folder {
 		/*Get input JSON folder and return Folder type data*/
 		List<SmallNote> convertedNotes = [];
 		for(Map nt in input["notes"]){
-			// convertedNotes.add(Note.toNote(nt));
 			convertedNotes.add(SmallNote.toSmallNote(nt));
 		}
 		return Folder(
@@ -52,8 +49,6 @@ class Folder {
 }
 
 
-
-
 class FolderInfo{
 	final String name;
 	final int id;
@@ -62,5 +57,4 @@ class FolderInfo{
 		required this.id
 	});
 }
-
 

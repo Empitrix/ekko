@@ -23,9 +23,6 @@ class _DrawerPageState extends State<DrawerPage> {
 
 	@override
 	void dispose() {
-		// if(widget.closeLoading != null){
-		// 	widget.closeLoading!();
-		// }
 		super.dispose();
 	}
 

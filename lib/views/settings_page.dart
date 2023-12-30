@@ -67,7 +67,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 
 						SwitchTile(
 							leading: const Icon(Icons.dark_mode),
-								// style: TextStyle(fontWeight: FontWeight.bold)
 							title: const Text("Dark Mode"),
 							value: dMode,
 							onChange: (bool value) async {
@@ -140,7 +139,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 						ListTile(
 							leading: const Icon(Icons.color_lens),
 							title: const Text("Markdown Theme"),
-							// subtitle: Text(markdownThemeName),
 							subtitle: Row(
 								children: [
 									TwoColorPalette(
@@ -148,7 +146,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 										borderColor: allMarkdownThemes[markdownThemeName]!["meta"]!.color!
 									),
 									const SizedBox(width: 12),
-									// Text('${(for String n in markdownThemeName.split("-")) n.title()}')
 									Text(markdownThemeName.replaceAll("-"," ").title())
 								],
 							),

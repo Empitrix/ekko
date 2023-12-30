@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// List<String> _historyPage = ["LandPage0Index"];
 
 class CustomPageRoute extends PageRouteBuilder{
 	final Widget view;
@@ -49,7 +48,6 @@ void changeView(
 			*/
 			// Remove All the previus views
 			Navigator.of(context).popUntil((route) => route.isFirst); 
-			// Navigator.pop(context);  // Remove Current (Another way of solving issue)
 			// Replace Current one with the new one
 			Navigator.pushReplacement(
 				context,
@@ -60,14 +58,10 @@ void changeView(
 				context,
 				CustomPageRoute(view: view)
 			);
-			// _historyPage.add(view.toString());
 		}
 
 	} else {
 		Navigator.pop(context);
-		// _historyPage.removeLast();
 	}
-	
 
-	// debugPrint("[HISTORY]: $_historyPage");
 }

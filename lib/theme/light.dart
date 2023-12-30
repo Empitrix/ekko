@@ -1,23 +1,22 @@
 import 'package:ekko/backend/extensions.dart';
 import 'package:flutter/material.dart';
 
-Color _bgColor = const Color(0xffffffff);
-Color _pColor = const Color(0xff517da2);
-Color _navBgColor = const Color(0xff517da2);
 
 ThemeData light(BuildContext context){
+	Color bgColor = const Color(0xffffffff);
+	Color pColor = const Color(0xff517da2);
+	Color navBgColor = const Color(0xff517da2);
 	return ThemeData(
 		useMaterial3: true,
 		fontFamily: "Rubik",
-		// fontFamily: "SauceCodeProNerdFont",
-		scaffoldBackgroundColor: _bgColor.aae(context),
-		primaryColor: _pColor,
+		scaffoldBackgroundColor: bgColor.aae(context),
+		primaryColor: pColor,
 		colorScheme: ColorScheme.fromSeed(
-			seedColor: _pColor,
+			seedColor: pColor,
 			brightness: Brightness.light,
 		),
 		appBarTheme: AppBarTheme(
-			backgroundColor: _navBgColor.aae(context),
+			backgroundColor: navBgColor.aae(context),
 			titleTextStyle: const TextStyle(
 				fontFamily: "Rubik",
 				fontWeight: FontWeight.bold,
@@ -30,8 +29,7 @@ ThemeData light(BuildContext context){
 			surfaceTintColor: Colors.transparent
 		),
 		drawerTheme: DrawerThemeData(
-			// backgroundColor: _bgColor.aae()
-			backgroundColor: _bgColor
+			backgroundColor: bgColor
 		),
 	);
 }

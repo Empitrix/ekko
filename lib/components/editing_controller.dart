@@ -128,25 +128,3 @@ class StyleableTextFieldController extends TextEditingController {
 	}
 }
 
-
-
-/* Content Text Filed */
-
-// // StyleableTextFieldController getContentTextEditingController(){
-// // StyleableTextFieldController getContentTextEditingController(BuildContext context){
-//  getContentTextEditingController(BuildContext context){
-// 
-// 
-// 	List<HighlightRule> rules = allSyntaxRules(context: context);
-// 
-// 	return StyleableTextFieldController(
-// 		styles: TextPartStyleDefinitions(
-// 			definitionList: [] 
-// 			// definitionList: [
-// 			// 	for(HighlightRule rule in rules) rule.getDefinition()
-// 			// ]
-// 
-// 		),
-// 	);
-// }
-// 

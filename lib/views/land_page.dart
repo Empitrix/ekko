@@ -140,7 +140,6 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 					}
 				}
 				// Minimize the app
-				// T-O-D-O: save current page state (folder-id)
 				SystemNavigator.pop(animated: true);
 			},
 			child: Scaffold(

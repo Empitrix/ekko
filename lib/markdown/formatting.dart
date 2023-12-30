@@ -20,8 +20,6 @@ List<TextSpan> formattingTexts({
 			tag: "links",
 			innerNum: 0,
 			innerMethod: InnerMethod.custom,
-			// regex: RegExp(r'^\[.*\]\(.*\)$'),
-			// regex: RegExp(r'\s?\[.*\]\(.*\)\s?'),
 			regex: RegExp(r'\[.*\]\(.*\)'),
 			innerSpan: (txt){
 				String name = txt.split("](")[0]
@@ -161,3 +159,4 @@ List<TextSpan> formattingTexts({
 
 	return spans;
 }
+

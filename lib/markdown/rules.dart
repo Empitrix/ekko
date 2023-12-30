@@ -1,4 +1,3 @@
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
@@ -15,8 +14,6 @@ List<HighlightRule> allSyntaxRules({
 			tag: "markdown",
 			action: (String text) => MarkdownWidget(
 				content: text, height: textHeight),
-			// regex: RegExp(r'\s```([\s\S]*?)```\s'),
-			// regex: RegExp(r'\s*```\s*\w+\n*([\s\S]*?)\n\s*```\s*', multiLine: true),
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
 			style: const TextStyle(color: Colors.teal)
 		),
@@ -103,10 +100,8 @@ List<HighlightRule> allSyntaxRules({
 				bool isChecked = 
 					txt.trim().substring(0, 5).contains("x");
 				return onLeadingText(
-					// topMargin: isDesktop() ? 10.8 : 10.8,
 					topMargin: 11,
 					leading: SizedBox(
-						// width: 15,
 						width: 18,
 						height: 0,
 						child: Transform.scale(
@@ -115,20 +110,14 @@ List<HighlightRule> allSyntaxRules({
 							child: IgnorePointer(
 								child: Checkbox(
 									value: isChecked,
-									// onChanged: (_){} 
 									onChanged: null
 								),
 							),
 						) ,
 					),
-					// text: TextSpan(
-					// 	text: txt.trim().substring(5),
-					// 	style: defaultStyle
-					// ),
 					text: TextSpan(
 						children: formattingTexts(
 							context: context,
-							// content: txt.trim().substring(5),
 							content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
 							defaultStyle: defaultStyle
 						)
@@ -144,30 +133,23 @@ List<HighlightRule> allSyntaxRules({
 			tag: "item",
 			action: (txt){
 				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
-				// // int indentedLvl = (tillFirstLetter(txt) / 2).ceil();
-				// int indentedLvl = (tillFirstLetter(txt) / 2).toInt();
-				// print(indentedLvl);
 				return onLeadingText(
 					leading: Icon(
 						indentedLvl == 0 ? Icons.circle :
 						indentedLvl == 2 ? Icons.circle_outlined :
 						Icons.square,
 						size: 10),
-					// spacing: (indentedLvl ~/ 2) * 20,
 					spacing: (indentedLvl ~/ 2) * 20,
-					// topMargin: 6.5,
 					topMargin: 7,
 					text: TextSpan(
 						children: formattingTexts(
 							context: context,
-							// content: txt.trim().substring(1),
 							content: txt.trim().substring(1).trim(),
 							defaultStyle: defaultStyle
 						)
 					)
 				);
 			},
-			// regex: RegExp(r'^-\s.+$'),
 			regex: RegExp(r'^\s*-\s+.+$'),
 			style: const TextStyle(color: Colors.deepOrange)
 		),
@@ -175,7 +157,6 @@ List<HighlightRule> allSyntaxRules({
 
 		HighlightRule(
 			tag: "monospace",
-			// regex: RegExp(r'\`(.*?)\`', multiLine: true),
 			regex: RegExp(r'\`.*?\`', multiLine: true),
 			style: const TextStyle(color: Colors.pink)
 		),
@@ -184,7 +165,6 @@ List<HighlightRule> allSyntaxRules({
 		// Links
 		HighlightRule(
 			tag: "links",
-			// regex: RegExp(r'^\[.*\]\(.*\)$'),
 			regex: RegExp(r'\[.*\]\(.*\)'),
 			style: const TextStyle(
 				fontSize: 16,
@@ -223,7 +203,6 @@ List<HighlightRule> allSyntaxRules({
 		HighlightRule(
 			tag: "boldness",
 			regex: RegExp(r'\*\*(.*?)\*\*'),
-			// regex: RegExp(r'\*\*(\w+)\*\*'),
 			style: const TextStyle(
 				fontSize: 16,
 				fontWeight: FontWeight.bold
@@ -282,8 +261,8 @@ List<HighlightRule> allSyntaxRules({
 		),
 
 
-
 	];
 
 	return rules;
 }
+

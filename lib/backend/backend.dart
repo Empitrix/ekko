@@ -14,7 +14,6 @@ class TxtCtrl{
 		if(vStr(c.text) == ""){ return false;}
 		return true;
 	}
-
 }
 
 
@@ -34,3 +33,4 @@ bool isDesktop([List<String>? platforms]){
 double getAngle(int d){
 	return (d / (180 / math.pi));
 }
+
