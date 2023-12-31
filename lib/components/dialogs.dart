@@ -22,7 +22,8 @@ class Dialogs {
 	}
 
 	void ask({
-		required String title, content,
+		required String title,
+		required String content,
 		required Function action,
 		String fillAct = "Ok",
 		String outAct = "Cancel"}){

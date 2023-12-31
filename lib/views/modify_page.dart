@@ -1,10 +1,13 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/custom_buttons.dart';
+import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/io/md_file.dart';
+import 'package:ekko/models/file_out.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
@@ -45,7 +48,23 @@ class ModifyPageState extends State<ModifyPage> {
 		if(widget.backLoad != null && isNew){
 			widget.backLoad!();
 		}
-		changeView(context, widget.previousPage, isPush: false);
+
+		
+		if(!TxtCtrl(title, description, content).isAllEmpty()){
+			// check if anything has been changed
+			// if(<something changed>){
+			// 	<ask!, if granted then quit>
+			// } else { <quit> }
+			Dialogs(context).ask(
+				title: widget.note == null ? "Exit" : "Quit",
+				content: "If you exit, all the fields will be cleared!",
+				action: (){
+					changeView(context, widget.previousPage, isPush: false);
+				}
+			);
+		} else {
+			changeView(context, widget.previousPage, isPush: false);
+		}
 	}
 
 
@@ -54,7 +73,7 @@ class ModifyPageState extends State<ModifyPage> {
 		SNK snk = SNK(context);
 
 		// Make sure that all the filed are fulled
-		if(!TxtCtrl.isAllFilled(title, description, content)){
+		if(!TxtCtrl(title, description, content).isAllFilled()){
 			debugPrint("Fill all the forms!");
 			snk.message(
 				const Icon(Icons.close), "Fill all the forms");
@@ -111,6 +130,16 @@ class ModifyPageState extends State<ModifyPage> {
 		}
 	}
 
+
+	Future<void> _updateFiledWithOutterFile() async {
+		FileContentOut? fileData = await MDFile.read();
+		if(fileData == null) { return; }
+		content.text = fileData.content;
+		title.text = fileData.name;
+		// Set focus to descript filed becasue it's not filled
+		descriptionF.requestFocus();
+	}
+
 	@override
 	void initState() {
 		loadTheNote();
@@ -134,6 +163,28 @@ class ModifyPageState extends State<ModifyPage> {
 						onPressed: () => _backClose(),
 					),
 					actions: [
+						Container(
+							margin: const EdgeInsets.all(5),
+							child: IconButton(
+								tooltip: "Import",
+								// icon: const Icon(Icons.import_contacts),
+								icon: const Icon(Icons.downloading),
+								onPressed: () async {
+									if(!TxtCtrl(title, description, content).isAllEmpty()){
+										Dialogs(context).ask(
+											title: "Replace",
+											content: "Did you want to replace all?",
+											action: () async {
+												await _updateFiledWithOutterFile();
+											}
+										);
+									} else {
+										await _updateFiledWithOutterFile();
+									}
+								}
+							),
+						),
+						// Should be the last Container
 						SizedBox(
 							height: double.infinity,
 							child: CustomModifyButton(
@@ -141,7 +192,7 @@ class ModifyPageState extends State<ModifyPage> {
 								icon: const Icon(Icons.check),
 								onPressed: () => submit(),
 							),
-						)
+						),
 					],
 				),
 				body: Builder(
