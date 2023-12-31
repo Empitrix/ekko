@@ -46,7 +46,7 @@ static void my_application_activate(GApplication* application) {
   } else {
     gtk_window_set_title(window, "ekko");
   }
-
+  // Windows Initialsize
   gtk_window_set_default_size(window, 600, 500);
   gtk_widget_show(GTK_WIDGET(window));
 
