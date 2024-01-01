@@ -7,6 +7,7 @@ import 'package:ekko/components/general_widgets.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/io/md_file.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:flutter/material.dart';
@@ -121,6 +122,24 @@ void generalSmallNoteSheet({
 								);
 							}
 						),
+
+
+						ListTile(
+							leading: const Icon(Icons.file_open_rounded),
+							title: const Text("Export Markdown"),
+							onTap: () async {
+								SNK snk = SNK(context);
+								Note realNote = await note.toRealNote();
+								await MDFile.write(realNote.content);
+								snk.message(
+									const Icon(Icons.file_open_rounded), "File Exported!");
+								// ignore: use_build_context_synchronously
+								Navigator.pop(context);
+							}
+						),
+
+
+
 						// Footer
 						const SizedBox(height: 12)
 					],
