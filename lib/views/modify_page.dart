@@ -44,11 +44,15 @@ class ModifyPageState extends State<ModifyPage> {
 	bool isLoaded = false;  // For imported notes
 
 
-	void _backClose({bool isNew = false}){
+	void _backClose({bool isNew = false, bool force = false}){
 		if(widget.backLoad != null && isNew){
 			widget.backLoad!();
 		}
-
+		
+		if(force){
+			changeView(context, widget.previousPage, isPush: false);
+			return;  // Close the function
+		}
 		
 		if(!TxtCtrl(title, description, content).isAllEmpty()){
 			// check if anything has been changed
@@ -56,8 +60,10 @@ class ModifyPageState extends State<ModifyPage> {
 			// 	<ask!, if granted then quit>
 			// } else { <quit> }
 			Dialogs(context).ask(
-				title: widget.note == null ? "Exit" : "Quit",
-				content: "If you exit, all the fields will be cleared!",
+				title: "Exit",
+				content: widget.note == null ?
+					"If you exit, all the fields will be cleared!":
+					"Are sure that you want to exit?",
 				action: (){
 					changeView(context, widget.previousPage, isPush: false);
 				}
@@ -101,7 +107,7 @@ class ModifyPageState extends State<ModifyPage> {
 			// snk.message(icon, message);
 		}
 
-		if(mounted) _backClose(isNew: true);
+		if(mounted) _backClose(isNew: true, force: true);
 	}
 
 
