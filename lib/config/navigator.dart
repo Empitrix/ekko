@@ -1,3 +1,5 @@
+import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/toolbar.dart';
 import 'package:flutter/material.dart';
 
 
@@ -35,8 +37,16 @@ class CustomPageRoute extends PageRouteBuilder{
 }
 
 void changeView(
-	BuildContext context, Widget view,
+	BuildContext context, Widget screen,
 	{bool isPush = true, isReplace = false}){
+		
+		Widget? view;
+
+		if(isDesktop()){
+			 view = ToolbarView(view: screen);
+		} else {
+			view = screen;
+		}
 
 	if(isPush){
 		if(isReplace){

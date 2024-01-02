@@ -1,30 +1,36 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/toolbar.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
-// import 'package:window_manager/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 
 Future<void> main() async {
 	if(isDesktop()){
 		WidgetsFlutterBinding.ensureInitialized();
 		await Window.initialize();  // Acrylic Window
-		// await windowManager.ensureInitialized();  // Window manager
+		await windowManager.ensureInitialized();  // Window manager
 
-		// WindowOptions windowOptions = WindowOptions(
-		// 	// size: const Size(800, 600),
-		// 	size: const Size(600, 500),
-		// 	center: true,
-		// 	backgroundColor: Colors.transparent.withOpacity(1),
-		// 	// skipTaskbar: true,
-		// 	titleBarStyle: TitleBarStyle.normal,
-		// );
-		// windowManager.waitUntilReadyToShow(windowOptions, () async {
-		// 	await windowManager.show();
-		// 	await windowManager.focus();
-		// });
+		WindowOptions winOpt = const WindowOptions(
+			titleBarStyle: TitleBarStyle.hidden,
+		);
+		windowManager.waitUntilReadyToShow(winOpt, () async {
+			await windowManager.show();
+			// await windowManager.focus();
+		});
+
+
+		doWhenWindowReady(() {
+			const initialSize = Size(600, 450);
+			appWindow.minSize = initialSize;
+			appWindow.size = initialSize;
+			appWindow.alignment = Alignment.center;
+			appWindow.show();
+		});
 
 	}  // isDesktop
 	runApp(const EkkoApp());
@@ -52,7 +58,10 @@ class _EkkoAppState extends State<EkkoApp> {
 							themeMode: Provider.of<ProviderManager>(context).tMode,
 							theme: Provider.of<ProviderManager>(context).lightTheme(context),
 							darkTheme: Provider.of<ProviderManager>(context).darkTheme(context),
-							home: const LandPage(folderId: 0),
+							// home: const LandPage(folderId: 0),
+							home: isDesktop() ?
+								const ToolbarView(view: LandPage(folderId: 0)):
+								const LandPage(folderId: 0),
 							// home: const LoadingPage(),
 						);
 					},

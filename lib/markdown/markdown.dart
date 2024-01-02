@@ -5,6 +5,7 @@ import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 
+double lessOpt = -0.1;
 
 class MarkdownWidget extends StatelessWidget {
 	final String content;
@@ -70,8 +71,8 @@ class MarkdownWidget extends StatelessWidget {
 			),
 			decoration: BoxDecoration(
 				color: dMode ?
-					Theme.of(context).colorScheme.background.aae(context) :
-					Theme.of(context).colorScheme.onBackground.aae(context),
+					Theme.of(context).colorScheme.background.aae(context, lessOpt) :
+					Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
 				borderRadius: BorderRadius.only(
 					topLeft: Radius.circular(radius),
 					topRight: Radius.circular(radius),
@@ -122,7 +123,7 @@ class MarkdownWidget extends StatelessWidget {
 			width: double.infinity,
 			padding: const EdgeInsets.all(10),
 			decoration: BoxDecoration(
-				color: highlightView().getBG().aae(context),
+				color: highlightView().getBG().aae(context, lessOpt),
 				borderRadius: BorderRadius.only(
 					topLeft: Radius.zero,
 					topRight: Radius.zero,
