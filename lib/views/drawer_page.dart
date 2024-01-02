@@ -1,7 +1,12 @@
+import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/launcher.dart';
+import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/views/folders_page.dart';
 import 'package:ekko/views/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerPage extends StatefulWidget {
 	final Function? closeLoading;
@@ -39,6 +44,33 @@ class _DrawerPageState extends State<DrawerPage> {
 			),
 			child: ListView(
 				children: [
+					Container(
+						margin: const EdgeInsets.all(12),
+						child: Column(
+							mainAxisAlignment: MainAxisAlignment.start,
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: [
+								const Text(
+									"\$ Ekko!",
+									style: TextStyle(
+										fontSize: 50,
+										color: Colors.deepOrangeAccent,
+										fontWeight: FontWeight.bold,
+										fontStyle: FontStyle.italic
+									),
+								),
+								Text(
+									"\t$appVersion",
+									style: TextStyle(
+										fontSize: 12,
+										color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
+									),
+								),
+
+							],
+						),
+					),
+					const Divider(),
 					ListTile(
 						leading: const Icon(Icons.settings),
 						title: const Text("Settings"),
@@ -48,7 +80,27 @@ class _DrawerPageState extends State<DrawerPage> {
 						leading: const Icon(Icons.folder),
 						title: const Text("Folders"),
 						onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading, previousId: widget.currentFolderId,)),
+					),
+					Listener(
+						onPointerDown: (pointer){
+							if(pointer.buttons == 2){
+								Navigator.pop(context);
+								githubInfoSheet(context: context);
+							}
+						},
+						child: ListTile(
+							leading: const Icon(FontAwesomeIcons.github),
+							title: const Text("Github"),
+							onTap: () async {
+								await launchThis(context: context, url: "https://github.com/empitrix/ekko");
+							},
+							onLongPress: !isDesktop() ? (){
+								Navigator.pop(context);
+								githubInfoSheet(context: context);
+							} : null,
+						)
 					)
+
 				],
 			),
 		);

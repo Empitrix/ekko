@@ -308,9 +308,6 @@ void selectMarkdownTheme({
 }
 
 
-
-
-
 void inViewNoteSheet({
 	required BuildContext context,
 	required Note note,
@@ -360,3 +357,48 @@ void inViewNoteSheet({
 	);
 }
 
+
+void githubInfoSheet({
+	required BuildContext context,
+	}){
+	_showSheet(
+		context: context,
+		builder: (BuildContext context) => SizedBox(
+			width: MediaQuery.of(context).size.width,
+			child: SingleChildScrollView(
+				child: Column(
+					mainAxisAlignment: MainAxisAlignment.start,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						SheetText(
+							horizontalMargin: 12,
+							text: Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								mainAxisAlignment: MainAxisAlignment.start,
+								children: [
+									// App Info
+									const Text(
+										"Ekko",
+										style: TextStyle(
+											fontSize: 35,
+											fontWeight: FontWeight.bold
+										),
+									),
+									const Text("Ekko is an open-source cross-platform application!"),
+									Text(
+										appVersion,
+										style: TextStyle(
+											fontSize: 12,
+											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
+										),
+									),
+								],
+							),
+						),
+						const SizedBox(height: 12)
+					],
+				),
+			),
+		)
+	);
+}

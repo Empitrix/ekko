@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Metadata
+String appVersion = "4.20.0";
+
 // Will update when app started
 String dbPath = "";
 // Dark mode
