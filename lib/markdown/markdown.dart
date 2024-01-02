@@ -52,7 +52,11 @@ class MarkdownWidget extends StatelessWidget {
 	}
 
 	TextStyle markdownStyle(){
-		return TextStyle(height: height);
+		return TextStyle(
+			height: height,
+			// fontFamily: "RobotoMono"
+			fontFamily: "SauceCodeProNerdFont"
+		);
 	}
 
 	/* Widgets */
@@ -81,9 +85,10 @@ class MarkdownWidget extends StatelessWidget {
 					RichText(
 						text: TextSpan(
 							text: _langName(content).title(),
-							style: const TextStyle(
+							style: TextStyle(
 								fontWeight: FontWeight.w600,
-								letterSpacing: 0.2
+								fontFamily: "Rubik",
+								letterSpacing: letterSpacing
 							)
 						)
 					),
