@@ -107,8 +107,10 @@ class DB {
 	}
 
 	Future<void> updateAcrylicOpacity(double newValue) async {
-		await updateTable('local',
-			{"acrylicOpacity": newValue});
+		try{
+			await updateTable('local',
+				{"acrylicOpacity": newValue});
+		}catch(_){/**/}
 	}
 
 	/* Notes CRUD */

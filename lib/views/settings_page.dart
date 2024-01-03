@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/extensions.dart';
@@ -115,7 +117,10 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 								text: "Acrylic Opacity",
 								value: Provider.of<ProviderManager>(context, listen: false).acrylicOpacity,
 								onChanged: (double newData) async {
-									setState(() {});	// Rebuild the page
+									if(Provider.of<ProviderManager>(context, listen: false).acrylicOpacity == newData){
+										return;
+									}
+									setState(() {});  // Rebuild the page
 									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(
 										newData);
 									Future.microtask(() async {

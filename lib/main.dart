@@ -10,6 +10,7 @@ import 'package:window_manager/window_manager.dart';
 
 
 Future<void> main() async {
+	// WidgetsFlutterBinding.ensureInitialized();
 	if(isDesktop()){
 		WidgetsFlutterBinding.ensureInitialized();
 		await Window.initialize();  // Acrylic Window
@@ -17,9 +18,10 @@ Future<void> main() async {
 
 		WindowOptions winOpt = const WindowOptions(
 			titleBarStyle: TitleBarStyle.hidden,
+			// backgroundColor: Colors.transparent
 		);
 		windowManager.waitUntilReadyToShow(winOpt, () async {
-			await windowManager.show();
+			// await windowManager.show();
 			// await windowManager.focus();
 		});
 
@@ -34,6 +36,17 @@ Future<void> main() async {
 
 	}  // isDesktop
 	runApp(const EkkoApp());
+
+
+	// if(isDesktop()){
+	// 	doWhenWindowReady(() {
+	// 		const initialSize = Size(600, 450);
+	// 		appWindow.minSize = initialSize;
+	// 		appWindow.size = initialSize;
+	// 		appWindow.alignment = Alignment.center;
+	// 		appWindow.show();
+	// 	});
+	// }
 }
 
 class EkkoApp extends StatefulWidget {
