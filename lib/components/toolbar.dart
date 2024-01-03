@@ -1,6 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 WindowButtonColors __primaryColors(BuildContext context){
 	return WindowButtonColors(
@@ -28,9 +29,6 @@ class ToolbarView extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-
-		debugPrint("[TOOLBAR REBUILD]");
-
 		Widget runningWidget = Column(
 			mainAxisAlignment: MainAxisAlignment.start,
 			crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,21 +40,30 @@ class ToolbarView extends StatelessWidget {
 							mainAxisAlignment: MainAxisAlignment.start,
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
-								Row(
-									mainAxisAlignment: MainAxisAlignment.center,
-									crossAxisAlignment: CrossAxisAlignment.center,
-									children: [
-										Container(
-											margin: const EdgeInsets.only(
-												left: 12, top: 5, bottom: 5
+								Container(
+									margin: const EdgeInsets.only(
+										left: 12, top: 5, bottom: 5
+									),
+									child: Row(
+										mainAxisAlignment: MainAxisAlignment.center,
+										crossAxisAlignment: CrossAxisAlignment.center,
+										children: [
+											SvgPicture.asset(
+												"assets/icon/icon.svg",
+												height: 20,
+												width:  20,
+												// ignore: deprecated_member_use
+												color: Colors.white,
 											),
-											child: const Text(
+											const SizedBox(width: 6),
+											const Text(
 												"Ekko",
 												style: TextStyle(color: Colors.white),
-											),
-										)
-									],
+											)
+										],
+									),
 								),
+
 								Expanded(
 									child: MouseRegion(
 										cursor: SystemMouseCursors.move,
@@ -64,12 +71,11 @@ class ToolbarView extends StatelessWidget {
 									),
 								),
 								Row(
-								// TODO: hide to don't show icons for movement
-									children: true ? [
+									children: [
 										MinimizeWindowButton(colors: __secondaryColors(context)),
 										MaximizeWindowButton(colors: __secondaryColors(context)),
 										CloseWindowButton(colors: __primaryColors(context))
-									] : [],
+									],
 								)
 							],
 						),

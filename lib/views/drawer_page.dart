@@ -6,6 +6,7 @@ import 'package:ekko/config/public.dart';
 import 'package:ekko/views/folders_page.dart';
 import 'package:ekko/views/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerPage extends StatefulWidget {
@@ -50,13 +51,38 @@ class _DrawerPageState extends State<DrawerPage> {
 							mainAxisAlignment: MainAxisAlignment.start,
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
-								const Text(
-									"\$ Ekko!",
-									style: TextStyle(
-										fontSize: 50,
-										color: Colors.deepOrangeAccent,
-										fontWeight: FontWeight.bold,
-										fontStyle: FontStyle.italic
+								// Center(
+								// 	child: SvgPicture.asset(
+								// 		"assets/icon/icon.svg",
+								// 		height: 120,
+								// 		width:  120,
+								// 		color: Theme.of(context).colorScheme.inverseSurface,
+								// 	),
+								// ),
+								Center(
+									child: Row(
+										mainAxisAlignment: MainAxisAlignment.center,
+										children: [
+											SvgPicture.asset(
+												"assets/icon/icon.svg",
+												height: 120,
+												width:  120,
+												// ignore: deprecated_member_use
+												color: Theme.of(context).colorScheme.inverseSurface,
+											),
+											const SizedBox(width: 25),
+											Text(
+												"Ekko",
+												style: TextStyle(
+													fontSize: 50,
+													color: Theme.of(context).colorScheme.inverseSurface,
+													fontFamily: "",
+													fontWeight: FontWeight.bold,
+													fontStyle: FontStyle.italic
+												),
+											),
+										],
+										// ].reversed.toList(),
 									),
 								),
 								Text(
@@ -66,7 +92,6 @@ class _DrawerPageState extends State<DrawerPage> {
 										color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
 									),
 								),
-
 							],
 						),
 					),
