@@ -1,3 +1,5 @@
+import 'package:ekko/components/blur/snackbar.dart';
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 
 class SNK {
@@ -7,9 +9,11 @@ class SNK {
 	
 	void message(Widget icon, String message){
 		ScaffoldMessenger.of(context).showSnackBar(
-			SnackBar(
+			// SnackBar(
+			blurSnakBar(
+				context: context,
 				duration: duration,
-				backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+				// backgroundColor: Theme.of(context).colorScheme.inversePrimary,
 				content: Row(
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: [
@@ -18,12 +22,13 @@ class SNK {
 						Text(
 							message,
 							style: TextStyle(
-								color: Theme.of(context).colorScheme.inverseSurface
+								color: dMode ? Colors.white : Colors.black
+								// color: Theme.of(context).colorScheme.inverseSurface
 							),
 						)
 					],
 				),
-			)
+			),
 		);
 	}
 }

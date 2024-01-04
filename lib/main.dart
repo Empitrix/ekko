@@ -26,11 +26,12 @@ Future<void> main() async {
 		});
 
 
-		doWhenWindowReady(() {
+		doWhenWindowReady(() async {
 			const initialSize = Size(600, 450);
 			appWindow.minSize = initialSize;
 			appWindow.size = initialSize;
-			appWindow.alignment = Alignment.center;
+			appWindow.title = "Ekko";
+			// appWindow.alignment = Alignment.center;
 			appWindow.show();
 		});
 
