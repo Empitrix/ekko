@@ -45,7 +45,8 @@ class BlurAlertDialog extends StatelessWidget {
 	Widget build(BuildContext context) {
 
 		TextStyle blurDefaultStyle = TextStyle(
-			color: dMode ? Colors.white : Colors.black
+			color: dMode ? Colors.white : Colors.black,
+			fontFamily: "Rubik"
 		);
 
 		Widget titleWidget = _getTextWidget(

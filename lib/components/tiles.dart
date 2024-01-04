@@ -1,3 +1,4 @@
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 
 /* Switch List tile widget */
@@ -25,6 +26,8 @@ class SwitchTile extends StatelessWidget {
 					child: Switch(
 						value: value,
 						onChanged: (_){},
+						inactiveThumbColor: dMode ? null : Colors.grey[600],
+						inactiveTrackColor: dMode ? null : Colors.grey[400],
 					),
 				),
 			),

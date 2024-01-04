@@ -1,3 +1,4 @@
+import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/custom_buttons.dart';
@@ -10,7 +11,6 @@ import 'package:ekko/io/md_file.dart';
 import 'package:ekko/models/file_out.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
-import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
@@ -174,7 +174,7 @@ class ModifyPageState extends State<ModifyPage> {
 							child: IconButton(
 								tooltip: "Import",
 								// icon: const Icon(Icons.import_contacts),
-								icon: const Icon(Icons.downloading),
+								icon: const Icon(Icons.input, size: 20),
 								onPressed: () async {
 									if(!TxtCtrl(title, description, content).isAllEmpty()){
 										Dialogs(context).ask(
@@ -191,11 +191,22 @@ class ModifyPageState extends State<ModifyPage> {
 							),
 						),
 						// Should be the last Container
-						SizedBox(
-							height: double.infinity,
-							child: CustomModifyButton(
-								label: const Text("Submit"),
-								icon: const Icon(Icons.check),
+						// SizedBox(
+						// 	height: double.infinity,
+						// 	child: CustomModifyButton(
+						// 		label: const Text("Submit"),
+						// 		icon: const Icon(Icons.check),
+						// 		onPressed: () => submit(),
+						// 	),
+						// ),
+						Container(
+							margin: const EdgeInsets.all(5),
+							child: IconButton(
+								tooltip: "Submit",
+								icon: Icon(
+									Icons.check,
+									color: Theme.of(context).colorScheme.primary,
+								),
 								onPressed: () => submit(),
 							),
 						),

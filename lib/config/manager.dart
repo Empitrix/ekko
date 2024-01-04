@@ -7,7 +7,7 @@ class ProviderManager extends ChangeNotifier {
 	double acrylicOpacity = 1;
 
 	ThemeData lightTheme(BuildContext context){
-		return light(context);
+		return light(context, );
 	}
 	ThemeData darkTheme(BuildContext context){
 		return dark(context);

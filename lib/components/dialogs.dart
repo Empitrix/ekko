@@ -32,7 +32,6 @@ class Dialogs {
 			context: context,
 			builder: (BuildContext context) => BlurAlertDialog(
 				title: Text(title),
-				// title: title,
 				content: Text(content),
 				actions: [
 					OutlinedButton(

@@ -14,6 +14,7 @@ ThemeData light(BuildContext context){
 		colorScheme: ColorScheme.fromSeed(
 			seedColor: pColor,
 			brightness: Brightness.light,
+			outline: Colors.transparent
 		),
 		appBarTheme: AppBarTheme(
 			backgroundColor: navBgColor.aae(context),
@@ -31,5 +32,17 @@ ThemeData light(BuildContext context){
 		drawerTheme: DrawerThemeData(
 			backgroundColor: bgColor
 		),
+
+		outlinedButtonTheme: OutlinedButtonThemeData(
+			style: ButtonStyle(
+				side: MaterialStatePropertyAll(
+					BorderSide(
+						color: pColor
+					)
+				)
+			)
+		),
+
+
 	);
 }
