@@ -1,3 +1,4 @@
+import 'package:ekko/components/blur_alert.dart';
 import 'package:flutter/material.dart';
 
 class Dialogs {
@@ -29,8 +30,9 @@ class Dialogs {
 		String outAct = "Cancel"}){
 		showDialog(
 			context: context,
-			builder: (BuildContext context) => AlertDialog(
+			builder: (BuildContext context) => BlurAlertDialog(
 				title: Text(title),
+				// title: title,
 				content: Text(content),
 				actions: [
 					OutlinedButton(
