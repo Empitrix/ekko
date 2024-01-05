@@ -5,6 +5,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
+// Future<void> searchBarToggle({
+// 	required Function onClose,
+// 	required Function onOpen,
+// 	required GenAnimation searchAnim,
+// 	required FocusNode focus,
+// 	// required FocusNode shortcutFocus,
+// 	required ValueNotifier<bool> textNotifier,
+// 	required TextEditingController controller,
+// 	required ValueChanged<String> onChange,
+// }) async {
+// 	if(!textNotifier.value){
+// 		controller.text = "";
+// 		onChange(controller.text);
+// 		focus.requestFocus();
+// 		return;
+// 	}
+// 	if(searchAnim.animation.value == 1){
+// 		await searchAnim.controller.reverse();
+// 		onClose();
+// 		// shortcutFocus.requestFocus();
+// 		// focus.unfocus();
+// 	}else{
+// 		await searchAnim.controller.forward();
+// 		onOpen();
+// 		// focus.requestFocus();
+// 	}
+// }
+
 AppBar customSearchBar({
 	required BuildContext context,
 	required String title,
@@ -81,6 +109,15 @@ AppBar customSearchBar({
 										await toggle();
 								},
 							},
+							// child: TextField(
+							// 	focusNode: focus,
+							// 	controller: controller,
+							// 	onChanged: (value) => onChange(value),
+							// 	decoration: const InputDecoration(
+							// 		border: InputBorder.none,
+							// 		hintText: "Search..."
+							// 	),
+							// ),
 							child: Focus(
 								autofocus: true,
 								focusNode: shortcutFocus,

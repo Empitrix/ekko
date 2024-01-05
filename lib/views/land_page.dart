@@ -3,6 +3,8 @@ import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/note_item.dart';
 import 'package:ekko/components/search_bar.dart';
+import 'package:ekko/components/shortcut/intents.dart';
+import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
@@ -99,6 +101,25 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 		_releaseAllNotes();
 	}
 
+
+	void __onPopInvoked(){
+		// Close Drawer
+		if(scaffoldKey.currentState != null){
+			if(scaffoldKey.currentState!.isDrawerOpen){
+				scaffoldKey.currentState!.closeDrawer();
+			}
+		}
+		// Close Search-Bar
+		if(searchAnim != null){
+			if(searchAnim!.animation.value == 1){
+				_closeSearch();
+				searchAnim!.controller.reverse();
+			}
+		}
+		// Minimize the app
+		SystemNavigator.pop(animated: true);
+	}
+
 	@override
 	void initState() {
 		initAnimations();
@@ -122,6 +143,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 
 	@override
 	Widget build(BuildContext context) {
+		/*
 		return PopScope(
 			canPop: false,
 			onPopInvoked: (bool didPop) async {
@@ -225,6 +247,119 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 						);
 					}
 				),
+			),
+		);
+		*/
+
+		return ShortcutScaffold(
+			resizeToAvoidBottomInset: false,
+			scaffoldKey: scaffoldKey,
+
+			// Shortcuts
+			autofocus: true, // auto focus for shortcuts
+			shortcuts: const <ShortcutActivator, Intent>{
+				SingleActivator(LogicalKeyboardKey.keyF, control: true): SearchBarIntent(),
+				SingleActivator(LogicalKeyboardKey.keyN, control: true): AddNoteIntent(),
+			},
+			actions: {
+					SearchBarIntent: CallbackAction<SearchBarIntent>(
+						onInvoke: (SearchBarIntent intent) => {
+							
+						}
+					),
+					AddNoteIntent: CallbackAction<AddNoteIntent>(
+						onInvoke: (AddNoteIntent intent){
+							return changeView(
+								context, ModifyPage(
+									backLoad: (){loadAll(false);},
+									previousPage: widget,
+									folderId: widget.folderId,
+								)
+							);
+						}
+					)
+			},
+
+			drawer: DrawerPage(closeLoading: _updateTitle, currentFolderId: widget.folderId),
+			floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+			onPopInvoked: __onPopInvoked,
+			floatingActionButton: AnimatedFloatingButton(
+				controller: scrollCtrl,
+				animation: floatingButtonAnim!,
+				child: const Icon(Icons.add_rounded),
+				onPressed: () => changeView(
+					context, ModifyPage(
+						backLoad: (){loadAll(false);},
+						previousPage: widget,
+						folderId: widget.folderId,
+					)
+				),
+			),
+			appBar: customSearchBar(
+				context: context,
+				
+				title: titleName,
+				searchAnim: searchAnim!,
+				controller: searchCtrl,
+				onChange: (String words) => _filterSearch(words),
+				focus: searchBarFocus,
+				onClose: () => _closeSearch(),
+				onOpen: () => searchBarFocus.requestFocus(),
+				leading: const Icon(Icons.menu),
+				onLoading: (){
+					if(scaffoldKey.currentState != null){
+						scaffoldKey.currentState!.openDrawer();
+					}
+				},
+			),
+			body: ValueListenableBuilder(
+				valueListenable: isLoaded,
+				builder: (_, load, __) {
+					
+					// for loading
+					if(!load){
+						return const Center(
+							child: CircularProgressIndicator()
+						);
+					}
+					
+					// If there is no notes
+					if(notes.value.isEmpty){
+						return const Center(
+							child: Text("Add Note!"),
+						);
+					}
+					
+					// Mian List-View
+					return ValueListenableBuilder(
+						key: notesKey,
+						valueListenable: notes,
+						builder: (context, value, child){
+							if(value.isEmpty){
+								return const Center(child: Text("Add Note"));
+							}
+							// Check for search result
+							if(_isAllSearchHide()){
+								return const Center(
+									child: Text("Not Found!"),
+								);
+							}
+							return Scrollbar(
+								controller: scrollCtrl,
+								child: ListView.builder(
+									itemCount: value.length,
+									controller: scrollCtrl,
+									itemBuilder: (context, index){
+										return NoteItem(
+											note: value[index],
+											backLoad: (){loadAll(false);},
+										);
+									},
+								),
+							);
+						}
+					);
+				}
 			),
 		);
 	}
