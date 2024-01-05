@@ -1,6 +1,7 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/models/note.dart';
@@ -8,6 +9,7 @@ import 'package:ekko/views/display_page.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NoteItem extends StatelessWidget {
 	final SmallNote note;
@@ -90,7 +92,7 @@ class NoteItem extends StatelessWidget {
 											overflow: TextOverflow.ellipsis,
 											style: TextStyle(
 												fontSize: 16,
-												letterSpacing: letterSpacing,
+												letterSpacing: Provider.of<ProviderManager>(context).defaultStyle.letterSpacing,
 												color: Theme.of(context)
 													.colorScheme
 													.inverseSurface,
@@ -102,7 +104,7 @@ class NoteItem extends StatelessWidget {
 											overflow: TextOverflow.ellipsis,
 											style: TextStyle(
 												fontSize: 14,
-												letterSpacing: letterSpacing,
+												letterSpacing: Provider.of<ProviderManager>(context).defaultStyle.letterSpacing,
 												color: Theme.of(context)
 													.colorScheme.
 													inverseSurface

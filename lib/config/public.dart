@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 // Metadata
 String appVersion = "4.20.0";
@@ -17,13 +16,13 @@ int waitLoadingSize = 300; // ms
 
 String markdownThemeName = "gruvbox-dark";
 
-double textHeight = 1.4;
-double letterSpacing = 0.7;
+// double textHeight = 1.4;
+// double letterSpacing = 0.7;
 
-TextStyle defaultStyle = TextStyle(
-	fontSize: 16,
-	fontWeight: FontWeight.w500,
-	height: textHeight
-);
+// TextStyle defaultStyle = TextStyle(
+// 	fontSize: 16,
+// 	fontWeight: FontWeight.w500,
+// 	height: textHeight
+// );
 // // Acyrlic Opacity
 // double acrylicOpacity = 0.5;

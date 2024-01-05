@@ -1,10 +1,12 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/sheets.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Widget folderItem({
 	required BuildContext context,
@@ -44,7 +46,9 @@ Widget folderItem({
 				overflow: TextOverflow.ellipsis,
 				style: TextStyle(
 					fontSize: 14,
-					letterSpacing: letterSpacing,
+					// letterSpacing: letterSpacing,
+					letterSpacing:
+						Provider.of<ProviderManager>(context).defaultStyle.letterSpacing,
 					color: Theme.of(context)
 						.colorScheme
 						.inverseSurface,

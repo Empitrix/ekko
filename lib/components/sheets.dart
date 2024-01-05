@@ -325,6 +325,7 @@ void inViewNoteSheet({
 							text: SelectableText(
 								note.title,
 								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+									fontSize: 18,
 									color: Theme.of(context).colorScheme.inverseSurface
 								)
 							),
@@ -333,6 +334,7 @@ void inViewNoteSheet({
 							text: SelectableText(
 								note.description,
 								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+									fontSize: 16,
 									color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5)
 								)
 							),

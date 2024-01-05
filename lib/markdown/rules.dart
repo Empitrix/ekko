@@ -1,9 +1,10 @@
-import 'package:ekko/config/public.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 List<HighlightRule> allSyntaxRules({
 	required BuildContext context,
@@ -13,7 +14,10 @@ List<HighlightRule> allSyntaxRules({
 		HighlightRule(
 			tag: "markdown",
 			action: (String text) => MarkdownWidget(
-				content: text, height: textHeight),
+				content: text,
+				// height: textHeight
+				height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+			),
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
 			style: const TextStyle(color: Colors.teal)
 		),
@@ -119,7 +123,8 @@ List<HighlightRule> allSyntaxRules({
 						children: formattingTexts(
 							context: context,
 							content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
-							defaultStyle: defaultStyle
+							// defaultStyle: defaultStyle
+							defaultStyle: Provider.of<ProviderManager>(context).defaultStyle,
 						)
 					)
 				);
@@ -145,7 +150,8 @@ List<HighlightRule> allSyntaxRules({
 						children: formattingTexts(
 							context: context,
 							content: txt.trim().substring(1).trim(),
-							defaultStyle: defaultStyle
+							// defaultStyle: defaultStyle
+							defaultStyle: Provider.of<ProviderManager>(context).defaultStyle,
 						)
 					)
 				);

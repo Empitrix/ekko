@@ -1,7 +1,6 @@
 import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
-import 'package:ekko/components/custom_buttons.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/config/navigator.dart';

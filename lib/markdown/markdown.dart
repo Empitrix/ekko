@@ -1,9 +1,11 @@
 import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:provider/provider.dart';
 
 double lessOpt = -0.1;
 
@@ -89,7 +91,8 @@ class MarkdownWidget extends StatelessWidget {
 							style: TextStyle(
 								fontWeight: FontWeight.w600,
 								fontFamily: "Rubik",
-								letterSpacing: letterSpacing
+								// letterSpacing: letterSpacing
+								letterSpacing: Provider.of<ProviderManager>(context).defaultStyle.letterSpacing,
 							)
 						)
 					),

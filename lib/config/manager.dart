@@ -6,8 +6,17 @@ class ProviderManager extends ChangeNotifier {
 	ThemeMode tMode = ThemeMode.system;
 	double acrylicOpacity = 1;
 
+	// Text
+	TextStyle defaultStyle = const TextStyle(
+		fontSize: 16,
+		letterSpacing: 0.7,
+		fontFamily: "Rubik",
+		fontWeight: FontWeight.normal,
+		height: 1.4
+	);
+
 	ThemeData lightTheme(BuildContext context){
-		return light(context, );
+		return light(context);
 	}
 	ThemeData darkTheme(BuildContext context){
 		return dark(context);
@@ -22,4 +31,12 @@ class ProviderManager extends ChangeNotifier {
 		acrylicOpacity = data;
 		notifyListeners();
 	}
+
+
+	void changeDefaultTextStyle(TextStyle newStyle){
+		defaultStyle = newStyle;
+		notifyListeners();
+	}
+
 }
+

@@ -1,8 +1,9 @@
-import 'package:ekko/config/public.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class MDGenerator extends StatelessWidget {
@@ -26,7 +27,7 @@ class MDGenerator extends StatelessWidget {
 		widgetTree = applyRules(
 			context: context,
 			content: content,
-			defaultStyle: defaultStyle,
+			defaultStyle: Provider.of<ProviderManager>(context).defaultStyle,
 			rules: rules
 		);
 
