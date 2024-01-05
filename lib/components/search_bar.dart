@@ -18,6 +18,7 @@ AppBar customSearchBar({
 	required Widget leading}){
 
 	FocusNode shortcutFocus = FocusNode();
+	shortcutFocus.requestFocus();  // set default on search-bar
 	ValueNotifier<double> openNotifier =
 		ValueNotifier<double>(searchAnim.animation.value);
 	ValueNotifier<bool> textNotifier = ValueNotifier(true);
