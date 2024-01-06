@@ -18,36 +18,20 @@ Future<void> main() async {
 
 		WindowOptions winOpt = const WindowOptions(
 			titleBarStyle: TitleBarStyle.hidden,
-			// backgroundColor: Colors.transparent
 		);
-		windowManager.waitUntilReadyToShow(winOpt, () async {
-			// await windowManager.show();
-			// await windowManager.focus();
-		});
 
+		// To remove toolbar
+		windowManager.waitUntilReadyToShow(winOpt, () {});
 
 		doWhenWindowReady(() async {
-			const initialSize = Size(800, 550);
-			appWindow.minSize = initialSize;
-			appWindow.size = initialSize;
+			appWindow.minSize = const Size(600, 450);
+			appWindow.size = const Size(800, 550);
 			appWindow.title = "Ekko";
-			// appWindow.alignment = Alignment.center;
 			appWindow.show();
 		});
-
 	}  // isDesktop
+
 	runApp(const EkkoApp());
-
-
-	// if(isDesktop()){
-	// 	doWhenWindowReady(() {
-	// 		const initialSize = Size(600, 450);
-	// 		appWindow.minSize = initialSize;
-	// 		appWindow.size = initialSize;
-	// 		appWindow.alignment = Alignment.center;
-	// 		appWindow.show();
-	// 	});
-	// }
 }
 
 class EkkoApp extends StatefulWidget {

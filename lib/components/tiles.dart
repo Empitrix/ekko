@@ -1,5 +1,7 @@
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
+
 
 /* Switch List tile widget */
 class SwitchTile extends StatelessWidget {
@@ -70,28 +72,6 @@ class SliderTile extends StatelessWidget {
 						child: VerticalDivider(width: 2),
 					),
 					const SizedBox(width: 12),
-					// Expanded(
-					// 	child: Column(
-					// 		children: [
-					// 			// Row(
-					// 			// 	children: [
-					// 			// 		leading,
-					// 			// 		const SizedBox(width: 12),
-					// 			// 		Text(
-					// 			// 			text,
-					// 			// 			style: const TextStyle(
-					// 			// 				fontSize: 14,
-					// 			// 				fontWeight: FontWeight.bold),
-					// 			// 		),
-					// 			// 	],
-					// 			// ),
-					// 			Slider(
-					// 				value: value,
-					// 				onChanged: onChanged
-					// 			)
-					// 		],
-					// 	),
-					// )
 					Expanded(
 						child: Row(
 							mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,17 +82,23 @@ class SliderTile extends StatelessWidget {
 										const SizedBox(width: 12),
 										Text(
 											text,
-											// text + " [${(value * 100).round()}]",
 											style: const TextStyle(
 												fontSize: 14,
 												fontWeight: FontWeight.bold),
 										),
+										const SizedBox(width: 5),
+										Container(
+											decoration: BoxDecoration(
+												color: Theme.of(context).scaffoldBackgroundColor.aae(context, -1),
+												borderRadius: BorderRadius.circular(5)
+											),
+											padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+											child: Text("${(value * 100).round().toString().padLeft(2, "0")}%"),
+										)
 									],
 								),
 								Slider(
 									value: value,
-									// label: "${(value * 100).round()}",
-									// divisions: 10,
 									onChanged: onChanged
 								)
 							],
