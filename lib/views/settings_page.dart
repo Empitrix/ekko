@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/extensions.dart';
@@ -14,6 +12,8 @@ import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
+
 
 class SettingsPage extends StatefulWidget {
 	const SettingsPage({super.key});

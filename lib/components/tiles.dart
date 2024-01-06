@@ -70,8 +70,31 @@ class SliderTile extends StatelessWidget {
 						child: VerticalDivider(width: 2),
 					),
 					const SizedBox(width: 12),
+					// Expanded(
+					// 	child: Column(
+					// 		children: [
+					// 			// Row(
+					// 			// 	children: [
+					// 			// 		leading,
+					// 			// 		const SizedBox(width: 12),
+					// 			// 		Text(
+					// 			// 			text,
+					// 			// 			style: const TextStyle(
+					// 			// 				fontSize: 14,
+					// 			// 				fontWeight: FontWeight.bold),
+					// 			// 		),
+					// 			// 	],
+					// 			// ),
+					// 			Slider(
+					// 				value: value,
+					// 				onChanged: onChanged
+					// 			)
+					// 		],
+					// 	),
+					// )
 					Expanded(
-						child: Column(
+						child: Row(
+							mainAxisAlignment: MainAxisAlignment.spaceBetween,
 							children: [
 								Row(
 									children: [
@@ -79,6 +102,7 @@ class SliderTile extends StatelessWidget {
 										const SizedBox(width: 12),
 										Text(
 											text,
+											// text + " [${(value * 100).round()}]",
 											style: const TextStyle(
 												fontSize: 14,
 												fontWeight: FontWeight.bold),
@@ -87,6 +111,8 @@ class SliderTile extends StatelessWidget {
 								),
 								Slider(
 									value: value,
+									// label: "${(value * 100).round()}",
+									// divisions: 10,
 									onChanged: onChanged
 								)
 							],
