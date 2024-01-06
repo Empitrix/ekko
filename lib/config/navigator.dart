@@ -1,5 +1,6 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/toolbar.dart';
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 
 
@@ -36,12 +37,21 @@ class CustomPageRoute extends PageRouteBuilder{
 	);
 }
 
+
+void _bringBackFcous(String name){
+	if(screenShortcutFocus[name] != null){
+		screenShortcutFocus[name]!.requestFocus();
+	}
+}
+
+
 void changeView(
 	BuildContext context, Widget screen, String name,
 	{bool isPush = true, isReplace = false}){
 
 	
 		debugPrint("GOING TO: [$name]");
+		_bringBackFcous(name);
 
 		Widget? view;
 

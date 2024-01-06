@@ -1,5 +1,7 @@
 
 // Metadata
+import 'package:flutter/material.dart';
+
 String appVersion = "4.20.0";
 
 // Will update when app started
@@ -26,3 +28,8 @@ String markdownThemeName = "gruvbox-dark";
 // );
 // // Acyrlic Opacity
 // double acrylicOpacity = 0.5;
+
+Map<String, FocusNode> screenShortcutFocus = <String, FocusNode>{
+	"LandPage": FocusNode(),
+};
+

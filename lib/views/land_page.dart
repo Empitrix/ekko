@@ -6,6 +6,7 @@ import 'package:ekko/components/search_bar.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:ekko/config/navigator.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/utils/loading.dart';
@@ -38,7 +39,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	GenAnimation? searchAnim;
 	GenAnimation? floatingButtonAnim;
 
-	FocusNode shortcutFocus = FocusNode();
+	// FocusNode shortcutFocus = FocusNode();
 
 	Future<void> _updateTitle() async {
 		String dummyTitle = await db.getFolderName(id: widget.folderId);
@@ -101,7 +102,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 		searchCtrl.text = "";
 		// searchBarFocus.unfocus();
 		_releaseAllNotes();
-		shortcutFocus.requestFocus();  // Back to shortcuts
+		// shortcutFocus.requestFocus();  // Back to shortcuts
+		screenShortcutFocus["LandPage"]!.requestFocus();
 	}
 
 
@@ -169,7 +171,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 			resizeToAvoidBottomInset: false,
 			scaffoldKey: scaffoldKey,
 			autofocus: true, // auto focus for shortcuts
-			focusNode: shortcutFocus,
+			// focusNode: shortcutFocus,
+			focusNode: screenShortcutFocus["LandPage"],
 			shortcuts: const <ShortcutActivator, Intent>{
 				SingleActivator(LogicalKeyboardKey.keyF, control: true): SearchBarIntent(),
 				SingleActivator(LogicalKeyboardKey.keyN, control: true): AddNoteIntent(),
