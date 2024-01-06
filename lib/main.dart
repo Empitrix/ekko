@@ -27,7 +27,7 @@ Future<void> main() async {
 
 
 		doWhenWindowReady(() async {
-			const initialSize = Size(600, 450);
+			const initialSize = Size(800, 550);
 			appWindow.minSize = initialSize;
 			appWindow.size = initialSize;
 			appWindow.title = "Ekko";

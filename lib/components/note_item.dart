@@ -39,8 +39,11 @@ class NoteItem extends StatelessWidget {
 					context, DisplayPage(
 						smallNote: note,
 						previousPage: const LandPage(),
+						previousPageName: "LandPage",
 						loadAll: backLoad,
-					), isPush: true
+					),
+					"DisplayPage",
+					isPush: true
 				),
 				onLongPress: isDesktop() ? null : (){
 					generalSmallNoteSheet(
@@ -75,7 +78,9 @@ class NoteItem extends StatelessWidget {
 												folderId: note.folderId,
 												backLoad: backLoad,
 												previousPage: const LandPage(),
+												previousPageName: "LandPage",
 											),
+											"ModifyPage",
 											isPush: true
 										);
 									}

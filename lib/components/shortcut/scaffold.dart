@@ -34,11 +34,12 @@ class ShortcutScaffold extends StatelessWidget {
 		this.floatingActionButton,
 		this.shortcuts = const {},
 		this.actions = const {}
-
 	});
+
 
 	@override
 	Widget build(BuildContext context) {
+
 		return Shortcuts(
 			// shortcuts: <ShortcutActivator, Intent>{},
 			shortcuts: shortcuts,

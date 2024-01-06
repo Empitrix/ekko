@@ -13,11 +13,13 @@ import 'package:flutter/material.dart';
 class DisplayPage extends StatefulWidget {
 	final SmallNote smallNote;
 	final Widget previousPage;
+	final String previousPageName;
 	final Function loadAll;
 	const DisplayPage({
 		super.key,
 		required this.smallNote,
 		required this.previousPage,
+		required this.previousPageName,
 		required this.loadAll
 	});
 
@@ -37,7 +39,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	
 	void _backToPreviousPage(){
 		widget.loadAll();
-		changeView(context, const LandPage(), isPush: false);
+		changeView(context, const LandPage(), "LandPage",  isPush: false);
 	}
 
 	void initAnimations(){
@@ -101,7 +103,10 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 									folderId: widget.smallNote.folderId,
 									backLoad: (){loadAll();},
 									previousPage: widget,
-								)),
+									previousPageName: "DisplayPage",
+								),
+								"ModifyPage"
+							),
 						),
 						body: Builder(
 							builder:(context){

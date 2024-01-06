@@ -16,12 +16,14 @@ class ModifyPage extends StatefulWidget {
 	final int folderId;
 	final Function? backLoad;
 	final Widget previousPage;
+	final String previousPageName;
 	const ModifyPage({
 		super.key,
 		this.note,
 		this.folderId = 0,
 		this.backLoad,
-		required this.previousPage
+		required this.previousPage,
+		required this.previousPageName,
 	});
 
 	@override
@@ -49,7 +51,7 @@ class ModifyPageState extends State<ModifyPage> {
 		}
 		
 		if(force){
-			changeView(context, widget.previousPage, isPush: false);
+			changeView(context, widget.previousPage, "", isPush: false);
 			return;  // Close the function
 		}
 		
@@ -64,11 +66,11 @@ class ModifyPageState extends State<ModifyPage> {
 					"If you exit, all the fields will be cleared!":
 					"Are sure that you want to exit?",
 				action: (){
-					changeView(context, widget.previousPage, isPush: false);
+					changeView(context, widget.previousPage, widget.previousPageName, isPush: false);
 				}
 			);
 		} else {
-			changeView(context, widget.previousPage, isPush: false);
+			changeView(context, widget.previousPage, widget.previousPageName, isPush: false);
 		}
 	}
 

@@ -38,6 +38,8 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	GenAnimation? searchAnim;
 	GenAnimation? floatingButtonAnim;
 
+	FocusNode shortcutFocus = FocusNode();
+
 	Future<void> _updateTitle() async {
 		String dummyTitle = await db.getFolderName(id: widget.folderId);
 		if (mounted) setState(() { titleName = dummyTitle; });
@@ -97,8 +99,9 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	
 	void _closeSearch(){
 		searchCtrl.text = "";
-		searchBarFocus.unfocus();
+		// searchBarFocus.unfocus();
 		_releaseAllNotes();
+		shortcutFocus.requestFocus();  // Back to shortcuts
 	}
 
 
@@ -143,141 +146,52 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 
 	@override
 	Widget build(BuildContext context) {
-		/*
-		return PopScope(
-			canPop: false,
-			onPopInvoked: (bool didPop) async {
-				if(didPop){ return; }
-				// Close Drawer
+
+		SearchBarField searchBarFiled = SearchBarField(
+			title: titleName,
+			searchAnim: searchAnim!,
+			controller: searchCtrl,
+			onChange: (String words) => _filterSearch(words),
+			// focus: searchBarFocus,
+			onClose: () => _closeSearch(),
+			onOpen: () => searchBarFocus.requestFocus(),
+			leading: const Icon(Icons.menu),
+			onLoading: (){
 				if(scaffoldKey.currentState != null){
-					if(scaffoldKey.currentState!.isDrawerOpen){
-						scaffoldKey.currentState!.closeDrawer();
-					}
+					scaffoldKey.currentState!.openDrawer();
 				}
-				// Close Search-Bar
-				if(searchAnim != null){
-					if(searchAnim!.animation.value == 1){
-						_closeSearch();
-						searchAnim!.controller.reverse();
-					}
-				}
-				// Minimize the app
-				SystemNavigator.pop(animated: true);
 			},
-			child: Scaffold(
-				resizeToAvoidBottomInset: false,
-				key: scaffoldKey,
-				drawer: DrawerPage(closeLoading: _updateTitle, currentFolderId: widget.folderId),
-				floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-				floatingActionButton: AnimatedFloatingButton(
-					controller: scrollCtrl,
-					animation: floatingButtonAnim!,
-					child: const Icon(Icons.add_rounded),
-					onPressed: () => changeView(
-						context, ModifyPage(
-							backLoad: (){loadAll(false);},
-							previousPage: widget,
-							folderId: widget.folderId,
-						)
-					),
-				),
-				appBar: customSearchBar(
-					context: context,
-					
-					title: titleName,
-					searchAnim: searchAnim!,
-					controller: searchCtrl,
-					onChange: (String words) => _filterSearch(words),
-					focus: searchBarFocus,
-					onClose: () => _closeSearch(),
-					onOpen: () => searchBarFocus.requestFocus(),
-					leading: const Icon(Icons.menu),
-					onLoading: (){
-						if(scaffoldKey.currentState != null){
-							scaffoldKey.currentState!.openDrawer();
-						}
-					},
-				),
-				body: ValueListenableBuilder(
-					valueListenable: isLoaded,
-					builder: (_, load, __) {
-						
-						// for loading
-						if(!load){
-							return const Center(
-								child: CircularProgressIndicator()
-							);
-						}
-						
-						// If there is no notes
-						if(notes.value.isEmpty){
-							return const Center(
-								child: Text("Add Note!"),
-							);
-						}
-						
-						// Mian List-View
-						return ValueListenableBuilder(
-							key: notesKey,
-							valueListenable: notes,
-							builder: (context, value, child){
-								if(value.isEmpty){
-									return const Center(child: Text("Add Note"));
-								}
-								// Check for search result
-								if(_isAllSearchHide()){
-									return const Center(
-										child: Text("Not Found!"),
-									);
-								}
-								return Scrollbar(
-									controller: scrollCtrl,
-									child: ListView.builder(
-										itemCount: value.length,
-										controller: scrollCtrl,
-										itemBuilder: (context, index){
-											return NoteItem(
-												note: value[index],
-												backLoad: (){loadAll(false);},
-											);
-										},
-									),
-								);
-							}
-						);
-					}
-				),
-			),
 		);
-		*/
+
+
 
 		return ShortcutScaffold(
 			resizeToAvoidBottomInset: false,
 			scaffoldKey: scaffoldKey,
-
-			// Shortcuts
 			autofocus: true, // auto focus for shortcuts
+			focusNode: shortcutFocus,
 			shortcuts: const <ShortcutActivator, Intent>{
 				SingleActivator(LogicalKeyboardKey.keyF, control: true): SearchBarIntent(),
 				SingleActivator(LogicalKeyboardKey.keyN, control: true): AddNoteIntent(),
 			},
 			actions: {
-					SearchBarIntent: CallbackAction<SearchBarIntent>(
-						onInvoke: (SearchBarIntent intent) => {
-							
-						}
-					),
-					AddNoteIntent: CallbackAction<AddNoteIntent>(
-						onInvoke: (AddNoteIntent intent){
-							return changeView(
-								context, ModifyPage(
-									backLoad: (){loadAll(false);},
-									previousPage: widget,
-									folderId: widget.folderId,
-								)
-							);
-						}
-					)
+				SearchBarIntent: CallbackAction<SearchBarIntent>(
+					onInvoke: (SearchBarIntent intent) => 
+						searchBarFiled.toggle()
+				),
+				AddNoteIntent: CallbackAction<AddNoteIntent>(
+					onInvoke: (AddNoteIntent intent){
+						return changeView(
+							context, ModifyPage(
+								backLoad: (){loadAll(false);},
+								previousPage: widget,
+								previousPageName: "LandPage",
+								folderId: widget.folderId,
+							),
+							"ModifyPage"
+						);
+					}
+				)
 			},
 
 			drawer: DrawerPage(closeLoading: _updateTitle, currentFolderId: widget.folderId),
@@ -290,28 +204,14 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 				onPressed: () => changeView(
 					context, ModifyPage(
 						backLoad: (){loadAll(false);},
+						previousPageName: "LandPage",
 						previousPage: widget,
 						folderId: widget.folderId,
-					)
+					),
+					"ModifyPage"
 				),
 			),
-			appBar: customSearchBar(
-				context: context,
-				
-				title: titleName,
-				searchAnim: searchAnim!,
-				controller: searchCtrl,
-				onChange: (String words) => _filterSearch(words),
-				focus: searchBarFocus,
-				onClose: () => _closeSearch(),
-				onOpen: () => searchBarFocus.requestFocus(),
-				leading: const Icon(Icons.menu),
-				onLoading: (){
-					if(scaffoldKey.currentState != null){
-						scaffoldKey.currentState!.openDrawer();
-					}
-				},
-			),
+			appBar: searchBarFiled,
 			body: ValueListenableBuilder(
 				valueListenable: isLoaded,
 				builder: (_, load, __) {

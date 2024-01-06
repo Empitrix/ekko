@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 			canPop: false,
 			onPopInvoked: (bool didPop) async {
 				if(didPop) { return; }
-				changeView(context, const LandPage(), isPush: false);
+				changeView(context, const LandPage(), "LandPage", isPush: false);
 			},
 			child: Scaffold(
 				appBar: AppBar(
@@ -61,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 					title: const Text("Settings"),
 					leading: IconButton(
 						icon: const Icon(Icons.close),
-						onPressed: () => changeView(context, const LandPage(), isPush: false),
+						onPressed: () => changeView(context, const LandPage(), "LandPage", isPush: false),
 					),
 				),
 				body: ListView(

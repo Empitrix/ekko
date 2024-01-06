@@ -22,9 +22,9 @@ class _DrawerPageState extends State<DrawerPage> {
 	
 	final double roundness = 5;
 	
-	void _newView(Widget view){
+	void _newView(Widget view, String name){
 		Navigator.pop(context);  // Close the drawer
-		changeView(context, view, isPush: true);
+		changeView(context, view, name, isPush: true);
 	}
 
 	@override
@@ -99,12 +99,12 @@ class _DrawerPageState extends State<DrawerPage> {
 					ListTile(
 						leading: const Icon(Icons.settings),
 						title: const Text("Settings"),
-						onTap: () => _newView(const SettingsPage()),
+						onTap: () => _newView(const SettingsPage(), "SettingsPage"),
 					),
 					ListTile(
 						leading: const Icon(Icons.folder),
 						title: const Text("Folders"),
-						onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading, previousId: widget.currentFolderId,)),
+						onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading, previousId: widget.currentFolderId,), "FoldersPage"),
 					),
 					Listener(
 						onPointerDown: (pointer){

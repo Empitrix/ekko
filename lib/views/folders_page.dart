@@ -43,11 +43,11 @@ class _FoldersPageState extends State<FoldersPage> with TickerProviderStateMixin
 		List<FolderInfo> fInfo = await DB().loadFoldersInfo();
 		if(fInfo.any((e) => e.id == widget.previousId)){
 			if(!mounted){ return; }
-			changeView(context, const LandPage(), isPush: false);
+			changeView(context, const LandPage(), "LandPage", isPush: false);
 			return;
 		}
 		if(!mounted){ return; }
-		changeView(context, const LandPage(folderId: 0), isPush: true, isReplace: true);
+		changeView(context, const LandPage(folderId: 0), "LandPage", isPush: true, isReplace: true);
 	}
 
 	@override

@@ -37,9 +37,12 @@ class CustomPageRoute extends PageRouteBuilder{
 }
 
 void changeView(
-	BuildContext context, Widget screen,
+	BuildContext context, Widget screen, String name,
 	{bool isPush = true, isReplace = false}){
-		
+
+	
+		debugPrint("GOING TO: [$name]");
+
 		Widget? view;
 
 		if(isDesktop()){

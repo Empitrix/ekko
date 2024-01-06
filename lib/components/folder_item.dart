@@ -62,6 +62,7 @@ Widget folderItem({
 				changeView(
 					context,
 					LandPage(folderId: folder.id),
+					"LandPage",
 					isPush: true,
 					isReplace: true
 				);
