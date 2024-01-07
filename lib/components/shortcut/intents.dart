@@ -12,3 +12,7 @@ class AddNoteIntent extends Intent {
 class SubmitNoteIntent extends Intent {
 	const SubmitNoteIntent();
 }
+
+class DrawerPageIntent extends Intent {
+	const DrawerPageIntent();
+}

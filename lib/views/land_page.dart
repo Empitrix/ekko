@@ -98,9 +98,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	
 	void _closeSearch(){
 		searchCtrl.text = "";
-		// searchBarFocus.unfocus();
 		_releaseAllNotes();
-		// shortcutFocus.requestFocus();  // Back to shortcuts
 		screenShortcutFocus["LandPage"]!.requestFocus();
 	}
 
@@ -174,8 +172,16 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 			shortcuts: const <ShortcutActivator, Intent>{
 				SingleActivator(LogicalKeyboardKey.keyF, control: true): SearchBarIntent(),
 				SingleActivator(LogicalKeyboardKey.keyN, control: true): AddNoteIntent(),
+				SingleActivator(LogicalKeyboardKey.keyD, control: true): DrawerPageIntent(),
 			},
 			actions: <Type, Action<Intent>>{
+				DrawerPageIntent: CallbackAction<DrawerPageIntent>(
+					onInvoke: (DrawerPageIntent intent) => {
+						if(scaffoldKey.currentState != null){
+							scaffoldKey.currentState!.openDrawer()
+						}
+					}
+				),
 				SearchBarIntent: CallbackAction<SearchBarIntent>(
 					onInvoke: (SearchBarIntent intent) => 
 						searchBarFiled.toggle()
