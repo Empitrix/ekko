@@ -39,8 +39,6 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	GenAnimation? searchAnim;
 	GenAnimation? floatingButtonAnim;
 
-	// FocusNode shortcutFocus = FocusNode();
-
 	Future<void> _updateTitle() async {
 		String dummyTitle = await db.getFolderName(id: widget.folderId);
 		if (mounted) setState(() { titleName = dummyTitle; });
@@ -177,13 +175,14 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 				SingleActivator(LogicalKeyboardKey.keyF, control: true): SearchBarIntent(),
 				SingleActivator(LogicalKeyboardKey.keyN, control: true): AddNoteIntent(),
 			},
-			actions: {
+			actions: <Type, Action<Intent>>{
 				SearchBarIntent: CallbackAction<SearchBarIntent>(
 					onInvoke: (SearchBarIntent intent) => 
 						searchBarFiled.toggle()
 				),
 				AddNoteIntent: CallbackAction<AddNoteIntent>(
 					onInvoke: (AddNoteIntent intent){
+						screenShortcutFocus["LandPage"]!.unfocus();
 						return changeView(
 							context, ModifyPage(
 								backLoad: (){loadAll(false);},
@@ -267,3 +266,4 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 		);
 	}
 }
+

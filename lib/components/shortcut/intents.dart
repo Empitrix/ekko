@@ -9,3 +9,6 @@ class AddNoteIntent extends Intent {
 	const AddNoteIntent();
 }
 
+class SubmitNoteIntent extends Intent {
+	const SubmitNoteIntent();
+}

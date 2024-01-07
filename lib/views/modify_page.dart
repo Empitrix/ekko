@@ -1,3 +1,6 @@
+import 'package:ekko/components/shortcut/intents.dart';
+import 'package:ekko/components/shortcut/scaffold.dart';
+import 'package:flutter/services.dart';
 import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
@@ -150,6 +153,7 @@ class ModifyPageState extends State<ModifyPage> {
 	@override
 	void initState() {
 		loadTheNote();
+		titleF.requestFocus();  // Auto request for ttiel (prime field)
 		super.initState();
 	}
 
@@ -161,8 +165,19 @@ class ModifyPageState extends State<ModifyPage> {
 				if(didPop) { return; }
 				_backClose();
 			},
-			child: Scaffold(
+			// child: Scaffold(
+			child: ShortcutScaffold(
+				focusNode: screenShortcutFocus["ModifyPage"],
+				autofocus: true,
 				resizeToAvoidBottomInset: false,
+				shortcuts: const <ShortcutActivator, Intent>{
+					SingleActivator(LogicalKeyboardKey.keyS, control: true): SubmitNoteIntent(),
+				},
+				actions: <Type, Action<Intent>>{
+					SubmitNoteIntent: CallbackAction<SubmitNoteIntent>(
+						onInvoke: (SubmitNoteIntent intent) => submit()
+					)
+				},
 				appBar: AppBar(
 					title: const Text("Modify"),
 					leading: IconButton(
@@ -174,7 +189,6 @@ class ModifyPageState extends State<ModifyPage> {
 							margin: const EdgeInsets.all(5),
 							child: IconButton(
 								tooltip: "Import",
-								// icon: const Icon(Icons.import_contacts),
 								icon: const Icon(Icons.input, size: 20),
 								onPressed: () async {
 									if(!TxtCtrl(title, description, content).isAllEmpty()){
@@ -191,22 +205,29 @@ class ModifyPageState extends State<ModifyPage> {
 								}
 							),
 						),
-						// Should be the last Container
-						// SizedBox(
-						// 	height: double.infinity,
-						// 	child: CustomModifyButton(
-						// 		label: const Text("Submit"),
-						// 		icon: const Icon(Icons.check),
-						// 		onPressed: () => submit(),
-						// 	),
-						// ),
 						Container(
-							margin: const EdgeInsets.all(5),
+							// margin: const EdgeInsets.all(5),
+							margin: const EdgeInsets.only(
+								left: 5, top: 5, bottom: 5, right: 12
+							),
 							child: IconButton(
 								tooltip: "Submit",
 								icon: Icon(
 									Icons.check,
-									color: Theme.of(context).colorScheme.primary,
+									color: dMode ?
+										// Theme.of(context).colorScheme.primary:
+										Colors.pink:
+										Colors.amber,
+								),
+								// style: dMode ? null : const ButtonStyle(
+								// style: dMode ? null : const ButtonStyle(
+								style: ButtonStyle(
+									side: MaterialStatePropertyAll(BorderSide(
+										width: 1,
+										color: dMode ?
+											Colors.pink:
+											Colors.amber
+									))
 								),
 								onPressed: () => submit(),
 							),

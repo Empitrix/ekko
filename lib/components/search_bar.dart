@@ -35,11 +35,9 @@ class SearchBarField extends StatelessWidget implements PreferredSizeWidget {
 
 
 	Future<void> toggle() async {
-		debugPrint("Called !");
 		if(!_textNotifier.value){
 			controller.text = "";
 			onChange(controller.text);
-			// focus.requestFocus();
 			return;
 		}
 		if(searchAnim.animation.value == 1){
@@ -59,7 +57,6 @@ class SearchBarField extends StatelessWidget implements PreferredSizeWidget {
 
 		ValueNotifier<double> openNotifier =
 			ValueNotifier<double>(searchAnim.animation.value);
-		// ValueNotifier<bool> textNotifier = ValueNotifier(true);
 		searchAnim.animation.addListener((){
 			openNotifier.value = searchAnim.animation.value;
 			if(searchAnim.animation.value == 1){

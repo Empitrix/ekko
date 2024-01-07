@@ -39,6 +39,7 @@ class CustomPageRoute extends PageRouteBuilder{
 
 
 void _bringBackFcous(String name){
+	debugPrint("OFAT: $name");
 	if(screenShortcutFocus[name] != null){
 		screenShortcutFocus[name]!.requestFocus();
 	}

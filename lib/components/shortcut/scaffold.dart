@@ -11,7 +11,7 @@ class ShortcutScaffold extends StatelessWidget {
 	final bool canPop;
 	final bool autofocus;
 	final FocusNode? focusNode;
-	final GlobalKey? scaffoldKey;
+	final GlobalKey<ScaffoldState>? scaffoldKey;
 	final bool? resizeToAvoidBottomInset;
 	final Widget? drawer;
 	final FloatingActionButtonLocation? floatingActionButtonLocation;
