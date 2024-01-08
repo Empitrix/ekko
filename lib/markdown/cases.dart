@@ -1,21 +1,24 @@
 import 'package:ekko/backend/launcher.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 List<Widget> applyRules({
 	required BuildContext context,
 	required String content,
-	required TextStyle defaultStyle,
 	required List<HighlightRule> rules,
 	}){
 	
 	bool inOrderColumn = false;
 	List<Widget> widgetTree = [];
 	List<TextSpan> spans = [];
+
+	TextStyle defaultStyle = Provider.of<ProviderManager>(context).defaultStyle;
 	
 	// Updates Spans
 	void updateSpans(){

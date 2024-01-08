@@ -16,12 +16,9 @@ Future<void> main() async {
 		await Window.initialize();  // Acrylic Window
 		await windowManager.ensureInitialized();  // Window manager
 
-		WindowOptions winOpt = const WindowOptions(
-			titleBarStyle: TitleBarStyle.hidden,
-		);
-
 		// To remove toolbar
-		windowManager.waitUntilReadyToShow(winOpt, () {});
+		windowManager.waitUntilReadyToShow(
+			const WindowOptions(titleBarStyle: TitleBarStyle.hidden), (){});
 
 		doWhenWindowReady(() async {
 			appWindow.minSize = const Size(600, 450);
@@ -56,11 +53,9 @@ class _EkkoAppState extends State<EkkoApp> {
 							themeMode: Provider.of<ProviderManager>(context).tMode,
 							theme: Provider.of<ProviderManager>(context).lightTheme(context),
 							darkTheme: Provider.of<ProviderManager>(context).darkTheme(context),
-							// home: const LandPage(folderId: 0),
 							home: isDesktop() ?
 								const ToolbarView(view: LandPage(folderId: 0)):
 								const LandPage(folderId: 0),
-							// home: const LoadingPage(),
 						);
 					},
 				)
