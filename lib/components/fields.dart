@@ -133,7 +133,7 @@ class DescriptionTextFiled extends StatelessWidget {
 
 
 class ContentTextFiled extends StatelessWidget {
-	// final TextEditingController controller;
+	// final RegexPatternTextEditingController controller;
 	final RegexPatternTextEditingController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
@@ -169,9 +169,32 @@ class ContentTextFiled extends StatelessWidget {
 							);
 						},
 						defaultRegexPatternStyles: false,
-							regexPatternStyles: const [
-								// TextStyle
-								// for(HighlightRule rule in allSyntaxRules(context: context)) rule.getTextStyle()
+							regexPatternStyles: [
+								// Markdown
+								RegexPatternTextStyle(
+									regexPattern: r"^\s*\-\s{1}\[(\s{1}|\x)\]",
+									action: (txt, match){
+										int openingIdx = txt.split("").indexOf("[") + 1; 
+										return TextSpan(
+											children: [
+												TextSpan(
+													text: txt.substring(0, openingIdx),
+													style: const TextStyle(color: Colors.orange)
+												),
+												TextSpan(
+													text: txt.substring(openingIdx, openingIdx + 1),
+												),
+												TextSpan(
+													text: txt.substring(openingIdx + 1),
+													style: const TextStyle(color: Colors.orange)
+												),
+											],
+										);
+									},
+								),
+								// RegexPatternTextStyle(
+								// 	regexPattern: r"\*\*\*(.*?)\*\*\*",
+								// 	textStyle: const TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold))
 							],
 							regexPatternController: controller,
 							focusNode: focusNode,
