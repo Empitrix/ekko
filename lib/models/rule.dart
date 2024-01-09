@@ -1,76 +1,18 @@
-import 'package:ekko/components/editing_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:regex_pattern_text_field/models/regex_pattern_text_style.dart';
 
-typedef RuleAction = Widget Function(String input);
+typedef RuleWidget = InlineSpan Function(String input);
 
 
 class HighlightRule {
-	final String tag;
-	final RuleAction? action;
+	final String label;
 	final RegExp regex;
-	final TextStyle style;
+	final RuleWidget action;
+	final bool trimNext; 
 
 	HighlightRule({
-		required this.tag,
-		this.action,
+		required this.label,
+		required this.action,
 		required this.regex,
-		required this.style
+		this.trimNext = false
 	});
-	
-	TextPartStyleDefinition getDefinition(){
-		return TextPartStyleDefinition(pattern: regex.pattern, style: style);
-	}
-	RegexPatternTextStyle getTextStyle(){
-		return RegexPatternTextStyle(regexPattern: regex.pattern, textStyle: style);
-	}
 }
-
-enum InnerMethod {
-	both,
-	right,
-	left,
-	custom
-}
-
-typedef InnerAction = String Function(String input, int n);
-
-typedef InnerSpan = TextSpan Function(String input);
-
-class InnerHighlightRule extends HighlightRule {
-	final int innerNum;
-	final InnerMethod innerMethod;
-	final InnerSpan? innerSpan;
-
-	InnerHighlightRule({
-		required super.tag,
-		required super.regex,
-		required super.style,
-		RuleAction? acton,
-		required this.innerNum,
-		required this.innerMethod,
-		this.innerSpan
-	}): super();
-
-
-	String getContext(String txt){
-		if(innerMethod == InnerMethod.custom){ return ""; }
-
-		if(innerMethod == InnerMethod.right){
-			return txt.substring(innerNum, txt.length);
-		} else if(innerMethod == InnerMethod.left){
-			return txt.substring(0, txt.length - innerNum);
-		} else {
-			return txt.substring(innerNum, txt.length - innerNum);
-		}
-	}
-
-
-	TextSpan getSpan(String txt){
-		if(innerMethod == InnerMethod.custom){
-			return innerSpan!(txt);
-		}
-		return const TextSpan();
-	}
-}
-

@@ -1,5 +1,3 @@
-import 'package:ekko/markdown/rules.dart';
-import 'package:ekko/models/rule.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
 import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
@@ -171,8 +169,9 @@ class ContentTextFiled extends StatelessWidget {
 							);
 						},
 						defaultRegexPatternStyles: false,
-							regexPatternStyles: [
-								for(HighlightRule rule in allSyntaxRules(context: context)) rule.getTextStyle()
+							regexPatternStyles: const [
+								// TextStyle
+								// for(HighlightRule rule in allSyntaxRules(context: context)) rule.getTextStyle()
 							],
 							regexPatternController: controller,
 							focusNode: focusNode,

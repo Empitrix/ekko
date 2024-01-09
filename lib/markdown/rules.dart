@@ -1,109 +1,106 @@
+import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
+import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-List<HighlightRule> allSyntaxRules({
-	required BuildContext context,
-}){
+
+List<HighlightRule> allSyntaxRules(BuildContext context){
 	List<HighlightRule> rules = [
 		// Markdown
 		HighlightRule(
-			tag: "markdown",
-			action: (String text) => MarkdownWidget(
-				content: text,
-				// height: textHeight
-				height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+			label: "markdown",
+			action: (String text) => WidgetSpan(
+				child: MarkdownWidget(
+					content: text,
+					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+				)
 			),
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
-			style: const TextStyle(color: Colors.teal)
 		),
 
-
-
-		// Headlines
+		// Headline 6
 		HighlightRule(
-			tag: "headline6",
-			action: (_) => const SizedBox(),
+			label: "headline6",
+			action: (txt) => TextSpan(
+				text: txt.substring(7),
+				style: getHeadlineStyle(context, 6)
+			),
 			regex: RegExp(r'^###### [\s\S]*?$'),
-			style: TextStyle(
-				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.w100,
-				fontSize: 13.6
-			),
 		),
+
+		// Headline 5
 		HighlightRule(
-			tag: "headline5",
-			action: (_) => const SizedBox(),
+			label: "headline5",
+			action: (txt) => TextSpan(
+				text: txt.substring(6),
+				style: getHeadlineStyle(context, 5)
+			),
 			regex: RegExp(r'^##### [\s\S]*?$'),
-			style: TextStyle(
-				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.w200,
-				fontSize: 14
-			),
 		),
+
+		// Headline 4
 		HighlightRule(
-			tag: "headline4",
-			action: (_) => const SizedBox(),
+			label: "headline4",
+			action: (txt) => TextSpan(
+				text: txt.substring(5),
+				style: getHeadlineStyle(context, 4)
+			),
 			regex: RegExp(r'^#### [\s\S]*?$'),
-			style: TextStyle(
-				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.w300,
-				fontSize: 16
-			),
 		),
+
+		// Headline 3
 		HighlightRule(
-			tag: "headline3",
-			action: (_) => const SizedBox(),
+			label: "headline3",
+			action: (txt) => TextSpan(
+				text: txt.substring(4),
+				style: getHeadlineStyle(context, 3)
+			),
 			regex: RegExp(r'^### [\s\S]*?$'),
-			style: TextStyle(
-				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.w400,
-				fontSize: 20
-			),
 		),
+		
+		// Headline 2
 		HighlightRule(
-			tag: "headline2",
-			action: (_) => const SizedBox(),
+			label: "headline2",
+			action: (txt) => TextSpan(
+				text: txt.substring(3),
+				style: getHeadlineStyle(context, 2)
+			),
 			regex: RegExp(r'^## [\s\S]*?$'),
-			style: TextStyle(
-				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.bold,
-				letterSpacing: 0.9,
-				fontSize: 24
-			),
 		),
+
+		// Headline 1
 		HighlightRule(
-			tag: "headline1",
-			action: (_) => const SizedBox(),
+			label: "headline1",
+			action: (txt) => TextSpan(
+				text: txt.substring(2),
+				style: getHeadlineStyle(context, 1)
+			),
 			regex: RegExp(r'^# [\s\S]*?$'),
-			style: TextStyle(
-				color: Theme.of(context).colorScheme.inverseSurface,
-				fontWeight: FontWeight.w600,
-				letterSpacing: 0.9,
-				fontSize: 32
-			)
 		),
 
 		// Divider
 		HighlightRule(
-			tag: "divider",
-			action: (_) => const Divider(height: 1),
+			label: "divider",
+			trimNext: true,
+			action: (_) => const WidgetSpan(
+				child: Divider(height: 1)
+			),
 			regex: RegExp(r'^\s*---\s*$'),
-			style: const TextStyle(color: Colors.red)
 		),
-		
 
 		// Sublist CheckedBox
 		HighlightRule(
-			tag: "checkbox",
+			label: "checkbox",
 			action: (txt){
 				bool isChecked = 
 					txt.trim().substring(0, 5).contains("x");
-				return onLeadingText(
+				Widget leading = onLeadingText(
 					topMargin: 11,
 					leading: SizedBox(
 						width: 18,
@@ -123,22 +120,20 @@ List<HighlightRule> allSyntaxRules({
 						children: formattingTexts(
 							context: context,
 							content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
-							// defaultStyle: defaultStyle
-							defaultStyle: Provider.of<ProviderManager>(context).defaultStyle,
 						)
 					)
 				);
+				return WidgetSpan(child: leading);
 			},
 			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
-			style: const TextStyle(color: Colors.indigoAccent)
 		),
 
 		// Sublist - Item
 		HighlightRule(
-			tag: "item",
+			label: "item",
 			action: (txt){
 				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
-				return onLeadingText(
+				Widget leading = onLeadingText(
 					leading: Icon(
 						indentedLvl == 0 ? Icons.circle :
 						indentedLvl == 2 ? Icons.circle_outlined :
@@ -150,125 +145,166 @@ List<HighlightRule> allSyntaxRules({
 						children: formattingTexts(
 							context: context,
 							content: txt.trim().substring(1).trim(),
-							// defaultStyle: defaultStyle
-							defaultStyle: Provider.of<ProviderManager>(context).defaultStyle,
 						)
 					)
 				);
+				return WidgetSpan(child: leading);
 			},
 			regex: RegExp(r'^\s*-\s+.+$'),
-			style: const TextStyle(color: Colors.deepOrange)
 		),
-		
 
+
+		// Monospace
 		HighlightRule(
-			tag: "monospace",
+			label: "monospace",
+			action: (txt) => getMonospaceTag(
+				txt.substring(1, txt.length - 1)
+			),
 			regex: RegExp(r'\`.*?\`', multiLine: true),
-			style: const TextStyle(color: Colors.pink)
 		),
 
 
 		// Links
 		HighlightRule(
-			tag: "links",
+			label: "links",
 			regex: RegExp(r'\[.*\]\(.*\)'),
-			style: const TextStyle(
-				fontSize: 16,
-				decoration: TextDecoration.underline,
-				decorationColor: Colors.blue,
-				color: Colors.blue
-			)
+			action: (txt){
+				String name = txt.split("](")[0]
+					.substring(1).trim();
+				String link = txt.split("](")[1].trim();
+				link = link.substring(0, link.length - 1).trim();
+				TextStyle linkStyle = const TextStyle(
+					fontSize: 16,
+					decoration: TextDecoration.underline,
+					decorationColor: Colors.blue,
+					color: Colors.blue,
+				);
+				return TextSpan(
+					children: formattingTexts(
+						context: context,
+						content: name,
+						recognizer: TapGestureRecognizer()..onTap = () async {
+							await launchThis(
+								context: context, url: link);
+							debugPrint("Opening: $link"); 
+						},
+						mergeStyle: linkStyle,
+					),
+				);
+			}
 		),
 
 		// URL
 		HighlightRule(
-			tag: "url",
+			label: "url",
+			action: (txt) => TextSpan(
+				text: txt,
+				style: const TextStyle(
+					color: Colors.blue,
+					decorationColor: Colors.blue,
+					decoration: TextDecoration.underline
+				),
+				recognizer: TapGestureRecognizer()..onTap = () async {
+					await launchThis(
+						context: context, url: txt);
+					debugPrint("Opening: $txt"); 
+				},
+			),
 			regex: RegExp(r'(https?://\S+)'),
-			style: const TextStyle(
-				color: Colors.blue,
-				decorationColor: Colors.blue,
-				decoration: TextDecoration.underline
-			)
 		),
-
-
-
 
 		// Italic & Bold
 		HighlightRule(
-			tag: "italic_bold",
+			label: "italic_bold",
+			action: (txt) => TextSpan(
+				text: txt.substring(3, txt.length - 3),
+				style: const TextStyle(
+					fontSize: 16,
+					fontWeight: FontWeight.bold,
+					fontStyle: FontStyle.italic
+				)
+			),
 			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontWeight: FontWeight.bold,
-				fontStyle: FontStyle.italic
-			)
 		),
 
 		// Bold
 		HighlightRule(
-			tag: "boldness",
+			label: "boldness",
+			action: (txt) => TextSpan(
+				text: txt.substring(2, txt.length - 2),
+				style: const TextStyle(
+					fontSize: 16,
+					fontWeight: FontWeight.bold
+				)
+			),
 			regex: RegExp(r'\*\*(.*?)\*\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontWeight: FontWeight.bold
-			)
 		),
 
 		// Italic
 		HighlightRule(
-			tag: "italic",
-			regex: RegExp(r'\*(.*?)\*'),
-			style: const TextStyle(
-				fontSize: 16,
-				fontStyle: FontStyle.italic
-			)
-		),
-
-		HighlightRule(
-			tag: "strike",
-			regex: RegExp(r'~~.*~~'),
-			style: TextStyle(
-				fontSize: 16,
-				decorationColor: Theme.of(context).colorScheme.inverseSurface,
-				decorationStyle: TextDecorationStyle.solid,
-				decoration: TextDecoration.lineThrough
+			label: "italic",
+			action: (txt) => TextSpan(
+				text: txt.substring(1, txt.length - 1),
+				style: const TextStyle(
+					fontSize: 16,
+					fontStyle: FontStyle.italic
+				)
 			),
+			regex: RegExp(r'\*(.*?)\*'),
 		),
 
 		HighlightRule(
-			tag: "backqoute",
+			label: "strike",
+			action: (txt) => TextSpan(
+				text: txt.substring(2, txt.length - 2),
+				style: TextStyle(
+					fontSize: 16,
+					decorationColor: Theme.of(context).colorScheme.inverseSurface,
+					decorationStyle: TextDecorationStyle.solid,
+					decoration: TextDecoration.lineThrough
+				)
+			),
+			regex: RegExp(r'~~.*~~'),
+		),
+
+		// Backqoute
+		HighlightRule(
+			label: "backqoute",
 			action: (txt){
 				txt = txt.trim().substring(1);
-				return Column(
-					mainAxisSize: MainAxisSize.min,
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: [
-						Row(
-							children: [
-								const SizedBox(
-									height: 30,
-									child: VerticalDivider()),
-								const SizedBox(width: 10),
-								Expanded( child: SingleChildScrollView(
-									controller: ScrollController(),
-									scrollDirection: Axis.horizontal,
-									child: Column(
-										children: [ Text(txt) ],
-									),
-								))
-							],
-						),
-					],
+				return WidgetSpan(
+					child: Column(
+						mainAxisSize: MainAxisSize.min,
+						crossAxisAlignment: CrossAxisAlignment.start,
+						children: [
+							Row(
+								children: [
+									const SizedBox(
+										height: 30,
+										child: VerticalDivider()),
+									const SizedBox(width: 10),
+									Expanded( child: SingleChildScrollView(
+										controller: ScrollController(),
+										scrollDirection: Axis.horizontal,
+										child: Column(
+											children: [
+												Text(
+													txt,
+													style: const TextStyle(
+														fontStyle: FontStyle.italic),
+												)
+											],
+										),
+									))
+								],
+							),
+						],
+					)
 				);
 			},
 			regex: RegExp(r'^\s*>\s+.+$'),
-			style: const TextStyle(fontStyle: FontStyle.italic)
 		),
-
-
 	];
 
 	return rules;
 }
-

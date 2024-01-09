@@ -1,6 +1,5 @@
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
-import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,28 +13,18 @@ class MDGenerator extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 
-		List<Widget> widgetTree = [];
-
-		// Load highlight rules
-		List<HighlightRule> rules = allSyntaxRules(
-			context: context,
-		);
-
 		// Apply rules and add to widgetTree
-		widgetTree = applyRules(
+		TextSpan spanWidget = applyRules(
 			context: context,
 			content: content,
-			rules: rules
+			rules: allSyntaxRules(context)
 		);
 
-		return Container(
-			margin: const EdgeInsets.all(0),
-			child: Column(
-				mainAxisAlignment: MainAxisAlignment.start,
-				crossAxisAlignment: CrossAxisAlignment.start,
-				children: widgetTree,
-			),
-		);
+		return Text.rich(spanWidget);
+		// return Padding(
+		// 	padding: const EdgeInsets.all(4),
+		// 	child: Text.rich(spanWidget)
+		// );
 	}
 }
 
