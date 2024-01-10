@@ -68,9 +68,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		// Headline 2
 		HighlightRule(
 			label: "headline2",
-			action: (txt) => TextSpan(
-				text: txt.substring(3),
-				style: getHeadlineStyle(context, 2)
+			action: (txt) => WidgetSpan(
+				child: Column(
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						Text.rich(TextSpan(
+							text: txt.substring(3),
+							style: getHeadlineStyle(context, 2)
+						)),
+						const Divider()
+					],
+				)
 			),
 			regex: RegExp(r'^## [\s\S]*?$'),
 		),
@@ -78,9 +86,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		// Headline 1
 		HighlightRule(
 			label: "headline1",
-			action: (txt) => TextSpan(
-				text: txt.substring(2),
-				style: getHeadlineStyle(context, 1)
+			action: (txt) => WidgetSpan(
+				child: Column(
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						Text.rich(TextSpan(
+							text: txt.substring(2),
+							style: getHeadlineStyle(context, 1)
+						)),
+						const Divider()
+					],
+				)
 			),
 			regex: RegExp(r'^# [\s\S]*?$'),
 		),
@@ -315,7 +331,7 @@ List<RegexPatternTextStyle> allFieldRules(BuildContext context){
 	return <RegexPatternTextStyle>[
 		// Check-Box
 		RegexPatternTextStyle(
-			regexPattern: r"^\s*\-\s{1}\[(\s{1}|\x)\]",
+			regexPattern: r"^\s*\-\s{1}\[(\s{1}|\x)\]\s{1}",
 			action: (txt, match){
 				int openingIdx = txt.split("").indexOf("[") + 1; 
 				return TextSpan(

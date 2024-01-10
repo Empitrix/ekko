@@ -4,6 +4,7 @@ import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
@@ -141,21 +142,40 @@ class MarkdownWidget extends StatelessWidget {
 					mainAxisSize: MainAxisSize.min,
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: [
-						Scrollbar(
-							controller: controller,
-							radius: const Radius.circular(2.4),
-							thumbVisibility: false,
-							child: SingleChildScrollView(
+						MouseRegion(
+							// cursor: SystemMouseCursors.resizeRight,
+							cursor: SystemMouseCursors.resizeColumn,
+							child: Scrollbar(
 								controller: controller,
-								scrollDirection: Axis.horizontal,
-								child: Column(
-									children: [
-										Text.rich(highlightView().getSpan(style: markdownStyle())),
-										const SizedBox(height: 10.5)  // Scroll-Bar size + 2.5 additional
-									],
-								),
+								radius: const Radius.circular(2.4),
+								thumbVisibility: false,
+								child: SingleChildScrollView(
+									controller: controller,
+									scrollDirection: Axis.horizontal,
+									child: Column(
+										children: [
+											Text.rich(highlightView().getSpan(style: markdownStyle())),
+											const SizedBox(height: 10.5)  // Scroll-Bar size + 2.5 additional
+										],
+									),
+								)
 							)
-						)
+						),
+						// Scrollbar(
+						// 	controller: controller,
+						// 	radius: const Radius.circular(2.4),
+						// 	thumbVisibility: false,
+						// 	child: SingleChildScrollView(
+						// 		controller: controller,
+						// 		scrollDirection: Axis.horizontal,
+						// 		child: Column(
+						// 			children: [
+						// 				Text.rich(highlightView().getSpan(style: markdownStyle())),
+						// 				const SizedBox(height: 10.5)  // Scroll-Bar size + 2.5 additional
+						// 			],
+						// 		),
+						// 	)
+						// )
 					],
 				)
 		);

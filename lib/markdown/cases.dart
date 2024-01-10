@@ -11,15 +11,19 @@ TextSpan applyRules({
 	}){
 	
 	List<InlineSpan> spans = [];
+	TextSpan nl = const TextSpan(text: "\n");
 	//** bool trimNext = false;
-	//** TextStyle ds = Provider.of<ProviderManager>(context).defaultStyle;
 
 	content.splitMapJoin(
 		RegExp(rules.map((rule) => rule.regex.pattern).join('|'), multiLine: true),
 		onMatch: (match) {
 			String mText = match.group(0)!;
 			HighlightRule mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
+			//** trimNext = mRule.trimNext;
+			if(mRule.label == "markdown"){ spans.add(nl); }
 			spans.add(mRule.action(mText));
+			if(mRule.label == "markdown"){ spans.add(nl); }
+
 			return mText;
 		},
 		onNonMatch: (nonMatchedText) {
