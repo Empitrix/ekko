@@ -26,6 +26,14 @@ Future<void> essentialLoading(BuildContext context)async{
 	acrylicMode = await _db.readAcrylicMode();
 	wrapCodeMode = await _db.readWrapCodeMode();
 	double opacity = await _db.readAcrylicOpacity();
+
+	// Text-Style
+	TextStyle userStyle = await _db.readTextStyle();
+	// ignore: use_build_context_synchronously
+	Provider.of<ProviderManager>(context, listen: false).changeDefaultTextStyle(
+		userStyle
+	);
+
 	// ignore: use_build_context_synchronously
 	Provider.of<ProviderManager>(context, listen: false).changeTmode(
 		dMode ? ThemeMode.dark : ThemeMode.light

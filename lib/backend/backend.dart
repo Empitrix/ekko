@@ -50,3 +50,7 @@ double getAngle(int d){
 	return (d / (180 / math.pi));
 }
 
+
+FontWeight fontWeightParser(int input){
+	return FontWeight.values[input ~/ 100.toInt() - 1];
+}

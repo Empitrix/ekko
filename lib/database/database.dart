@@ -1,3 +1,4 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,11 @@ class DB {
 				acrylicMode BIT,
 				wrapCodeMode BIT,
 				acrylicOpacity FLOAT,
+				fontFamily Text,
+				fontSize FLOAT,
+				fontWeight INT,
+				fontHeight FLOAT,
+				letterSpacing FLOAT,
 				markdownThemeName TEXT
 			)
 		""");
@@ -50,7 +56,13 @@ class DB {
 				"acrylicMode": 0,
 				"wrapCodeMode": 0,
 				"acrylicOpacity": 1.0,
-				"markdownThemeName": "gruvbox-dark"
+				"markdownThemeName": "gruvbox-dark",
+				// About font
+				"fontFamily": "Rubik",
+				"fontSize": 16,
+				"fontWeight": 400,
+				"fontHeight": 1.4,
+				"letterSpacing": 0.7,
 			};  // Init table
 			// Set parameters on db 
 			await db.insert("local", initData);
@@ -320,6 +332,29 @@ class DB {
 			{"markdownThemeName": newName});
 	}
 
+
+	Future<void> updateTextStyle(TextStyle style) async {
+		Map<String, dynamic> data = {
+			"fontFamily": style.fontFamily,
+			"fontSize": style.fontSize!.toDouble(),
+			"fontWeight": int.parse(
+				style.fontWeight.toString().replaceAll("FontWeight.w", "")),
+			"fontHeight": style.height!.toDouble(),
+			"letterSpacing": style.letterSpacing!.toDouble(),
+		};
+		await updateTable('local', data);
+	}
+
+	Future<TextStyle> readTextStyle() async {
+		Map data = await getQuery("local");
+		return TextStyle(
+			fontSize: data["fontSize"],
+			letterSpacing: data["letterSpacing"],
+			fontFamily: data["fontFamily"],
+			fontWeight: fontWeightParser(data["fontWeight"]),
+			height: data["fontHeight"]
+		);
+	}
 
 
 }

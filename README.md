@@ -9,11 +9,11 @@ A cross-platform, open source note-taking app that written in flutter
 ## Todo
 - [ ] Add all the markdown syntaxs
 - [x] Change code syntax theme
-- [ ] Change font / size / weight 
+- [x] Change font / size / weight / letter-spacing / height
 - [x] Acrylic Theme
-- [ ] Acrylic high proformance on changing
+- [x] Acrylic high proformance on changing
 - [x] Mix IN-FOLDER-PAGE with main HOME-PAGE for loaing notes
-- [ ] Improve `DB` class and Optimize it
+- [x] Improve `DB` class and Optimize it
 
 ## Build
 you can run the following code to create your own
