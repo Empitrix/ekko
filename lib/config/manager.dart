@@ -33,8 +33,17 @@ class ProviderManager extends ChangeNotifier {
 	}
 
 
-	void changeDefaultTextStyle(TextStyle newStyle){
-		defaultStyle = newStyle;
+	// void changeDefaultTextStyle(TextStyle newStyle){
+	void changeDefaultTextStyle({
+		double? fontSize, double? letterSpacing, String? fontFamily,
+		double? height, FontWeight? fontWeight}){
+		defaultStyle = defaultStyle.copyWith(
+			letterSpacing: letterSpacing ?? defaultStyle.letterSpacing,
+			height: height ?? defaultStyle.height,
+			fontSize: fontSize ?? defaultStyle.fontSize,
+			fontFamily: fontFamily ?? defaultStyle.fontFamily,
+			fontWeight: fontWeight ?? defaultStyle.fontWeight,
+		);
 		notifyListeners();
 	}
 

@@ -51,14 +51,6 @@ class _DrawerPageState extends State<DrawerPage> {
 							mainAxisAlignment: MainAxisAlignment.start,
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
-								// Center(
-								// 	child: SvgPicture.asset(
-								// 		"assets/icon/icon.svg",
-								// 		height: 120,
-								// 		width:  120,
-								// 		color: Theme.of(context).colorScheme.inverseSurface,
-								// 	),
-								// ),
 								Center(
 									child: Row(
 										mainAxisAlignment: MainAxisAlignment.center,

@@ -29,9 +29,19 @@ Future<void> essentialLoading(BuildContext context)async{
 
 	// Text-Style
 	TextStyle userStyle = await _db.readTextStyle();
+
+
+	// ignore: use_build_context_synchronously
+	// Provider.of<ProviderManager>(context, listen: false).changeDefaultTextStyle(
+	// 	userStyle
+	// );
 	// ignore: use_build_context_synchronously
 	Provider.of<ProviderManager>(context, listen: false).changeDefaultTextStyle(
-		userStyle
+		letterSpacing: userStyle.letterSpacing,
+		height: userStyle.height,
+		fontWeight: userStyle.fontWeight,
+		fontFamily: userStyle.fontFamily,
+		fontSize: userStyle.fontSize
 	);
 
 	// ignore: use_build_context_synchronously

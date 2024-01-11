@@ -1,7 +1,9 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ekko/database/dfi.dart';
 
@@ -333,7 +335,9 @@ class DB {
 	}
 
 
-	Future<void> updateTextStyle(TextStyle style) async {
+	// Future<void> updateTextStyle(TextStyle style) async {
+	Future<void> updateTextStyle(BuildContext ctx) async {
+		TextStyle style = Provider.of<ProviderManager>(ctx, listen: false).defaultStyle;
 		Map<String, dynamic> data = {
 			"fontFamily": style.fontFamily,
 			"fontSize": style.fontSize!.toDouble(),
