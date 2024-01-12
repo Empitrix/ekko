@@ -9,6 +9,7 @@ import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/utils/calc.dart';
 import 'package:ekko/utils/loading.dart';
 import 'package:ekko/views/drawer_page.dart';
 import 'package:ekko/views/modify_page.dart';
@@ -209,15 +210,19 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 				controller: scrollCtrl,
 				animation: floatingButtonAnim!,
 				child: const Icon(Icons.add_rounded),
-				onPressed: () => changeView(
-					context, ModifyPage(
-						backLoad: (){loadAll(false);},
-						previousPageName: "LandPage",
-						previousPage: widget,
-						folderId: widget.folderId,
-					),
-					"ModifyPage"
-				),
+				onPressed: (){
+					Size size = calcTextSize(context, "");
+					debugPrint("(H: ${size.height}, W: ${size.width})");
+				},
+				// onPressed: () => changeView(
+				// 	context, ModifyPage(
+				// 		backLoad: (){loadAll(false);},
+				// 		previousPageName: "LandPage",
+				// 		previousPage: widget,
+				// 		folderId: widget.folderId,
+				// 	),
+				// 	"ModifyPage"
+				// ),
 			),
 			appBar: searchBarFiled,
 			body: ValueListenableBuilder(

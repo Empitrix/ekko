@@ -119,8 +119,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			action: (txt){
 				// double shift = 47 * calcTextSize(context, " ").width / 100;
 				// double shift = 0 * calcTextSize(context, " ").width / 100;
-				double fSize = Provider.of<ProviderManager>(context, listen: false).defaultStyle.fontSize!;
-				double shift = fSize <= 20 ? 0 : 157 * calcTextSize(context, " ").width / 100;
 				bool isChecked = 
 					txt.trim().substring(0, 5).contains("x");
 				Widget leading = onLeadingText(
@@ -129,8 +127,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 					// widgetSpacing: calcTextSize(context, " " * 2).width + 5,
 					// spacing: 15,
 					// spacing: (5 * calcTextSize(context, " " * 2).width) / 100,
-					widgetSpacing: calcTextSize(context, " " * 3).width + shift,
-					spacing: (20 * calcTextSize(context, " " * 3).width) / 100 + shift,
+					widgetSpacing: calcTextSize(context, " " * 2).width + shift,
+					spacing: (20 * calcTextSize(context, " " * 2).width) / 100 + shift,
 					leading: SizedBox(
 						// width: 18,
 						width: 18,
@@ -163,11 +161,10 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			label: "item",
 			action: (txt){
 				// print((36.5 * calcTextSize(context, "").height / 100) / 10);
-				// double spacingLvl = (20 * calcTextSize(context, " " * 4).width) / 100;
 				double spacingLvl = (20 * calcTextSize(context, " " * 4).width) / 100;
+				print(spacingLvl);
 				// spacingLvl = 0;
 				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
-				double shift = (20 * calcTextSize(context, " " * 3).width / 100);
 				// print(indentedLvl);
 				Widget leading = onLeadingText(
 					leading: Icon(
@@ -178,16 +175,24 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 						// size: calcTextSize(context, "").height - 12
 						size: calcTextSize(context, "").height - 10
 					),
+					// leading: NfFont(
+					// 	unicode: indentedLvl == 0 ? "" :
+					// 	indentedLvl == 2 ? "" :
+					// 	"󰝤",
+					// 	// size: 10
+					// 	// size: calcTextSize(context, "").height - 12
+					// 	size: calcTextSize(context, "").height - 10
+					// ).widget(),
 					// spacing: (indentedLvl ~/ 2) * 20,
-					spacing: (indentedLvl != 0 ?
+					spacing: indentedLvl != 0 ?
 						(indentedLvl ~/ 2) * 20:
-						spacingLvl) + shift,
+						spacingLvl,
 					// spacing: (indentedLvl ~/ 2) * spacingLvl,
 					// spacing: (5 * calcTextSize(context, " ").width) / 100,
 					// topMargin: 7,
 					// topMargin: (calcTextSize(context, "").height / 3 ) - ( 11 * calcTextSize(context, "").height / 100),
 					topMargin: (calcTextSize(context, "").height / 2 ) - (calcTextSize(context, "").height / 2.8 ),
-					widgetSpacing: calcTextSize(context, " " * 4).width - shift,
+					widgetSpacing: calcTextSize(context, " " * 4).width,
 					text: TextSpan(
 						children: formattingTexts(
 							context: context,
