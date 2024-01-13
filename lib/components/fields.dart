@@ -31,11 +31,13 @@ class TitleTextField extends StatelessWidget {
 			);
 		}
 		// Convert SizedBox to Container just in case of padding/margin
-		return RawKeyboardListener(
+		// return RawKeyboardListener(
+		return KeyboardListener(
 			focusNode: FocusNode(),
-			onKey: (RawKeyEvent event) async {
+			onKeyEvent: (KeyEvent event) async {
+			// onKey: (RawKeyEvent event) async {
 				await Future.delayed(const Duration(milliseconds: 100));
-				if(event.data.logicalKey.keyId == 4294968065){
+				if(event.logicalKey.keyId == 4294968065){
 					// Down
 					nextFocus();
 				}
@@ -102,14 +104,14 @@ class DescriptionTextFiled extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-		return RawKeyboardListener(
+		return KeyboardListener(
 			focusNode: FocusNode(),
-			onKey: (RawKeyEvent event) async {
+			onKeyEvent: (KeyEvent event) async {
 				await Future.delayed(const Duration(milliseconds: 150));
-				if(event.data.logicalKey.keyId == 4294968068){
+				if(event.logicalKey.keyId == 4294968068){
 					previousFocus();
 				}
-				if(event.data.logicalKey.keyId == 4294968065){
+				if(event.logicalKey.keyId == 4294968065){
 					nextFocus();
 				}
 			},
@@ -146,9 +148,9 @@ class ContentTextFiled extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-		return RawKeyboardListener(
+		return KeyboardListener(
 			focusNode: FocusNode(),
-			onKey: (RawKeyEvent event) async {
+			onKeyEvent: (KeyEvent event) async {
 				await Future.delayed(const Duration(milliseconds: 150));
 				if(
 						event.logicalKey.keyId == 4294968068 &&

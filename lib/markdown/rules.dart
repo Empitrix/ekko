@@ -1,5 +1,4 @@
 import 'package:ekko/backend/launcher.dart';
-import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
