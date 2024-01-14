@@ -324,6 +324,44 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							},
 						),
 
+						// Text height
+						ListTile(
+							leading: const FaIcon(FontAwesomeIcons.upDown, size: 20),
+							trailing: Container(
+								padding: const EdgeInsets.all(5),
+								decoration: BoxDecoration(
+									color: Theme.of(context).colorScheme.secondaryContainer,
+									borderRadius: BorderRadius.circular(5)
+								),
+								child: Text(
+									"${Provider.of<ProviderManager>(context).defaultStyle.height}",
+									style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, fontFamily: "RobotoMono"),
+								),
+							),
+							title: const Text("Text height"),
+							onTap: (){
+								selectSheet(
+									context: context,
+									items: [
+										for(double idx = 0; idx < 21; idx ++) ListTile(
+											title: Text("${idx/10}px"),
+											trailing: Provider.of<ProviderManager>
+												(context, listen: false)
+												.defaultStyle.height! == idx / 10 ?
+													const Icon(Icons.check) : null,
+											onTap: () async {
+												Navigator.pop(context);
+												Provider.of<ProviderManager>
+													(context, listen: false)
+													.changeDefaultTextStyle(height: idx / 10);
+												await db.updateTextStyle(context);
+											},
+										)
+									]
+								);
+							},
+						),
+
 					],
 				),
 			),
