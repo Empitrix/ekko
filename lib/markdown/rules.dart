@@ -4,8 +4,8 @@ import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
+import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/models/rule.dart';
-import 'package:ekko/utils/calc.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -113,29 +113,22 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		),
 
 		// Sublist CheckedBox
+		/*
 		HighlightRule(
 			label: "checkbox",
 			action: (txt){
-				// double shift = 47 * calcTextSize(context, " ").width / 100;
-				// double shift = 0 * calcTextSize(context, " ").width / 100;
 				double fSize = Provider.of<ProviderManager>(context, listen: false).defaultStyle.fontSize!;
 				double shift = fSize <= 20 ? 0 : 157 * calcTextSize(context, " ").width / 100;
 				bool isChecked = 
 					txt.trim().substring(0, 5).contains("x");
 				Widget leading = onLeadingText(
-					// topMargin: 11,
 					topMargin: (calcTextSize(context, "").height / 2 ),
-					// widgetSpacing: calcTextSize(context, " " * 2).width + 5,
-					// spacing: 15,
-					// spacing: (5 * calcTextSize(context, " " * 2).width) / 100,
 					widgetSpacing: calcTextSize(context, " " * 3).width + shift,
 					spacing: (20 * calcTextSize(context, " " * 3).width) / 100 + shift,
 					leading: SizedBox(
-						// width: 18,
 						width: 18,
 						height: 0,
 						child: Transform.scale(
-							// scale: 0.8,
 							scale: (36.5 * calcTextSize(context, "").height / 100) / 10,
 							child: IgnorePointer(
 								child: Checkbox(
@@ -156,35 +149,71 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			},
 			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
 		),
+		*/
+		
+
+		HighlightRule(
+			label: "checkbox",
+			action: (txt){
+				bool isChecked = txt.trim().substring(0, 5).contains("x");
+				return WidgetSpan(
+					child: SublistWidget(
+						// leading: Transform.scale(
+						// 	scale: (36.5 * calcTextSize(context, "").height / 100) / 10,
+						// 	child: IgnorePointer(
+						// 		child: Checkbox(
+						// 			value: isChecked,
+						// 			onChanged: null
+						// 		),
+						// 	),
+						// ) ,
+
+						// leading: Icon(isChecked ? Icons.check_box : Icons.crop_square_outlined),
+						type: SublistWidgetType.widget,
+						leading: SizedBox(
+							width: 18,
+							height: 0,
+							child: Transform.scale(
+								scale: 0.8,
+								child: IgnorePointer(
+									child: Checkbox(
+										value: isChecked,
+										onChanged: null
+									),
+								),
+							) ,
+						),
+						data: TextSpan(
+							children: formattingTexts(
+								context: context,
+								content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
+							)
+						) 
+					)
+				);
+			},
+			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
+		),
 
 		// Sublist - Item
+		/*
 		HighlightRule(
-			label: "item",
+			label: "tem",
 			action: (txt){
-				// print((36.5 * calcTextSize(context, "").height / 100) / 10);
-				// double spacingLvl = (20 * calcTextSize(context, " " * 4).width) / 100;
 				double spacingLvl = (20 * calcTextSize(context, " " * 4).width) / 100;
-				// spacingLvl = 0;
 				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
 				double shift = (20 * calcTextSize(context, " " * 3).width / 100);
-				// print(indentedLvl);
 				Widget leading = onLeadingText(
 					leading: Icon(
 						indentedLvl == 0 ? Icons.circle :
 						indentedLvl == 2 ? Icons.circle_outlined :
 						Icons.square,
-						// size: 10
-						// size: calcTextSize(context, "").height - 12
 						size: calcTextSize(context, "").height - 10
 					),
 					// spacing: (indentedLvl ~/ 2) * 20,
 					spacing: (indentedLvl != 0 ?
 						(indentedLvl ~/ 2) * 20:
 						spacingLvl) + shift,
-					// spacing: (indentedLvl ~/ 2) * spacingLvl,
-					// spacing: (5 * calcTextSize(context, " ").width) / 100,
-					// topMargin: 7,
-					// topMargin: (calcTextSize(context, "").height / 3 ) - ( 11 * calcTextSize(context, "").height / 100),
 					topMargin: (calcTextSize(context, "").height / 2 ) - (calcTextSize(context, "").height / 2.8 ),
 					widgetSpacing: calcTextSize(context, " " * 4).width - shift,
 					text: TextSpan(
@@ -195,6 +224,34 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 					)
 				);
 				return WidgetSpan(child: leading);
+			},
+			regex: RegExp(r'^\s*-\s+.+$'),
+		),
+		*/
+		HighlightRule(
+			label: "item",
+			action: (txt){
+				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
+				return WidgetSpan(
+					child: SublistWidget(
+						// leading: const Icon(Icons.circle, size: 8),
+						leading: Icon(
+							indentedLvl == 0 ? Icons.circle :
+							indentedLvl == 2 ? Icons.circle_outlined :
+							Icons.square,
+							size: 8,
+						),
+						// indentation: indentedLvl != 0 ?
+						// 	(indentedLvl ~/ 2) * 20: spacingLvl,
+						indentation: (indentedLvl ~/ 2) * 20,
+						data: TextSpan(
+							children: formattingTexts(
+								context: context,
+								content: txt.trim().substring(1).trim(),
+							)
+						) 
+					)
+				);
 			},
 			regex: RegExp(r'^\s*-\s+.+$'),
 		),

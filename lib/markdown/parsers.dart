@@ -37,3 +37,24 @@ int tillFirstLetter(String input){
 	}
 	return 0;
 }
+
+
+double getNonRenderedWidgetSize(Widget input){
+	// Works for: SizedBox, Icon, (**add more if needed!)
+	double size = 0;
+	// ignore: invalid_use_of_protected_member
+	Widget element = input.createElement().widget; 
+	if(element is Icon){
+		if(element.size != null){
+			size = element.size!;
+		}
+	} else if(element is SizedBox){
+		if(element.width != null){
+			size = element.width!;
+		}
+	} else {
+		return 0;
+	}
+	return size;
+}
+
