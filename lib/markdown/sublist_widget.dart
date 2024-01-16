@@ -1,3 +1,4 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,9 @@ class SublistWidget extends StatelessWidget {
 				if (type == SublistWidgetType.icon) const SizedBox(width: 5),
 				SizedBox(width: indentation),
 				Container(
-					margin: EdgeInsets.symmetric(
-						vertical: margin
-					),
+					margin: isDesktop() ?
+						EdgeInsets.symmetric(vertical: margin) :
+						EdgeInsets.only(top: margin + 2, bottom: margin),
 					child: leading,
 				),
 				SizedBox(width: type == SublistWidgetType.icon ? 17 : 12),
@@ -51,7 +52,6 @@ class SublistWidget extends StatelessWidget {
 						]
 					))
 				)
-				
 			],
 		);
 	}
