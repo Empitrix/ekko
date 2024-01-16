@@ -5,7 +5,8 @@ List<RegexPatternTextStyle> allFieldRules(BuildContext context){
 	return <RegexPatternTextStyle>[
 		// Check-Box
 		RegexPatternTextStyle(
-			regexPattern: r"^\s*\-\s{1}\[(\s{1}|\x)\]\s{1}",
+			// regexPattern: r"^\s*\-\s{1}\[(\s{1}|\x)\]\s{1}",
+			regexPattern: r"^\s*(-|\*|\+)\s{1}\[(\s{1}|\x)\]\s{1}",
 			action: (txt, match){
 				int openingIdx = txt.split("").indexOf("[") + 1; 
 				return TextSpan(

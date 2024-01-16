@@ -1,3 +1,5 @@
+import 'package:ekko/backend/launcher.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
@@ -57,4 +59,16 @@ double getNonRenderedWidgetSize(Widget input){
 	}
 	return size;
 }
+
+
+TapGestureRecognizer useLinkRecognizer(BuildContext context, String link){
+	return TapGestureRecognizer()..onTap = () async {
+		await launchThis(
+			context: context, url: link);
+		debugPrint("Opening: $link"); 
+	};
+}
+
+
+
 

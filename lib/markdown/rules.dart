@@ -1,4 +1,3 @@
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -41,24 +40,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
 								Text.rich(TextSpan(children: [
-									/*
-									// Set link action
-									WidgetSpan(
-										child: Transform.rotate(
-											angle: getAngle(45),
-											child: MouseRegion(
-												cursor: SystemMouseCursors.click,
-												child: GestureDetector(
-													onTap: (){
-														debugPrint(span.toPlainText());
-													},
-													child: const Icon(Icons.link, color: Colors.grey),
-												),
-											),
-										)
-									),
-									const WidgetSpan(child: SizedBox(width:5)),
-									*/
 									endLineChar(),
 									span
 								])),
@@ -104,15 +85,16 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 							) ,
 						),
 						data: TextSpan(
-							children: formattingTexts(
+							children: [formattingTexts(
 								context: context,
 								content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
-							)
+							)]
 						) 
 					)
 				);
 			},
-			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
+			// regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
+			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
 		),
 
 		// Sublist - Item
@@ -131,15 +113,16 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 						),
 						indentation: (indentedLvl ~/ 2) * 20,
 						data: TextSpan(
-							children: formattingTexts(
+							children: [formattingTexts(
 								context: context,
 								content: txt.trim().substring(1).trim(),
-							)
+							)]
 						) 
 					)
 				);
 			},
-			regex: RegExp(r'^\s*-\s+.+$'),
+			// regex: RegExp(r'^\s*-\s+.+$'),
+			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
 		),
 
 		// Monospace
@@ -162,21 +145,21 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				link = link.substring(0, link.length - 1).trim();
 				TextStyle linkStyle = const TextStyle(
 					fontSize: 16,
-					decoration: TextDecoration.underline,
 					decorationColor: Colors.blue,
 					color: Colors.blue,
 				);
+				List<TextSpan> spoon = [];
+				for(InlineSpan spn in formattingTexts(context: context, content: name).children!){
+					spoon.add(TextSpan(
+						text: spn.toPlainText(),
+						style: spn.style,
+						recognizer: useLinkRecognizer(context, link),
+					));
+				}
 				return TextSpan(
-					children: formattingTexts(
-						context: context,
-						content: name,
-						recognizer: TapGestureRecognizer()..onTap = () async {
-							await launchThis(
-								context: context, url: link);
-							debugPrint("Opening: $link"); 
-						},
-						mergeStyle: linkStyle,
-					),
+					children: spoon,
+					recognizer: useLinkRecognizer(context, link),
+					style: linkStyle,
 				);
 			}
 		),
@@ -188,14 +171,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				text: txt,
 				style: const TextStyle(
 					color: Colors.blue,
+					fontSize: 16,
 					decorationColor: Colors.blue,
 					decoration: TextDecoration.underline
 				),
-				recognizer: TapGestureRecognizer()..onTap = () async {
-					await launchThis(
-						context: context, url: txt);
-					debugPrint("Opening: $txt"); 
-				},
+				recognizer: useLinkRecognizer(context, txt),
 			),
 			regex: RegExp(r'(https?://\S+)'),
 		),

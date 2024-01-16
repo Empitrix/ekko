@@ -4,19 +4,27 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
-List<TextSpan> formattingTexts({
+TextSpan formattingTexts({
 	required BuildContext context,
 	required String content,
 	TextStyle? mergeStyle,
 	TapGestureRecognizer? recognizer}){
 	// using this function in rules list prevent to 'over-flow' error
-	return <TextSpan>[
-		applyRules(
-			context: context,
-			content: content,
-			rules: allSyntaxRules(context)
-		)
-	];
+	// return <TextSpan>[
+	return applyRules(
+		context: context,
+		content: content,
+		rules: allSyntaxRules(context)
+	);
+
+	// if(a[0].style != null){
+	// 	a[0].style!.merge(mergeStyle);
+	// } else {
+	// 	a[0].style = mergeStyle;
+	// }
+
+	// return [TextSpan(children: [...a], style: mergeStyle, recognizer: recognizer)];
+	// return a;
 }
 
 TextSpan endLineChar(){
