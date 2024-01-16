@@ -9,7 +9,6 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
 
 
 List<HighlightRule> allSyntaxRules(BuildContext context){
@@ -26,80 +25,29 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
 		),
 
-		// Headline 6
+		// Headline 1..6
 		HighlightRule(
-			label: "headline6",
-			action: (txt) => TextSpan(
-				text: txt.substring(7),
-				style: getHeadlineStyle(context, 6)
-			),
-			regex: RegExp(r'^###### [\s\S]*?$'),
-		),
-
-		// Headline 5
-		HighlightRule(
-			label: "headline5",
-			action: (txt) => TextSpan(
-				text: txt.substring(6),
-				style: getHeadlineStyle(context, 5)
-			),
-			regex: RegExp(r'^##### [\s\S]*?$'),
-		),
-
-		// Headline 4
-		HighlightRule(
-			label: "headline4",
-			action: (txt) => TextSpan(
-				text: txt.substring(5),
-				style: getHeadlineStyle(context, 4)
-			),
-			regex: RegExp(r'^#### [\s\S]*?$'),
-		),
-
-		// Headline 3
-		HighlightRule(
-			label: "headline3",
-			action: (txt) => TextSpan(
-				text: txt.substring(4),
-				style: getHeadlineStyle(context, 3)
-			),
-			regex: RegExp(r'^### [\s\S]*?$'),
-		),
-		
-		// Headline 2
-		HighlightRule(
-			label: "headline2",
-			action: (txt) => WidgetSpan(
-				child: Column(
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: [
-						Text.rich(TextSpan(
-							text: txt.substring(3),
-							style: getHeadlineStyle(context, 2)
-						)),
-						const Divider()
-					],
-				)
-			),
-			regex: RegExp(r'^## [\s\S]*?$'),
-		),
-
-		// Headline 1
-		HighlightRule(
-			label: "headline1",
-			action: (txt) => WidgetSpan(
-				child: Column(
-					crossAxisAlignment: CrossAxisAlignment.start,
-					children: [
-						Text.rich(TextSpan(
-							text: txt.substring(2),
-							style: getHeadlineStyle(context, 1)
-						)),
-						const Divider()
-					],
-				)
-			),
-			regex: RegExp(r'^# [\s\S]*?$'),
+			label: "headline",
+			action: (txt){
+				int sharpLength = "#".allMatches(txt).length;
+				TextSpan span = TextSpan(
+					text: txt.substring(sharpLength + 1),
+					style: getHeadlineStyle(context, sharpLength)
+				);
+				if(sharpLength == 1 || sharpLength == 2){
+					return WidgetSpan(
+						child: Column(
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: [
+								Text.rich(span),
+								const Divider()
+							],
+						)
+					);
+				}
+				return span;
+			},
+			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
 		),
 
 		// Divider
@@ -113,62 +61,12 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		),
 
 		// Sublist CheckedBox
-		/*
-		HighlightRule(
-			label: "checkbox",
-			action: (txt){
-				double fSize = Provider.of<ProviderManager>(context, listen: false).defaultStyle.fontSize!;
-				double shift = fSize <= 20 ? 0 : 157 * calcTextSize(context, " ").width / 100;
-				bool isChecked = 
-					txt.trim().substring(0, 5).contains("x");
-				Widget leading = onLeadingText(
-					topMargin: (calcTextSize(context, "").height / 2 ),
-					widgetSpacing: calcTextSize(context, " " * 3).width + shift,
-					spacing: (20 * calcTextSize(context, " " * 3).width) / 100 + shift,
-					leading: SizedBox(
-						width: 18,
-						height: 0,
-						child: Transform.scale(
-							scale: (36.5 * calcTextSize(context, "").height / 100) / 10,
-							child: IgnorePointer(
-								child: Checkbox(
-									value: isChecked,
-									onChanged: null
-								),
-							),
-						) ,
-					),
-					text: TextSpan(
-						children: formattingTexts(
-							context: context,
-							content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
-						)
-					)
-				);
-				return WidgetSpan(child: leading);
-			},
-			regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$'),
-		),
-		*/
-		
-
 		HighlightRule(
 			label: "checkbox",
 			action: (txt){
 				bool isChecked = txt.trim().substring(0, 5).contains("x");
 				return WidgetSpan(
 					child: SublistWidget(
-						// leading: Transform.scale(
-						// 	scale: (36.5 * calcTextSize(context, "").height / 100) / 10,
-						// 	child: IgnorePointer(
-						// 		child: Checkbox(
-						// 			value: isChecked,
-						// 			onChanged: null
-						// 		),
-						// 	),
-						// ) ,
-
-						// leading: Icon(isChecked ? Icons.check_box : Icons.crop_square_outlined),
 						type: SublistWidgetType.widget,
 						leading: SizedBox(
 							width: 18,
@@ -196,38 +94,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		),
 
 		// Sublist - Item
-		/*
-		HighlightRule(
-			label: "tem",
-			action: (txt){
-				double spacingLvl = (20 * calcTextSize(context, " " * 4).width) / 100;
-				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
-				double shift = (20 * calcTextSize(context, " " * 3).width / 100);
-				Widget leading = onLeadingText(
-					leading: Icon(
-						indentedLvl == 0 ? Icons.circle :
-						indentedLvl == 2 ? Icons.circle_outlined :
-						Icons.square,
-						size: calcTextSize(context, "").height - 10
-					),
-					// spacing: (indentedLvl ~/ 2) * 20,
-					spacing: (indentedLvl != 0 ?
-						(indentedLvl ~/ 2) * 20:
-						spacingLvl) + shift,
-					topMargin: (calcTextSize(context, "").height / 2 ) - (calcTextSize(context, "").height / 2.8 ),
-					widgetSpacing: calcTextSize(context, " " * 4).width - shift,
-					text: TextSpan(
-						children: formattingTexts(
-							context: context,
-							content: txt.trim().substring(1).trim(),
-						)
-					)
-				);
-				return WidgetSpan(child: leading);
-			},
-			regex: RegExp(r'^\s*-\s+.+$'),
-		),
-		*/
 		HighlightRule(
 			label: "item",
 			action: (txt){
@@ -241,8 +107,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 							Icons.square,
 							size: 8,
 						),
-						// indentation: indentedLvl != 0 ?
-						// 	(indentedLvl ~/ 2) * 20: spacingLvl,
 						indentation: (indentedLvl ~/ 2) * 20,
 						data: TextSpan(
 							children: formattingTexts(
@@ -256,7 +120,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			regex: RegExp(r'^\s*-\s+.+$'),
 		),
 
-
 		// Monospace
 		HighlightRule(
 			label: "monospace",
@@ -265,7 +128,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 			regex: RegExp(r'\`.*?\`', multiLine: true),
 		),
-
 
 		// Links
 		HighlightRule(
@@ -411,51 +273,4 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 
 	return rules;
 }
-
-
-List<RegexPatternTextStyle> allFieldRules(BuildContext context){
-	return <RegexPatternTextStyle>[
-		// Check-Box
-		RegexPatternTextStyle(
-			regexPattern: r"^\s*\-\s{1}\[(\s{1}|\x)\]\s{1}",
-			action: (txt, match){
-				int openingIdx = txt.split("").indexOf("[") + 1; 
-				return TextSpan(
-					children: [
-						TextSpan(
-							text: txt.substring(0, openingIdx),
-							style: const TextStyle(color: Colors.orange)),
-						TextSpan(text: txt.substring(openingIdx, openingIdx + 1)),
-						TextSpan(
-							text: txt.substring(openingIdx + 1),
-							style: const TextStyle(color: Colors.orange)),
-					],
-				);
-			},
-		),
-		
-		// Headline 1..6
-		RegexPatternTextStyle(
-			regexPattern: r"^#{1,6} [\s\S]*?$",
-			action: (txt, match){
-				int end = "#$txt".lastIndexOf("## ") + 1;
-				return TextSpan(
-					children: [
-						TextSpan(
-							text: txt.substring(0, end),
-							style: const TextStyle(color: Colors.indigo, fontWeight: FontWeight.w900)
-						),
-						TextSpan(
-							text: txt.substring(end),
-							style: const TextStyle(fontWeight: FontWeight.w900)
-						),
-					],
-				);
-			},
-		),
-
-
-	];
-}
-
 

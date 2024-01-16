@@ -1,7 +1,8 @@
-import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
 import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
+
 
 class TitleTextField extends StatelessWidget {
 	final TextEditingController controller;
