@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +45,7 @@ class SublistWidget extends StatelessWidget {
 				Expanded(
 					child: Text.rich(TextSpan(
 						children: [
-							const TextSpan(
-								text: "\u000A",
-								style: TextStyle(color: Colors.red, fontSize: 1)
-							),
+							endLineChar(),
 							data,
 						]
 					))

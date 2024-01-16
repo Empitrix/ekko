@@ -19,6 +19,13 @@ List<TextSpan> formattingTexts({
 	];
 }
 
+TextSpan endLineChar(){
+	return const TextSpan(
+		text: "\u000A",
+		style: TextStyle(color: Colors.red, fontSize: 1)
+	);
+}
+
 
 TextStyle getHeadlineStyle(BuildContext ctx, int idx){
 	idx = idx - 1;

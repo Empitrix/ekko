@@ -1,3 +1,4 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -39,7 +40,28 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 						child: Column(
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
-								Text.rich(span),
+								Text.rich(TextSpan(children: [
+									/*
+									// Set link action
+									WidgetSpan(
+										child: Transform.rotate(
+											angle: getAngle(45),
+											child: MouseRegion(
+												cursor: SystemMouseCursors.click,
+												child: GestureDetector(
+													onTap: (){
+														debugPrint(span.toPlainText());
+													},
+													child: const Icon(Icons.link, color: Colors.grey),
+												),
+											),
+										)
+									),
+									const WidgetSpan(child: SizedBox(width:5)),
+									*/
+									endLineChar(),
+									span
+								])),
 								const Divider()
 							],
 						)
