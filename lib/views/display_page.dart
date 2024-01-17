@@ -1,6 +1,9 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/sheets.dart';
+import 'package:ekko/components/shortcut/intents.dart';
+import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -9,6 +12,7 @@ import 'package:ekko/models/note.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DisplayPage extends StatefulWidget {
 	final SmallNote smallNote;
@@ -36,6 +40,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	ScrollController scrollCtrl = ScrollController();
 	GenAnimation? floatingButtonAnim;
 	FocusNode contextFocus = FocusNode();
+	TextSelectionControls? selectionControl;
 	
 	void _backToPreviousPage(){
 		widget.loadAll();
@@ -61,12 +66,28 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 		});
 	}
 
+	void _goToModifyPage(){
+		changeView(
+			context, ModifyPage(
+				note: widget.smallNote,
+				folderId: widget.smallNote.folderId,
+				backLoad: (){loadAll();},
+				previousPage: widget,
+				previousPageName: "DisplayPage",
+				// previousPage: widget.previousPage,
+				// previousPageName: widget.previousPageName,
+			),
+			"ModifyPage"
+		);
+	}
+
 	@override
 	void initState() {
 		// Load async
 		initAnimations();
 		loadAll();
 		contextFocus.requestFocus();
+		selectionControl = getSelectionControl();
 		super.initState();
 	}
 
@@ -81,6 +102,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 
 	@override
 	Widget build(BuildContext context) {
+
 		return PopScope(
 			canPop: false,
 			onPopInvoked: (bool didPop) async {
@@ -91,30 +113,33 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 			child: Container(
 				color: Theme.of(context).appBarTheme.backgroundColor,
 				child: SafeArea(
-					child:Scaffold(
+					// child: Scaffold(
+					// GoToEditPageIntent
+					child: ShortcutScaffold(
+						focusNode: screenShortcutFocus["DisplayPage"],
+						shortcuts: const <ShortcutActivator, Intent>{
+							SingleActivator(LogicalKeyboardKey.keyE, control: true): GoToEditPageIntent(),
+						},
+						// contextFocus
+						actions: <Type, Action<Intent>>{
+							GoToEditPageIntent: CallbackAction<GoToEditPageIntent>(
+								onInvoke: (GoToEditPageIntent intent) => {
+									_goToModifyPage()
+								}),
+						},
 						floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
 						floatingActionButton: AnimatedFloatingButton(
 							controller: scrollCtrl,
 							animation: floatingButtonAnim!,
 							child: const Icon(Icons.edit),
-							onPressed: () => changeView(
-								context, ModifyPage(
-									note: widget.smallNote,
-									folderId: widget.smallNote.folderId,
-									backLoad: (){loadAll();},
-									previousPage: widget,
-									previousPageName: "DisplayPage",
-								),
-								"ModifyPage"
-							),
+							onPressed: () => _goToModifyPage(),
 						),
 						body: Builder(
 							builder:(context){
-
 								if(!isLoaded){
 									return const Center(child: CircularProgressIndicator());
 								}
-
+								contextFocus.requestFocus(); // Update Foucs
 								return NestedScrollView(
 									controller: scrollCtrl,
 									floatHeaderSlivers: true,
@@ -167,17 +192,15 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 									},
 									body: SelectionArea(
 										focusNode: contextFocus,
-										contextMenuBuilder: (context, editableTextState){
-											final List<ContextMenuButtonItem> buttonItems = editableTextState.contextMenuButtonItems;
-											return AdaptiveTextSelectionToolbar.buttonItems(
-												anchors: editableTextState.contextMenuAnchors,
-												buttonItems: buttonItems,
-											);
-										},
+										selectionControls: selectionControl!,
+										contextMenuBuilder: (context, editableTextState) => AdaptiveTextSelectionToolbar.buttonItems(
+											anchors: editableTextState.contextMenuAnchors,
+											buttonItems: editableTextState.contextMenuButtonItems,
+										),
 										child: ListView(
 											padding: const EdgeInsets.only(
 												right: 12, left: 12,
-												top: 12, bottom: 85  // :)
+												top: 12, bottom: 85
 											),
 											children: [
 												const SizedBox(height: 10),

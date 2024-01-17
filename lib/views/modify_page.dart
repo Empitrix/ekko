@@ -54,7 +54,7 @@ class ModifyPageState extends State<ModifyPage> {
 		}
 		
 		if(force){
-			changeView(context, widget.previousPage, "", isPush: false);
+			changeView(context, widget.previousPage, widget.previousPageName, isPush: false);
 			return;  // Close the function
 		}
 		

@@ -1,4 +1,3 @@
-import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
@@ -6,7 +5,6 @@ import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/models/rule.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

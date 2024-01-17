@@ -54,3 +54,11 @@ double getAngle(int d){
 FontWeight fontWeightParser(int input){
 	return FontWeight.values[input ~/ 100.toInt() - 1];
 }
+
+TextSelectionControls getSelectionControl(){
+	if(isDesktop()){
+		return DesktopTextSelectionControls();
+	} else {
+		return MaterialTextSelectionControls();
+	}
+}

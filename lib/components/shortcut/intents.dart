@@ -16,3 +16,8 @@ class SubmitNoteIntent extends Intent {
 class DrawerPageIntent extends Intent {
 	const DrawerPageIntent();
 }
+
+//## Display Page
+class GoToEditPageIntent extends Intent {
+	const GoToEditPageIntent();
+}

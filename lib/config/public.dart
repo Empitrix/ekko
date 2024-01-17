@@ -32,5 +32,6 @@ String markdownThemeName = "gruvbox-dark";
 Map<String, FocusNode> screenShortcutFocus = <String, FocusNode>{
 	"LandPage": FocusNode(),
 	"ModifyPage": FocusNode(),
+	"DisplayPage": FocusNode(),
 };
 
