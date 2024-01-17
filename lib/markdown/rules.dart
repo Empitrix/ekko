@@ -1,4 +1,5 @@
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
@@ -14,18 +15,19 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		// Markdown
 		HighlightRule(
 			label: "markdown",
+			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
 			action: (String text) => WidgetSpan(
 				child: MarkdownWidget(
 					content: text,
 					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
 				)
 			),
-			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
 		),
 
 		// Headline 1..6
 		HighlightRule(
 			label: "headline",
+			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
 			action: (txt){
 				int sharpLength = "#".allMatches(txt).length;
 				TextSpan span = TextSpan(
@@ -48,22 +50,23 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				}
 				return span;
 			},
-			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
 		),
 
 		// Divider
 		HighlightRule(
 			label: "divider",
+			// regex: RegExp(r'^\s*---\s*$'),
+			regex: RegExp(r'^---$'),
 			trimNext: true,
 			action: (_) => const WidgetSpan(
 				child: Divider(height: 1)
 			),
-			regex: RegExp(r'^\s*---\s*$'),
 		),
 
 		// Sublist CheckedBox
 		HighlightRule(
 			label: "checkbox",
+			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
 			action: (txt){
 				bool isChecked = txt.trim().substring(0, 5).contains("x");
 				return WidgetSpan(
@@ -92,12 +95,12 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				);
 			},
 			// regex: RegExp(r'^-\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
-			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
 		),
 
 		// Sublist - Item
 		HighlightRule(
 			label: "item",
+			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
 			action: (txt){
 				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
 				return WidgetSpan(
@@ -120,16 +123,15 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				);
 			},
 			// regex: RegExp(r'^\s*-\s+.+$'),
-			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
 		),
 
 		// Monospace
 		HighlightRule(
 			label: "monospace",
+			regex: RegExp(r'\`.*?\`', multiLine: true),
 			action: (txt) => getMonospaceTag(
 				txt.substring(1, txt.length - 1)
 			),
-			regex: RegExp(r'\`.*?\`', multiLine: true),
 		),
 
 		// Links
@@ -165,6 +167,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		// URL
 		HighlightRule(
 			label: "url",
+			regex: RegExp(r'(https?://\S+)'),
 			action: (txt) => TextSpan(
 				text: txt,
 				style: const TextStyle(
@@ -175,12 +178,12 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				),
 				recognizer: useLinkRecognizer(context, txt),
 			),
-			regex: RegExp(r'(https?://\S+)'),
 		),
 
 		// Italic & Bold
 		HighlightRule(
 			label: "italic_bold",
+			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
 			action: (txt) => TextSpan(
 				text: txt.substring(3, txt.length - 3),
 				style: const TextStyle(
@@ -189,12 +192,12 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 					fontStyle: FontStyle.italic
 				)
 			),
-			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
 		),
 
 		// Bold
 		HighlightRule(
 			label: "boldness",
+			regex: RegExp(r'\*\*(.*?)\*\*'),
 			action: (txt) => TextSpan(
 				text: txt.substring(2, txt.length - 2),
 				style: const TextStyle(
@@ -202,12 +205,12 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 					fontWeight: FontWeight.bold
 				)
 			),
-			regex: RegExp(r'\*\*(.*?)\*\*'),
 		),
 
 		// Italic
 		HighlightRule(
 			label: "italic",
+			regex: RegExp(r'\*(.*?)\*'),
 			action: (txt) => TextSpan(
 				text: txt.substring(1, txt.length - 1),
 				style: const TextStyle(
@@ -215,11 +218,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 					fontStyle: FontStyle.italic
 				)
 			),
-			regex: RegExp(r'\*(.*?)\*'),
 		),
 
 		HighlightRule(
 			label: "strike",
+			regex: RegExp(r'~~.*~~'),
 			action: (txt) => TextSpan(
 				text: txt.substring(2, txt.length - 2),
 				style: TextStyle(
@@ -229,46 +232,44 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 					decoration: TextDecoration.lineThrough
 				)
 			),
-			regex: RegExp(r'~~.*~~'),
 		),
 
 		// Backqoute
 		HighlightRule(
 			label: "backqoute",
+			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
 			action: (txt){
-				txt = txt.trim().substring(1);
+				BackqouteObj obj = getBackqouteElements(context, txt);
 				return WidgetSpan(
-					child: Column(
-						mainAxisSize: MainAxisSize.min,
-						crossAxisAlignment: CrossAxisAlignment.start,
-						children: [
-							Row(
-								children: [
-									const SizedBox(
-										height: 30,
-										child: VerticalDivider()),
-									const SizedBox(width: 10),
-									Expanded( child: SingleChildScrollView(
-										controller: ScrollController(),
-										scrollDirection: Axis.horizontal,
-										child: Column(
-											children: [
-												Text(
-													txt,
-													style: const TextStyle(
-														fontStyle: FontStyle.italic),
-												)
-											],
-										),
-									))
-								],
-							),
-						],
+					child: IntrinsicHeight(
+						child: Row(
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: [
+								Container(
+									width: 3.5,
+									height: double.infinity,
+									decoration: BoxDecoration(
+										color: obj.color,
+										borderRadius: BorderRadius.circular(1)
+									),
+								),
+								const SizedBox(width: 12),
+								Expanded(
+									child: Column(
+										crossAxisAlignment: CrossAxisAlignment.start,
+										children: [
+											Text.rich(obj.span)
+										],
+									)
+								)
+							],
+						),
 					)
 				);
 			},
-			regex: RegExp(r'^\s*>\s+.+$'),
 		),
+
+		// etc..
 	];
 
 	return rules;
