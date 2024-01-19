@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -34,6 +35,8 @@ class TxtCtrl{
 
 
 bool isDesktop([List<String>? platforms]){
+	// Behave with web like non-desktop (acrylic etc.. error)
+	if(kIsWeb){ return false; }
 	if(Platform.isAndroid){ return false; }
 	if(Platform.isIOS){ return false; }
 	if(platforms != null){
