@@ -96,7 +96,7 @@ class ModifyPageState extends State<ModifyPage> {
 			folderId: widget.folderId,
 			title: title.text,
 			description: description.text,
-			content: content.text,
+			content: content.text.replaceAll("\u000b", "\u000a"),
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
 			mode: mode

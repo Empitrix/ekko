@@ -137,7 +137,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		// Links
 		HighlightRule(
 			label: "links",
-			regex: RegExp(r'\[.*\]\(.*\)'),
+			// regex: RegExp(r'\[.*?\]\(.*?\)'),
+			regex: RegExp(r'\[(.*?)\]\((.*?)\)'),
 			action: (txt){
 				String name = txt.split("](")[0]
 					.substring(1).trim();
