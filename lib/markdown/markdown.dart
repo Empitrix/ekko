@@ -57,8 +57,8 @@ class MarkdownWidget extends StatelessWidget {
 	TextStyle markdownStyle(){
 		return TextStyle(
 			height: height,
-			// fontFamily: "RobotoMono"
-			fontFamily: "SauceCodeProNerdFont"
+			fontFamily: "RobotoMono"
+			// fontFamily: "SauceCodeProNerdFont"
 		);
 	}
 

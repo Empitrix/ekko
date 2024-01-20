@@ -33,6 +33,12 @@ dependencies:
     git:
       url: https://github.com/Empitrix/regex_pattern_text_field
       ref: master
+  
+  awesome_text_field:
+    path: "F:/Flutter/awesome_text_field"
+    # git:
+    #   url: https://github.com/Empitrix/regex_pattern_text_field
+    #   ref: master
         
 
 dev_dependencies:

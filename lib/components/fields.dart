@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
@@ -137,7 +138,8 @@ class DescriptionTextFiled extends StatelessWidget {
 
 
 class ContentTextFiled extends StatelessWidget {
-	final RegexPatternTextEditingController controller;
+	// final RegexPatternTextEditingController controller;
+	final TextEditingController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
 	const ContentTextFiled({
@@ -163,6 +165,7 @@ class ContentTextFiled extends StatelessWidget {
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: [
 						// TextField(
+						/*
 						RegexPatternTextField(
 						contextMenuBuilder: (context, editableTextState){
 							final List<ContextMenuButtonItem> buttonItems = editableTextState.contextMenuButtonItems;
@@ -186,7 +189,20 @@ class ContentTextFiled extends StatelessWidget {
 								hintText: "Content"
 							),
 						),
+						*/
+						ClipRRect(
+							borderRadius: BorderRadius.circular(5),
+							child: AwesomeTextField(
+								focusNode: focusNode,
+								controller: controller,
+								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
+									color: Theme.of(context).colorScheme.inverseSurface,
+									fontFamily: "RobotoMono"
+								),
+							),
+						)
 
+						/*
 						MouseRegion(
 							cursor: SystemMouseCursors.text,
 							child: SizedBox(
@@ -202,6 +218,7 @@ class ContentTextFiled extends StatelessWidget {
 								),
 							),
 						)
+						*/
 
 					],
 				),
