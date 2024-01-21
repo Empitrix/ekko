@@ -14,6 +14,8 @@ class MDGenerator extends StatelessWidget {
 	Widget build(BuildContext context) {
 
 		// Apply rules and add to widgetTree
+		lastIndent = 0;
+		indentStep = 0;
 		TextSpan spanWidget = applyRules(
 			context: context,
 			content: content,

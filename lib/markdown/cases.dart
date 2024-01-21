@@ -1,4 +1,5 @@
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,11 @@ TextSpan applyRules({
 			HighlightRule mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
 			//** trimNext = mRule.trimNext;
 			if(mRule.label == "markdown"){ spans.add(nl); }
+			// {@Re-Count}
+			if(mRule.label != "item"){
+				lastIndent = 0;
+				indentStep = 0;
+			}
 			spans.add(mRule.action(mText));
 			if(mRule.label == "markdown"){ spans.add(nl); }
 

@@ -9,6 +9,8 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+int lastIndent = 0;
+int indentStep = 0;
 
 List<HighlightRule> allSyntaxRules(BuildContext context){
 	List<HighlightRule> rules = [
@@ -102,17 +104,28 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			label: "item",
 			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
 			action: (txt){
-				int indentedLvl = (tillFirstLetter(txt) / 2).floor();
+				int iLvl = getIndentationLevel(txt);
+				int step = iLvl - lastIndent;
+				if(step != 0){
+					if(step < 0 && step != -1){
+						step ++;
+					}
+					if(step > 0 && step != 1){
+						step --;
+					}
+				}
+				indentStep += step;
+				if(iLvl != lastIndent){ lastIndent = iLvl; }
+
 				return WidgetSpan(
 					child: SublistWidget(
-						// leading: const Icon(Icons.circle, size: 8),
 						leading: Icon(
-							indentedLvl == 0 ? Icons.circle :
-							indentedLvl == 2 ? Icons.circle_outlined :
+							indentStep == 0 ? Icons.circle:
+							indentStep == 1 ? Icons.circle_outlined:
 							Icons.square,
 							size: 8,
 						),
-						indentation: (indentedLvl ~/ 2) * 20,
+						indentation: indentStep * 20,
 						data: TextSpan(
 							children: [formattingTexts(
 								context: context,
