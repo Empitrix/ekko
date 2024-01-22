@@ -1,6 +1,7 @@
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:flutter/services.dart';
+import 'package:awesome_text_field/awesome_text_field.dart';
 // import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
@@ -41,7 +42,10 @@ class ModifyPageState extends State<ModifyPage> {
 	FocusNode descriptionF = FocusNode();
 	// TextEditingController? content;
 	// RegexPatternTextEditingController content = RegexPatternTextEditingController();
-	TextEditingController content = TextEditingController();
+	// TextEditingController content = TextEditingController();
+	AwesomeController content = AwesomeController();
+	// TextEditingController content = TextEditingController();
+
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;

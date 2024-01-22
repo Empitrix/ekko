@@ -31,7 +31,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			label: "headline",
 			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
 			action: (txt){
-				int sharpLength = "#".allMatches(txt).length;
+				// int sharpLength = "#".allMatches(txt).length;
+				// int sharpLength = RegExp(r'^\#{1,6}\s?').allMatches(txt).length;
+				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 				TextSpan span = TextSpan(
 					text: txt.substring(sharpLength + 1),
 					style: getHeadlineStyle(context, sharpLength)

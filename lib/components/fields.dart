@@ -1,8 +1,9 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
-import 'package:ekko/markdown/filed_rules.dart';
+// import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
-import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
+// import 'package:regex_pattern_text_field/helpers/regex_pattern_text_style_helper.dart';
+// import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
 
 
 class TitleTextField extends StatelessWidget {
@@ -139,7 +140,8 @@ class DescriptionTextFiled extends StatelessWidget {
 
 class ContentTextFiled extends StatelessWidget {
 	// final RegexPatternTextEditingController controller;
-	final TextEditingController controller;
+	// final TextEditingController controller;
+	final AwesomeController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
 	const ContentTextFiled({
@@ -194,6 +196,36 @@ class ContentTextFiled extends StatelessWidget {
 							borderRadius: BorderRadius.circular(5),
 							child: AwesomeTextField(
 								focusNode: focusNode,
+								// regexStyle: allFieldRules(context),
+								// regexStyle: <RegexStyle>[
+								// 	RegexStyle(
+								// 		regex: RegExp(r'\#\w+'),
+								// 		style: const TextStyle(
+								// 			color: Colors.red,
+								// 			fontSize: 40,
+								// 			fontWeight: FontWeight.bold
+								// 		),
+								// 	)
+								// ],
+								regexStyle: <RegexGroupStyle>[
+									RegexGroupStyle(
+										// regex: RegExp(r'\#\w+'),
+										regex: RegExp(r'^#{1,6} [\s\S]*?$'),
+										style: const TextStyle(fontWeight: FontWeight.bold),
+										regexStyles: [
+											RegexStyle(
+												regex: RegExp(r'^\#{1,6}\s?'),
+												style: const TextStyle(
+													color: Colors.red,
+													fontSize: 40,
+													fontWeight: FontWeight.bold
+												),
+											)
+										]
+									),
+
+
+								],
 								controller: controller,
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,
