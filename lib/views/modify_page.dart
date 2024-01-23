@@ -248,20 +248,29 @@ class ModifyPageState extends State<ModifyPage> {
 
 						// Widgets
 						return ListView(
-							padding: const EdgeInsets.all(12),
+							// padding: const EdgeInsets.all(12),
+							// padding: const EdgeInsets.all(0),
+							padding: EdgeInsets.zero,
 							children: [
-								TitleTextField(
-									controller: title,
-									focusNode: titleF,
-									autofocus: widget.note == null,
-									nextFocus: () => descriptionF.requestFocus(),
-								),
-								// const SizedBox(height: 20),
-								DescriptionTextFiled(
-									controller: description,
-									focusNode: descriptionF,
-									previousFocus: () => titleF.requestFocus(),
-									nextFocus: () => contentF.requestFocus()
+								Padding(
+									padding: const EdgeInsets.all(12),
+									child: Column(
+										children: [
+											TitleTextField(
+												controller: title,
+												focusNode: titleF,
+												autofocus: widget.note == null,
+												nextFocus: () => descriptionF.requestFocus(),
+											),
+											// const SizedBox(height: 20),
+											DescriptionTextFiled(
+												controller: description,
+												focusNode: descriptionF,
+												previousFocus: () => titleF.requestFocus(),
+												nextFocus: () => contentF.requestFocus()
+											),
+										],
+									),
 								),
 								const SizedBox(height: 20),
 								ContentTextFiled(

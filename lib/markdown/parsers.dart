@@ -30,15 +30,15 @@ Widget onLeadingText({
 }
 
 
-int tillFirstLetter(String input){
-	List<String> all = input.split("");
-	for(int i = 0; i < all.length; i++){
-		if(all[i].trim() != ""){
-			return i;
-		}
-	}
-	return 0;
-}
+// int tillFirstLetter(String input){
+// 	List<String> all = input.split("");
+// 	for(int i = 0; i < all.length; i++){
+// 		if(all[i].trim() != ""){
+// 			return i;
+// 		}
+// 	}
+// 	return 0;
+// }
 
 int getIndentationLevel(String line) {
  // Count leading spaces or tabs

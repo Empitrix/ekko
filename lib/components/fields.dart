@@ -1,4 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/config/public.dart';
 // import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
@@ -192,47 +193,59 @@ class ContentTextFiled extends StatelessWidget {
 							),
 						),
 						*/
-						ClipRRect(
-							borderRadius: BorderRadius.circular(5),
-							child: AwesomeTextField(
-								focusNode: focusNode,
-								// regexStyle: allFieldRules(context),
-								// regexStyle: <RegexStyle>[
-								// 	RegexStyle(
-								// 		regex: RegExp(r'\#\w+'),
-								// 		style: const TextStyle(
-								// 			color: Colors.red,
-								// 			fontSize: 40,
-								// 			fontWeight: FontWeight.bold
-								// 		),
-								// 	)
-								// ],
-								regexStyle: <RegexGroupStyle>[
-									RegexGroupStyle(
-										// regex: RegExp(r'\#\w+'),
-										regex: RegExp(r'^#{1,6} [\s\S]*?$'),
-										style: const TextStyle(fontWeight: FontWeight.bold),
-										regexStyles: [
-											RegexStyle(
-												regex: RegExp(r'^\#{1,6}\s?'),
-												style: const TextStyle(
-													color: Colors.red,
-													fontSize: 40,
-													fontWeight: FontWeight.bold
-												),
-											)
-										]
-									),
-
-
-								],
-								controller: controller,
-								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
-									color: Theme.of(context).colorScheme.inverseSurface,
-									fontFamily: "RobotoMono"
-								),
+						AwesomeTextField(
+							focusNode: focusNode,
+							borderRadius: const BorderRadius.only(
+								bottomRight: Radius.circular(0),
+								topRight: Radius.circular(5),
 							),
-						)
+							// border: const Border(right: BorderSide(color: Colors.white, width: 2)),
+							border: Border(
+								right: BorderSide(
+									color: Theme.of(context).colorScheme.inverseSurface, width: 1
+								),
+								top: BorderSide(
+									color: Theme.of(context).colorScheme.inverseSurface, width: 1
+								),
+								// bottom: BorderSide(
+								// 	color: Theme.of(context).colorScheme.inverseSurface, width: 2
+								// )
+							),
+							lineNumberColor: LineNumberPalette(
+								indexColor: dMode ? Colors.amber : Colors.black,
+								onSelectIndex: dMode ? Colors.black : Colors.white,
+								onSelectBackground: dMode ? Colors.amber : Colors.indigo,
+								background: Theme.of(context).colorScheme.secondaryContainer,
+								indexBackground: Theme.of(context).colorScheme.secondaryContainer
+							),
+							regexStyle: <RegexGroupStyle>[
+								RegexGroupStyle(
+									regex: RegExp(r'^#{1,6} [\s\S]*?$'),
+									style: const TextStyle(fontWeight: FontWeight.bold),
+									regexStyles: [
+										RegexStyle(
+											regex: RegExp(r'^\#{1,6}\s?'),
+											style: const TextStyle(
+												color: Colors.red,
+												fontWeight: FontWeight.bold
+											),
+										)
+									]
+								),
+
+
+							],
+							controller: controller,
+							style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
+								color: Theme.of(context).colorScheme.inverseSurface,
+								fontFamily: "RobotoMono"
+							),
+						),
+
+						// ClipRRect(
+						// 	borderRadius: BorderRadius.circular(5),
+						// 	child: ,
+						// )
 
 						/*
 						MouseRegion(
