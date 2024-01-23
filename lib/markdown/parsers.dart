@@ -30,16 +30,6 @@ Widget onLeadingText({
 }
 
 
-// int tillFirstLetter(String input){
-// 	List<String> all = input.split("");
-// 	for(int i = 0; i < all.length; i++){
-// 		if(all[i].trim() != ""){
-// 			return i;
-// 		}
-// 	}
-// 	return 0;
-// }
-
 int getIndentationLevel(String line) {
  // Count leading spaces or tabs
  RegExp regex = RegExp(r'^[ \t]+');
@@ -48,21 +38,7 @@ int getIndentationLevel(String line) {
  int indentationLevel = (indentation.length / 2).round();
  return indentationLevel;
 }
-// int getIndentationLevel(String pythonCode) {
-// 	RegExp regex = RegExp(r'^(?:[ \t]+)');
-// 	Match? match = regex.firstMatch(pythonCode);
-// 	if (match != null) {
-// 		// Count the number of spaces or tabs
-// 		String indentation = match.group(0)!;
-// 		int indentationLevel = indentation.length;
-// 		// Assuming each tab is equivalent to 4 spaces
-// 		int spacesPerTab = 4;
-// 		return indentationLevel ~/ spacesPerTab;
-// 	} else {
-// 		// Default to 0 if no indentation is found
-// 		return 0;
-// 	}
-// }
+
 
 double getNonRenderedWidgetSize(Widget input){
 	// Works for: SizedBox, Icon, (**add more if needed!)
@@ -91,7 +67,4 @@ TapGestureRecognizer useLinkRecognizer(BuildContext context, String link){
 		debugPrint("Opening: $link"); 
 	};
 }
-
-
-
 

@@ -2,7 +2,6 @@ import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:flutter/services.dart';
 import 'package:awesome_text_field/awesome_text_field.dart';
-// import 'package:regex_pattern_text_field/controllers/regex_pattern_text_editing_controller.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/dialogs.dart';
@@ -40,11 +39,7 @@ class ModifyPageState extends State<ModifyPage> {
 	FocusNode titleF = FocusNode();
 	TextEditingController description = TextEditingController();
 	FocusNode descriptionF = FocusNode();
-	// TextEditingController? content;
-	// RegexPatternTextEditingController content = RegexPatternTextEditingController();
-	// TextEditingController content = TextEditingController();
 	AwesomeController content = AwesomeController();
-	// TextEditingController content = TextEditingController();
 
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
@@ -64,10 +59,6 @@ class ModifyPageState extends State<ModifyPage> {
 		}
 		
 		if(!TxtCtrl(title, description, content).isAllEmpty()){
-			// check if anything has been changed
-			// if(<something changed>){
-			// 	<ask!, if granted then quit>
-			// } else { <quit> }
 			Dialogs(context).ask(
 				title: "Exit",
 				content: widget.note == null ?

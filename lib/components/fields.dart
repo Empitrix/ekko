@@ -1,10 +1,7 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/public.dart';
-// import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
-// import 'package:regex_pattern_text_field/helpers/regex_pattern_text_style_helper.dart';
-// import 'package:regex_pattern_text_field/regex_pattern_text_field.dart';
 
 
 class TitleTextField extends StatelessWidget {
@@ -35,7 +32,6 @@ class TitleTextField extends StatelessWidget {
 			);
 		}
 		// Convert SizedBox to Container just in case of padding/margin
-		// return RawKeyboardListener(
 		return KeyboardListener(
 			focusNode: FocusNode(),
 			onKeyEvent: (KeyEvent event) async {
@@ -56,7 +52,6 @@ class TitleTextField extends StatelessWidget {
 						focusNode: focusNode,
 						autofocus: autofocus,
 						style: indexStyle(context, value),
-						// maxLines: _index.value == 2 ? 2 : 1,
 						onChanged: (txt){
 							double width = calcTextSize(
 								context,
@@ -140,8 +135,6 @@ class DescriptionTextFiled extends StatelessWidget {
 
 
 class ContentTextFiled extends StatelessWidget {
-	// final RegexPatternTextEditingController controller;
-	// final TextEditingController controller;
 	final AwesomeController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
@@ -167,39 +160,13 @@ class ContentTextFiled extends StatelessWidget {
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: [
-						// TextField(
-						/*
-						RegexPatternTextField(
-						contextMenuBuilder: (context, editableTextState){
-							final List<ContextMenuButtonItem> buttonItems = editableTextState.contextMenuButtonItems;
-							return AdaptiveTextSelectionToolbar.buttonItems(
-								anchors: editableTextState.contextMenuAnchors,
-								buttonItems: buttonItems,
-							);
-						},
-						defaultRegexPatternStyles: false,
-							regexPatternStyles: allFieldRules(context),
-							regexPatternController: controller,
-							focusNode: focusNode,
-							maxLines: null,
-							style: Theme.of(context).primaryTextTheme.bodyLarge!
-								.copyWith(
-									color: Theme.of(context).colorScheme.inverseSurface,
-									fontFamily: "RobotoMono"
-								),
-							decoration: const InputDecoration(
-								border: InputBorder.none,
-								hintText: "Content"
-							),
-						),
-						*/
 						AwesomeTextField(
+							controller: controller,
 							focusNode: focusNode,
 							borderRadius: const BorderRadius.only(
 								bottomRight: Radius.circular(0),
 								topRight: Radius.circular(5),
 							),
-							// border: const Border(right: BorderSide(color: Colors.white, width: 2)),
 							border: Border(
 								right: BorderSide(
 									color: Theme.of(context).colorScheme.inverseSurface, width: 1
@@ -207,9 +174,6 @@ class ContentTextFiled extends StatelessWidget {
 								top: BorderSide(
 									color: Theme.of(context).colorScheme.inverseSurface, width: 1
 								),
-								// bottom: BorderSide(
-								// 	color: Theme.of(context).colorScheme.inverseSurface, width: 2
-								// )
 							),
 							lineNumberColor: LineNumberPalette(
 								indexColor: dMode ? Colors.amber : Colors.black,
@@ -232,38 +196,12 @@ class ContentTextFiled extends StatelessWidget {
 										)
 									]
 								),
-
-
 							],
-							controller: controller,
 							style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 								color: Theme.of(context).colorScheme.inverseSurface,
 								fontFamily: "RobotoMono"
 							),
 						),
-
-						// ClipRRect(
-						// 	borderRadius: BorderRadius.circular(5),
-						// 	child: ,
-						// )
-
-						/*
-						MouseRegion(
-							cursor: SystemMouseCursors.text,
-							child: SizedBox(
-								height: MediaQuery.of(context).size.height - 200,
-								child: GestureDetector(
-									onTap: (){
-										controller.value = TextEditingValue(
-											text: controller.value.text,
-											selection: const TextSelection.collapsed(offset: -1),
-										);
-										focusNode.requestFocus();
-									},
-								),
-							),
-						)
-						*/
 
 					],
 				),

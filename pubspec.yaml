@@ -28,11 +28,11 @@ dependencies:
   window_manager: ^0.3.7
     # window_manager: ^0.3.7
 
-  # Using my own foked regex_pattern_text_field
-  regex_pattern_text_field:
-    git:
-      url: https://github.com/Empitrix/regex_pattern_text_field
-      ref: master
+  # # Using my own foked regex_pattern_text_field
+  # regex_pattern_text_field:
+  #   git:
+  #     url: https://github.com/Empitrix/regex_pattern_text_field
+  #     ref: master
   
   awesome_text_field:
     path: "F:/Flutter/awesome_text_field"
