@@ -60,7 +60,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		HighlightRule(
 			label: "divider",
 			// regex: RegExp(r'^\s*---\s*$'),
-			regex: RegExp(r'^---$'),
+			// regex: RegExp(r'^---$'),
+			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
 			trimNext: true,
 			action: (_) => const WidgetSpan(
 				child: Divider(height: 1)

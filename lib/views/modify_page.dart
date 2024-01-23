@@ -91,7 +91,11 @@ class ModifyPageState extends State<ModifyPage> {
 			folderId: widget.folderId,
 			title: title.text,
 			description: description.text,
-			content: content.text.replaceAll("\u000b", "\u000a"),
+			// TODO: Add End-Line Class
+			// content: content.text.replaceAll("\u000b", "\u000a"),
+			// content: content.text.replaceAll("\r", ""),
+			// content: content.text.replaceAll("\r\n", "\n"),
+			content: content.text.replaceAll("\r\n", "\n").replaceAll("\n\r", "\n"),
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
 			mode: mode
@@ -202,7 +206,6 @@ class ModifyPageState extends State<ModifyPage> {
 							),
 						),
 						Container(
-							// margin: const EdgeInsets.all(5),
 							margin: const EdgeInsets.only(
 								left: 5, top: 5, bottom: 5, right: 12
 							),
@@ -215,8 +218,6 @@ class ModifyPageState extends State<ModifyPage> {
 										Colors.pink:
 										Colors.amber,
 								),
-								// style: dMode ? null : const ButtonStyle(
-								// style: dMode ? null : const ButtonStyle(
 								style: ButtonStyle(
 									side: MaterialStatePropertyAll(BorderSide(
 										width: 1,
@@ -239,13 +240,12 @@ class ModifyPageState extends State<ModifyPage> {
 
 						// Widgets
 						return ListView(
-							// padding: const EdgeInsets.all(12),
-							// padding: const EdgeInsets.all(0),
 							padding: EdgeInsets.zero,
 							children: [
 								Padding(
 									padding: const EdgeInsets.all(12),
 									child: Column(
+										crossAxisAlignment: CrossAxisAlignment.start,
 										children: [
 											TitleTextField(
 												controller: title,
@@ -253,7 +253,6 @@ class ModifyPageState extends State<ModifyPage> {
 												autofocus: widget.note == null,
 												nextFocus: () => descriptionF.requestFocus(),
 											),
-											// const SizedBox(height: 20),
 											DescriptionTextFiled(
 												controller: description,
 												focusNode: descriptionF,
