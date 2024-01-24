@@ -14,6 +14,7 @@ TextSpan formattingTexts({
 	return applyRules(
 		context: context,
 		content: content,
+		recognizer: recognizer,
 		rules: allSyntaxRules(context)
 	);
 

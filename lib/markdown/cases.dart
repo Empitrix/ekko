@@ -1,6 +1,7 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/models/rule.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +10,7 @@ TextSpan applyRules({
 	required BuildContext context,
 	required String content,
 	required List<HighlightRule> rules,
+	TapGestureRecognizer? recognizer
 	}){
 	
 	List<InlineSpan> spans = [];
@@ -27,7 +29,7 @@ TextSpan applyRules({
 				lastIndent = 0;
 				indentStep = 0;
 			}
-			spans.add(mRule.action(mText));
+			spans.add(mRule.action(mText, recognizer));
 			if(mRule.label == "markdown"){ spans.add(nl); }
 
 			return mText;
