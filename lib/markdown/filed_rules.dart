@@ -3,67 +3,72 @@ import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 
 
-List<RegexGroupStyle> allFieldRules(BuildContext context){
-	return <RegexGroupStyle>[
+List<RegexFormattingStyle> allFieldRules(BuildContext context){
+	return <RegexFormattingStyle>[
+
 		// {@Syntax}
-		RegexGroupStyle(
+		RegexActionStyle(
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?'),
 			style: TextStyle(
-				// fontWeight: FontWeight.bold,
 				color: dMode ? Colors.cyan: Colors.indigo
 			),
-			regexStyles: [
-				RegexStyle(
-					regex: RegExp(r'\`\`\`'),
-					style: const TextStyle(
-						color: Colors.deepOrange,
-						// fontWeight: FontWeight.bold
-					),
-				),
-				// RegexStyle(
-				// 	regex: RegExp(r'```\s*\w+'),
-				// 	style: const TextStyle(
-				// 		color: Colors.blue,
-				// 		fontWeight: FontWeight.bold
-				// 	),
-				// ),
-			]
+			action: (String txt, Match match){
+				Match fM = RegExp(r'\s?```').firstMatch(txt)!;  // First Match
+				Match lM = RegExp(r'```\s?').allMatches(txt).last;  // Last
+				Match nM = RegExp(r'(?<=(?:```))\s*\w+').firstMatch(txt)!;  // Name
+				TextStyle store = const TextStyle(
+					color: Colors.purpleAccent, fontWeight: FontWeight.bold);
+				List<TextSpan> spans = [
+					// First Part
+					TextSpan(
+						text: txt.substring(fM.start, fM.end),
+						style: store),
+					// Name Part
+					TextSpan(
+						text: txt.substring(nM.start, nM.end),
+						style: const TextStyle(color: Colors.brown, fontWeight: FontWeight.bold)),
+					// Content Part
+					TextSpan(
+						text: txt.substring(nM.end, lM.start),
+						style: TextStyle(color: dMode ? Colors.cyan: Colors.indigo)),
+					// End Part
+					TextSpan(
+						text: txt.substring(lM.start, lM.end),
+						style: store),
+				];
+				return TextSpan(children: spans);
+			}
 		),
 
 		// {@Headline}
 		RegexGroupStyle(
 			regex: RegExp(r'^#{1,6} [\s\S]*?$'),
 			style: const TextStyle(fontWeight: FontWeight.bold),
-			regexStyles: [
-				RegexStyle(
-					regex: RegExp(r'^\#{1,6}\s?'),
-					style: const TextStyle(
-						color: Colors.red,
-						fontWeight: FontWeight.bold
-					),
-				)
-			]
+			regexStyle: RegexStyle(
+				regex: RegExp(r'^\#{1,6}\s?'),
+				style: const TextStyle(
+					color: Colors.red,
+					fontWeight: FontWeight.bold
+				),
+			)
 		),
 		
 		// {@Divider}
-		RegexGroupStyle(
+		RegexFormattingStyle(
 			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
 			style: const TextStyle(color: Colors.red),
-			regexStyles: []
 		),
 
 		// {@Monospace}
 		RegexGroupStyle(
 			regex: RegExp(r'\`.*?\`'),
-			style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-			regexStyles: [
-				RegexStyle(
-					regex: RegExp(r'\`'),
-					style: const TextStyle(
-						color: Colors.orange,
-					),
+			style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.brown),
+			regexStyle: RegexStyle(
+				regex: RegExp(r'\`'),
+				style: const TextStyle(
+					color: Colors.orange,
 				),
-			]
+			)
 		),
 
 
