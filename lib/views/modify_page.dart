@@ -91,11 +91,10 @@ class ModifyPageState extends State<ModifyPage> {
 			folderId: widget.folderId,
 			title: title.text,
 			description: description.text,
-			// TODO: Add End-Line Class
 			// content: content.text.replaceAll("\u000b", "\u000a"),
 			// content: content.text.replaceAll("\r", ""),
 			// content: content.text.replaceAll("\r\n", "\n"),
-			content: content.text.replaceAll("\r\n", "\n").replaceAll("\n\r", "\n"),
+			content: "${content.text.replaceAll("\r\n", "\n").replaceAll("\n\r", "\n")}\n",
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
 			mode: mode

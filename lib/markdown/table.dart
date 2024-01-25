@@ -13,6 +13,12 @@ InlineSpan getTableSpan({
 		":-:": Alignment.center,
 		"-": Alignment.center,
 	};
+	Map<String, TextAlign> textAlignmentsMap = {
+		"-:": TextAlign.right,
+		":-": TextAlign.left,
+		":-:": TextAlign.center,
+		"-": TextAlign.center,
+	};
 
 	List<String> lines = txt.split("\n");
 	// essential need are not required 
@@ -21,6 +27,7 @@ InlineSpan getTableSpan({
 	List<DataColumn> columns = [];
 	List<DataRow> rows = [];
 	List<Alignment> alignment = [];
+	List<TextAlign> textAlignments = [];
 	int idx = 0;
 
 	// divider
@@ -29,17 +36,26 @@ InlineSpan getTableSpan({
 		for(String key in alignmentsMap.keys.toList()){
 			if(i.trim().replaceAll(RegExp(r'\s'), "").replaceAll(RegExp(r'\-+'), "-") == key){
 				alignment.add(alignmentsMap[key]!);
+				textAlignments.add(textAlignmentsMap[key]!);
 			}
 		}
 	}
 
 	for(String column in lines[0].split("|")){
-		if(column.trim().isEmpty){ continue; }
+		if(column.isEmpty){ continue; }
 		idx ++;
 		columns.add(
 			DataColumn(
 				numeric: idx != 1,
-				label: Align(
+				// numeric: true,
+				label: idx == 1 ? Expanded(child: Text(
+					column.trim(),
+					textAlign: textAlignments[idx - 1],
+					style: Provider.of<ProviderManager>(context).defaultStyle.copyWith(
+						fontWeight: FontWeight.bold,
+						fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize!
+					),
+				)) : Align(
 					alignment: alignment[idx - 1],
 					child: Text(
 						column.trim(),
@@ -57,8 +73,8 @@ InlineSpan getTableSpan({
 	for(int i = 0; i < cutRow.length; i++){
 		List<DataCell> cells = [];
 		idx = 0;
-		for(String row in cutRow[i].split("|")){
-			if(row.trim().isEmpty){ continue; }
+		for(String row in cutRow[i].trim().split("|")){
+			if(row.isEmpty){ continue; }
 			idx ++;
 			cells.add(
 				DataCell(
@@ -69,10 +85,24 @@ InlineSpan getTableSpan({
 							style: Provider.of<ProviderManager>(context).defaultStyle
 						),
 					)
+					// idx == 1 ? Align(alignment: alignment[idx - 1], child:Text(
+					// 	textAlign: textAlignments[idx - 1],
+					// 	row.trim(),
+					// 	style: Provider.of<ProviderManager>(context).defaultStyle
+					// )) : Align(
+					// 	alignment: alignment[idx - 1],
+					// 	child: Text(
+					// 		row.trim(),
+					// 		style: Provider.of<ProviderManager>(context).defaultStyle
+					// 	),
+					// )
 				)
 			);
 		}
-		rows.add(DataRow(cells: cells, selected: i.isOdd));
+
+		if(cells.isNotEmpty){
+			rows.add(DataRow(cells: cells, selected: i.isEven));
+		}
 	}
 
 	DataTable dataTable = DataTable(
@@ -80,7 +110,7 @@ InlineSpan getTableSpan({
 			color: Theme.of(context).colorScheme.inverseSurface,
 			width: 1
 		),
-		showCheckboxColumn: true,
+		// columnSpacing: 200,
 		columns: columns,
 		rows: rows
 	);

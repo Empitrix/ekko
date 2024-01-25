@@ -311,7 +311,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 		// {@Table}
 		HighlightRule(
 			label: "table",
-			regex: RegExp(r'^\|.*\|\n\|\s*[:-]+[\s\S]*\|.*\|$', multiLine: true),
+			// regex: RegExp(r'^\|.*\|\n\|\s*[:-]+[\s\S]*\|.*\|$', multiLine: true),
+			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)', multiLine: false),
+			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
+			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:(\n|))$'),
+			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
 			action: (txt, _){
 				return getTableSpan(context: context, txt: txt);
 			},
