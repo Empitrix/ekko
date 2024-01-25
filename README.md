@@ -14,6 +14,7 @@ A cross-platform, open source note-taking app that written in flutter
 - [x] Acrylic high proformance on changing
 - [x] Mix IN-FOLDER-PAGE with main HOME-PAGE for loaing notes
 - [x] Improve `DB` class and Optimize it
+- [ ] Fix `numeric` issue on datatalbe only for first item(column)
 
 ## Build
 you can run the following code to create your own

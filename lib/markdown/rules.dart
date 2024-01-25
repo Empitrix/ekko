@@ -5,6 +5,7 @@ import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
+import 'package:ekko/markdown/table.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ int indentStep = 0;
 
 List<HighlightRule> allSyntaxRules(BuildContext context){
 	List<HighlightRule> rules = [
-		// Markdown
+		// {@Syntax-Hihglighting}
 		HighlightRule(
 			label: "markdown",
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
@@ -27,7 +28,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 		),
 
-		// Headline 1..6
+		// {@Headlines}
 		HighlightRule(
 			label: "headline",
 			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
@@ -55,7 +56,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			},
 		),
 
-		// Divider
+		// {@Divider}
 		HighlightRule(
 			label: "divider",
 			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
@@ -65,7 +66,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 		),
 
-		// Sublist CheckedBox
+		// {@Checkbox}
 		HighlightRule(
 			label: "checkbox",
 			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
@@ -98,7 +99,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			},
 		),
 
-		// Sublist - Item
+		// {@Item}
 		HighlightRule(
 			label: "item",
 			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
@@ -136,8 +137,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			},
 		),
 
-
-		// Links
+		// {@Hyper-Link}
 		HighlightRule(
 			label: "links",
 			regex: RegExp(r'\[(.*?)\]\((.*?)\)'),
@@ -184,7 +184,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			}
 		),
 
-		// Monospace
+		// {@Monospace}
 		HighlightRule(
 			label: "monospace",
 			regex: RegExp(r'\`(.*?)\`', multiLine: false),
@@ -195,9 +195,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				);
 			},
 		),
-		
 
-		// URL
+		// {@URL}
 		HighlightRule(
 			label: "url",
 			regex: RegExp(r'(https?://\S+)'),
@@ -213,7 +212,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 		),
 
-		// Italic & Bold
+		// {@Italic-Bold}
 		HighlightRule(
 			label: "italic_bold",
 			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
@@ -228,7 +227,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 		),
 
-		// Bold
+		// {@Bold}
 		HighlightRule(
 			label: "boldness",
 			regex: RegExp(r'\*\*(.*?)\*\*'),
@@ -242,7 +241,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 		),
 
-		// Italic
+		// {@Italic}
 		HighlightRule(
 			label: "italic",
 			regex: RegExp(r'\*(.*?)\*'),
@@ -255,7 +254,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 				)
 			),
 		),
-
+		
+		// {@Straight}
 		HighlightRule(
 			label: "strike",
 			regex: RegExp(r'~~.*~~'),
@@ -271,7 +271,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			),
 		),
 
-		// Backqoute
+		// {@Backqoute}
 		HighlightRule(
 			label: "backqoute",
 			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
@@ -303,6 +303,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 						),
 					)
 				);
+			},
+		),
+
+
+
+		// {@Table}
+		HighlightRule(
+			label: "table",
+			regex: RegExp(r'^\|.*\|\n\|\s*[:-]+[\s\S]*\|.*\|$', multiLine: true),
+			action: (txt, _){
+				return getTableSpan(context: context, txt: txt);
 			},
 		),
 
