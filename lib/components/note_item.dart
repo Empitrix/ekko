@@ -1,6 +1,7 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
+import 'package:ekko/components/tag.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
@@ -104,18 +105,65 @@ class NoteItem extends StatelessWidget {
 												fontWeight: FontWeight.bold,
 											),
 										),
+										// const SizedBox(height: 2),
 										Text(
-											note.description,
-											overflow: TextOverflow.ellipsis,
-											style: TextStyle(
-												fontSize: 14,
-												letterSpacing: Provider.of<ProviderManager>(context).defaultStyle.letterSpacing,
-												color: Theme.of(context)
-													.colorScheme.
-													inverseSurface
-													.withOpacity(0.5)
+											differenceFromNow(note.lastEdit),
+											style: Provider.of<ProviderManager>(context).defaultStyle.merge(
+												TextStyle(
+													fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 2,
+													color: dMode ? Colors.teal : Colors.teal[800],
+													fontWeight: FontWeight.w700
+												)
 											),
 										),
+
+										Wrap(
+											children: [
+												for(String tag in note.description.trim().split(" ")) textTag(
+													tag,
+													margin: const EdgeInsets.only(right: 5, top: 5),
+													padding: const EdgeInsets.symmetric(horizontal: 5),
+												),
+												// for(String tag in note.description.trim().split(" ")) Container(
+												// 	margin: const EdgeInsets.only(right: 5, top: 5),
+												// 	padding: const EdgeInsets.symmetric(horizontal: 5),
+												// 	decoration: BoxDecoration(
+												// 	borderRadius: BorderRadius.circular(15),
+												// 		// color: Colors.pinkAccent.withOpacity(0.5),
+												// 		color: const Color(0xffB73855).withOpacity(0.5),
+												// 		border: Border.all(
+												// 			width: 1.5,
+												// 			// color: Colors.pink,
+												// 			color: const Color(0xffB73855),
+												// 		)
+												// 	),
+												// 	child: Text(tag.trim()),
+												// 	// child: Text.rich(
+												// 	// 	TextSpan(
+												// 	// 		children: [
+												// 	// 			NfFont(unicode: "\ue70a").span(),
+												// 	// 			TextSpan(text: tag.trim())
+												// 	// 		]
+												// 	// 	)
+												// 	// ),
+												// )
+											],
+										),
+
+										
+										// Text(
+										// 	// note.description.split(RegExp(r'\w+\s')).join(" "),
+										// 	note.description,
+										// 	overflow: TextOverflow.ellipsis,
+										// 	style: TextStyle(
+										// 		fontSize: 14,
+										// 		letterSpacing: Provider.of<ProviderManager>(context).defaultStyle.letterSpacing,
+										// 		color: Theme.of(context)
+										// 			.colorScheme.
+										// 			inverseSurface
+										// 			.withOpacity(0.5)
+										// 	),
+										// ),
 									],
 								)
 							),

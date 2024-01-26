@@ -69,3 +69,36 @@ TextSelectionControls getSelectionControl(){
 		return MaterialTextSelectionControls();
 	}
 }
+
+
+String _getNumAs(int num, String type){
+	return "$num $type${num == 1 ? '' : 's'} ago";
+}
+
+/* Difference between date time from now */
+String differenceFromNow(DateTime input){
+	Duration duration = DateTime.now().difference(input);
+	String fromNow = "";
+	List<Map<String, int>> timeData = [
+		{ "day": duration.inDays },
+		{ "hour": duration.inHours },
+		{ "minute": duration.inMinutes },
+		{ "second": duration.inSeconds },
+	];
+
+	for(Map type in timeData){
+		String key = type.keys.toList().first;
+		if(type[key] != 0){
+				fromNow = _getNumAs(type[key], key);
+		}
+		if(fromNow.isNotEmpty){
+			break;
+		} else {
+			if(key == "second"){
+				fromNow = "Now";
+			}
+		}
+	}
+
+	return fromNow;
+}

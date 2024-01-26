@@ -1,3 +1,4 @@
+import 'package:ekko/components/tag.dart';
 import 'package:flutter/material.dart';
 
 
@@ -72,19 +73,7 @@ class TagField extends StatelessWidget {
 									cursor: SystemMouseCursors.move,
 									child: Row(
 										children: [
-											for(String tag in tags.value) Container(
-												padding: const EdgeInsets.symmetric(horizontal: 5),
-												margin: const EdgeInsets.only(right: 5),
-												decoration: BoxDecoration(
-													border: Border.all(width: 2, color: Colors.cyan),
-													color: Colors.cyan.withOpacity(0.5),
-													borderRadius: BorderRadius.circular(25),
-												),
-												child: Text(
-													tag.trim(),
-													style: tagStyle,
-												),
-											),
+											for(String tag in tags.value) textTag(tag, style: tagStyle)
 										],
 									)
 								);
