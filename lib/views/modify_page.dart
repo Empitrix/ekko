@@ -14,6 +14,7 @@ import 'package:ekko/models/file_out.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
 
+
 class ModifyPage extends StatefulWidget {
 	final SmallNote? note;
 	final int folderId;
@@ -41,6 +42,8 @@ class ModifyPageState extends State<ModifyPage> {
 	FocusNode descriptionF = FocusNode();
 	AwesomeController content = AwesomeController();
 
+	ValueNotifier<List<String>> tags = ValueNotifier([]);
+
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;
@@ -58,7 +61,9 @@ class ModifyPageState extends State<ModifyPage> {
 			return;  // Close the function
 		}
 		
-		if(!TxtCtrl(title, description, content).isAllEmpty()){
+		
+		// TODO: CHECK FOR TAGS LIST && ADD DON'T SHOW CHECK DIALOG
+		if(!TxtCtrl(title, null, content).isAllEmpty()){
 			Dialogs(context).ask(
 				title: "Exit",
 				content: widget.note == null ?
@@ -73,24 +78,29 @@ class ModifyPageState extends State<ModifyPage> {
 		}
 	}
 
-
 	Future<void> submit() async {
 		DB db = DB();
 		SNK snk = SNK(context);
 
 		// Make sure that all the filed are fulled
-		if(!TxtCtrl(title, description, content).isAllFilled()){
+		if(!TxtCtrl(title, null, content).isAllFilled()){
 			debugPrint("Fill all the forms!");
 			snk.message(
 				const Icon(Icons.close), "Fill all the forms");
 			return;
 		}
 
+		String extractedTags = "";
+		for(String tag in tags.value){
+			extractedTags += "${tag.trim()} ";
+		}
+
 		Note note = Note(
 			id: widget.note == null ? -1 : widget.note!.id,
 			folderId: widget.folderId,
 			title: title.text,
-			description: description.text,
+			// description: description.text,
+			description: extractedTags,
 			// content: content.text.replaceAll("\u000b", "\u000a"),
 			// content: content.text.replaceAll("\r", ""),
 			// content: content.text.replaceAll("\r\n", "\n"),
@@ -252,8 +262,13 @@ class ModifyPageState extends State<ModifyPage> {
 												autofocus: widget.note == null,
 												nextFocus: () => descriptionF.requestFocus(),
 											),
+											// TagField(
+											// 	controller: description,
+											// 	tags: ValueNotifier([])
+											// )
 											DescriptionTextFiled(
 												controller: description,
+												tags: tags,
 												focusNode: descriptionF,
 												previousFocus: () => titleF.requestFocus(),
 												nextFocus: () => contentF.requestFocus()

@@ -1,4 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
@@ -94,12 +95,14 @@ class DescriptionTextFiled extends StatelessWidget {
 	final FocusNode focusNode;
 	final Function previousFocus;
 	final Function nextFocus;
+	final ValueNotifier<List<String>> tags;
 	const DescriptionTextFiled({
 		super.key,
 		required this.controller,
 		required this.focusNode,
 		required this.previousFocus,
-		required this.nextFocus
+		required this.nextFocus,
+		required this.tags
 	});
 
 	@override
@@ -117,6 +120,20 @@ class DescriptionTextFiled extends StatelessWidget {
 			},
 			child: SizedBox(
 				// height: 30,
+				child: TagField(
+					controller: controller,
+					tags: tags,
+					focusNode: focusNode,
+					style: Theme.of(context).primaryTextTheme.titleLarge!
+						.copyWith(
+							color: Theme.of(context).colorScheme.inverseSurface),
+					onEnd: () => nextFocus(),
+					// decoration: const InputDecoration(
+					// 	border: InputBorder.none,
+					// 	hintText: "Description"
+					// ),
+				),
+				/*
 				child: TextField(
 					controller: controller,
 					focusNode: focusNode,
@@ -129,6 +146,7 @@ class DescriptionTextFiled extends StatelessWidget {
 						hintText: "Description"
 					),
 				),
+				*/
 			),
 		);
 	}

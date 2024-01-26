@@ -10,7 +10,7 @@ String vStr(String input){
 
 class TxtCtrl{
 	final TextEditingController a;
-	final TextEditingController b;
+	final TextEditingController? b;
 	final TextEditingController c;
 	TxtCtrl(
 		this.a,
@@ -20,14 +20,18 @@ class TxtCtrl{
 
 	bool isAllFilled(){
 		if(vStr(a.text) == ""){ return false;}
-		if(vStr(b.text) == ""){ return false;}
+		if(b != null){
+			if(vStr(b!.text) == ""){ return false;}
+		}
 		if(vStr(c.text) == ""){ return false;}
 		return true;
 	}
 
 	bool isAllEmpty(){
 		if(vStr(a.text) != ""){ return false;}
-		if(vStr(b.text) != ""){ return false;}
+		if(b != null){
+			if(vStr(b!.text) != ""){ return false;}
+		}
 		if(vStr(c.text) != ""){ return false;}
 		return true;
 	}
