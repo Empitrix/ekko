@@ -14,10 +14,8 @@ Widget textTag(
 		EdgeInsets? margin
 	}
 ){
-
-
+	/* Tag clip widget */
 	Map<String, dynamic> keywordDetect = {};
-
 	Color faceCrl = Theme.of(context).colorScheme.inverseSurface;
 
 	List<Map<String, dynamic>> keyWords = [
@@ -33,11 +31,13 @@ Widget textTag(
 	List<Map<String, dynamic>> special = [
 		{ "icon": FontAwesomeIcons.java, "word": "java", "color": Colors.orange },
 		{ "icon": NfFont(unicode: "\ue609", color: faceCrl), "word": "markdown", "color": Colors.grey },
-		{ "icon": NfFont(unicode: "\udb80\udea4", color: faceCrl), "word": "github", "color": Colors.grey },
+		// { "icon": NfFont(unicode: "\udb80\udea4", color: faceCrl), "word": "github", "color": Colors.grey },
+		{ "icon": FontAwesomeIcons.github, "word": "github", "color": Colors.grey },
 		{ "icon": NfFont(unicode: "\ue235", color: faceCrl), "word": "python", "color": const Color(0xff4584b6) },
 		{ "icon": NfFont(unicode: "\udb81\udee6", color: faceCrl), "word": "typescript", "color": const Color(0xff007acc) },
 		{ "icon": NfFont(unicode: "\udb80\udf1e", color: faceCrl), "word": "javascript", "color": const Color(0xffF0DB4F) },
-		{ "icon": NfFont(unicode: "\udb85\ude17", color: faceCrl), "word": "rust", "color": const Color(0xffb7410e) },
+		// { "icon": NfFont(unicode: "\udb85\ude17", color: faceCrl), "word": "rust", "color": const Color(0xffb7410e) },
+		{ "icon": FontAwesomeIcons.rust, "word": "rust", "color": const Color(0xffb7410e) },
 		{ "icon": NfFont(unicode: "\uebca", color: faceCrl), "word": "bash", "color": const Color(0xff282E34) },
 		{ "icon": NfFont(unicode: "\udb82\ude0a", color: faceCrl), "word": "powershell", "color": const Color(0xff002353) },
 	];
@@ -58,6 +58,8 @@ Widget textTag(
 	return Container(
 		padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
 		margin: margin ?? const EdgeInsets.only(right: 5),
+		// height: isDesktop() ? 22 : 15,
+		height: margin == null ? 23 : isDesktop() ? 21 : 18,
 		decoration: BoxDecoration(
 			border: specialDetect.isNotEmpty ?
 				Border.all(width: 1.5, color: specialDetect["color"]) :
@@ -69,7 +71,7 @@ Widget textTag(
 		),
 		child: specialDetect.isNotEmpty ? Padding(
 			padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 1),
-			child: IntrinsicWidth(child: Row(
+			child: FittedBox(child: IntrinsicWidth(child: Row(
 				children: [
 					specialDetect["icon"] is IconData ?
 						Icon(specialDetect["icon"], size: style.fontSize ?? 20):
@@ -79,7 +81,7 @@ Widget textTag(
 					Text(txt.trim(), style: style)
 				],
 			))
-		) : Text(txt.trim(), style: style),
+		)) : FittedBox(child:Text(txt.trim(), style: style)),
 	);
 }
 
