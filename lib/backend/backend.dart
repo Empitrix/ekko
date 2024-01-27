@@ -102,3 +102,15 @@ String differenceFromNow(DateTime input){
 
 	return fromNow;
 }
+
+
+String formatizeVDate(String input){
+	/* Minimalist text (valid date[VDate]) formatting */
+	return input
+		.replaceAll(RegExp(r'(days|day)'), "d")
+		.replaceAll(RegExp(r'(hours|hour)'), "h")
+		.replaceAll(RegExp(r'(minutes|minute)'), "m")
+		.replaceAll(RegExp(r'(seconds|second)'), "s")
+		.replaceAll("ago", "")
+		.replaceAll(" ", "");
+}

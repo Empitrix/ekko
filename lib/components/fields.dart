@@ -182,6 +182,7 @@ class ContentTextFiled extends StatelessWidget {
 						AwesomeTextField(
 							controller: controller,
 							focusNode: focusNode,
+							decoration: const InputDecoration(hintText: "Write..."),
 							borderRadius: const BorderRadius.only(
 								bottomRight: Radius.circular(0),
 								topRight: Radius.circular(5),

@@ -139,15 +139,16 @@ class NoteItem extends StatelessWidget {
 							),
 							const SizedBox(width: 12),
 
-							FutureBuilder<double>(
-								future: getParrentHeigt(thisKey),
-								builder: (BuildContext context, AsyncSnapshot<double> h){
+							FutureBuilder<Size>(
+								future: getParrentSize(thisKey),
+								builder: (BuildContext context, AsyncSnapshot<Size> h){
 									if(!h.hasData){ return const SizedBox(); }
 									return Column(
 										children: [
-											SizedBox(height: h.data! == 0 ? 0 : h.data! - 40, width: 30),
+											SizedBox(height: h.data!.height == 0 ? 0 : h.data!.height - 40, width: 30),
 											Text(
-												differenceFromNow(note.lastEdit),
+												// differenceFromNow(note.lastEdit),
+												formatizeVDate(differenceFromNow(note.lastEdit)),
 												style: Provider.of<ProviderManager>(context).defaultStyle.merge(
 													TextStyle(
 														fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,

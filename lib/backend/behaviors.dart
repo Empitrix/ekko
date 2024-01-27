@@ -12,15 +12,17 @@ class HorizontalScrollBehavior extends MaterialScrollBehavior {
 }
 
 
-Future<double> getParrentHeigt(GlobalKey key) async {
-	double parrentSize = 0;
-	// WidgetsBinding.instance.addPostFrameCallback((_) {
-	// 	if(key.currentContext != null){
-	// 		parrentSize = (key.currentContext!.findRenderObject() as RenderBox).size.height;
-	// 	}
-	// });
+Future<Size> getParrentSize(GlobalKey key) async {
+	/* Get parrent size by getting parrent's GlobalKey */
+	Size parrentSize = const Size(0, 0);
+	// if(key.currentContext == null){
+	// 	return parrentSize;
+	// }
 	await Future.microtask(() async {
-		parrentSize = (key.currentContext!.findRenderObject() as RenderBox).size.height;
+		parrentSize = (
+			key.currentContext!.findRenderObject() as RenderBox)
+			.size;
 	});
 	return parrentSize;
 }
+
