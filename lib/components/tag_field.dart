@@ -73,7 +73,11 @@ class TagField extends StatelessWidget {
 									cursor: SystemMouseCursors.move,
 									child: Row(
 										children: [
-											for(String tag in tags.value) textTag(tag, style: tagStyle)
+											for(String tag in tags.value) textTag(
+												txt: tag,
+												context: context,
+												style: tagStyle
+											)
 										],
 									)
 								);
@@ -98,7 +102,7 @@ class TagField extends StatelessWidget {
 								},
 								style: style,
 								controller: controller,
-								decoration: const InputDecoration(border: InputBorder.none),
+								decoration: const InputDecoration(border: InputBorder.none, hintText: "Tags..."),
 								onChanged: (word){
 									tags.value = _addMatch(controller, tags).toList();
 								},

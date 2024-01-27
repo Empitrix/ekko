@@ -159,11 +159,21 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 															overflow: TextOverflow.fade,
 															style: Theme.of(context).appBarTheme.titleTextStyle
 														),
+														Text(
+															differenceFromNow(note!.lastEdit),
+															style: TextStyle(
+																fontSize: 14,
+																overflow: TextOverflow.fade,
+																color: dMode ? Colors.grey : Colors.grey[400]
+															)
+														)
+														/*
 														Text(note!.description, style: TextStyle(
 															fontSize: 16,
 															overflow: TextOverflow.fade,
 															color: dMode ? Colors.grey : Colors.grey[400]
 														))
+														*/
 													],
 												),
 												actions: [
