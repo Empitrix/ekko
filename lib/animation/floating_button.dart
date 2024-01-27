@@ -22,9 +22,13 @@ class AnimatedFloatingButton extends StatelessWidget {
 		double lastOffset = 0.0;
 		controller.addListener(() async {
 			if(controller.offset > lastOffset){
-				animation.controller.reverse();
+				if(animation.animation.value.round() == 1){
+					animation.controller.reverse();
+				}
 			} else {
-				animation.controller.forward(from: 0.8);
+				if(animation.animation.value.round() == 0){
+					animation.controller.forward(from: 0.8);
+				}
 			}
 			lastOffset = controller.offset;
 		});

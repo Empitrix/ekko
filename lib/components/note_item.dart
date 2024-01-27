@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/behaviors.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/components/tag.dart';
@@ -9,6 +10,7 @@ import 'package:ekko/models/note.dart';
 import 'package:ekko/views/display_page.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +29,7 @@ class NoteItem extends StatelessWidget {
 		if(!note.isVisible){
 			return Container();
 		}
+		GlobalKey thisKey = GlobalKey();
 		return Listener(
 			onPointerDown: isDesktop() ? (pointer){
 				if(pointer.buttons == 2){
@@ -54,6 +57,7 @@ class NoteItem extends StatelessWidget {
 				// Child widget
 				child: Container(
 					padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+					key: thisKey,
 					child: Row(
 						children: [
 							Badge(
@@ -105,18 +109,20 @@ class NoteItem extends StatelessWidget {
 												fontWeight: FontWeight.bold,
 											),
 										),
-										// const SizedBox(height: 2),
-										Text(
-											differenceFromNow(note.lastEdit),
-											style: Provider.of<ProviderManager>(context).defaultStyle.merge(
-												TextStyle(
-													fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,
-													color: dMode ? Colors.teal : Colors.teal[800],
-													fontWeight: FontWeight.w700
-												)
-											),
-										),
-										// Tags
+
+										// // {@Date}
+										// Text(
+										// 	differenceFromNow(note.lastEdit),
+										// 	style: Provider.of<ProviderManager>(context).defaultStyle.merge(
+										// 		TextStyle(
+										// 			fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,
+										// 			color: dMode ? Colors.teal : Colors.teal[800],
+										// 			fontWeight: FontWeight.w700
+										// 		)
+										// 	),
+										// ),
+
+										// {@Tags}
 										Wrap(
 											crossAxisAlignment: WrapCrossAlignment.center,
 											children: [
@@ -132,11 +138,34 @@ class NoteItem extends StatelessWidget {
 								)
 							),
 							const SizedBox(width: 12),
-							IconButton(
-								icon: Icon(noteModeIcon(note.mode)),
-								color: Theme.of(context).primaryColor,
-								onPressed: (){/* Note Actons */},
+
+							FutureBuilder<double>(
+								future: getParrentHeigt(thisKey),
+								builder: (BuildContext context, AsyncSnapshot<double> h){
+									if(!h.hasData){ return const SizedBox(); }
+									return Column(
+										children: [
+											SizedBox(height: h.data! == 0 ? 0 : h.data! - 40, width: 30),
+											Text(
+												differenceFromNow(note.lastEdit),
+												style: Provider.of<ProviderManager>(context).defaultStyle.merge(
+													TextStyle(
+														fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,
+														color: dMode ? Colors.teal : Colors.teal[800],
+														fontWeight: FontWeight.w700
+													)
+												),
+											),
+										],
+									);
+								},
 							),
+
+							// IconButton(
+							// 	icon: Icon(noteModeIcon(note.mode)),
+							// 	color: Theme.of(context).primaryColor,
+							// 	onPressed: (){/* Note Actons */},
+							// ),
 						],
 					),
 				),
