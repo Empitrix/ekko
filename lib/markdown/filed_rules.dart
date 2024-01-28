@@ -15,10 +15,13 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			action: (String txt, Match match){
 				Match fM = RegExp(r'\s?```').firstMatch(txt)!;  // First Match
 				Match lM = RegExp(r'```\s?').allMatches(txt).last;  // Last
-				Match nM = RegExp(r'(?<=(?:```))\s*\w+').firstMatch(txt)!;  // Name
+				Match? nM;
+				try{
+					nM = RegExp(r'(?<=(?:```))\s*\w+').firstMatch(txt)!;  // Name
+				} catch(_) {}
 				TextStyle store = const TextStyle(
 					color: Colors.purpleAccent, fontWeight: FontWeight.bold);
-				List<TextSpan> spans = [
+				List<TextSpan> spans = (nM != null) ? [
 					// First Part
 					TextSpan(
 						text: txt.substring(fM.start, fM.end),
@@ -35,6 +38,8 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 					TextSpan(
 						text: txt.substring(lM.start, lM.end),
 						style: store),
+				] : [
+						TextSpan(text: txt)
 				];
 				return TextSpan(children: spans);
 			}
