@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:ekko/backend/backend.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +44,9 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 	Match? base64m = RegExp(r'href\=\".*?\"').firstMatch(m.group(0)!);
 	if(base64m == null){ return null; }
 	String base64 = base64m.group(0)!;
-	base64 = base64.substring(base64.lastIndexOf(",") + 1, base64.length - 1);
+	base64 = base64.substring(base64.lastIndexOf(",") + 1, base64.length - 1).trim();
 	params["base64"] = base64;
+	params["extention"] = vStr(base64.substring(0, 1)) == "p" ? ImageType.svg : ImageType.picture;
 	// debugPrint(params.toString());  See in debug
 	return params;
 }
@@ -53,9 +55,6 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 
 WidgetSpan showImageFrame(String txt){
 	Map<String, dynamic> data = _getImageLinkData(txt);
-	
-
-	
 
 	Widget child = FutureBuilder(
 		future: http.get(Uri.parse(data['url']!)),
@@ -65,7 +64,9 @@ WidgetSpan showImageFrame(String txt){
 			// Extract Base64 image
 			Map<String, dynamic>? tagData = _imageTagData(snap.data!.body);
 			if(tagData != null){
-				Widget stack = Stack(
+				Uint8List memo = const Base64Decoder()
+					.convert(tagData["base64"].toString());
+				img = Stack(
 					children: [
 						img,
 						Positioned(
@@ -73,25 +74,39 @@ WidgetSpan showImageFrame(String txt){
 							left: tagData["x"],
 							height: tagData["height"],
 							width: tagData["width"],
-							child: SvgPicture.memory(const Base64Decoder().convert(tagData["base64"].toString())),
+							child: tagData["extention"]! == ImageType.picture ?
+								Image.memory(memo):
+								SvgPicture.memory(memo),
+						) 
+					],
+				);
+			} else if(data['url']!.toString().contains('codecov') && tagData == null){
+				img = Stack(
+					children: [
+						img,
+						Positioned(
+							top: 3,
+							left: 5,
+							height: 14,
+							width: 14,
+							child: SvgPicture.network(
+								'https://about.codecov.io/wp-content/themes/codecov/assets/brand/icons/codecov/codecov-circle.svg',
+								height: 14, width: 14,
+							),
 						)
 					],
 				);
-				return MouseRegion(cursor: SystemMouseCursors.click, child: GestureDetector(child: stack, onTap: (){}));
 			}
-			return img;
+
+			return MouseRegion(
+				cursor: SystemMouseCursors.click,
+				child: GestureDetector(
+					child: img,
+					onTap: (){}
+				)
+			);
 		},
 	);
-
-	/*
-	Widget child = CachedNetworkImage(
-		 // imageUrl: "http://via.placeholder.com/350x150",
-		 imageUrl: data["url"]!,
-		 progressIndicatorBuilder: (context, url, downloadProgress) => 
-			 CircularProgressIndicator(value: downloadProgress.progress),
-		 errorWidget: (context, url, error) => const Icon(Icons.error),
-	);
-	*/
 
 	return WidgetSpan(child: child);
 
