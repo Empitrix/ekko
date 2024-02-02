@@ -1,6 +1,7 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
@@ -9,6 +10,7 @@ import 'package:ekko/markdown/table.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 int lastIndent = 0;
@@ -134,6 +136,25 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 						) 
 					)
 				);
+			},
+		),
+
+		// {@Image-Link}
+		HighlightRule(
+			label: "link_image",
+			regex: RegExp(r'\!\[(.*?)\]\((.*?)\)'),
+			action: (String txt, r){
+				return showImageFrame(txt);
+				// String name = txt.split("](")[0]
+				// 	.substring(2).trim();
+				// String link = txt.split("](")[1].trim();
+				// link = link.substring(0, link.length - 1).trim();
+
+				// // return TextSpan(text: txt, style: TextStyle(color: Colors.red));
+				// return WidgetSpan(
+				// 	child: SvgPicture.network(link)
+				// );
+
 			},
 		),
 
@@ -306,15 +327,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 			},
 		),
 
-
-
 		// {@Table}
 		HighlightRule(
 			label: "table",
-			// regex: RegExp(r'^\|.*\|\n\|\s*[:-]+[\s\S]*\|.*\|$', multiLine: true),
-			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)', multiLine: false),
-			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
-			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:(\n|))$'),
 			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
 			action: (txt, _){
 				return getTableSpan(context: context, txt: txt);
