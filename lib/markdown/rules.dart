@@ -202,7 +202,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context){
 
 				// if(txt.contains("on iOS")){
 				if(txt.contains("CI Status")){
-					print(txt);
+					// print(txt);
 					// print(name);
 					// print(link);
 				}
