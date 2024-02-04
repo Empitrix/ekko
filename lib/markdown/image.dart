@@ -14,13 +14,27 @@ enum ImageType {
 
 
 Map<String, dynamic> _getImageLinkData(String input){
-	String name = input.split("](")[0]
+	// RegExp r = RegExp(r'\](\[|\[)');
+	RegExp r = RegExp(r'\](\[|\()');
+	String name = input.split(r)[0].trim()
 		.substring(2).trim();
-	String link = input.split("](")[1].trim();
+	if(name.split('').first == "["){
+		name = name.substring(1);}
+
+	
+
+	String link = input.split(r)[1].trim();
 	link = link.substring(0, link.length - 1).trim();
 	String format = link.substring(link.lastIndexOf(".") + 1);
 	format = format.split("?")[0];
 	format = vStr(format);
+
+	if(link.isEmpty){
+		link = name;
+		// print(link);
+	}
+	// print(link);
+	// print(input.split(r));
 
 	return {
 		"name": name,
@@ -54,15 +68,24 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 
 
 WidgetSpan showImageFrame(String txt){
+	// print(txt);
+	// print("----------------------");
 	Map<String, dynamic> data = _getImageLinkData(txt);
+	// print(data);
+	// print("# " * 20);
 
 	Widget child = FutureBuilder(
 		future: http.get(Uri.parse(data['url']!)),
 		builder: (context, AsyncSnapshot<http.Response> snap){
 			if(!snap.hasData){ return const SizedBox(); }
 			Widget img = SvgPicture.string(snap.data!.body.replaceAll('font-size="110"', 'font-size="12"'));
-			// Extract Base64 image
 			Map<String, dynamic>? tagData = _imageTagData(snap.data!.body);
+			
+			bool skipped = RegExp(r'(https?:\/\/.*\.(?:png|jpg|gif))').hasMatch(data['url']);
+			if(skipped){
+				img = Image.memory(snap.data!.bodyBytes);
+			}
+
 			if(tagData != null){
 				Uint8List memo = const Base64Decoder()
 					.convert(tagData["base64"].toString());
