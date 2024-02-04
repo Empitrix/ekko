@@ -44,14 +44,23 @@ class MDGenerator extends StatelessWidget {
 		indentStep = 0;
 
 		data = _updateVariablesMap(content).trim();
+
 		for(String key in variables.keys.toList()){
 			// debugPrint(key);
 			// bool amount = RegExp('\\[\\s*$key\\s*\\]').hasMatch(data);
 			// print(amount);
+			// print("[$key](${variables[key]!})");
+			if(key.toLowerCase().contains('ios ffi')){
+				// print("[$key](${variables[key]!})");
+				print("[${variables[key]!}]");
+			}
 			data = data.replaceAll(
 				// RegExp('\\[\\s*$key\\s*\\]'),
 				RegExp('\\[\\s*$key\\s*\\](?=(\\(|\\[))'),
+				// "[${variables[key]!}]"
+				// "(${variables[key]!})"
 				"[${variables[key]!}]"
+				// "[$key](${variables[key]!})"
 			);
 		}
 
@@ -72,6 +81,8 @@ class MDGenerator extends StatelessWidget {
 				}
 			);
 		}
+
+		data += "\n";
 
 
 		// See the text result

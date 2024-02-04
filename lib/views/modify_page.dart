@@ -104,7 +104,7 @@ class ModifyPageState extends State<ModifyPage> {
 			// content: content.text.replaceAll("\u000b", "\u000a"),
 			// content: content.text.replaceAll("\r", ""),
 			// content: content.text.replaceAll("\r\n", "\n"),
-			content: "${content.text.replaceAll("\r\n", "\n").replaceAll("\n\r", "\n")}\n",
+			content: "${content.text.replaceAll("\r\n", "\n").replaceAll("\n\r", "\n").trim()}\n",
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
 			mode: mode
