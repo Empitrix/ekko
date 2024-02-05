@@ -16,7 +16,7 @@ int lastIndent = 0;
 int indentStep = 0;
 // Map<String, String> variables = {};
 
-List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
+List<HighlightRule> allSyntaxRules(BuildContext context){
 	List<HighlightRule> rules = [
 
 
@@ -110,7 +110,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 						data: TextSpan(
 							children: [formattingTexts(
 								context: context,
-								variables: variables,
 								content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
 							)]
 						) 
@@ -149,7 +148,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 						data: TextSpan(
 							children: [formattingTexts(
 								context: context,
-								variables: variables,
 								content: txt.trim().substring(1).trim(),
 							)]
 						) 
@@ -193,7 +191,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			// regex: RegExp(r''),
 			action: (txt, _){
 				// print(txt);
-				// if(txt.contains('iOS')){ print(txt); }
+				if(txt.contains('iOS')){ print(txt); }
 
 
 				// return TextSpan(text: txt);
@@ -206,12 +204,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 				String name = txt.substring(1, lastWhere.start);
 				String link = txt.substring(lastWhere.end - 1);
 				link = link.substring(1, link.length - 1);
-
-				// if(txt.contains('Hot reload')){
-				// if(txt.contains('Twitter')){
-				// 	print(name);
-				// 	print(link);
-				// }
 
 				TextStyle linkStyle = const TextStyle(
 					fontSize: 16,
@@ -230,7 +222,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 
 				List<InlineSpan> appliedRules = formattingTexts(
 					context: context,
-					variables: variables,
 					content: name,
 					recognizer: rec,
 				).children!;
@@ -266,11 +257,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			// regex: RegExp(r'\!\[(.*?)\](\)|\])(.*?)(\)|\])'),
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			action: (String txt, r){
-				if(txt.contains('Hot reload')){
-					// debugPrint(txt);
-				}
 				// return TextSpan(text: txt);
-				return showImageFrame(txt, variables);
+				return showImageFrame(txt);
 				// String name = txt.split("](")[0]
 				// 	.substring(2).trim();
 				// String link = txt.split("](")[1].trim();

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 TextSpan formattingTexts({
 	required BuildContext context,
 	required String content,
+	required Map variables,
 	TextStyle? mergeStyle,
 	TapGestureRecognizer? recognizer}){
 	// using this function in rules list prevent to 'over-flow' error
@@ -15,7 +16,7 @@ TextSpan formattingTexts({
 		context: context,
 		content: content,
 		recognizer: recognizer,
-		rules: allSyntaxRules(context)
+		rules: allSyntaxRules(context, variables)
 	);
 
 	// if(a[0].style != null){

@@ -46,24 +46,34 @@ class MDGenerator extends StatelessWidget {
 		data = _updateVariablesMap(content).trim();
 
 		for(String key in variables.keys.toList()){
-			// debugPrint(key);
-			// bool amount = RegExp('\\[\\s*$key\\s*\\]').hasMatch(data);
-			// print(amount);
-			// print("[$key](${variables[key]!})");
-			if(key.toLowerCase().contains('ios ffi')){
-				// print("[$key](${variables[key]!})");
-				print("[${variables[key]!}]");
-			}
-			data = data.replaceAll(
+
+			// if(key.contains('iOS FFI')){
+			// 	debugPrint(key);
+			// }
+
+			// RegExp r = RegExp(r'\[\s*' + key + r'\s*\](?=(\(|\[))');
+			RegExp r = RegExp(r'(?<=(\)|\]))\[\s*' + key + r'\s*\]');
+			// if(r.firstMatch(data) != null){
+			// 	debugPrint(r.firstMatch(data)!.group(0)!);
+			// }
+
+			 data = data.replaceAll(
 				// RegExp('\\[\\s*$key\\s*\\]'),
-				RegExp('\\[\\s*$key\\s*\\](?=(\\(|\\[))'),
+				// RegExp('\\[\\s*$key\\s*\\](?=(\\(|\\[))'),
+				// RegExp(r'\[\s*' + key + r'\s*\](?=(\(|\[))'),
+				r,
 				// "[${variables[key]!}]"
 				// "(${variables[key]!})"
-				"[${variables[key]!}]"
+				// "[${variables[key]!}]"
+				"(${variables[key]!})"
+				// "(${variables[key]!})"
 				// "[$key](${variables[key]!})"
 			);
 		}
 
+
+
+		// Un-Completed Variables
 		for(String key in variables.keys.toList()){
 			// RegExp r = RegExp('(?<!(\\]|\\)))\\[(?:(?!\\[\\s*$key\\s*\\]).)*\\](?!(\\[|\\())');
 			// RegExp r = RegExp(r'(?<!(\]|\)))\[(?:(?!\[\s*' + key + r'\s*\]).)*\](?!(\[|\())');
@@ -92,8 +102,9 @@ class MDGenerator extends StatelessWidget {
 		TextSpan spanWidget = applyRules(
 			context: context,
 			// content: content,
+			// variables: variables
 			content: data,
-			rules: allSyntaxRules(context)
+			rules: allSyntaxRules(context, variables)
 		);
 
 		return Text.rich(spanWidget);

@@ -13,7 +13,7 @@ enum ImageType {
 }
 
 
-Map<String, dynamic> _getImageLinkData(String input){
+Map<String, dynamic> _getImageLinkData(String input, Map variables){
 	// RegExp r = RegExp(r'\](\[|\[)');
 	RegExp r = RegExp(r'\](\[|\()');
 	String name = input.split(r)[0].trim()
@@ -31,6 +31,10 @@ Map<String, dynamic> _getImageLinkData(String input){
 
 	if(link.isEmpty){
 		link = name;
+		bool isThere = variables.keys.toList().contains(name);
+		if(isThere){
+			link = variables[variables.keys.toList().firstWhere((e) => e == name)];
+		}
 		// print(link);
 	}
 	// print(link);
@@ -62,15 +66,23 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 	params["base64"] = base64;
 	params["extention"] = vStr(base64.substring(0, 1)) == "p" ? ImageType.svg : ImageType.picture;
 	// debugPrint(params.toString());  See in debug
+	if(params['url'] == params['name']){
+	}
 	return params;
 }
 
 
 
-WidgetSpan showImageFrame(String txt){
+WidgetSpan showImageFrame(String txt, Map variables){
 	// print(txt);
 	// print("----------------------");
-	Map<String, dynamic> data = _getImageLinkData(txt);
+	Map<String, dynamic> data = _getImageLinkData(txt, variables);
+
+	// if(txt.contains('Twitter')){
+	// 	print(data);
+	// }
+
+	// print(data);
 	// print(data);
 	// print("# " * 20);
 

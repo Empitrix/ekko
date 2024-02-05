@@ -10,6 +10,8 @@ TextSpan applyRules({
 	required BuildContext context,
 	required String content,
 	required List<HighlightRule> rules,
+	// required Map<String, String> variables,
+	// Map<String, String> variables = const {},
 	TapGestureRecognizer? recognizer
 	}){
 	
