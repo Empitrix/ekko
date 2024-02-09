@@ -5,6 +5,7 @@ import 'package:ekko/backend/backend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 
 
 enum ImageType {
@@ -14,7 +15,6 @@ enum ImageType {
 
 
 Map<String, dynamic> _getImageLinkData(String input, Map variables){
-	// RegExp r = RegExp(r'\](\[|\[)');
 	RegExp r = RegExp(r'\](\[|\()');
 	String name = input.split(r)[0].trim()
 		.substring(2).trim();
@@ -35,10 +35,7 @@ Map<String, dynamic> _getImageLinkData(String input, Map variables){
 		if(isThere){
 			link = variables[variables.keys.toList().firstWhere((e) => e == name)];
 		}
-		// print(link);
 	}
-	// print(link);
-	// print(input.split(r));
 
 	return {
 		"name": name,
@@ -65,31 +62,26 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 	base64 = base64.substring(base64.lastIndexOf(",") + 1, base64.length - 1).trim();
 	params["base64"] = base64;
 	params["extention"] = vStr(base64.substring(0, 1)) == "p" ? ImageType.svg : ImageType.picture;
-	// debugPrint(params.toString());  See in debug
-	if(params['url'] == params['name']){
-	}
 	return params;
 }
 
 
 
 WidgetSpan showImageFrame(String txt, Map variables){
-	// print(txt);
-	// print("----------------------");
 	Map<String, dynamic> data = _getImageLinkData(txt, variables);
-
-	// if(txt.contains('Twitter')){
-	// 	print(data);
-	// }
-
-	// print(data);
-	// print(data);
-	// print("# " * 20);
 
 	Widget child = FutureBuilder(
 		future: http.get(Uri.parse(data['url']!)),
 		builder: (context, AsyncSnapshot<http.Response> snap){
-			if(!snap.hasData){ return const SizedBox(); }
+
+			// Waiing for data
+			if(!snap.hasData){
+				return Shimmer.fromColors(
+					baseColor: Colors.grey,
+					highlightColor: Colors.grey.shade700,
+					child: const Icon(Icons.image, color: Colors.grey),
+				);}
+
 			Widget img = SvgPicture.string(snap.data!.body.replaceAll('font-size="110"', 'font-size="12"'));
 			Map<String, dynamic>? tagData = _imageTagData(snap.data!.body);
 			
@@ -144,8 +136,5 @@ WidgetSpan showImageFrame(String txt, Map variables){
 	);
 
 	return WidgetSpan(child: child);
-
 }
-
-
 

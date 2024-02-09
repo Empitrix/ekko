@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -14,27 +16,9 @@ import 'package:provider/provider.dart';
 
 int lastIndent = 0;
 int indentStep = 0;
-// Map<String, String> variables = {};
 
 List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 	List<HighlightRule> rules = [
-
-
-		// // {@Variables},
-		// HighlightRule(
-		// 	label: "variable",
-		// 	// regex: RegExp(r'\[.*?\]\s*\:\s*\s*(https?\:\/\/\S+)'), 
-		// 	regex: RegExp(r'\[.*?\]\s*\:\s*\s*(https?://\S+)'), 
-		// 	action: (String txt, _){
-		// 		RegExp r = RegExp(r']\s*\:');
-		// 		String key = txt.split(r).first.replaceAll(RegExp(r'(\[|\])'), '').trim();
-		// 		String value = txt.split(r).last.trim();
-		// 		variables[key] = value;
-		// 		// print(value);
-		// 		return const TextSpan();
-		// 	},
-		// ),
-
 		// {@Syntax-Hihglighting}
 		HighlightRule(
 			label: "markdown",
@@ -158,72 +142,19 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			},
 		),
 
-
-
-		// // {@Image-Link}
-		// HighlightRule(
-		// 	label: "link_image",
-		// 	regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
-		// 	action: (String txt, r){
-		// 		return showImageFrame(txt);
-		// 	},
-		// ),
-
 		// {@Hyper-Link}
 		HighlightRule(
 			label: "links",
-			// regex: RegExp(r'\[(.*?)\]\((.*?)\)'),
-			// regex: RegExp(r'(\[).*?(\])(\(|\[).*(\)|\])'),
-			//regex: RegExp(r'(?<!\!)(\[).*?(\])(\(|\[).*(\)|\])'),
-
-			// regex: RegExp(r'(?<!\!)(\[).*(\])(\(|\[).*(\)|\])'),
-			// regex: RegExp(r'(?<!\!)(\[).*?(\])(\(|\[)(?!\]).*?(\)|\])'),
-			// regex: RegExp(r'(?<!\!)(\[).*?(\])(\(|\[)(?!\]).*?(\)|\])'),
-			// regex: RegExp(r'\[((?:\[[^\]]*\]|[^\[\]])*)\]\((https?:\/\/[^\s)]+)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			// regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((https?:\/\/[^\s)]+)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			// regex: RegExp(r'\[((?:[^\[\]]+|\[(?:[^\[\]]+|\[(?:[^\[\]]+|\[(?:[^\[\]]+)?\])*\])*\])*)\](\(|\[)(.*?)(\)|\])'),
-			// regex: RegExp(r'\[((?:[^\[\]]+|\[(?:[^\[\]]+|\[(?:[^\[\]]+|\[(?:[^\[\]]+)?\])*\])*\])*)\](\(|\[).*?(\)|\])'),
-			
-
-			//regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((https?:\/\/[^\s)]+)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			// regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((https?:\/\/[^\s)]+)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			// regex: RegExp(r'\[((?:\[[^\]]*\]|[^\[\]])*)\]\((https?:\/\/[^\s)]+)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			// regex: RegExp(r'\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			// regex: RegExp(r''),
 			action: (txt, _){
-				// print(txt);
-				// if(txt.contains('iOS')){ print(txt); }
-
-
-				// return TextSpan(text: txt);
-				// RegExp r = RegExp(r'\](\(|\[)');
-				// String name = txt.split(r)[0]
-				// 	.substring(1).trim();
-				// String link = txt.split(r)[1].trim();
-				// link = link.substring(0, link.length - 1).trim();
 				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
 				String name = txt.substring(1, lastWhere.start);
 				String link = txt.substring(lastWhere.end - 1);
 				link = link.substring(1, link.length - 1);
-
-				// if(txt.contains('Hot reload')){
-				// if(txt.contains('Twitter')){
-				// 	print(name);
-				// 	print(link);
-				// }
-
 				TextStyle linkStyle = const TextStyle(
 					fontSize: 16,
 					decorationColor: Colors.blue,
 					color: Colors.blue);
-
-				// if(txt.contains("on iOS")){
-				if(txt.contains("CI Status")){
-					// print(txt);
-					// print(name);
-					// print(link);
-				}
 
 				List<InlineSpan> spoon = [];
 				TapGestureRecognizer rec = useLinkRecognizer(context, link);
@@ -262,25 +193,20 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 		// {@Image-Link}
 		HighlightRule(
 			label: "link_image",
-			// regex: RegExp(r'\!\[(.*?)\]\((.*?)\)'),
-			// regex: RegExp(r'\!\[(.*?)\](\)|\])(.*?)(\)|\])'),
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			action: (String txt, r){
-				if(txt.contains('Hot reload')){
-					// debugPrint(txt);
-				}
-				// return TextSpan(text: txt);
-				return showImageFrame(txt, variables);
-				// String name = txt.split("](")[0]
-				// 	.substring(2).trim();
-				// String link = txt.split("](")[1].trim();
-				// link = link.substring(0, link.length - 1).trim();
-
-				// // return TextSpan(text: txt, style: TextStyle(color: Colors.red));
-				// return WidgetSpan(
-				// 	child: SvgPicture.network(link)
+				// return runZonedGuarded<InlineSpan>(
+				// 	() => showImageFrame(txt, variables),
+				// 	// (err, stack) { debugPrint("ERROR on Loading: $err"); }
+				// 	(err, stack) => const WidgetSpan(child: SizedBox())
 				// );
 
+				return runZoned((){
+					return showImageFrame(txt, variables);
+				// ignore: deprecated_member_use
+				}, onError: (e, s){
+					debugPrint("ERROR on Loading: $e");
+				});
 			},
 		),
 
@@ -300,13 +226,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 		// {@URL}
 		HighlightRule(
 			label: "url",
-			// regex: RegExp(r'(https?://\S+)'),
-			// regex: RegExp(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'),
-			// regex: RegExp(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'),
-			// regex: RegExp(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'),
-			// regex: RegExp(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'),
 			regex: RegExp(r'(https\:|http\:|www)(\/\/|\.)([A-Za-z0-9@:%\.\_\+\~\#\=\/\?\-]*)'),
-			// action: (txt, _) => TextSpan(text: txt)
 			action: (txt, _) => TextSpan(
 				text: txt,
 				style: const TextStyle(

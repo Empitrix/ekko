@@ -24,13 +24,12 @@ TextSpan applyRules({
 		onMatch: (match) {
 			String mText = match.group(0)!;
 			HighlightRule mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
-			//** trimNext = mRule.trimNext;
 			if(mRule.label == "markdown"){ spans.add(nl); }
 			// {@Re-Count}
 			if(mRule.label != "item"){
 				lastIndent = 0;
-				indentStep = 0;
-			}
+				indentStep = 0;}
+			// Add Widgets
 			spans.add(mRule.action(mText, recognizer));
 			if(mRule.label == "markdown"){ spans.add(nl); }
 

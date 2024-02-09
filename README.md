@@ -18,8 +18,6 @@ A cross-platform, open source note-taking app that written in flutter
 
 ## Build
 you can run the following code to create your own
-
-
 ```shell
 git clone "https://github.com/empitrix/ekko.git"
 cd ./ekko
@@ -28,3 +26,11 @@ flutter pub get
 ```
 Requirements:
 - Flutter
+
+## Featurs ToDo
+- [ ] Track Local File
+- [ ] Image by absolute path
+- [ ] dragable list
+- [ ] font-size visualizer
+- [ ] apply default font by context to all the font OBJs
+
