@@ -195,12 +195,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			label: "link_image",
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			action: (String txt, r){
-				// return runZonedGuarded<InlineSpan>(
-				// 	() => showImageFrame(txt, variables),
-				// 	// (err, stack) { debugPrint("ERROR on Loading: $err"); }
-				// 	(err, stack) => const WidgetSpan(child: SizedBox())
-				// );
-
 				return runZoned((){
 					return showImageFrame(txt, variables);
 				// ignore: deprecated_member_use

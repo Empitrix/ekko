@@ -13,7 +13,6 @@ String _updateVariablesMap(String inpt){
 			String txt = m.group(0)!;
 			RegExp r = RegExp(r']\s*\:');
 			String key = txt.split(r).first.replaceAll(RegExp(r'(\[|\])'), '').trim();
-			// String key = txt.split(r).first.trim() + "]";
 			String value = txt.split(r).last.trim();
 			variables[key] = value;
 			return "";
@@ -46,38 +45,15 @@ class MDGenerator extends StatelessWidget {
 		data = _updateVariablesMap(content).trim();
 
 		for(String key in variables.keys.toList()){
-
-			// if(key.contains('iOS FFI')){
-			// 	debugPrint(key);
-			// }
-
-			// RegExp r = RegExp(r'\[\s*' + key + r'\s*\](?=(\(|\[))');
 			RegExp r = RegExp(r'(?<=(\)|\]))\[\s*' + key + r'\s*\]');
-			// if(r.firstMatch(data) != null){
-			// 	debugPrint(r.firstMatch(data)!.group(0)!);
-			// }
-
 			 data = data.replaceAll(
-				// RegExp('\\[\\s*$key\\s*\\]'),
-				// RegExp('\\[\\s*$key\\s*\\](?=(\\(|\\[))'),
-				// RegExp(r'\[\s*' + key + r'\s*\](?=(\(|\[))'),
 				r,
-				// "[${variables[key]!}]"
-				// "(${variables[key]!})"
-				// "[${variables[key]!}]"
 				"(${variables[key]!})"
-				// "(${variables[key]!})"
-				// "[$key](${variables[key]!})"
 			);
 		}
 
-
-
 		// Un-Completed Variables
 		for(String key in variables.keys.toList()){
-			// RegExp r = RegExp('(?<!(\\]|\\)))\\[(?:(?!\\[\\s*$key\\s*\\]).)*\\](?!(\\[|\\())');
-			// RegExp r = RegExp(r'(?<!(\]|\)))\[(?:(?!\[\s*' + key + r'\s*\]).)*\](?!(\[|\())');
-			// RegExp r = RegExp(r'(?<!\])\[(?:(?!\[\s*' + key + r'\s*\]).)*?\](?!\[|\()');
 			RegExp r = RegExp(r'(?<!\]|\))\[(\s*' + key + r'\s*)*?\](?!\[|\()');
 			data.splitMapJoin(
 				r,
@@ -92,11 +68,38 @@ class MDGenerator extends StatelessWidget {
 			);
 		}
 
-		data += "\n";
 
-
-		// See the text result
-		// debugPrint("${'- ' * 20}\n$data\n${'- ' * 20}");
+		/*
+			NOTE:
+				Put images in a row (remove end-line char in `[!...]`) 
+				this can be optional could be as GitHub Flavored Markdown (GFM) options
+				---
+				if there is not need to this happned or in future was a problem for enging
+				this part can be deleted and instead of `rowInData` can be only data += '\n'
+				and don't need to formatize the images that contaisn [![]...] regex!
+		*/
+		// {@Image-GFM}
+		bool isFirst = true;
+		String rowInData = "";
+		data.splitMapJoin(
+			// Two way to use regex (for all the white-spaces || for only one end-line (\n))
+			// RegExp(r'\s*\[\!.*(\)|\])'),
+			RegExp(r'\n\[\!.*(\)|\])'),
+			onMatch: (Match m){
+				rowInData += "${isFirst ? '\n' : ''}${m.group(0)!.trim()}";
+				isFirst = false;
+				return "";
+			},
+			onNonMatch: (n){
+				rowInData += n;
+				return "";
+			}
+		);
+		data = "$rowInData\n";
+		/* {@GFM end} */
+		// Other (not GFM): ```dart
+		// 	data += "\n";
+		// ```
 
 
 		TextSpan spanWidget = applyRules(

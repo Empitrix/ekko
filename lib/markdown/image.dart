@@ -135,6 +135,11 @@ WidgetSpan showImageFrame(String txt, Map variables){
 		},
 	);
 
-	return WidgetSpan(child: child);
+	return WidgetSpan(
+		child: Padding(
+			padding: const EdgeInsets.only(right: 5, bottom: 2),
+			child: child
+		)
+	);
 }
 
