@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -13,6 +11,7 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 int lastIndent = 0;
 int indentStep = 0;
@@ -196,7 +195,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			action: (String txt, r){
 				return runZoned((){
-					return showImageFrame(txt, variables);
+					return showImageFrame(txt, r, variables);
 				// ignore: deprecated_member_use
 				}, onError: (e, s){
 					debugPrint("ERROR on Loading: $e");

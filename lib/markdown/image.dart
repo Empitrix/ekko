@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:ekko/backend/backend.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -67,7 +67,7 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 
 
 
-WidgetSpan showImageFrame(String txt, Map variables){
+WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map variables){
 	Map<String, dynamic> data = _getImageLinkData(txt, variables);
 
 	Widget child = FutureBuilder(
@@ -124,12 +124,18 @@ WidgetSpan showImageFrame(String txt, Map variables){
 					],
 				);
 			}
+			
 
 			return MouseRegion(
 				cursor: SystemMouseCursors.click,
 				child: GestureDetector(
 					child: img,
-					onTap: (){}
+					onTap: (){
+						// If image wraped in hyper-link it will open the link
+						if(recognizer != null){
+							recognizer.onTap!();
+						}
+					}
 				)
 			);
 		},
