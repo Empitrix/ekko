@@ -21,3 +21,7 @@ class DrawerPageIntent extends Intent {
 class GoToEditPageIntent extends Intent {
 	const GoToEditPageIntent();
 }
+
+class ClosePageIntent extends Intent {
+	const ClosePageIntent();
+}

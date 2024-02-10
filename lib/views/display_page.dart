@@ -1,6 +1,7 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/in_loading_page.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
@@ -119,12 +120,17 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 						focusNode: screenShortcutFocus["DisplayPage"],
 						shortcuts: const <ShortcutActivator, Intent>{
 							SingleActivator(LogicalKeyboardKey.keyE, control: true): GoToEditPageIntent(),
+							SingleActivator(LogicalKeyboardKey.escape): ClosePageIntent(),
 						},
 						// contextFocus
 						actions: <Type, Action<Intent>>{
 							GoToEditPageIntent: CallbackAction<GoToEditPageIntent>(
 								onInvoke: (GoToEditPageIntent intent) => {
 									_goToModifyPage()
+								}),
+							ClosePageIntent: CallbackAction<ClosePageIntent>(
+								onInvoke: (ClosePageIntent intent) => {
+									_backToPreviousPage()
 								}),
 						},
 						floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
@@ -136,9 +142,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 						),
 						body: Builder(
 							builder:(context){
-								if(!isLoaded){
-									return const Center(child: CircularProgressIndicator());
-								}
+								if(!isLoaded){ return const InLoadingPage(); }
 								contextFocus.requestFocus(); // Update Foucs
 								return NestedScrollView(
 									controller: scrollCtrl,
@@ -167,13 +171,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 																color: dMode ? Colors.grey : Colors.grey[400]
 															)
 														)
-														/*
-														Text(note!.description, style: TextStyle(
-															fontSize: 16,
-															overflow: TextOverflow.fade,
-															color: dMode ? Colors.grey : Colors.grey[400]
-														))
-														*/
 													],
 												),
 												actions: [
