@@ -179,6 +179,8 @@ class ContentTextFiled extends StatelessWidget {
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: [
+
+						// {@Awesome}
 						AwesomeTextField(
 							controller: controller,
 							focusNode: focusNode,
@@ -189,11 +191,9 @@ class ContentTextFiled extends StatelessWidget {
 							),
 							border: Border(
 								right: BorderSide(
-									color: Theme.of(context).colorScheme.inverseSurface, width: 1
-								),
+									color: Theme.of(context).colorScheme.inverseSurface, width: 1),
 								top: BorderSide(
-									color: Theme.of(context).colorScheme.inverseSurface, width: 1
-								),
+									color: Theme.of(context).colorScheme.inverseSurface, width: 1),
 							),
 							lineNumberColor: LineNumberPalette(
 								indexColor: dMode ? Colors.amber : Colors.black,

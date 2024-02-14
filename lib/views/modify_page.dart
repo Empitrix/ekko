@@ -35,19 +35,15 @@ class ModifyPage extends StatefulWidget {
 }
 
 class ModifyPageState extends State<ModifyPage> {
-	
 	TextEditingController title = TextEditingController();
 	FocusNode titleF = FocusNode();
 	TextEditingController description = TextEditingController();
 	FocusNode descriptionF = FocusNode();
 	AwesomeController content = AwesomeController();
-
 	ValueNotifier<List<String>> tags = ValueNotifier([]);
-
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;
-	// bool isLoaded = true;  // For imported notes
 	bool isLoaded = false;  // For imported notes
 
 
@@ -60,8 +56,7 @@ class ModifyPageState extends State<ModifyPage> {
 			changeView(context, widget.previousPage, widget.previousPageName, isPush: false);
 			return;  // Close the function
 		}
-		
-		
+
 		// TODO: CHECK FOR TAGS LIST && ADD DON'T SHOW CHECK DIALOG
 		if(!TxtCtrl(title, null, content).isAllEmpty()){
 			Dialogs(context).ask(
@@ -85,8 +80,7 @@ class ModifyPageState extends State<ModifyPage> {
 		// Make sure that all the filed are fulled
 		if(!TxtCtrl(title, null, content).isAllFilled()){
 			debugPrint("Fill all the forms!");
-			snk.message(
-				const Icon(Icons.close), "Fill all the forms");
+			snk.message(const Icon(Icons.close), "Fill all the forms");
 			return;
 		}
 
@@ -99,11 +93,7 @@ class ModifyPageState extends State<ModifyPage> {
 			id: widget.note == null ? -1 : widget.note!.id,
 			folderId: widget.folderId,
 			title: title.text,
-			// description: description.text,
 			description: extractedTags,
-			// content: content.text.replaceAll("\u000b", "\u000a"),
-			// content: content.text.replaceAll("\r", ""),
-			// content: content.text.replaceAll("\r\n", "\n"),
 			content: "${content.text.replaceAll("\r\n", "\n").replaceAll("\n\r", "\n").trim()}\n",
 			lastEdit: DateTime.now(),
 			isPinned: isPinned,
@@ -227,14 +217,12 @@ class ModifyPageState extends State<ModifyPage> {
 										Colors.pink:
 										Colors.amber,
 								),
-								style: ButtonStyle(
-									side: MaterialStatePropertyAll(BorderSide(
+								style: ButtonStyle(side: MaterialStatePropertyAll(BorderSide(
 										width: 1,
 										color: dMode ?
 											Colors.pink:
 											Colors.amber
-									))
-								),
+									))),
 								onPressed: () => submit(),
 							),
 						),
@@ -243,10 +231,7 @@ class ModifyPageState extends State<ModifyPage> {
 				body: Builder(
 					builder: (BuildContext context){
 						// Loading
-						if(!isLoaded){
-							return const Center(
-								child: CircularProgressIndicator());}
-
+						if(!isLoaded){return const Center(child: CircularProgressIndicator());}
 						// Widgets
 						return ListView(
 							padding: EdgeInsets.zero,
@@ -262,10 +247,6 @@ class ModifyPageState extends State<ModifyPage> {
 												autofocus: widget.note == null,
 												nextFocus: () => descriptionF.requestFocus(),
 											),
-											// TagField(
-											// 	controller: description,
-											// 	tags: ValueNotifier([])
-											// )
 											DescriptionTextFiled(
 												controller: description,
 												tags: tags,
