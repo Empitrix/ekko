@@ -13,6 +13,7 @@ import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/models/note.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 // Custom context builder
@@ -322,36 +323,59 @@ void inViewNoteSheet({
 			return FloatMenu(
 				header: Column(
 					children: [
-						SheetText(
-							text: SelectableText(
-								note.title,
-								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
-									fontSize: 18,
-									color: Theme.of(context).colorScheme.inverseSurface
+						SelectionArea(child: Column(
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: [
+								SheetText(
+									text: Text(
+										note.title,
+										style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+											fontSize: 18,
+											color: Theme.of(context).colorScheme.inverseSurface
+										)
+									),
+								),
+								SheetText(
+									text: Text(
+										note.description,
+										style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+											fontSize: 16,
+											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5)
+										)
+									),
 								)
-							),
-						),
-						SheetText(
-							text: SelectableText(
-								note.description,
-								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
-									fontSize: 16,
-									color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5)
-								)
-							),
-						)
+							],
+						))
 					],
 				),
 				actions: [
 					ListTile(
-						leading: const Icon(Icons.copy),
+						leading: const Icon(FontAwesomeIcons.solidCopy, size: 20,),
 						title: const Text("Copy"),
 						onTap:(){
 							Navigator.pop(context);
 							CCB.copy(note.content);
-							SNK(context).message(const Icon(Icons.copy), "Copied!");
+							SNK(context).message(const Icon(Icons.copy_rounded), "Copied!");
 						}
 					),
+					// TODO: Apply Actions
+					ListTile(
+						leading: const Icon(FontAwesomeIcons.fileExport, size: 20,),
+						title: const Text("Export"),
+						onTap:(){}
+					),
+					ListTile(
+						leading: const Icon(FontAwesomeIcons.filePen, size: 20,),
+						title: const Text("Rename"),
+						onTap:(){}
+					),
+					ListTile(
+						leading: const Icon(FontAwesomeIcons.share, size: 20,),
+						title: const Text("Share"),
+						onTap:(){}
+					),
+
+
 				],
 			);
 		},
