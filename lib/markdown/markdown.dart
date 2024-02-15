@@ -7,17 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
-double lessOpt = -0.1;
 
 class MarkdownWidget extends StatelessWidget {
 	final String content;
 	final double radius;
 	final double height;
+	final double lessOpt;
 	const MarkdownWidget({
 		super.key,
 		required this.content,
 		this.radius = 5,
 		this.height = 0.0,
+		this.lessOpt = -0.1 // value of (more / less) of transparency (*Acrylic)
 	});
 
 
@@ -48,7 +49,6 @@ class MarkdownWidget extends StatelessWidget {
 			_markdownData(),
 			language: _langName(content).toLowerCase(),
 			tabSize: 2,
-			// theme: gruvboxDarkTheme,
 			theme: allMarkdownThemes[markdownThemeName]!,
 			
 		);
@@ -58,7 +58,6 @@ class MarkdownWidget extends StatelessWidget {
 		return TextStyle(
 			height: height,
 			fontFamily: "RobotoMono"
-			// fontFamily: "SauceCodeProNerdFont"
 		);
 	}
 
@@ -134,7 +133,6 @@ class MarkdownWidget extends StatelessWidget {
 					bottomRight: Radius.circular(radius)
 				)
 			),
-		
 			child: wrapCodeMode ?
 				Text.rich(highlightView().getSpan(style: markdownStyle())):
 				Column(
@@ -160,21 +158,6 @@ class MarkdownWidget extends StatelessWidget {
 								)
 							)
 						),
-						// Scrollbar(
-						// 	controller: controller,
-						// 	radius: const Radius.circular(2.4),
-						// 	thumbVisibility: false,
-						// 	child: SingleChildScrollView(
-						// 		controller: controller,
-						// 		scrollDirection: Axis.horizontal,
-						// 		child: Column(
-						// 			children: [
-						// 				Text.rich(highlightView().getSpan(style: markdownStyle())),
-						// 				const SizedBox(height: 10.5)  // Scroll-Bar size + 2.5 additional
-						// 			],
-						// 		),
-						// 	)
-						// )
 					],
 				)
 		);
@@ -185,7 +168,12 @@ class MarkdownWidget extends StatelessWidget {
 	Widget build(BuildContext context) {
 		ScrollController horizontalMarkdown = ScrollController();
 		return Container(
-			// margin: const EdgeInsets.all(0),
+			decoration: BoxDecoration(
+				color: dMode ?
+					Theme.of(context).colorScheme.background.aae(context, lessOpt) :
+					Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
+				borderRadius: BorderRadius.circular(radius)
+			),
 			margin: const EdgeInsets.symmetric(vertical: 8),
 			child: Column(
 				crossAxisAlignment: CrossAxisAlignment.start,
