@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 
 
 List<RegexFormattingStyle> allFieldRules(BuildContext context){
+
+	TextStyle reApllyStyle = Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
+		color: Theme.of(context).colorScheme.inverseSurface,
+		fontFamily: "RobotoMono"
+	);
+	ReApllyFieldRules reAplly = ReApllyFieldRules(context: context, style: reApllyStyle);
+
+
 	return <RegexFormattingStyle>[
 
 		// {@Syntax}
@@ -138,9 +146,8 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 							style: const TextStyle(
 								color: Colors.deepOrange, fontWeight: FontWeight.bold)
 						),
-						TextSpan(
-							text: txt.substring(char.end),
-						)
+						reAplly.parse(txt.substring(char.end)),
+						// TextSpan(text: txt.substring(char.end))
 					]
 				);
 			},
@@ -196,3 +203,20 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 
 	];
 }
+
+
+
+class ReApllyFieldRules {
+	final BuildContext context;
+	final TextStyle style;
+	ReApllyFieldRules({required this.context, required this.style});
+
+	TextSpan parse(String input){
+		return ApplyRegexFormattingStyle(
+			content: input,
+			rules: allFieldRules(context),
+			textStyle: style
+		).build();
+	}
+}
+
