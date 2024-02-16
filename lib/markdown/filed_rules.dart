@@ -122,5 +122,41 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			},
 		),
 
+		// {@Italic-Bold-Italic&Bold}
+		RegexActionStyle(
+			regex: RegExp(r"\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*"),
+			style: const TextStyle(),
+			action: (txt, match){
+				int asteriskNum = RegExp(r'\*').allMatches(txt).length;
+				if(asteriskNum % 2 != 0){ asteriskNum--; }
+				asteriskNum = asteriskNum ~/ 2;
+				const TextStyle asteriskStyle = TextStyle(
+					color: Colors.deepOrange, fontWeight: FontWeight.w500);
+				// Get plain text style
+				TextStyle plainStyle = 
+					asteriskNum == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
+					asteriskNum == 2 ? const TextStyle(fontWeight: FontWeight.bold):
+					const TextStyle(fontStyle: FontStyle.italic);
+				return TextSpan(
+					children: [
+						TextSpan(
+							text: txt.substring(0, asteriskNum),
+							style: asteriskStyle
+						),
+						TextSpan(
+							text: txt.substring(asteriskNum, txt.length - asteriskNum),
+							style: plainStyle,
+						),
+						TextSpan(
+							text: txt.substring(txt.length - asteriskNum),
+							style: asteriskStyle
+						),
+					]
+				);
+			},
+		),
+
+
+
 	];
 }
