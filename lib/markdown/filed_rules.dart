@@ -65,6 +65,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			style: const TextStyle(color: Colors.red),
 		),
 
+		/*
 		// {@Monospace}
 		RegexGroupStyle(
 			regex: RegExp(r'\`.*?\`'),
@@ -76,6 +77,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 				),
 			)
 		),
+		*/
 		
 		// {@Table}
 		RegexActionStyle(
@@ -122,13 +124,48 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			},
 		),
 
+		// {@Item}
+		RegexActionStyle(
+			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
+			style: const TextStyle(),
+			action: (txt, match){
+				RegExpMatch char = RegExp(r'(-|\+|\*)').firstMatch(txt)!;
+				// debugPrint("[${char.start}, ${char.end}] => \"${char.group(0)!}\"");
+				return TextSpan(
+					children: [
+						TextSpan(
+							text: txt.substring(0, char.end),
+							style: const TextStyle(
+								color: Colors.deepOrange, fontWeight: FontWeight.bold)
+						),
+						TextSpan(
+							text: txt.substring(char.end),
+						)
+					]
+				);
+			},
+		),
+
+		// {@Monospace}
+		RegexGroupStyle(
+			regex: RegExp(r'\`.*?\`'),
+			style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.brown),
+			regexStyle: RegexStyle(
+				regex: RegExp(r'\`'),
+				style: const TextStyle(
+					color: Colors.orange,
+				),
+			)
+		),
+
+
 		// {@Italic-Bold-Italic&Bold}
 		RegexActionStyle(
 			// regex: RegExp(r'\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*'),
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			// regex: RegExp(r'(\*\*\*|___)(.*?)(\1)|(\*\*|__)(.*?)(\4)|(\*|_)(.*?)(\7)'),
 			style: const TextStyle(),
 			action: (txt, match){
-				// int asteriskNum = RegExp(r'\*').allMatches(txt).length;
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }
 				specialChar = specialChar ~/ 2;
@@ -143,16 +180,13 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 					children: [
 						TextSpan(
 							text: txt.substring(0, specialChar),
-							style: asteriskStyle
-						),
+							style: asteriskStyle),
 						TextSpan(
 							text: txt.substring(specialChar, txt.length - specialChar),
-							style: plainStyle,
-						),
+							style: plainStyle),
 						TextSpan(
 							text: txt.substring(txt.length - specialChar),
-							style: asteriskStyle
-						),
+							style: asteriskStyle),
 					]
 				);
 			},

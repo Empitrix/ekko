@@ -220,7 +220,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 		// {@URL}
 		HighlightRule(
 			label: "url",
-			regex: RegExp(r'(https\:|http\:|www)(\/\/|\.)([A-Za-z0-9@:%\.\_\+\~\#\=\/\?\-]*)'),
+			regex: RegExp(r'(https\:|http\:|www)(\/\/|\.)([A-Za-z0-9@:%\.\_\+\~\#\=\/\?\-\&]*)'),
 			action: (txt, _) => TextSpan(
 				text: txt,
 				style: const TextStyle(
