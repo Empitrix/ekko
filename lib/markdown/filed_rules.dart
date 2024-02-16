@@ -124,31 +124,33 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 
 		// {@Italic-Bold-Italic&Bold}
 		RegexActionStyle(
-			regex: RegExp(r"\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*"),
+			// regex: RegExp(r'\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*'),
+			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
 			style: const TextStyle(),
 			action: (txt, match){
-				int asteriskNum = RegExp(r'\*').allMatches(txt).length;
-				if(asteriskNum % 2 != 0){ asteriskNum--; }
-				asteriskNum = asteriskNum ~/ 2;
+				// int asteriskNum = RegExp(r'\*').allMatches(txt).length;
+				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
+				if(specialChar % 2 != 0){ specialChar--; }
+				specialChar = specialChar ~/ 2;
 				const TextStyle asteriskStyle = TextStyle(
 					color: Colors.deepOrange, fontWeight: FontWeight.w500);
 				// Get plain text style
 				TextStyle plainStyle = 
-					asteriskNum == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
-					asteriskNum == 2 ? const TextStyle(fontWeight: FontWeight.bold):
+					specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
+					specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
 					const TextStyle(fontStyle: FontStyle.italic);
 				return TextSpan(
 					children: [
 						TextSpan(
-							text: txt.substring(0, asteriskNum),
+							text: txt.substring(0, specialChar),
 							style: asteriskStyle
 						),
 						TextSpan(
-							text: txt.substring(asteriskNum, txt.length - asteriskNum),
+							text: txt.substring(specialChar, txt.length - specialChar),
 							style: plainStyle,
 						),
 						TextSpan(
-							text: txt.substring(txt.length - asteriskNum),
+							text: txt.substring(txt.length - specialChar),
 							style: asteriskStyle
 						),
 					]

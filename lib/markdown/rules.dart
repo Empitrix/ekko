@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -232,47 +233,23 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			),
 		),
 
-		// {@Italic-Bold}
+		// {@Italic-Bold, Bold, Italic}
 		HighlightRule(
-			label: "italic_bold",
-			regex: RegExp(r'\*\*\*(.*?)\*\*\*'),
-			action: (txt, rec) => TextSpan(
-				text: txt.substring(3, txt.length - 3),
-				recognizer: rec,
-				style: const TextStyle(
-					fontSize: 16,
-					fontWeight: FontWeight.bold,
-					fontStyle: FontStyle.italic
-				)
-			),
-		),
-
-		// {@Bold}
-		HighlightRule(
-			label: "boldness",
-			regex: RegExp(r'\*\*(.*?)\*\*'),
-			action: (txt, rec) => TextSpan(
-				text: txt.substring(2, txt.length - 2),
-				recognizer: rec,
-				style: const TextStyle(
-					fontSize: 16,
-					fontWeight: FontWeight.bold
-				)
-			),
-		),
-
-		// {@Italic}
-		HighlightRule(
-			label: "italic",
-			regex: RegExp(r'\*(.*?)\*'),
-			action: (txt, rec) => TextSpan(
-				text: txt.substring(1, txt.length - 1),
-				recognizer: rec,
-				style: const TextStyle(
-					fontSize: 16,
-					fontStyle: FontStyle.italic
-				)
-			),
+			label: "italic&bold_bold_italic",
+			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			action: (txt, rec){
+				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
+				if(specialChar % 2 != 0){ specialChar--; }
+				specialChar = specialChar ~/ 2;
+				return TextSpan(
+					text: txt.substring(specialChar, txt.length - specialChar),
+					recognizer: rec,
+					style: 
+						specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
+						specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
+						const TextStyle(fontStyle: FontStyle.italic)
+				);
+			},
 		),
 		
 		// {@Straight}
