@@ -16,12 +16,16 @@ enum ImageType {
 
 Map<String, dynamic> _getImageLinkData(String input, Map variables){
 	RegExp r = RegExp(r'\](\[|\()');
+
 	String name = input.split(r)[0].trim()
 		.substring(2).trim();
-	if(name.split('').first == "["){
-		name = name.substring(1);}
+	try{
+		if(name.split('').first == "["){
+			name = name.substring(1);}
+	}catch(_){
+		name = "";
+	}
 
-	
 
 	String link = input.split(r)[1].trim();
 	link = link.substring(0, link.length - 1).trim();

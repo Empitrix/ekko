@@ -52,12 +52,6 @@ InlineSpan getTableSpan({
 		}
 	}
 
-
-	print(lines[0].split("|"));
-	print(lines[0].split("|").length);
-	print("---- A -----");
-	print(alignment.length);
-
 	for(String column in lines[0].split("|")){
 		if(column.isEmpty){ continue; }
 		idx ++;

@@ -148,7 +148,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			label: "table",
 			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
 			action: (txt, _){
-				return getTableSpan(context: context, txt: txt, variables: variables);
+				// return getTableSpan(context: context, txt: txt, variables: variables);
+				InlineSpan? outTable = runZoned((){
+					return getTableSpan(context: context, txt: txt, variables: variables);
+				// ignore: deprecated_member_use
+				}, onError: (e, s){
+					debugPrint("Index ERR on Loading: $e");
+				});
+				if(outTable != null){
+					return outTable;
+				}
+				return TextSpan(text: txt);
 			},
 		),
 
@@ -206,6 +216,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			label: "link_image",
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			action: (String txt, r){
+
+				// return showImageFrame(txt, r, variables);
 				InlineSpan? outImg = runZoned((){
 					return showImageFrame(txt, r, variables);
 				// ignore: deprecated_member_use
@@ -215,7 +227,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 				if(outImg != null){
 					return outImg;
 				}
-				return const TextSpan();
+				if(txt.contains("![](https://dcbadge.vercel.app/api/server/3zy8kqD9Cp?compact=true&style=flat)")){
+					print("DDDDD");
+				}
+				return TextSpan(text: txt);
+				// return const TextSpan();
 			},
 		),
 
