@@ -1,4 +1,5 @@
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/markdown/formatting.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 InlineSpan getTableSpan({
 	required BuildContext context,
 	required String txt,
+	required Map variables,
 }){
 	Map<String, Alignment> alignmentsMap = {
 		"-:": Alignment.centerRight,
@@ -23,6 +25,14 @@ InlineSpan getTableSpan({
 	List<String> lines = txt.split("\n");
 	// essential need are not required 
 	if(lines.length < 3){ return TextSpan(text: txt); }
+
+
+	// Trim lines (to prevent from index issue)
+	List<String> dummyLines = [];
+	for(String line in lines){
+		dummyLines.add(line.trim());
+	}
+	lines = dummyLines;
 	
 	List<DataColumn> columns = [];
 	List<DataRow> rows = [];
@@ -32,7 +42,8 @@ InlineSpan getTableSpan({
 
 	// divider
 	for(String i in lines[1].split("|")){
-		if(i.trim().isEmpty){ continue; }
+		// if(i.trim().isEmpty){ continue; }
+		if(i.isEmpty){ continue; }
 		for(String key in alignmentsMap.keys.toList()){
 			if(i.trim().replaceAll(RegExp(r'\s'), "").replaceAll(RegExp(r'\-+'), "-") == key){
 				alignment.add(alignmentsMap[key]!);
@@ -41,14 +52,19 @@ InlineSpan getTableSpan({
 		}
 	}
 
+
+	print(lines[0].split("|"));
+	print(lines[0].split("|").length);
+	print("---- A -----");
+	print(alignment.length);
+
 	for(String column in lines[0].split("|")){
 		if(column.isEmpty){ continue; }
 		idx ++;
 		columns.add(
 			DataColumn(
 				numeric: idx != 1,
-				// numeric: true,
-				label: idx == 1 ? Expanded(child: Text(
+				label: idx == 1 || idx == alignment.length ? Expanded(child: Text(
 					column.trim(),
 					textAlign: textAlignments[idx - 1],
 					style: Provider.of<ProviderManager>(context).defaultStyle.copyWith(
@@ -74,28 +90,20 @@ InlineSpan getTableSpan({
 		List<DataCell> cells = [];
 		idx = 0;
 		for(String row in cutRow[i].trim().split("|")){
+			// if(row.isEmpty){ continue; }
 			if(row.isEmpty){ continue; }
 			idx ++;
 			cells.add(
 				DataCell(
 					Align(
 						alignment: alignment[idx - 1],
-						child: Text(
-							row.trim(),
+						child: Text.rich(
+							// Add markdonw styles
+							formattingTexts(context: context, content: row.trim(), variables: variables),
+							// TextSpan(text: "XXX"),
 							style: Provider.of<ProviderManager>(context).defaultStyle
 						),
 					)
-					// idx == 1 ? Align(alignment: alignment[idx - 1], child:Text(
-					// 	textAlign: textAlignments[idx - 1],
-					// 	row.trim(),
-					// 	style: Provider.of<ProviderManager>(context).defaultStyle
-					// )) : Align(
-					// 	alignment: alignment[idx - 1],
-					// 	child: Text(
-					// 		row.trim(),
-					// 		style: Provider.of<ProviderManager>(context).defaultStyle
-					// 	),
-					// )
 				)
 			);
 		}

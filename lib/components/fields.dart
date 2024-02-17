@@ -181,31 +181,38 @@ class ContentTextFiled extends StatelessWidget {
 					children: [
 
 						// {@Awesome}
-						AwesomeTextField(
-							controller: controller,
-							focusNode: focusNode,
-							decoration: const InputDecoration(hintText: "Write..."),
-							borderRadius: const BorderRadius.only(
-								bottomRight: Radius.circular(0),
-								topRight: Radius.circular(5),
-							),
-							border: Border(
-								right: BorderSide(
-									color: Theme.of(context).colorScheme.inverseSurface, width: 1),
-								top: BorderSide(
-									color: Theme.of(context).colorScheme.inverseSurface, width: 1),
-							),
-							lineNumberColor: LineNumberPalette(
-								indexColor: dMode ? Colors.amber : Colors.black,
-								onSelectIndex: dMode ? Colors.black : Colors.white,
-								onSelectBackground: dMode ? Colors.amber : Colors.indigo,
-								background: Theme.of(context).colorScheme.secondaryContainer,
-								indexBackground: Theme.of(context).colorScheme.secondaryContainer
-							),
-							regexStyle: allFieldRules(context),
-							style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
-								color: Theme.of(context).colorScheme.inverseSurface,
-								fontFamily: "RobotoMono"
+						Padding(
+							padding: const EdgeInsets.only(right: 8),
+							child: AwesomeTextField(
+								controller: controller,
+								focusNode: focusNode,
+								decoration: const InputDecoration(hintText: "Write..."),
+								borderRadius: const BorderRadius.only(
+									bottomRight: Radius.circular(0),
+									// topRight: Radius.circular(5),
+									topRight: Radius.circular(0),
+								),
+								border: Border(
+									right: BorderSide(
+										color: Theme.of(context).colorScheme.inverseSurface, width: 1),
+									top: BorderSide(
+										color: Theme.of(context).colorScheme.inverseSurface, width: 1),
+								),
+								lineNumberColor: LineNumberPalette(
+									indexColor: const Color(0xff95949C),
+									onSelectIndex: dMode ? Colors.black : Colors.white,
+									onSelectBackground: dMode ? Colors.amber : Colors.indigo,
+									// indexColor: dMode ? Colors.amber : Colors.black,
+									// background: Theme.of(context).colorScheme.secondaryContainer,
+									// indexBackground: Theme.of(context).colorScheme.secondaryContainer
+									background: const Color(0xff1a232e),
+									indexBackground: const Color(0xff1a232e),
+								),
+								regexStyle: allFieldRules(context),
+								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
+									color: Theme.of(context).colorScheme.inverseSurface,
+									fontFamily: "RobotoMono"
+								),
 							),
 						),
 

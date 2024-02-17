@@ -1,4 +1,3 @@
-import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -142,6 +141,18 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			},
 		),
 
+
+
+		// {@Table}
+		HighlightRule(
+			label: "table",
+			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
+			action: (txt, _){
+				return getTableSpan(context: context, txt: txt, variables: variables);
+			},
+		),
+
+
 		// {@Hyper-Link}
 		HighlightRule(
 			label: "links",
@@ -195,12 +206,16 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			label: "link_image",
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			action: (String txt, r){
-				return runZoned((){
+				InlineSpan? outImg = runZoned((){
 					return showImageFrame(txt, r, variables);
 				// ignore: deprecated_member_use
 				}, onError: (e, s){
 					debugPrint("ERROR on Loading: $e");
 				});
+				if(outImg != null){
+					return outImg;
+				}
+				return const TextSpan();
 			},
 		),
 
@@ -303,14 +318,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables){
 			},
 		),
 
-		// {@Table}
-		HighlightRule(
-			label: "table",
-			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
-			action: (txt, _){
-				return getTableSpan(context: context, txt: txt);
-			},
-		),
 
 		// etc..
 	];
