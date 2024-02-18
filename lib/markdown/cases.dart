@@ -1,6 +1,5 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/rules.dart';
-import 'package:ekko/models/note_match.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ TextSpan applyRules({
 				lastIndent = 0;
 				indentStep = 0;}
 			// Add Widgets
-			spans.add(mRule.action(mText, recognizer, NoteMatch(id: id, match: match)));
+			spans.add(mRule.action(mText, RuleOption(id: id, recognizer: recognizer, match: match)));
 			if(mRule.label == "markdown"){ spans.add(nl); }
 
 			return mText;

@@ -1,7 +1,5 @@
-import 'package:ekko/config/manager.dart';
-import 'package:ekko/config/public.dart';
-import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/check_box.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/image.dart';
@@ -10,7 +8,6 @@ import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/markdown/table.dart';
-import 'package:ekko/models/note.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +17,14 @@ import 'dart:async';
 int lastIndent = 0;
 int indentStep = 0;
 
+
 List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int noteId, Function hotRefresh){
 	List<HighlightRule> rules = [
 		// {@Syntax-Hihglighting}
 		HighlightRule(
 			label: "markdown",
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
-			action: (String text, _, ___) => WidgetSpan(
+			action: (String text, _) => WidgetSpan(
 				child: MarkdownWidget(
 					content: text,
 					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
@@ -38,7 +36,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "headline",
 			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
-			action: (txt, _, ___){
+			action: (txt, _){
 				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 				TextSpan span = TextSpan(
 					text: txt.substring(sharpLength + 1),
@@ -67,7 +65,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			label: "divider",
 			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
 			trimNext: true,
-			action: (_, __, ___) => const WidgetSpan(
+			action: (_, __) => const WidgetSpan(
 				child: Divider(height: 1)
 			),
 		),
@@ -76,10 +74,15 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "checkbox",
 			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
-			action: (txt, _, nm){
+			action: (txt, opt){
 				return WidgetSpan(
 					child: CheckBoxSubList(
-						txt: txt, hotRefresh: hotRefresh, noteId: noteId, variables: variables, nm: nm)
+						txt: txt,
+						hotRefresh: hotRefresh,
+						noteId: noteId,
+						variables: variables,
+						nm: opt
+					)
 				); 
 			},
 		),
@@ -88,7 +91,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "item",
 			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
-			action: (txt, _, ___){
+			action: (txt, _){
 				int iLvl = getIndentationLevel(txt);
 				int step = iLvl - lastIndent;
 				if(step != 0){
@@ -131,7 +134,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "table",
 			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
-			action: (txt, _, ___){
+			action: (txt, _){
 				// return getTableSpan(context: context, txt: txt, variables: variables);
 				InlineSpan? outTable = runZoned((){
 					return getTableSpan(
@@ -152,7 +155,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "links",
 			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
-			action: (txt, _, ___){
+			action: (txt, _){
 				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
 				String name = txt.substring(1, lastWhere.start);
 				String link = txt.substring(lastWhere.end - 1);
@@ -202,9 +205,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "link_image",
 			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
-			action: (String txt, r, _){
+			action: (String txt, opt){
 				InlineSpan? outImg = runZoned((){
-					return showImageFrame(txt, r, variables);
+					return showImageFrame(txt, opt.recognizer, variables);
 				// ignore: deprecated_member_use
 				}, onError: (e, s){
 					debugPrint("ERROR on Loading: $e");
@@ -222,10 +225,10 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "monospace",
 			regex: RegExp(r'\`(.*?)\`', multiLine: false),
-			action: (txt, recognizer, _){
+			action: (txt, opt){
 				return getMonospaceTag(
 					text: txt.substring(1, txt.length - 1),
-					recognizer: recognizer,
+					recognizer: opt.recognizer,
 				);
 			},
 		),
@@ -234,7 +237,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "url",
 			regex: RegExp(r'(https\:|http\:|www)(\/\/|\.)([A-Za-z0-9@:%\.\_\+\~\#\=\/\?\-\&]*)'),
-			action: (txt, _, __) => TextSpan(
+			action: (txt, _) => TextSpan(
 				text: txt,
 				style: const TextStyle(
 					color: Colors.blue,
@@ -250,13 +253,13 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "italic&bold_bold_italic",
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
-			action: (txt, rec, _){
+			action: (txt, opt){
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }
 				specialChar = specialChar ~/ 2;
 				return TextSpan(
 					text: txt.substring(specialChar, txt.length - specialChar),
-					recognizer: rec,
+					recognizer: opt.recognizer,
 					style: 
 						specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
 						specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
@@ -269,9 +272,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "strike",
 			regex: RegExp(r'~~.*~~'),
-			action: (txt, rec, _) => TextSpan(
+			action: (txt, opt) => TextSpan(
 				text: txt.substring(2, txt.length - 2),
-				recognizer: rec,
+				recognizer: opt.recognizer,
 				style: TextStyle(
 					fontSize: 16,
 					decorationColor: Theme.of(context).colorScheme.inverseSurface,
@@ -285,7 +288,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "backqoute",
 			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
-			action: (txt, _, __){
+			action: (txt, _){
 				BackqouteObj obj = getBackqouteElements(context, txt);
 				return WidgetSpan(
 					child: IntrinsicHeight(

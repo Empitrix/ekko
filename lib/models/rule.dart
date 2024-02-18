@@ -1,4 +1,3 @@
-import 'package:ekko/models/note_match.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +10,21 @@ import 'package:flutter/material.dart';
 // 		required this.style
 // 	});
 // }
+
+class RuleOption {
+	final int id;
+	final Match match;
+	final TapGestureRecognizer? recognizer;
+
+	RuleOption({
+		required this.id,
+		required this.match,
+		required this.recognizer
+	});
+}
+
  
-typedef RuleWidget = InlineSpan Function(
-	String input, TapGestureRecognizer? recognizer, NoteMatch noteMatch);
-// typedef RuleWidget = InlineSpan Function(String input, Recognizer? recognizer);
+typedef RuleWidget = InlineSpan Function(String input, RuleOption option);
 
 
 class HighlightRule {
@@ -30,3 +40,4 @@ class HighlightRule {
 		this.trimNext = false
 	});
 }
+

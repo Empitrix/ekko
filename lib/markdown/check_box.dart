@@ -3,7 +3,7 @@ import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/models/note.dart';
-import 'package:ekko/models/note_match.dart';
+import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 
 class CheckBoxSubList extends StatelessWidget {
@@ -11,7 +11,7 @@ class CheckBoxSubList extends StatelessWidget {
 	final Function hotRefresh;
 	final Map variables;
 	final int noteId;
-	final NoteMatch nm; // NoteMatch
+	final RuleOption nm;
 
 	const CheckBoxSubList({
 		super.key,
