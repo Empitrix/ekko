@@ -12,6 +12,8 @@ bool dMode = false;
 bool acrylicMode = false;
 // Wrap code Mode
 bool wrapCodeMode = false;
+// Check-List Checkable
+bool checkListCheckable = false;
 // Wait for loading size (Page Navigator Loadings)
 int waitForLoading = 420;
 int waitLoadingSize = 300; // ms

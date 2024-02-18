@@ -103,7 +103,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 
 	@override
 	Widget build(BuildContext context) {
-
 		return PopScope(
 			canPop: false,
 			onPopInvoked: (bool didPop) async {
@@ -211,7 +210,14 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 											),
 											children: [
 												const SizedBox(height: 10),
-												MDGenerator(content: note!.content)
+												MDGenerator(
+													content: note!.content,
+													noteId: note!.id,
+													hotRefresh: () async {
+														note!.content = (await DB().loadThisNote(note!.id)).content;
+														setState(() {});
+													},
+												)
 											],
 										),
 									)

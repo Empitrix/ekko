@@ -8,6 +8,8 @@ TextSpan formattingTexts({
 	required BuildContext context,
 	required String content,
 	required Map variables,
+	required int id,
+	required Function hotRefresh,
 	TextStyle? mergeStyle,
 	TapGestureRecognizer? recognizer}){
 	// using this function in rules list prevent to 'over-flow' error
@@ -15,8 +17,9 @@ TextSpan formattingTexts({
 	return applyRules(
 		context: context,
 		content: content,
+		id: id,
 		recognizer: recognizer,
-		rules: allSyntaxRules(context, variables)
+		rules: allSyntaxRules(context, variables, id, hotRefresh)
 	);
 
 	// if(a[0].style != null){

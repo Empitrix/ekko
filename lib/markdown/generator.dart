@@ -28,9 +28,13 @@ String _updateVariablesMap(String inpt){
 
 class MDGenerator extends StatelessWidget {
 	final String content;
+	final int noteId;
+	final Function hotRefresh;
 	const MDGenerator({
 		super.key,
 		required this.content,
+		required this.noteId,
+		required this.hotRefresh
 	});
 
 	@override
@@ -104,10 +108,11 @@ class MDGenerator extends StatelessWidget {
 
 		TextSpan spanWidget = applyRules(
 			context: context,
+			id: noteId,
 			// content: content,
 			// variables: variables
 			content: data,
-			rules: allSyntaxRules(context, variables)
+			rules: allSyntaxRules(context, variables, noteId, hotRefresh)
 		);
 
 		return Text.rich(spanWidget);

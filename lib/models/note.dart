@@ -44,7 +44,7 @@ class Note {
 	late int folderId;
 	final String title;
 	final String description;
-	final String content;
+	late String content;  // late beacuse of the check-box
 	final DateTime lastEdit;
 	late bool isPinned;
 	final NoteMode mode;

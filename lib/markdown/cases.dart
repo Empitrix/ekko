@@ -1,5 +1,6 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/models/note_match.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ TextSpan applyRules({
 	required BuildContext context,
 	required String content,
 	required List<HighlightRule> rules,
+	required int id,
 	// required Map<String, String> variables,
 	// Map<String, String> variables = const {},
 	TapGestureRecognizer? recognizer
@@ -30,7 +32,7 @@ TextSpan applyRules({
 				lastIndent = 0;
 				indentStep = 0;}
 			// Add Widgets
-			spans.add(mRule.action(mText, recognizer));
+			spans.add(mRule.action(mText, recognizer, NoteMatch(id: id, match: match)));
 			if(mRule.label == "markdown"){ spans.add(nl); }
 
 			return mText;

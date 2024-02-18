@@ -19,6 +19,7 @@ class DB {
 				darkMode BIT,
 				acrylicMode BIT,
 				wrapCodeMode BIT,
+				checkableCheckList BIT,
 				acrylicOpacity FLOAT,
 				fontFamily Text,
 				fontSize FLOAT,
@@ -57,6 +58,7 @@ class DB {
 				"darkMode": 1,  // Default: DARK-MODE
 				"acrylicMode": 0,
 				"wrapCodeMode": 0,
+				"checkableCheckList": 0,
 				"acrylicOpacity": 1.0,
 				"markdownThemeName": "gruvbox-dark",
 				// About font
@@ -101,6 +103,17 @@ class DB {
 	Future<void> updateWrapCodeMode(bool newMode) async {
 		await updateTable('local',
 			{"wrapCodeMode": newMode == true ? 1 : 0});
+	}
+
+	/* Check-List Behavior */
+	Future<void> updateCheckListBehavior(bool newMode) async {
+		await updateTable('local',
+			{"checkableCheckList": newMode == true ? 1 : 0});
+	}
+
+	Future<bool> readCheckListBehavior() async {
+		Map data = await getQuery("local");
+		return data["checkableCheckList"] == 1;
 	}
 
 	/* Acrylic Mode */

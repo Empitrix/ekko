@@ -8,6 +8,8 @@ InlineSpan getTableSpan({
 	required BuildContext context,
 	required String txt,
 	required Map variables,
+	required int id,
+	required Function hotRefresh,
 }){
 	Map<String, Alignment> alignmentsMap = {
 		"-:": Alignment.centerRight,
@@ -93,7 +95,7 @@ InlineSpan getTableSpan({
 						alignment: alignment[idx - 1],
 						child: Text.rich(
 							// Add markdonw styles
-							formattingTexts(context: context, content: row.trim(), variables: variables),
+							formattingTexts(context: context, content: row.trim(), variables: variables, id: id, hotRefresh: hotRefresh),
 							// TextSpan(text: "XXX"),
 							style: Provider.of<ProviderManager>(context).defaultStyle
 						),

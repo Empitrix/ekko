@@ -142,6 +142,17 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							}
 						),
 
+						// Wrap Mode
+						SwitchTile(
+							leading: const Icon(FontAwesomeIcons.squareCheck),
+							title: const Text("Checkable checklist"),
+							value: checkListCheckable,
+							onChange: (bool newMode) async {
+								setState(() => checkListCheckable = newMode );
+								await db.updateCheckListBehavior(newMode);
+							}
+						),
+
 						// Markdown theme
 						ListTile(
 							leading: const Icon(Icons.color_lens),

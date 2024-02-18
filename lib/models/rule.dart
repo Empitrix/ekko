@@ -1,3 +1,4 @@
+import 'package:ekko/models/note_match.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,8 @@ import 'package:flutter/material.dart';
 // 	});
 // }
  
-typedef RuleWidget = InlineSpan Function(String input, TapGestureRecognizer? recognizer);
+typedef RuleWidget = InlineSpan Function(
+	String input, TapGestureRecognizer? recognizer, NoteMatch noteMatch);
 // typedef RuleWidget = InlineSpan Function(String input, Recognizer? recognizer);
 
 
