@@ -199,14 +199,17 @@ class ContentTextFiled extends StatelessWidget {
 										color: Theme.of(context).colorScheme.inverseSurface, width: 1),
 								),
 								lineNumberColor: LineNumberPalette(
-									indexColor: const Color(0xff95949C),
+									indexColor: dMode ?
+										const Color(0xff95949C):
+										const Color(0xff69686e),
 									onSelectIndex: dMode ? Colors.black : Colors.white,
 									onSelectBackground: dMode ? Colors.amber : Colors.indigo,
-									// indexColor: dMode ? Colors.amber : Colors.black,
-									// background: Theme.of(context).colorScheme.secondaryContainer,
-									// indexBackground: Theme.of(context).colorScheme.secondaryContainer
-									background: const Color(0xff1a232e),
-									indexBackground: const Color(0xff1a232e),
+									background: dMode ?
+										const Color(0xff1a232e):
+										const Color(0xffc8dffa),
+									indexBackground: dMode ?
+										const Color(0xff1a232e):
+										const Color(0xffc8dffa),
 								),
 								regexStyle: allFieldRules(context),
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
