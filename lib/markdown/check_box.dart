@@ -25,67 +25,73 @@ class CheckBoxSubList extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		bool isChecked = txt.trim().substring(0, 5).contains("x");
+		TextSpan textData = TextSpan(
+			children: [formattingTexts(
+				context: context,
+				variables: variables,
+				id: noteId,
+				hotRefresh: hotRefresh,
+				content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
+			)]
+		); 
+
+		if(!checkListCheckable){
+			return SublistWidget(
+				type: SublistWidgetType.widget,
+				leading: SizedBox(
+					width: 18,
+					height: 0,
+					child: Transform.scale(
+						scale: 0.8,
+						child: IgnorePointer(
+							child: Checkbox(
+								value: isChecked,
+								onChanged: null
+							),
+						),
+					),
+				),
+				data: textData
+			);
+		}
 		
 		return SublistWidget(
 			type: SublistWidgetType.icon,
 			leading: Builder(
 				builder: (context){
-					if(checkListCheckable){
-						return MouseRegion(
-							cursor: SystemMouseCursors.click,
-							child: GestureDetector(
-								onTap: () async {
-									Note current = await DB().loadThisNote(nm.id);
-									debugPrint(current.content.substring(nm.match.start, nm.match.end));
-									String l = current.content.substring(nm.match.start + 3, nm.match.start + 4);
-									if(l == "x"){
-										current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, " ");
-									} else {
-										current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, "x");
-									}
-									debugPrint(current.content.substring(nm.match.start, nm.match.end));
-									await DB().updateNote(current);
-									hotRefresh();
-								},
-								child: SizedBox(
-									width: 18,
-									height: 5,
-									child: Transform.scale(
-										scale: 0.8,
-										child: Checkbox(
-											value: isChecked,
-											onChanged: null
-										),
-									)
-								),
+					return MouseRegion(
+						cursor: SystemMouseCursors.click,
+						child: GestureDetector(
+							onTap: () async {
+								Note current = await DB().loadThisNote(nm.id);
+								// debugPrint(current.content.substring(nm.match.start, nm.match.end));
+								String l = current.content.substring(nm.match.start + 3, nm.match.start + 4);
+								if(l == "x"){
+									current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, " ");
+								} else {
+									current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, "x");
+								}
+								// debugPrint(current.content.substring(nm.match.start, nm.match.end));
+								await DB().updateNote(current);
+								hotRefresh();
+							},
+							child: SizedBox(
+								width: 18,
+								height: 5,
+								child: Transform.scale(
+									scale: 0.90,
+									child: Checkbox(
+										value: isChecked,
+										onChanged: null
+									),
+								)
 							),
-						);
-					}
-					
-					return SizedBox(
-						width: 18,
-						height: 0,
-						child: Transform.scale(
-							scale: checkListCheckable ? 1 : 0.8,
-							child: IgnorePointer(
-								child: Checkbox(
-									value: isChecked,
-									onChanged: null
-								),
-							),
-						) ,
+						),
 					);
 				},
 			),
-			data: TextSpan(
-				children: [formattingTexts(
-					context: context,
-					variables: variables,
-					id: noteId,
-					hotRefresh: hotRefresh,
-					content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
-				)]
-			) 
+			data: textData 
 		);
 	}
 }
+

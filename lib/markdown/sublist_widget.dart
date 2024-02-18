@@ -28,7 +28,8 @@ class SublistWidget extends StatelessWidget {
 		// Calculate margin
 		double widgetSize = getNonRenderedWidgetSize(leading);
 		double margin = (calcTextSize(context, "").height / 2) - (widgetSize / 2);
-		if(type == SublistWidgetType.widget){ margin = margin + 8; }
+		// was 8 (just in case cause any err)
+		if(type == SublistWidgetType.widget){ margin = margin + 9.5; }
 
 		return Row(
 			crossAxisAlignment: CrossAxisAlignment.start,
