@@ -56,39 +56,33 @@ class CheckBoxSubList extends StatelessWidget {
 		}
 		
 		return SublistWidget(
+			leadingOnTap: () async {
+				Note current = await DB().loadThisNote(nm.id);
+				// debugPrint(current.content.substring(nm.match.start, nm.match.end));
+				String l = current.content.substring(nm.match.start + 3, nm.match.start + 4);
+				if(l == "x"){
+					current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, " ");
+				} else {
+					current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, "x");
+				}
+				// debugPrint(current.content.substring(nm.match.start, nm.match.end));
+				await DB().updateNote(current);
+				hotRefresh();
+			},
 			type: SublistWidgetType.icon,
-			leading: Builder(
-				builder: (context){
-					return MouseRegion(
-						cursor: SystemMouseCursors.click,
-						child: GestureDetector(
-							onTap: () async {
-								Note current = await DB().loadThisNote(nm.id);
-								// debugPrint(current.content.substring(nm.match.start, nm.match.end));
-								String l = current.content.substring(nm.match.start + 3, nm.match.start + 4);
-								if(l == "x"){
-									current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, " ");
-								} else {
-									current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, "x");
-								}
-								// debugPrint(current.content.substring(nm.match.start, nm.match.end));
-								await DB().updateNote(current);
-								hotRefresh();
-							},
-							child: SizedBox(
-								width: 18,
-								height: 5,
-								child: Transform.scale(
-									scale: 0.90,
-									child: Checkbox(
-										value: isChecked,
-										onChanged: null
-									),
-								)
-							),
+			leading: MouseRegion(
+				cursor: SystemMouseCursors.click,
+				child: SizedBox(
+					width: 18,
+					height: 6,
+					child: Transform.scale(
+						scale: 0.90,
+						child: Checkbox(
+							value: isChecked,
+							onChanged: null
 						),
-					);
-				},
+					)
+				)
 			),
 			data: textData 
 		);

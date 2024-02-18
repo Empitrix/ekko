@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/utils/calc.dart';
@@ -14,12 +15,14 @@ class SublistWidget extends StatelessWidget {
 	final TextSpan data;
 	final SublistWidgetType type;
 	final double indentation;
+	final Function? leadingOnTap;
 	const SublistWidget({
 			super.key,
 			required this.leading,
 			required this.data,
 			this.type = SublistWidgetType.icon,
-			this.indentation = 0
+			this.indentation = 0,
+			this.leadingOnTap
 		});
 
 	@override
@@ -28,21 +31,51 @@ class SublistWidget extends StatelessWidget {
 		// Calculate margin
 		double widgetSize = getNonRenderedWidgetSize(leading);
 		double margin = (calcTextSize(context, "").height / 2) - (widgetSize / 2);
+
 		// was 8 (just in case cause any err)
 		if(type == SublistWidgetType.widget){ margin = margin + 9.5; }
+
+		List<Widget> leadingRow = [
+			//if (type == SublistWidgetType.icon && leadingOnTap == null) const SizedBox(width: 5),
+			if (type == SublistWidgetType.icon) const SizedBox(width: 5),
+
+			SizedBox(width: indentation),
+			Container(
+				margin: isDesktop() ?
+					EdgeInsets.symmetric(vertical: margin) :
+					EdgeInsets.only(top: margin + 2, bottom: margin),
+				child: checkListCheckable ? Padding(
+					padding: (type == SublistWidgetType.icon && leadingOnTap == null) ?
+						EdgeInsets.only(left: widgetSize / 2):
+						EdgeInsets.zero,
+					child: leading,
+				): leading,
+			),
+			SizedBox(width: type == SublistWidgetType.icon ? 17 : 12),
+		];
 
 		return Row(
 			crossAxisAlignment: CrossAxisAlignment.start,
 			children: [
-				if (type == SublistWidgetType.icon) const SizedBox(width: 5),
-				SizedBox(width: indentation),
-				Container(
-					margin: isDesktop() ?
-						EdgeInsets.symmetric(vertical: margin) :
-						EdgeInsets.only(top: margin + 2, bottom: margin),
-					child: leading,
-				),
-				SizedBox(width: type == SublistWidgetType.icon ? 17 : 12),
+				if(leadingOnTap != null) GestureDetector(
+					onTap: (){
+						leadingOnTap!();
+					},
+					child: Row(
+						crossAxisAlignment: CrossAxisAlignment.start,
+						children: leadingRow,
+					),
+				) else ...leadingRow,
+
+				// if (type == SublistWidgetType.icon) const SizedBox(width: 5),
+				// SizedBox(width: indentation),
+				// Container(
+				// 	margin: isDesktop() ?
+				// 		EdgeInsets.symmetric(vertical: margin) :
+				// 		EdgeInsets.only(top: margin + 2, bottom: margin),
+				// 	child: leading,
+				// ),
+				// SizedBox(width: type == SublistWidgetType.icon ? 17 : 12),
 				Expanded(
 					child: Text.rich(TextSpan(
 						children: [
