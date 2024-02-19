@@ -68,3 +68,16 @@ TapGestureRecognizer useLinkRecognizer(BuildContext context, String link){
 	};
 }
 
+
+String parseEmojiString(String txt, List<Map<String, dynamic>> emojies){
+	txt = txt.substring(1, txt.length - 1);
+	for(Map emoji in emojies){
+		for(String alias in emoji['a']){
+			if(alias.contains(txt)){
+				return emoji['e'];
+			}
+		}
+	}
+	return txt;
+}
+

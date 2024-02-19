@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+// import 'package:flutter/services.dart' show rootBundle;
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/check_box.dart';
@@ -317,6 +320,33 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					)
 				);
 			},
+		),
+
+		// {@Emojies}
+		HighlightRule(
+			label: "emojies",
+			regex: RegExp(r'\:\w+\:', multiLine: true),
+			action: (String txt, _){
+				return WidgetSpan(
+					child: FutureBuilder(
+						future: DefaultAssetBundle.of(context)
+							.loadString('assets/gemoji/data.json'),
+						builder: (context, AsyncSnapshot<String> data){
+							if(data.hasData){
+								List<Map<String, dynamic>> emojies =
+									List<Map<String, dynamic>>
+									.from(json.decode(data.data!)['emoji']);
+								String selected = parseEmojiString(txt, emojies);
+								return Text.rich(TextSpan(
+									text: selected,
+									style: Provider.of<ProviderManager>(context).defaultStyle));
+							} else {
+								return const SizedBox();
+							}
+						},
+					)
+				);
+			}
 		),
 
 

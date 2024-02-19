@@ -68,6 +68,7 @@ flutter:
     - assets\icon\icon.png
     - assets\icon\icon.svg
     - assets\icon\ekko.png
+    - assets\gemoji\data.json
 
   fonts:
     - family: Rubik
