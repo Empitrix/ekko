@@ -16,11 +16,13 @@ class SublistWidget extends StatelessWidget {
 	final SublistWidgetType type;
 	final double indentation;
 	final Function? leadingOnTap;
+	final bool iconHasAction;
 	const SublistWidget({
 			super.key,
 			required this.leading,
 			required this.data,
 			this.type = SublistWidgetType.icon,
+			this.iconHasAction = false,
 			this.indentation = 0,
 			this.leadingOnTap
 		});
@@ -41,17 +43,25 @@ class SublistWidget extends StatelessWidget {
 
 			SizedBox(width: indentation),
 			Container(
-				margin: isDesktop() ?
-					EdgeInsets.symmetric(vertical: margin) :
-					EdgeInsets.only(top: margin + 2, bottom: margin),
+				// margin: isDesktop() ?
+				// 	// EdgeInsets.symmetric(vertical: margin) :
+				// 	EdgeInsets.only(top: margin - (leadingOnTap == null ? 0 : 4)) :
+				// 	EdgeInsets.only(top: margin + (leadingOnTap == null ? 2 : -3)),
+				margin: EdgeInsets.only(
+					top: margin +
+						(isDesktop() ? - (leadingOnTap == null ? 0 : 4):
+						(leadingOnTap == null ? 2 : -3))
+				),
 				child: checkListCheckable ? Padding(
 					padding: (type == SublistWidgetType.icon && leadingOnTap == null) ?
-						EdgeInsets.only(left: widgetSize / 2):
+						EdgeInsets.only(left: (widgetSize / 2) + 1.0):
 						EdgeInsets.zero,
 					child: leading,
 				): leading,
 			),
-			SizedBox(width: type == SublistWidgetType.icon ? 17 : 12),
+			// SizedBox(width: type == SublistWidgetType.icon ? 17 : 12),
+			// SizedBox(width: type == SublistWidgetType.icon ? iconHasAction ? 0 : 17 : 12),
+			SizedBox(width: type == SublistWidgetType.icon ? iconHasAction ? 11.95 : 17 : 12),
 		];
 
 		return Row(
@@ -88,3 +98,51 @@ class SublistWidget extends StatelessWidget {
 		);
 	}
 }
+
+/*
+class SublistWidget extends StatelessWidget {
+	final Widget leading;
+	final TextSpan data;
+	final SublistWidgetType type;
+	final double indentation;
+	final Function? leadingOnTap;
+	const SublistWidget({
+		super.key,
+		required this.leading,
+		required this.data,
+		this.type = SublistWidgetType.icon,
+		this.indentation = 0,
+		this.leadingOnTap
+	});
+
+	@override
+	Widget build(BuildContext context) {
+		double widgetSize = getNonRenderedWidgetSize(leading);
+		double margin = (calcTextSize(context, "").height / 2) - (widgetSize / 2);
+		
+		
+		return Row(
+			// crossAxisAlignment: CrossAxisAlignment.start,
+			children: [
+				SizedBox(width: indentation),
+				
+				GestureDetector(
+					onTap: leadingOnTap != null ? (){leadingOnTap!();} : null,
+					child: leading,
+				),
+
+				// Text Data
+				Expanded(
+					child: Text.rich(TextSpan(
+						children: [
+							endLineChar(),
+							data,
+						]
+					))
+				)
+			]
+		);
+	}
+}
+
+*/

@@ -56,6 +56,7 @@ class CheckBoxSubList extends StatelessWidget {
 		}
 		
 		return SublistWidget(
+			iconHasAction: true,
 			leadingOnTap: () async {
 				Note current = await DB().loadThisNote(nm.id);
 				// debugPrint(current.content.substring(nm.match.start, nm.match.end));
@@ -74,9 +75,10 @@ class CheckBoxSubList extends StatelessWidget {
 				cursor: SystemMouseCursors.click,
 				child: SizedBox(
 					width: 18,
-					height: 6,
+					height: 10,
 					child: Transform.scale(
-						scale: 0.90,
+						// scale: 0.90,
+						scale: 0.95,
 						child: Checkbox(
 							value: isChecked,
 							onChanged: null
