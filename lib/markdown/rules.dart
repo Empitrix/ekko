@@ -1,10 +1,8 @@
-import 'dart:convert';
-
-// import 'package:flutter/services.dart' show rootBundle;
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/check_box.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
@@ -15,6 +13,7 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
 import 'dart:async';
 
 int lastIndent = 0;
@@ -27,9 +26,18 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@HTMl}
 		HighlightRule(
 			label: "html",
-			regex: RegExp(r'<\w(.*?)>([\s\S]*?)<\/\w>'),
+			// regex: RegExp(r'<\w(.*?)>([\s\S]*?)<\/\w>'),
+			// regex: RegExp(r'<\w+(.*?)>([\s\S]*?)<\/\w+>'),
+			regex: RegExp(r'<(\w+)[^>]*>([\s\S]*?(?:(?!<\/?\1)[\s\S])*?)<\/\1>'),
 			action: (txt, opt){
-				return const TextSpan(text: "");
+				return applyHtmlRules(
+					context:context,
+					txt: txt,
+					variables: variables,
+					noteId: noteId,
+					hotRefresh: hotRefresh,
+					forceStyle: const TextStyle()
+				);
 			},
 		),
 
@@ -53,6 +61,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 				TextSpan span = TextSpan(
 					text: txt.substring(sharpLength + 1),
+					// style: getHeadlineStyle(context, sharpLength).merge(_.forceStyle)
 					style: getHeadlineStyle(context, sharpLength)
 				);
 				if(sharpLength == 1 || sharpLength == 2){

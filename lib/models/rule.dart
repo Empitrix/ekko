@@ -1,23 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-// class Recognizer {
-// 	final TapGestureRecognizer recognizer;
-// 	final TextStyle style;
-// 
-// 	Recognizer({
-// 		required this.recognizer,
-// 		required this.style
-// 	});
-// }
 
 class RuleOption {
 	final int id;
 	final Match match;
+	final TextStyle? forceStyle;
 	final TapGestureRecognizer? recognizer;
 
 	RuleOption({
 		required this.id,
+		required this.forceStyle,
 		required this.match,
 		required this.recognizer
 	});
@@ -35,8 +28,8 @@ class HighlightRule {
 
 	HighlightRule({
 		required this.label,
-		required this.action,
 		required this.regex,
+		required this.action,
 		this.trimNext = false
 	});
 }

@@ -10,27 +10,38 @@ TextSpan formattingTexts({
 	required Map variables,
 	required int id,
 	required Function hotRefresh,
-	TextStyle? mergeStyle,
+	TextStyle? forceStyle,
+	// bool fromHTML = false,
+	// HTMLParser? htmlParser,
 	TapGestureRecognizer? recognizer}){
 	// using this function in rules list prevent to 'over-flow' error
-	// return <TextSpan>[
-	return applyRules(
+
+	TextSpan applied = applyRules(
 		context: context,
 		content: content,
 		id: id,
 		recognizer: recognizer,
+		forceStyle: forceStyle,
 		rules: allSyntaxRules(context, variables, id, hotRefresh)
 	);
 
-	// if(a[0].style != null){
-	// 	a[0].style!.merge(mergeStyle);
-	// } else {
-	// 	a[0].style = mergeStyle;
-	// }
+	return applied;
 
-	// return [TextSpan(children: [...a], style: mergeStyle, recognizer: recognizer)];
-	// return a;
+	// if(htmlParser != null){
+	// 	return htmlFormatting(
+	// 		context: context,
+	// 		content: content,
+	// 		variables: variables,
+	// 		forceStyle: forceStyle,
+	// 		recognizer: recognizer,
+	// 		htmlParser: htmlParser,
+	// 		id: id,
+	// 		hotRefresh: hotRefresh);
+	// } else {
+	// 	return applied;
+	// }
 }
+
 
 TextSpan endLineChar(){
 	return const TextSpan(
@@ -83,3 +94,4 @@ TextStyle getHeadlineStyle(BuildContext ctx, int idx){
 		)
 	][idx];
 }
+

@@ -11,9 +11,8 @@ TextSpan applyRules({
 	required String content,
 	required List<HighlightRule> rules,
 	required int id,
-	// required Map<String, String> variables,
-	// Map<String, String> variables = const {},
-	TapGestureRecognizer? recognizer
+	TapGestureRecognizer? recognizer,
+	TextStyle? forceStyle
 	}){
 	
 	List<InlineSpan> spans = [];
@@ -30,8 +29,16 @@ TextSpan applyRules({
 			if(mRule.label != "item"){
 				lastIndent = 0;
 				indentStep = 0;}
+
 			// Add Widgets
-			spans.add(mRule.action(mText, RuleOption(id: id, recognizer: recognizer, match: match)));
+			RuleOption opt = RuleOption(
+				id: id,
+				recognizer: recognizer,
+				match: match,
+				forceStyle: forceStyle
+			);
+
+			spans.add(mRule.action(mText, opt));
 			if(mRule.label == "markdown"){ spans.add(nl); }
 
 			return mText;
