@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class HtmlRuleOption {
 	final int id;
-	final TextStyle? forceStyle;
+	late TextStyle? forceStyle;
 	final HTMLParser data;
-	final TapGestureRecognizer? recognizer;
+	late TapGestureRecognizer? recognizer;
 
 	HtmlRuleOption({
 		required this.id,

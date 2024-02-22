@@ -28,7 +28,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			label: "html",
 			// regex: RegExp(r'<\w(.*?)>([\s\S]*?)<\/\w>'),
 			// regex: RegExp(r'<\w+(.*?)>([\s\S]*?)<\/\w+>'),
-			regex: RegExp(r'<(\w+)[^>]*>([\s\S]*?(?:(?!<\/?\1)[\s\S])*?)<\/\1>'),
+			// valids
+			//# regex: RegExp(r'<(\w+)[^>]*>([\s\S]*?(?:(?!<\/?\1)[\s\S])*?)<\/\1>'),
+			regex: RegExp(r'<(\w+)[^>]*>([\s\S]*?(?:(?!<\/?\1)[\s\S])*?)<\/\1>|<(\w+)[^>]*\s*\/?>'),
 			action: (txt, opt){
 				return applyHtmlRules(
 					context:context,

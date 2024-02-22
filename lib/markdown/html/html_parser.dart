@@ -1,8 +1,5 @@
-import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_rules.dart';
-import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/html_rule.dart';
-import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -65,15 +62,7 @@ HTMLParser? getTagNameProperty(String txt){
 	RegExpMatch? tagName = RegExp(r'<(\w+)(.*)>').firstMatch(txt);
 	if(firstTag == null){ return null; }
 	// searching for properties of html like href src ect...
-	// print(firstTag!.group(0)!);
-
 	List<RegExpMatch>? rawAttributes = RegExp(r'\w+\s*\=\s*\".*?\"').allMatches(firstTag.group(0)!).toList();
-	// Iterable<RegExpMatch>? rawAttributes = RegExp(r'\w+\s*\=\s*\".*?\"').allMatches(firstTag!.group(0)!);
-	// Iterable<RegExpMatch>? rawAttributes = [];
-	// rawAttributes = rawAttributes == null ? [] : rawAttributes.toList();
-	// print(rawAttributes);
-	// rawAttributes = rawAttributes == null ? []: rawAttributes;
-
 	// Inner HTML
 	RegExpMatch? inlineHTML = RegExp(r'(>)([\s\S]*)(<)').firstMatch(txt);
 
@@ -91,7 +80,7 @@ HTMLParser? getTagNameProperty(String txt){
 	return HTMLParser(
 		tag: _getEnumTag(tagName!.group(1)!),
 		attributes: attributes,
-		innerHTML: inlineHTML!.group(2)!
+		innerHTML: inlineHTML == null ? "" : inlineHTML.group(2)!
 	);
 }
 
@@ -109,7 +98,9 @@ InlineSpan applyHtmlRules({
 	}){
 
 	HTMLParser? data = getTagNameProperty(txt);
-	if(data == null){ return TextSpan(text: txt); }
+
+	if(data == null){ return TextSpan(text: txt, style: forceStyle); }
+
 	List<HtmlHighlightRule> rules = allHtmlRules(context, variables, noteId, hotRefresh, forceStyle);
 
 	HtmlHighlightRule? currentRule;
@@ -124,6 +115,7 @@ InlineSpan applyHtmlRules({
 
 	HtmlRuleOption ruleOpt = HtmlRuleOption(id: noteId, forceStyle: forceStyle, recognizer: recognizer, data: data);
 	return currentRule.action(data.innerHTML, ruleOpt);
+
 }
 
 

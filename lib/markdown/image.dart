@@ -71,8 +71,8 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 
 
 
-WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map variables){
-	Map<String, dynamic> data = _getImageLinkData(txt, variables);
+WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map variables, [Map<String, dynamic> htmlData = const {}]){
+	Map<String, dynamic> data = htmlData.isNotEmpty ? htmlData : _getImageLinkData(txt, variables);
 
 	Widget child = FutureBuilder(
 		future: http.get(Uri.parse(data['url']!)),
