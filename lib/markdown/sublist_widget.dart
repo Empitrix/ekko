@@ -50,7 +50,7 @@ class SublistWidget extends StatelessWidget {
 				margin: EdgeInsets.only(
 					top: margin +
 						(isDesktop() ? - (leadingOnTap == null ? 0 : 4):
-						(leadingOnTap == null ? 2 : -3))
+						(leadingOnTap == null ? 1 : -3))  // first: 2
 				),
 				child: checkListCheckable ? Padding(
 					padding: (type == SublistWidgetType.icon && leadingOnTap == null) ?
