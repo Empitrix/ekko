@@ -33,4 +33,6 @@ Requirements:
 - [ ] dragable list
 - [ ] font-size visualizer
 - [ ] apply default font by context to all the font OBJs
+- [ ] Get all the Html CHILDREN and not only 1
+
 

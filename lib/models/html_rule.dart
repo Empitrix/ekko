@@ -2,6 +2,10 @@ import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+enum HtmlAlignment{
+	left, right, center, justify
+}
+
 class HtmlRuleOption {
 	final int id;
 	late TextStyle? forceStyle;

@@ -2,6 +2,7 @@ import 'package:ekko/backend/backend.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
+import 'package:ekko/markdown/html/html_utils.dart';
 import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/html_rule.dart';
@@ -58,37 +59,35 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 			},
 		),
 
+		HtmlHighlightRule(
+			label: "paragraph",
+			tag: HTMLTag.p,
+			action: (txt, opt){
+				return WidgetSpan(
+					child: ApplyHtmlAlignment(
+						alignment: getHtmlAlignment(
+							opt.data.attributes['align'] ?? ""),
+						children: [
+							Text.rich(htmlFormatting(
+								context: context,
+								content: txt,
+								variables: variables,
+								id: noteId,
+								hotRefresh: hotRefresh,
+								option: opt
+							))
+						],
+					)
+				);
+			}
+		),
 
 
 		HtmlHighlightRule(
 			label: "img",
 			tag: HTMLTag.img,
 			action: (_, opt){
-
-				// opt.forceStyle = opt.forceStyle!.merge(const TextStyle(color: Colors.red));
-				// opt.recognizer = useLinkRecognizer(context, opt.data.attributes['href'] ?? "");
-				// print(opt.data.attributes);
-/*
-	String format = link.substring(link.lastIndexOf(".") + 1);
-	format = format.split("?")[0];
-	format = vStr(format);
-
-	if(link.isEmpty){
-		link = name;
-		bool isThere = variables.keys.toList().contains(name);
-		if(isThere){
-			link = variables[variables.keys.toList().firstWhere((e) => e == name)];
-		}
-	}
-
-	return {
-		"name": name,
-		"url": link,
-		"format": format == "svg" ? ImageType.svg : ImageType.picture
-	};
-	*/
-
-
+				// Wrong image
 				if(opt.data.attributes["src"] == null){
 					return htmlFormatting(
 						context: context,
