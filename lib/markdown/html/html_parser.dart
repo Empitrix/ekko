@@ -30,7 +30,9 @@ enum HTMLTag {
 	p,
 	img,
 	h1, h2, h3, h4, h5, h6,
-	center
+	center,
+	picture,
+	source
 }
 
 
@@ -39,16 +41,18 @@ HTMLTag _getEnumTag(String tName){
 	tName = tName.trim().toLowerCase();
 	HTMLTag tag;
 	switch(tName){
-		case "a":{ tag = HTMLTag.a; }
-		case "p":{ tag = HTMLTag.p; }
-		case "img":{ tag = HTMLTag.img; }
-		case "center":{ tag = HTMLTag.center; }
-		case "h1":{ tag = HTMLTag.h1; }
-		case "h2":{ tag = HTMLTag.h2; }
-		case "h3":{ tag = HTMLTag.h3; }
-		case "h4":{ tag = HTMLTag.h4; }
-		case "h5":{ tag = HTMLTag.h5; }
-		case "h6":{ tag = HTMLTag.h6; }
+		case "a": { tag = HTMLTag.a; }
+		case "p": { tag = HTMLTag.p; }
+		case "img": { tag = HTMLTag.img; }
+		case "center": { tag = HTMLTag.center; }
+		case "h1": { tag = HTMLTag.h1; }
+		case "h2": { tag = HTMLTag.h2; }
+		case "h3": { tag = HTMLTag.h3; }
+		case "h4": { tag = HTMLTag.h4; }
+		case "h5": { tag = HTMLTag.h5; }
+		case "h6": { tag = HTMLTag.h6; }
+		case "picture": { tag = HTMLTag.picture; }
+		case "source": { tag = HTMLTag.source; }
 		case _:{ tag = HTMLTag.p; }  // Default
 	}
 	return tag;
@@ -99,7 +103,18 @@ InlineSpan applyHtmlRules({
 
 	HTMLParser? data = getTagNameProperty(txt);
 
-	if(data == null){ return TextSpan(text: txt, style: forceStyle); }
+
+	// print(recognizer);
+
+	// Normal Text (NON-HTML)
+	if(data == null){
+		return TextSpan(
+			text: txt,
+			style: forceStyle,
+			recognizer: recognizer
+		);
+	}
+
 
 	List<HtmlHighlightRule> rules = allHtmlRules(context, variables, noteId, hotRefresh, forceStyle);
 
@@ -109,11 +124,14 @@ InlineSpan applyHtmlRules({
 	}catch(_){}
 
 
+
 	if(currentRule == null){
 		return TextSpan(text: data.innerHTML);
 	}
 
+
 	HtmlRuleOption ruleOpt = HtmlRuleOption(id: noteId, forceStyle: forceStyle, recognizer: recognizer, data: data);
+	// print("#/${data.innerHTML}/#");
 	return currentRule.action(data.innerHTML, ruleOpt);
 
 }

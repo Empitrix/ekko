@@ -17,11 +17,12 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 			label: "headlines",
 			tag: HTMLTag.h1,
 			action: (txt, opt){
-				opt.forceStyle = getHeadlineStyle(context, 1);
+				opt.forceStyle = getHeadlineStyle(context, 1).merge(opt.forceStyle);
 				return WidgetSpan(
 					child: Column(
 						crossAxisAlignment: CrossAxisAlignment.start,
 						children: [
+							opt.data.attributes['align'] == null ?
 							Text.rich(htmlFormatting(
 								context: context,
 								content: txt,
@@ -29,12 +30,25 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 								id: noteId,
 								hotRefresh: hotRefresh,
 								option: opt
-							)),
+							)):
+							ApplyHtmlAlignment(
+								alignment: getHtmlAlignment(
+									opt.data.attributes['align']!),
+								children: [
+									Text.rich(htmlFormatting(
+										context: context,
+										content: txt.trim(),  // IDK about triming
+										variables: variables,
+										id: noteId,
+										hotRefresh: hotRefresh,
+										option: opt
+									))
+								],
+							),
 							const Divider()
 						],
 					)
 				);
-				// return const TextSpan();
 			},
 		),
 		
@@ -42,15 +56,19 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 		HtmlHighlightRule(
 			label: "a",
 			tag: HTMLTag.a,
-			action: (_, opt){
-				// print(opt.forceStyle!.color);
+			action: (txt, opt){
+				// Update font and style
+				opt.forceStyle = const TextStyle(
+					color: Colors.blue,
+					decoration: TextDecoration.underline,
+					decorationColor: Colors.blue).merge(opt.forceStyle);
+				opt.recognizer = useLinkRecognizer(
+					context, opt.data.attributes['href'] ?? "");
 
-				opt.forceStyle = opt.forceStyle!.merge(const TextStyle(color: Colors.red));
-				opt.recognizer = useLinkRecognizer(context, opt.data.attributes['href'] ?? "");
-
+				// debugPrint("\n\n\nA-TAG detected: ${txt.replaceAll('\n', ' ')} -> ${opt.recognizer}");
 				return htmlFormatting(
 					context: context,
-					content: _,
+					content: txt,
 					variables: variables,
 					id: noteId,
 					hotRefresh: hotRefresh,
@@ -81,7 +99,6 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 				);
 			}
 		),
-
 
 		HtmlHighlightRule(
 			label: "img",
@@ -121,6 +138,33 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 					child: Text.rich(showImageFrame("", opt.recognizer, variables, imgData)),
 				));
 			},
+		),
+
+
+		// {@Picture}
+		HtmlHighlightRule(
+			label: "picture",
+			tag: HTMLTag.picture,
+			action: (txt, opt){
+				debugPrint("PICTURE DETECTED");
+				return TextSpan(
+					text: txt.trim(),
+					style: opt.forceStyle,
+					recognizer: opt.recognizer);
+			}
+		),
+
+		// {@Source}
+		HtmlHighlightRule(
+			label: "source",
+			tag: HTMLTag.source,
+			action: (txt, opt){
+				debugPrint("SOURCE DETECTED");
+				return TextSpan(
+					text: txt,
+					style: opt.forceStyle,
+					recognizer: opt.recognizer);
+			}
 		),
 
 		// etc..
