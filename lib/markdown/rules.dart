@@ -23,6 +23,18 @@ int indentStep = 0;
 List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int noteId, Function hotRefresh){
 	List<HighlightRule> rules = [
 
+		// {@Syntax-Hihglighting}
+		HighlightRule(
+			label: "markdown",
+			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
+			action: (String text, _) => WidgetSpan(
+				child: MarkdownWidget(
+					content: text,
+					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+				)
+			),
+		),
+
 		// {@HTMl}
 		HighlightRule(
 			label: "html",
@@ -61,18 +73,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					forceStyle: const TextStyle()
 				);
 			},
-		),
-
-		// {@Syntax-Hihglighting}
-		HighlightRule(
-			label: "markdown",
-			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
-			action: (String text, _) => WidgetSpan(
-				child: MarkdownWidget(
-					content: text,
-					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-				)
-			),
 		),
 
 		// {@Headlines}
