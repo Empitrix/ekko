@@ -17,7 +17,10 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 			label: "headlines",
 			tag: HTMLTag.h1,
 			action: (txt, opt){
+				// opt.forceStyle = getHeadlineStyle(context, 1).merge(opt.forceStyle);
+				// opt.forceStyle = opt.forceStyle!.merge(getHeadlineStyle(context, 1));
 				opt.forceStyle = getHeadlineStyle(context, 1).merge(opt.forceStyle);
+				// debugPrint(">$txt<");
 				return WidgetSpan(
 					child: Column(
 						crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,17 +23,6 @@ int indentStep = 0;
 List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int noteId, Function hotRefresh){
 	List<HighlightRule> rules = [
 
-		// {@Syntax-Hihglighting}
-		HighlightRule(
-			label: "markdown",
-			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
-			action: (String text, _) => WidgetSpan(
-				child: MarkdownWidget(
-					content: text,
-					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-				)
-			),
-		),
 
 		// {@HTMl}
 		HighlightRule(
@@ -60,10 +49,24 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			// regex: RegExp(r'<([a-zA-Z]+)(\s+[^>]*)?>([\s\S]*?)<\/\1>|<\/\1>|<(\w+)[^>]*\s*\/?>'),
 			
 
+
+
 			regex: RegExp(r'<([a-zA-Z0-9]+)(\s+[^>]*?)?>([\s\S]*?)<\/\1>|<(\w+)[^>]*\s*\/?>'),
+			// regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)<\/\1>', multiLine: true),
 
 			action: (txt, opt){
-				// print("${'- ' * 20}\n$txt\n${'- ' * 20}");
+				// Detected as Syntax-Hihglighting
+				// For some languages like rust the tag detection is issue, to fix:
+				if(txt.contains("```")){
+					return WidgetSpan(
+						child: MarkdownWidget(
+							content: txt,
+							height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+						)
+					);
+				}
+
+				// Detected as HTML
 				return applyHtmlRules(
 					context:context,
 					txt: txt,
@@ -74,6 +77,20 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				);
 			},
 		),
+
+
+		// {@Syntax-Hihglighting}
+		HighlightRule(
+			label: "markdown",
+			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
+			action: (String text, _) => WidgetSpan(
+				child: MarkdownWidget(
+					content: text,
+					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+				)
+			),
+		),
+
 
 		// {@Headlines}
 		HighlightRule(

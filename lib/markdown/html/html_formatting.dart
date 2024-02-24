@@ -61,6 +61,7 @@ InlineSpan htmlFormatting({
 	// print(option.recognizer);
 	// print(content);
 	// content = content.trim();
+	// print(content);
 
 	return applyHtmlRules(
 		context: context,

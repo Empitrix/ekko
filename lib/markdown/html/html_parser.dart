@@ -115,7 +115,6 @@ InlineSpan applyHtmlRules({
 		);
 	}
 
-
 	List<HtmlHighlightRule> rules = allHtmlRules(context, variables, noteId, hotRefresh, forceStyle);
 
 	HtmlHighlightRule? currentRule;
