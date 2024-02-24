@@ -149,11 +149,19 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 			label: "picture",
 			tag: HTMLTag.picture,
 			action: (txt, opt){
-				debugPrint("PICTURE DETECTED");
-				return TextSpan(
-					text: txt.trim(),
-					style: opt.forceStyle,
-					recognizer: opt.recognizer);
+				// debugPrint("PICTURE DETECTED");
+				return htmlFormatting(
+					context: context,
+					content: txt,
+					variables: variables,
+					id: noteId,
+					hotRefresh: hotRefresh,
+					option: opt
+				);
+				// return TextSpan(
+				// 	text: txt.trim(),
+				// 	style: opt.forceStyle,
+				// 	recognizer: opt.recognizer);
 			}
 		),
 
@@ -162,11 +170,12 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 			label: "source",
 			tag: HTMLTag.source,
 			action: (txt, opt){
-				debugPrint("SOURCE DETECTED");
-				return TextSpan(
-					text: txt,
-					style: opt.forceStyle,
-					recognizer: opt.recognizer);
+				// debugPrint("SOURCE DETECTED: $txt");
+				return const WidgetSpan(child: SizedBox());
+				// return TextSpan(
+				// 	text: txt,
+				// 	style: opt.forceStyle,
+				// 	recognizer: opt.recognizer);
 			}
 		),
 

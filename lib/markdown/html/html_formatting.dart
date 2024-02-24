@@ -17,9 +17,13 @@ InlineSpan htmlFormatting({
 
 	// debugPrint(content);
 
-	/*
-	RegExp htmlR = RegExp(r'<([a-zA-Z]+)(\s+[^>]*)?>([\s\S]*?)<\/\1>|<\/\1>|<(\w+)[^>]*\s*\/?>');
-	List<RegExpMatch> matches = RegExp(r'<([a-zA-Z]+)(\s+[^>]*)?>([\s\S]*?)<\/\1>|<\/\1>|<(\w+)[^>]*\s*\/?>').allMatches(content).toList();
+	// RegExp htmlR = RegExp(r'<([a-zA-Z0-9]+)(\s+[^>]*?)?>([\s\S]*?)<\/\1>|<(\w+)[^>]*\s*\/?>');
+	// RegExp htmlR = RegExp(r'<([a-zA-Z]+)(\s+[^>]*)?>([\s\S]*?)<\/\1>|<\/\1>|<(\w+)[^>]*\s*\/?>');
+	RegExp htmlR = RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>');
+
+	List<RegExpMatch> matches = htmlR.allMatches(content).toList();
+	// debugPrint("Length: ${matches.length}");
+	
 
 	if(matches.length >= 2){
 		List<String> extracted = [];
@@ -28,17 +32,22 @@ InlineSpan htmlFormatting({
 		content.splitMapJoin(
 			htmlR,
 			onMatch: (Match m){
+				// print(m.group(0)!);
 				extracted.add(m.group(0)!);
 				return "";
 			},
 			onNonMatch: (n){
+				// print(">$n<");
 				// extracted.add(n);
 				return "";
 			}
 		);
 
+		// print(extracted);
+
 		for(String i in extracted){
 			if(htmlR.hasMatch(i)){
+				// debugPrint("${'- ' * 20}\n$i\n${'- ' * 20}");
 				spoon.add(
 				applyHtmlRules(
 						context: context,
@@ -54,9 +63,11 @@ InlineSpan htmlFormatting({
 				spoon.add(TextSpan(text: i));
 			}
 		}
-		// return TextSpan(children: spoon);
+		return TextSpan(children: spoon);
 	}
-	*/
+
+
+
 
 	// print(option.recognizer);
 	// print(content);

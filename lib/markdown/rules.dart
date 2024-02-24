@@ -51,8 +51,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 
 
 
-			regex: RegExp(r'<([a-zA-Z0-9]+)(\s+[^>]*?)?>([\s\S]*?)<\/\1>|<(\w+)[^>]*\s*\/?>'),
+			// regex: RegExp(r'<([a-zA-Z0-9]+)(\s+[^>]*?)?>([\s\S]*?)<\/\1>|<(\w+)[^>]*\s*\/?>'),
 			// regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)<\/\1>', multiLine: true),
+
+			regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
+
 
 			action: (txt, opt){
 				// Detected as Syntax-Hihglighting
