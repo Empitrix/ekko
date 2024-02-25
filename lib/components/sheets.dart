@@ -42,8 +42,8 @@ void generalSmallNoteSheet({
 	required SmallNote note}){
 	_showSheet(
 		context: context,
-		builder: (BuildContext context) => SizedBox(
-			width: MediaQuery.of(context).size.width,
+		builder: (BuildContext ctx) => SizedBox(
+			width: MediaQuery.of(ctx).size.width,
 			child: SingleChildScrollView(
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.start,
@@ -54,8 +54,8 @@ void generalSmallNoteSheet({
 							margin: const EdgeInsets.symmetric(horizontal: 16),
 							child: Text(
 								note.title,
-								style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
-									color: Theme.of(context).colorScheme.inverseSurface
+								style: Theme.of(ctx).primaryTextTheme.titleLarge!.copyWith(
+									color: Theme.of(ctx).colorScheme.inverseSurface
 								)
 							),
 						),
@@ -72,8 +72,8 @@ void generalSmallNoteSheet({
 							title: const Text("Delete",
 								style: TextStyle(color: Colors.red)),
 							onTap: (){
-								Navigator.pop(context); // close current 
-								Dialogs(context).ask(
+								Navigator.pop(ctx); // close current 
+								Dialogs(ctx).ask(
 									title: "Delete",
 									content: "Did you want to delete this item?",
 									action: () async {
@@ -93,7 +93,7 @@ void generalSmallNoteSheet({
 							), 
 							title: Text(note.isPinned ? "Unpin" : "Pin"),
 							onTap: () async {
-								Navigator.pop(context);
+								Navigator.pop(ctx);
 								Note rNote = await note.toRealNote();
 								rNote.isPinned = !rNote.isPinned;
 								await DB().updateNote(rNote);
@@ -106,9 +106,9 @@ void generalSmallNoteSheet({
 							trailing: const Icon(Icons.arrow_right), 
 							title: const Text("Move to another folder"),
 							onTap: () async {
-								Navigator.pop(context);
+								Navigator.pop(ctx);
 								selectFolderSheet(
-									context: context,
+									context: ctx,
 									noteFolderId: note.folderId,
 									action: (BuildContext context, FolderInfo folder) async {
 										SNK snk = SNK(context, duration: const Duration(seconds: 2));
@@ -131,16 +131,18 @@ void generalSmallNoteSheet({
 							title: const Text("Export Markdown"),
 							onTap: () async {
 								SNK snk = SNK(context);
+								Navigator.pop(ctx);
 								Note realNote = await note.toRealNote();
-								await MDFile.write(realNote.content);
-								snk.message(
-									const Icon(Icons.file_open_rounded), "File Exported!");
-								// ignore: use_build_context_synchronously
-								Navigator.pop(context);
+								bool isDone = await MDFile.write(realNote.content, realNote.title);
+								if(isDone){
+									snk.message(
+										const Icon(Icons.file_open_rounded), "File Exported!");
+								} else {
+									snk.message(
+										const Icon(Icons.cancel), "Faield To Export!");
+								}
 							}
 						),
-
-
 
 						// Footer
 						const SizedBox(height: 12)
@@ -358,19 +360,31 @@ void inViewNoteSheet({
 							SNK(context).message(const Icon(Icons.copy_rounded), "Copied!");
 						}
 					),
-					// TODO: Apply Actions
 					ListTile(
 						leading: const Icon(FontAwesomeIcons.fileExport, size: 20,),
 						title: const Text("Export"),
-						onTap:(){}
+						onTap:() async {
+							SNK snk = SNK(context);
+							Navigator.pop(_);
+							bool isDone = await MDFile.write(note.content, note.title);
+							if(isDone){
+								snk.message(
+									const Icon(Icons.file_open_rounded), "File Exported!");
+							} else {
+								snk.message(
+									const Icon(Icons.cancel), "Faield To Export!");
+							}
+						}
 					),
+
+					// TODO: Apply Actions
 					ListTile(
-						leading: const Icon(FontAwesomeIcons.filePen, size: 20,),
+						leading: const Icon(FontAwesomeIcons.filePen, size: 20),
 						title: const Text("Rename"),
 						onTap:(){}
 					),
 					ListTile(
-						leading: const Icon(FontAwesomeIcons.share, size: 20,),
+						leading: const Icon(FontAwesomeIcons.share, size: 20),
 						title: const Text("Share"),
 						onTap:(){}
 					),

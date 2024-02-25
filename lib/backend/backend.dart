@@ -114,3 +114,4 @@ String formatizeVDate(String input){
 		.replaceAll("ago", "")
 		.replaceAll(" ", "");
 }
+

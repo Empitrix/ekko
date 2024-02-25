@@ -4,16 +4,17 @@ import 'dart:convert';
 
 
 class MDFile {
-	static Future<void> write(String data) async {
+	static Future<bool> write(String data, String fileName) async {
 		/* Write as markdown file */
-		FileOut? selectedFile = await getMdFilePath();
+		FileOut? selectedFile = await getMdFilePath(fileName);
 		// End the function 
-		if(selectedFile == null){ return; }
+		if(selectedFile == null){ return false; }
 		// Wirte data on
 		selectedFile.file.writeAsStringSync(
 			data,
 			encoding: Encoding.getByName("UTF-8")!
 		);
+		return true;
 	}
 	
 	static Future<FileContentOut?> read() async {

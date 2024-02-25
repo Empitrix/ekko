@@ -63,7 +63,8 @@ class Dialogs {
 			builder: (BuildContext context){
 				TextEditingController ctrl = TextEditingController();
 				ctrl.text = loadedText;
-				return AlertDialog(
+				// return AlertDialog(
+				return BlurAlertDialog(
 					title: Text(title),
 					content: TextField(
 						controller: ctrl,
