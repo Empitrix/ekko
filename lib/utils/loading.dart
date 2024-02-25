@@ -21,11 +21,11 @@ Future<void> essentialLoading(BuildContext context)async{
 	/* Load all the essentials */
 	await updateDbPath();
 	await _db.init();
-	dMode = (await _db.readTheme()) == ThemeMode.dark;
+	dMode = await _db.readBool("darkMode");
 	markdownThemeName = await _db.readMarkdownTheme();
-	acrylicMode = await _db.readAcrylicMode();
-	wrapCodeMode = await _db.readWrapCodeMode();
-	checkListCheckable = await _db.readCheckListBehavior();
+	acrylicMode = await _db.readBool("acrylicMode");
+	wrapCodeMode = await _db.readBool("readWrapCodeMode");
+	checkListCheckable = await _db.readBool("readCheckListBehavior");
 	double opacity = await _db.readAcrylicOpacity();
 
 	// Text-Style

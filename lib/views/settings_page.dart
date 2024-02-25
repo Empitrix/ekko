@@ -77,7 +77,8 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 								setState(() { dMode = value; });
 								Provider.of<ProviderManager>(context, listen: false).changeTmode(
 									dMode ? ThemeMode.dark : ThemeMode.light);
-								await db.updateTheme(dMode ? ThemeMode.dark : ThemeMode.light);
+								// await db.updateTheme(dMode ? ThemeMode.dark : ThemeMode.light);
+								await db.writeBool("darkMode", dMode);
 							}
 						), // Dark mode
 
@@ -107,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 									Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(1);
 								}
 								setState(() { acrylicMode = value; });
-								await db.updateAcrylicMode(value);
+								await db.writeBool("acrylicMode", value);
 							}
 						),	// Acrylic mode
 
@@ -138,7 +139,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							value: wrapCodeMode,
 							onChange: (bool newMode) async {
 								setState(() => wrapCodeMode = newMode );
-								await db.updateWrapCodeMode(newMode);
+								await db.writeBool("wrapCodeMode", newMode);
 							}
 						),
 
@@ -149,7 +150,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							value: checkListCheckable,
 							onChange: (bool newMode) async {
 								setState(() => checkListCheckable = newMode );
-								await db.updateCheckListBehavior(newMode);
+								await db.writeBool("updateCheckListBehavior", newMode);
 							}
 						),
 

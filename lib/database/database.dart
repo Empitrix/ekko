@@ -81,51 +81,17 @@ class DB {
 	}
 
 
-	/* Theme Mode */
-	Future<ThemeMode> readTheme() async {
+	// R/W/U for boolean variables
+	Future<bool> readBool(String name) async {
 		Map data = await getQuery("local");
-		return data["darkMode"] == 1 ?
-			ThemeMode.dark : ThemeMode.light;
+		return data[name] == 1;
 	}
 
-	Future<void> updateTheme(ThemeMode newMode) async {
-		await updateTable('local',
-			{"darkMode": newMode == ThemeMode.dark ? 1 : 0});
+	Future<void> writeBool(String name, bool value) async {
+		await updateTable('local', {name: value ? 1 : 0});
 	}
 
-	/* Acrylic Mode */
-	Future<bool> readAcrylicMode() async {
-		Map data = await getQuery("local");
-		return data["acrylicMode"] == 1;
-	}
 
-	/* Wrap Mode */
-	Future<void> updateWrapCodeMode(bool newMode) async {
-		await updateTable('local',
-			{"wrapCodeMode": newMode == true ? 1 : 0});
-	}
-
-	/* Check-List Behavior */
-	Future<void> updateCheckListBehavior(bool newMode) async {
-		await updateTable('local',
-			{"checkableCheckList": newMode == true ? 1 : 0});
-	}
-
-	Future<bool> readCheckListBehavior() async {
-		Map data = await getQuery("local");
-		return data["checkableCheckList"] == 1;
-	}
-
-	/* Acrylic Mode */
-	Future<bool> readWrapCodeMode() async {
-		Map data = await getQuery("local");
-		return data["wrapCodeMode"] == 1;
-	}
-
-	Future<void> updateAcrylicMode(bool newMode) async {
-		await updateTable('local',
-			{"acrylicMode": newMode ? 1 : 0});
-	}
 
 	/* Acrylic Opacity */ 
 	Future<double> readAcrylicOpacity() async {
