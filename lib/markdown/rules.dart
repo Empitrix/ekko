@@ -61,11 +61,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				// Detected as Syntax-Hihglighting
 				// For some languages like rust the tag detection is issue, to fix:
 				if(txt.contains("```")){
-					return WidgetSpan(
-						child: MarkdownWidget(
-							content: txt,
-							height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-						)
+					return TextSpan(
+						children: [
+							const TextSpan(text: "\n"),
+							WidgetSpan(
+								child: MarkdownWidget(
+									content: txt,
+									height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+								)
+							),
+							const TextSpan(text: "\n")
+						]
 					);
 				}
 
@@ -86,11 +92,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "markdown",
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
-			action: (String text, _) => WidgetSpan(
-				child: MarkdownWidget(
-					content: text,
-					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-				)
+			action: (txt, _) => TextSpan(
+				children: [
+					const TextSpan(text: "\n"),
+					WidgetSpan(
+						child: MarkdownWidget(
+							content: txt,
+							height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+						)
+					),
+					const TextSpan(text: "\n")
+				]
 			),
 		),
 
@@ -316,7 +328,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Italic-Bold, Bold, Italic}
 		HighlightRule(
 			label: "italic&bold_bold_italic",
-			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			// regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
 			action: (txt, opt){
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }

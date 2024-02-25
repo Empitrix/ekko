@@ -16,19 +16,17 @@ TextSpan applyRules({
 	}){
 	
 	List<InlineSpan> spans = [];
-	TextSpan nl = const TextSpan(text: "\n");
 	//** bool trimNext = false;
 
 	content.splitMapJoin(
 		RegExp(rules.map((rule) => rule.regex.pattern).join('|'), multiLine: true),
 		onMatch: (match) {
+			// Capture rules
 			String mText = match.group(0)!;
 			HighlightRule mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
-			if(mRule.label == "markdown"){ spans.add(nl); }
-			// {@Re-Count}
-			if(mRule.label != "item"){
-				lastIndent = 0;
-				indentStep = 0;}
+
+			// {@Re-Count for Sub-list}
+			if(mRule.label != "item"){ lastIndent = 0; indentStep = 0; }
 
 			// Add Widgets
 			RuleOption opt = RuleOption(
@@ -38,10 +36,9 @@ TextSpan applyRules({
 				forceStyle: forceStyle
 			);
 
-			spans.add(mRule.action(mText, opt));
-			if(mRule.label == "markdown"){ spans.add(nl); }
+			spans.add(mRule.action(mText, opt));  // Add the releated rule
 
-			return mText;
+			return "";
 		},
 		onNonMatch: (nonMatchedText) {
 			spans.add(
@@ -50,7 +47,7 @@ TextSpan applyRules({
 					style: Provider.of<ProviderManager>(context).defaultStyle
 				)
 			);
-			return nonMatchedText;
+			return "";
 		},
 	);
 

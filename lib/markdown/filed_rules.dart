@@ -182,12 +182,25 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			)
 		),
 
+		// {@Emoji}
+		RegexGroupStyle(
+			regex: RegExp(r'\:\w+\:'),
+			style: const TextStyle(color: Color(0xff94b2e3)),
+			regexStyle: RegexStyle(
+				regex: RegExp(r':'),
+				style: const TextStyle(
+					color: Colors.orange,
+				),
+			)
+		),
+
 
 		// {@Italic-Bold-Italic&Bold}
 		RegexActionStyle(
 			// regex: RegExp(r'\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*'),
-			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
 			// regex: RegExp(r'(\*\*\*|___)(.*?)(\1)|(\*\*|__)(.*?)(\4)|(\*|_)(.*?)(\7)'),
+			// regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
 			style: const TextStyle(),
 			action: (txt, match){
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;

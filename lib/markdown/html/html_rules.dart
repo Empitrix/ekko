@@ -48,7 +48,8 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 									))
 								],
 							),
-							const Divider()
+							const Divider(),
+							// const DividerLine(lineSide: LineSide.both)
 						],
 					)
 				);
