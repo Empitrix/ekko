@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:path/path.dart';
+
 
 String vStr(String input){
 	return input.toLowerCase().trim();
@@ -113,5 +115,28 @@ String formatizeVDate(String input){
 		.replaceAll(RegExp(r'(seconds|second)'), "s")
 		.replaceAll("ago", "")
 		.replaceAll(" ", "");
+}
+
+
+
+String getUniqueFileName(String path, String input, [int counting = 0]){
+	/* Get Unique name if file exsits */
+	bool isThere = false;
+	List<FileSystemEntity> files = Directory(path).listSync().toList();
+	for(FileSystemEntity file in files){
+		if(basename(file.absolute.path) == basename(input)){
+			counting ++;
+			isThere = true;
+			List<String> parts = input.split('.');
+			parts = parts.sublist(0, parts.length - 1);
+			// Remove the last num if exsits
+			parts.last = parts.last.replaceAll(RegExp(r'\([0-9]*\)'), "");
+			input = "${parts.join()}($counting).md";
+			break;
+		}
+	}
+	if(!isThere){ return input; }
+	// Re-call the function and try again
+	return getUniqueFileName(path, input, counting);
 }
 

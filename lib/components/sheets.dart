@@ -133,7 +133,8 @@ void generalSmallNoteSheet({
 								SNK snk = SNK(context);
 								Navigator.pop(ctx);
 								Note realNote = await note.toRealNote();
-								bool isDone = await MDFile.write(realNote.content, realNote.title);
+								// ignore: use_build_context_synchronously
+								bool isDone = await MDFile.write(context, realNote.content, realNote.title);
 								if(isDone){
 									snk.message(
 										const Icon(Icons.file_open_rounded), "File Exported!");
@@ -366,7 +367,8 @@ void inViewNoteSheet({
 						onTap:() async {
 							SNK snk = SNK(context);
 							Navigator.pop(_);
-							bool isDone = await MDFile.write(note.content, note.title);
+							// ignore: use_build_context_synchronously
+							bool isDone = await MDFile.write(context, note.content, note.title);
 							if(isDone){
 								snk.message(
 									const Icon(Icons.file_open_rounded), "File Exported!");

@@ -1,3 +1,4 @@
+import 'package:permission_handler/permission_handler.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
@@ -18,6 +19,11 @@ Future<void> updateDbPath() async {
 }
 
 Future<void> essentialLoading(BuildContext context)async{
+
+	// if (await Permission.manageExternalStorage.request().isDenied) {
+	// 	openAppSettings();
+	// }
+
 	/* Load all the essentials */
 	await updateDbPath();
 	await _db.init();

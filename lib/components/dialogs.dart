@@ -96,5 +96,48 @@ class Dialogs {
 	}  // textFieldDialog
 
 
+	Future<void> asyncTextFieldDialog({
+		required String title,
+		required String hint,
+		required ValueChanged<String> action,
+		String fillAct = "Ok",
+		String loadedText = "",
+		String outAct = "Cancel"}) async {
+		await showDialog(
+			context: context,
+			builder: (BuildContext context){
+				TextEditingController ctrl = TextEditingController();
+				ctrl.text = loadedText;
+				// return AlertDialog(
+				return BlurAlertDialog(
+					title: Text(title),
+					content: TextField(
+						controller: ctrl,
+						autofocus: true,
+						onSubmitted: (txt){
+							Navigator.pop(context);
+							action(txt);
+						},
+						decoration: InputDecoration(
+							hintText: hint
+						),
+					),
+					actions: [
+						OutlinedButton(
+							child: Text(outAct),
+							onPressed: () => Navigator.pop(context),
+						),
+						FilledButton(
+							child: Text(fillAct),
+							onPressed: (){
+								Navigator.pop(context);  // Close current bottom
+								action(ctrl.text);
+							},
+						),
+					],
+				);
+			}
+		);
+	}  // textFieldDialog
 }
 

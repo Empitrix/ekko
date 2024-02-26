@@ -1,14 +1,22 @@
 import 'package:ekko/io/path_routing.dart';
 import 'package:ekko/models/file_out.dart';
+import 'package:flutter/material.dart';
 import 'dart:convert';
 
 
+
 class MDFile {
-	static Future<bool> write(String data, String fileName) async {
+	static Future<bool> write(BuildContext context, String data, String fileName) async {
 		/* Write as markdown file */
-		FileOut? selectedFile = await getMdFilePath(fileName);
+		FileOut? selectedFile = await getMdFilePath(context, fileName);
 		// End the function 
 		if(selectedFile == null){ return false; }
+
+		// Create file if not exsits
+		if(!selectedFile.file.existsSync()){
+			selectedFile.file.createSync(recursive: true);
+		}
+
 		// Wirte data on
 		selectedFile.file.writeAsStringSync(
 			data,
