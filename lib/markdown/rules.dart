@@ -328,8 +328,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Italic-Bold, Bold, Italic}
 		HighlightRule(
 			label: "italic&bold_bold_italic",
-			// regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
-			regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
+			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			// regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
 			action: (txt, opt){
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }

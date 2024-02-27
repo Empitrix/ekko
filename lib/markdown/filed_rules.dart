@@ -200,7 +200,8 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			// regex: RegExp(r'\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*'),
 			// regex: RegExp(r'(\*\*\*|___)(.*?)(\1)|(\*\*|__)(.*?)(\4)|(\*|_)(.*?)(\7)'),
 			// regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
-			regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
+			// regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
+			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
 			style: const TextStyle(),
 			action: (txt, match){
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
