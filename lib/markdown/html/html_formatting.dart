@@ -1,4 +1,5 @@
 import 'package:ekko/markdown/html/html_parser.dart';
+import 'package:ekko/markdown/html/html_utils.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/material.dart';
 
@@ -49,15 +50,35 @@ InlineSpan htmlFormatting({
 			if(htmlR.hasMatch(i)){
 				// debugPrint("${'- ' * 20}\n$i\n${'- ' * 20}");
 				spoon.add(
+				/*
 				applyHtmlRules(
-						context: context,
-						txt: i,
-						variables: variables,
-						noteId: id,
-						hotRefresh: hotRefresh,
-						forceStyle: option.forceStyle,
-						recognizer: option.recognizer
+					context: context,
+					txt: i,
+					variables: variables,
+					noteId: id,
+					hotRefresh: hotRefresh,
+					forceStyle: option.forceStyle,
+					recognizer: option.recognizer
+				)
+				*/
+
+					WidgetSpan(
+						child: ApplyHtmlAlignment(
+							alignment: getHtmlAlignment(
+								option.data.attributes['align']!),
+							children: [
+								Text.rich(htmlFormatting(
+									context: context,
+									content: i.trim(),  // IDK about triming
+									variables: variables,
+									id: id,
+									hotRefresh: hotRefresh,
+									option: option
+								))
+							],
+						)
 					)
+
 				);
 			} else {
 				spoon.add(TextSpan(text: i));
@@ -66,14 +87,6 @@ InlineSpan htmlFormatting({
 		return TextSpan(children: spoon);
 	}
 
-
-
-
-	// print(option.recognizer);
-	// print(content);
-	// content = content.trim();
-	// print(content);
-
 	return applyHtmlRules(
 		context: context,
 		txt: content,
@@ -81,7 +94,8 @@ InlineSpan htmlFormatting({
 		noteId: id,
 		hotRefresh: hotRefresh,
 		forceStyle: option.forceStyle,
-		recognizer: option.recognizer
+		recognizer: option.recognizer,
+		option: option
 	);
 
 }

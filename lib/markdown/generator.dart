@@ -48,6 +48,10 @@ class MDGenerator extends StatelessWidget {
 
 		data = _updateVariablesMap(content).trim();
 
+		// Ignore comments
+		data = data.replaceAll(RegExp(r'^\s?\[\/\/\]\:\s*\#\s*(.*?)$', multiLine: true), "");
+
+
 		for(String key in variables.keys.toList()){
 			RegExp r = RegExp(r'(?<=(\)|\]))\[\s*' + key + r'\s*\]');
 			 data = data.replaceAll(

@@ -14,7 +14,7 @@ img -> image
 
 class HTMLParser {
 	final HTMLTag tag;
-	final Map<String, String> attributes;
+	late Map<String, String> attributes;
 	final String innerHTML;
 
 	HTMLParser({
@@ -32,7 +32,8 @@ enum HTMLTag {
 	h1, h2, h3, h4, h5, h6,
 	center,
 	picture,
-	source
+	source,
+	div
 }
 
 
@@ -53,6 +54,7 @@ HTMLTag _getEnumTag(String tName){
 		case "h6": { tag = HTMLTag.h6; }
 		case "picture": { tag = HTMLTag.picture; }
 		case "source": { tag = HTMLTag.source; }
+		case "div": { tag = HTMLTag.div; }
 		case _:{ tag = HTMLTag.p; }  // Default
 	}
 	return tag;
@@ -61,7 +63,7 @@ HTMLTag _getEnumTag(String tName){
 
 HTMLParser? getTagNameProperty(String txt){
 	// get the first html tag <\w....>
-	RegExpMatch? firstTag = RegExp(r'<\w*\s*(\w+\s*=\s*\".*?\")*\s*>').firstMatch(txt);
+	RegExpMatch? firstTag = RegExp(r'<\w*\s*(\w+\s*=\s*\".*?\")*\s*\/?\s*>').firstMatch(txt);
 	// get tag name h1, p ..
 	RegExpMatch? tagName = RegExp(r'<(\w+)(.*)>').firstMatch(txt);
 	if(firstTag == null){ return null; }
@@ -99,11 +101,14 @@ InlineSpan applyHtmlRules({
 		required Function hotRefresh,
 		required TextStyle? forceStyle,
 		TapGestureRecognizer? recognizer,
+		HtmlRuleOption? option
 	}){
 
 	HTMLParser? data = getTagNameProperty(txt);
 
 
+	// print(txt);
+	// print("-------------------------\n\n\n\n\n\n\n\n\n\n\n");
 	// print(recognizer);
 
 	// Normal Text (NON-HTML)
@@ -130,6 +135,9 @@ InlineSpan applyHtmlRules({
 
 
 	HtmlRuleOption ruleOpt = HtmlRuleOption(id: noteId, forceStyle: forceStyle, recognizer: recognizer, data: data);
+
+	// Merge the current one with it's parrents
+	if(option != null){ ruleOpt = ruleOpt.merge(option); }
 	// print("#/${data.innerHTML}/#");
 	return currentRule.action(data.innerHTML, ruleOpt);
 

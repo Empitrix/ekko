@@ -18,6 +18,22 @@ class HtmlRuleOption {
 		required this.data,
 		this.recognizer
 	});
+
+	HtmlRuleOption merge(HtmlRuleOption? mergeOpt){
+		/* Merge the given option with the corrent one */
+		if(mergeOpt == null){ return this; }
+		// **Merge only if the value is null
+		Map<String, String> atrr = {};
+		atrr.addAll(data.attributes);
+		/* FORCE: atrr.addAll(mergeOpt.data.attributes); */
+		for(String key in mergeOpt.data.attributes.keys.toList()){
+			if(!atrr.containsKey(key)){
+				atrr[key] = mergeOpt.data.attributes[key]!;
+			}
+		}
+		data.attributes = atrr;
+		return this;
+	}
 }
 
 typedef HTMLRuleWidget = InlineSpan Function(String inner, HtmlRuleOption option);

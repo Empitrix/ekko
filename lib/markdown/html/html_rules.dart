@@ -108,6 +108,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 			label: "img",
 			tag: HTMLTag.img,
 			action: (_, opt){
+				// print(opt.data.attributes);
 				// Wrong image
 				if(opt.data.attributes["src"] == null){
 					return htmlFormatting(
@@ -177,6 +178,31 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 				// 	text: txt,
 				// 	style: opt.forceStyle,
 				// 	recognizer: opt.recognizer);
+			}
+		),
+
+
+		HtmlHighlightRule(
+			label: "div",
+			tag: HTMLTag.div,
+			action: (txt, opt){
+				// print(txt);
+				return WidgetSpan(
+					child: ApplyHtmlAlignment(
+						alignment: getHtmlAlignment(
+							opt.data.attributes['align']!),
+						children: [
+							Text.rich(htmlFormatting(
+								context: context,
+								content: txt.trim(),  // IDK about triming
+								variables: variables,
+								id: noteId,
+								hotRefresh: hotRefresh,
+								option: opt
+							))
+						],
+					)
+				);
 			}
 		),
 
