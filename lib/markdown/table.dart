@@ -15,13 +15,15 @@ InlineSpan getTableSpan({
 		"-:": Alignment.centerRight,
 		":-": Alignment.centerLeft,
 		":-:": Alignment.center,
-		"-": Alignment.center,
+		// "-": Alignment.center,
+		"-": Alignment.centerLeft,
 	};
 	Map<String, TextAlign> textAlignmentsMap = {
 		"-:": TextAlign.right,
 		":-": TextAlign.left,
 		":-:": TextAlign.center,
-		"-": TextAlign.center,
+		// "-": TextAlign.center,
+		"-": TextAlign.left,
 	};
 
 	List<String> lines = txt.split("\n");

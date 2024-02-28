@@ -103,7 +103,29 @@ class MDGenerator extends StatelessWidget {
 				return "";
 			}
 		);
+
+
+
+		// Apply GFM end-line
+		// String gfmEndlined = "";
+
+		// rowInData.splitMapJoin(
+		// 	RegExp(r'\n+'),
+		// 	onMatch: (Match m){
+		// 		// One less
+		// 		gfmEndlined += m.group(0)!.substring(1);
+		// 		return "";
+		// 	},
+		// 	onNonMatch: (n){
+		// 		gfmEndlined += n;
+		// 		return "";
+		// 	}
+		// );
+		// data = "$gfmEndlined\n";
+
+
 		data = "$rowInData\n";
+
 		/* {@GFM end} */
 		// Other (not GFM): ```dart
 		// 	data += "\n";

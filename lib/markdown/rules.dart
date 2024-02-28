@@ -1,3 +1,4 @@
+import 'package:ekko/components/divider.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/cases.dart';
@@ -143,7 +144,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
 			trimNext: true,
 			action: (_, __) => const WidgetSpan(
-				child: Divider(height: 1)
+				child: DividerLine(height: 3, lineSide: LineSide.none)
+				// child: Divider(height: 1)
 			),
 		),
 
@@ -168,6 +170,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "item",
 			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
+			// regex: RegExp(r'^\s*(-|\+|\*)\s+(.*[^\n]\s)*?'),
+			// regex: RegExp(r'^\s*(-|\+|\*)\s+((?:.*(?:[^-]|\n)){2})'),
+			// regex: RegExp(r'^\s*([-+\*])\s+([\s\S]*?)(?=\n{2})'),
 			action: (txt, _){
 				int iLvl = getIndentationLevel(txt);
 				int step = iLvl - lastIndent;
@@ -231,7 +236,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Hyper-Link}
 		HighlightRule(
 			label: "links",
-			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
+			// regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
+			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\(([\s\S]*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			action: (txt, _){
 				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
 				String name = txt.substring(1, lastWhere.start);
@@ -282,7 +288,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Image-Link}
 		HighlightRule(
 			label: "link_image",
-			regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
+			// regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
+			regex: RegExp(r'\!\[([\s\S]*?)\](\(|\[)([\s\S]*?)(\)|\])'),
 			action: (String txt, opt){
 				InlineSpan? outImg = runZoned((){
 					return showImageFrame(txt, opt.recognizer, variables);

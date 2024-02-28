@@ -1,3 +1,5 @@
+import 'package:ekko/markdown/cases.dart';
+import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_rules.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/gestures.dart';
@@ -113,10 +115,23 @@ InlineSpan applyHtmlRules({
 
 	// Normal Text (NON-HTML)
 	if(data == null){
-		return TextSpan(
-			text: txt,
-			style: forceStyle,
-			recognizer: recognizer
+		
+		if(forceStyle != null && forceStyle.compareTo(const TextStyle()) != RenderComparison.identical){
+			return TextSpan(
+				text: txt,
+				style: forceStyle,
+				recognizer: recognizer
+			);
+		}
+
+		return formattingTexts(
+			context: context,
+			content: txt,
+			variables: variables,
+			id: noteId,
+			hotRefresh: hotRefresh,
+			recognizer: recognizer,
+			forceStyle: forceStyle
 		);
 	}
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum LineSide { right, left, both }
+enum LineSide { right, left, both, none }
 
 class DividerLine extends StatelessWidget {
 	final double height;
@@ -25,7 +25,8 @@ class DividerLine extends StatelessWidget {
 						topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)):
 					lineSide == LineSide.left ? const BorderRadius.only(
 						topRight: Radius.circular(5), bottomRight: Radius.circular(5)):
-					BorderRadius.circular(5)
+					lineSide == LineSide.both ? BorderRadius.circular(5):
+						BorderRadius.zero
 			),
 		);
 	}

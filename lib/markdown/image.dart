@@ -74,6 +74,8 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map variables, [Map<String, dynamic> htmlData = const {}]){
 	Map<String, dynamic> data = htmlData.isNotEmpty ? htmlData : _getImageLinkData(txt, variables);
 
+	BoxFit? boxFit = BoxFit.fitWidth;
+
 	Widget child = FutureBuilder(
 		future: http.get(Uri.parse(data['url']!)),
 		builder: (context, AsyncSnapshot<http.Response> snap){
@@ -91,7 +93,7 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 			
 			bool skipped = RegExp(r'(https?:\/\/.*\.(?:png|jpg|gif))').hasMatch(data['url']);
 			if(skipped){
-				img = Image.memory(snap.data!.bodyBytes);
+				img = Image.memory(snap.data!.bodyBytes, fit: boxFit);
 				// img = FittedBox(child: Image.memory(snap.data!.bodyBytes));
 			}
 
@@ -107,8 +109,8 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 							height: tagData["height"],
 							width: tagData["width"],
 							child: tagData["extention"]! == ImageType.picture ?
-								Image.memory(memo):
-								SvgPicture.memory(memo),
+								Image.memory(memo, fit: BoxFit.cover):
+								SvgPicture.memory(memo, fit: BoxFit.cover),
 						) 
 					],
 				);
@@ -150,7 +152,11 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 		child: Padding(
 			padding: const EdgeInsets.only(right: 5, bottom: 2),
 			// child: child
-			child: FittedBox(child: child)
+			child: ClipRRect(
+				// borderRadius: BorderRadius.circular(5),
+				child: child,
+				// child: FittedBox(fit: boxFit, child: child)
+			)
 		)
 	);
 }
