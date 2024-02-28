@@ -36,6 +36,18 @@ TextSpan applyRules({
 				forceStyle: forceStyle
 			);
 
+
+			// content.splitMapJoin(
+			// 	RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>', multiLine: true),
+			// 	onMatch: (Match m){
+			// 		// print(m.group(0)!);
+			// 		return "";
+			// 	},
+			// 	onNonMatch: (n){
+			// 		return "";
+			// 	}
+			// );
+
 			spans.add(mRule.action(mText, opt));  // Add the releated rule
 
 			return "";

@@ -1,4 +1,3 @@
-import 'package:permission_handler/permission_handler.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';

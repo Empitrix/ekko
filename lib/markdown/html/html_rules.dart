@@ -134,13 +134,21 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 				};
 
 				// sizes if they are exsits
-				String? width = opt.data.attributes["width"];
-				String? height = opt.data.attributes["height"];
+
+				// String? width = opt.data.attributes["width"];
+				// String? height = opt.data.attributes["height"];
+				double? w = getHtmlSize(context, opt.data.attributes["width"], "w");
+				double? h = getHtmlSize(context, opt.data.attributes["height"], "h");
 
 				return WidgetSpan(child: SizedBox(
-					width: width != null ? int.parse(width).toDouble() : null,
-					height: height != null ? int.parse(height).toDouble() : null,
-					child: Text.rich(showImageFrame("", opt.recognizer, variables, imgData)),
+					// width: width != null ? int.parse(width).toDouble() : null,
+					// height: height != null ? int.parse(height).toDouble() : null,
+					width: w,
+					height: h,
+					// child: Text.rich(showImageFrame("", opt.recognizer, variables, imgData)),
+					child: FittedBox(
+						child: Text.rich(showImageFrame("", opt.recognizer, variables, imgData)),
+					),
 				));
 			},
 		),

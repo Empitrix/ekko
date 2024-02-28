@@ -66,3 +66,23 @@ class ApplyHtmlAlignment extends StatelessWidget {
 	}
 }
 
+
+
+double? getHtmlSize(BuildContext ctx, String? attr, String type){
+	if(attr == null){ return null; }
+	if(attr.replaceAll(RegExp(r'[0-9]+'), "").trim().isEmpty){
+		// This is just num
+		return int.parse(attr).toDouble();
+	} else if(attr.contains("%")){
+		// Calc persent
+		if(type == "h"){
+			return int.parse(attr.replaceAll("%", "").trim()) * MediaQuery.sizeOf(ctx).height / 100;
+		} else {
+			return int.parse(attr.replaceAll("%", "").trim()) * MediaQuery.sizeOf(ctx).width / 100;
+		}
+	} else if(attr.contains("px")){
+		return int.parse(attr.replaceAll("px", "").trim()).toDouble();
+	}
+	return null;
+}
+

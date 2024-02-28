@@ -92,6 +92,7 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 			bool skipped = RegExp(r'(https?:\/\/.*\.(?:png|jpg|gif))').hasMatch(data['url']);
 			if(skipped){
 				img = Image.memory(snap.data!.bodyBytes);
+				// img = FittedBox(child: Image.memory(snap.data!.bodyBytes));
 			}
 
 			if(tagData != null){
@@ -148,7 +149,8 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 	return WidgetSpan(
 		child: Padding(
 			padding: const EdgeInsets.only(right: 5, bottom: 2),
-			child: child
+			// child: child
+			child: FittedBox(child: child)
 		)
 	);
 }

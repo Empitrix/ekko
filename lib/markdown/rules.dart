@@ -1,5 +1,6 @@
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/check_box.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
@@ -27,59 +28,59 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@HTMl}
 		HighlightRule(
 			label: "html",
-			// regex: RegExp(r'<\w(.*?)>([\s\S]*?)<\/\w>'),
-			// regex: RegExp(r'<\w+(.*?)>([\s\S]*?)<\/\w+>'),
-			// valids
-			//# regex: RegExp(r'<(\w+)[^>]*>([\s\S]*?(?:(?!<\/?\1)[\s\S])*?)<\/\1>'),
-			// regex: RegExp(r'<(\w+)[^>]*>([\s\S]*?(?:(?!<\/?\1)[\s\S])*?)<\/\1>|<(\w+)[^>]*\s*\/?>'),
-
-			//regex: RegExp(r"<(\w+)[^>]*>(?:[^<]+|(?R))*<\/\1>|<(\w+)[^>]*\s*\/?>"),
-
-			// regex: RegExp(r'<(\w+)[^>]*><(\w+)[^>]*>(?:[^<]+|(?R))*<\/\1>|<(\w+)[^>]*\s*\/?>(?:[^<]+|(?R))*<\/\1>|<(\w+)[^>]*\s*\/?>'),
-
-			// Fixed it
-			// regex: RegExp(r'<(\w+)[^>]*>(?:[^<]+|(?R))*<\/\1>|<(\w+)[^>]*\s*\/?>'),
-			// regex: RegExp(r'<(\w+)[^>]*>(?:[^<]+|(?R))*<\/\1>|<(\w+)[^>]*\s*\/?>'),
-			// regex: RegExp(r'<(\w+)[^>]*>(?:[^<]+|<\1[^>]*>(?:[^<]+|<\1[^>]*>(?:[^<]+|<\/\1>)*<\/\1>)*<\/\1>)*<\/\1>|<(\w+)[^>]*\s*\/?>'),
-			// regex: RegExp(r'<(\w+)[^>]*>(?:[^<]*(?:<(?:\w+)[^>]*>[^<]*<\/(?:\w+)>)*[^<]*)*<\/\1>|<(\w+)[^>]*\s*\/?>'),
-
-			// new
-			// regex: RegExp(r'<([a-zA-Z][^\s<>\/]*)(?:\s[^<>]*?(?:".*?"|'r'.*?'r'|[^<>])*?)?((\/)>|>(?:[^<]+|<(?!\/?\1(?:\s[^<>]*?)?>)|<\1(?:\s[^<>]*?)?>.*?<\/\1>)*<\/\1>)'),
-
-			// regex: RegExp(r'<([a-zA-Z]+)(\s+[^>]*)?>([\s\S]*?)<\/\1>|<\/\1>|<(\w+)[^>]*\s*\/?>'),
-			
-
-
-
-			// regex: RegExp(r'<([a-zA-Z0-9]+)(\s+[^>]*?)?>([\s\S]*?)<\/\1>|<(\w+)[^>]*\s*\/?>'),
-			// regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)<\/\1>', multiLine: true),
-
 			regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
-
-
+			// regex: RegExp(r'<(?<tag>\w+)(.*?)>([^<]+(?:<(?!\/\k<tag>\s*>)[\s\S]*?)?)?<\/\k<tag>\s*>|<?<tag>\w+[^>]*\s*\/?>|<(\w+)[^>]*\s*\/?>'),
 			action: (txt, opt){
-				// Detected as Syntax-Hihglighting
-				// For some languages like rust the tag detection is issue, to fix:
-				if(txt.contains("```")){
-					return TextSpan(
-						children: [
-							const TextSpan(text: "\n"),
-							WidgetSpan(
-								child: MarkdownWidget(
-									content: txt,
-									height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-								)
-							),
-							const TextSpan(text: "\n")
-						]
+
+				bool toContinue = true;
+
+				List<HighlightRule> rls = allSyntaxRules(context, variables, noteId, hotRefresh).sublist(1);
+				for(HighlightRule r in rls){
+					Match? m = r.regex.firstMatch(txt);
+					if(m != null){
+						if(m.group(0)!.length == txt.length){
+							toContinue = false;
+						}
+					}
+				}
+
+				if(!toContinue){
+					return applyRules(
+						context: context,
+						content: txt,
+						rules: allSyntaxRules(context, variables, noteId, hotRefresh).sublist(1),
+						id: noteId
 					);
 				}
 
+				// print(RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>').hasMatch(txt));
+				// Detected as Syntax-Hihglighting
+				// For some languages like rust the tag detection is issue, to fix:
+
+				// if(txt.contains("```")){
+				// 	return TextSpan(
+				// 		children: [
+				// 			const TextSpan(text: "\n"),
+				// 			WidgetSpan(
+				// 				child: MarkdownWidget(
+				// 					content: txt,
+				// 					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+				// 				)
+				// 			),
+				// 			const TextSpan(text: "\n")
+				// 		]
+				// 	);
+				// }
+
+				// print(opt.recognizer);
+				// debugPrint("${'\n ' * 12}$txt");
+
 				// Detected as HTML
 				return applyHtmlRules(
-					context:context,
+					context: context,
 					txt: txt,
 					variables: variables,
+					recognizer: opt.recognizer,
 					noteId: noteId,
 					hotRefresh: hotRefresh,
 					forceStyle: const TextStyle()
@@ -256,6 +257,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				for(InlineSpan span in appliedRules){
 					if(span is TextSpan){
 						if(span.children == null){
+							// print(span.text);
 							TextSpan collected = TextSpan(
 								text: span.text,
 								style: span.style,
@@ -422,6 +424,52 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				);
 			}
 		),
+
+
+
+
+
+		
+		/*
+		// {@HTMl}
+		HighlightRule(
+			label: "html",
+			// regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
+			regex: RegExp(r'<(?<tag>\w+)(.*?)>([^<]+(?:<(?!\/\k<tag>\s*>)[\s\S]*?)?)?<\/\k<tag>\s*>|<?<tag>\w+[^>]*\s*\/?>|<(\w+)[^>]*\s*\/?>'),
+			action: (txt, opt){
+				// print(RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>').hasMatch(txt));
+				// Detected as Syntax-Hihglighting
+				// For some languages like rust the tag detection is issue, to fix:
+				if(txt.contains("```")){
+					return TextSpan(
+						children: [
+							const TextSpan(text: "\n"),
+							WidgetSpan(
+								child: MarkdownWidget(
+									content: txt,
+									height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+								)
+							),
+							const TextSpan(text: "\n")
+						]
+					);
+				}
+
+				print(opt.recognizer);
+
+				// Detected as HTML
+				return applyHtmlRules(
+					context: context,
+					txt: txt,
+					variables: variables,
+					noteId: noteId,
+					hotRefresh: hotRefresh,
+					forceStyle: const TextStyle()
+				);
+			},
+		),
+		*/
+
 
 
 		// etc..

@@ -16,6 +16,20 @@ TextSpan formattingTexts({
 	TapGestureRecognizer? recognizer}){
 	// using this function in rules list prevent to 'over-flow' error
 
+
+	// content.splitMapJoin(
+	// 	RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
+	// 	onMatch: (Match m){
+	// 		print(m.group(0)!);
+	// 		return "";
+	// 	},
+	// 	onNonMatch: (n){
+	// 		// print(n);
+	// 		return "";
+	// 	}
+	// );
+
+
 	TextSpan applied = applyRules(
 		context: context,
 		content: content,
