@@ -172,11 +172,52 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Item}
 		HighlightRule(
 			label: "item",
-			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
+			// regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
+			// regex: RegExp(r'((^\s*(-|\+|\*)\s+).*(?:\n^\h+.*)*)'),
+			// regex: RegExp(r'((^(-|\+|\*)\s+).*(?:\n^\h+.*$)*)', multiLine: true),
+			// regex: RegExp(r'((^(-|\+|\*)\s+).*(?:\n^\h+.*?$)*)'),
+			// regex: RegExp(r'(^(-|\+|\*)\s+).*(?:\n^\h+.*?$)*', multiLine: true),
+
+
+
+			// regex: RegExp(r'^(\s*(-|\+|\*)\s+.*(?:\n\s+.*?)?(.*)$)', multiLine: true),
+
+
+
+			// regex: RegExp(r'^((-|\+|\*)\s+.*?(?:\n\s?).*)', multiLine: true),
+			// regex: RegExp(r'^(-|\+|\*)\h+.*(?:\n\h+.*)*', multiLine: true),
+
+
+
+			// regex: RegExp(r'^(-|\+|\*)\s+.*(?:\n\s+.*)?', multiLine: true),
+
+
+			// // Working (Maximum amount of whitespace)
+			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
+			// // Working (Minimum amount of whitespace)
+			regex: RegExp(r'^(?!\s*$)(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
+
+
+
+
+			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!\1(-|\+|\*)\s|$)\s+.*)?', multiLine: true),
+			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!(\s*)(-|\+|\*)\s|\s{0}(-|\+|\*)\s|$)\s+.*)?', multiLine: true),
+			
+
+			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!(\s*)(-|\+|\*)\s|$)\s+.*)?'),
+			//regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!\s+(-|\+|\*)\s|$)\s+.*)?'),
+			// regex: RegExp(r'^(?:\s*[-+*]\s.*(?:\n\s+(?![\s*+-]).*)?)'),
+
+			// ^\s*(-|\+|\*)\s+
+
 			// regex: RegExp(r'^\s*(-|\+|\*)\s+(.*[^\n]\s)*?'),
 			// regex: RegExp(r'^\s*(-|\+|\*)\s+((?:.*(?:[^-]|\n)){2})'),
 			// regex: RegExp(r'^\s*([-+\*])\s+([\s\S]*?)(?=\n{2})'),
 			action: (txt, _){
+
+				// txt = txt.replaceAll("\n", "");
+				// print(">" + txt.trim().substring(1).trim() + "<");
+
 				int iLvl = getIndentationLevel(txt);
 				int step = iLvl - lastIndent;
 				if(step != 0){
@@ -198,7 +239,8 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 							Icons.square,
 							size: 8,
 						),
-						indentation: indentStep * 20,
+						// TODO: Fix indentation by value not space
+						indentation: indentStep * 0,
 						data: TextSpan(
 							children: [formattingTexts(
 								context: context,
@@ -257,6 +299,17 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			// regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\(([\s\S]*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			action: (txt, _){
+
+				// if(txt.contains("What is the best prompt style in the configuration wizard?")){
+				// 	debugPrint("HYPER DETECTED !");
+				// 	debugPrint(txt);
+				// 	print("---------\n\n");
+				// 	// debugPrint(txt);
+				// 	// debugPrint("${txt.contains('\n')}");
+				// }
+				// txt = txt.replaceAll("\n", "");
+
+
 				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
 				String name = txt.substring(1, lastWhere.start);
 				String link = txt.substring(lastWhere.end - 1);
