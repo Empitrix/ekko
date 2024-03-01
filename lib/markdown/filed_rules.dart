@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 
 List<RegexFormattingStyle> allFieldRules(BuildContext context){
 
-	TextStyle reApllyStyle = Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
+	TextStyle reApplyStyle = Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 		color: Theme.of(context).colorScheme.inverseSurface,
 		fontFamily: "RobotoMono"
 	);
-	ReApllyFieldRules reAplly = ReApllyFieldRules(context: context, style: reApllyStyle);
+	ReApplyFieldRules reApply = ReApplyFieldRules(context: context, style: reApplyStyle);
 
 
 	return <RegexFormattingStyle>[
@@ -107,6 +107,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 		// {@Table}
 		RegexActionStyle(
 			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
+			// regex: RegExp(r'(\|(\s?[^\n])*\|)+'),
 			style: const TextStyle(),
 			action: (String txt, _){
 				TextStyle borderStyle = const TextStyle(color: Colors.orange);
@@ -163,7 +164,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 							style: const TextStyle(
 								color: Colors.deepOrange, fontWeight: FontWeight.bold)
 						),
-						reAplly.parse(txt.substring(char.end)),
+						reApply.parse(txt.substring(char.end)),
 						// TextSpan(text: txt.substring(char.end))
 					]
 				);
@@ -237,10 +238,10 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 
 
 
-class ReApllyFieldRules {
+class ReApplyFieldRules {
 	final BuildContext context;
 	final TextStyle style;
-	ReApllyFieldRules({required this.context, required this.style});
+	ReApplyFieldRules({required this.context, required this.style});
 
 	TextSpan parse(String input){
 		return ApplyRegexFormattingStyle(

@@ -95,7 +95,13 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "markdown",
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
+			// regex: RegExp(r'```([\s\S]*?)```', multiLine: true),
+			// action: (_, __) => TextSpan(),
 			action: (txt, _){
+				// if(txt.contains("|")) print("\n\n\n\n$txt\n\n\n\n\n");
+				// print(txt.contains(RegExp(r'(\s*\|[\s\S]*?\|\s?$)+')));
+				print(RegExp(r'(\s*\|[\s\S]*?\|\s?$)+').firstMatch(txt)?.group(0));
+
 				return TextSpan(
 					children: [
 						const TextSpan(text: "\n"),
