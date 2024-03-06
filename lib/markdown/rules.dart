@@ -9,7 +9,6 @@ import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
-import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/markdown/table.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
@@ -95,6 +94,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "markdown",
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
+			// regex: RegExp(r'``` *(\w+)\n([\s\S]+?)\n```', multiLine: true),
 			action: (txt, _){
 				return TextSpan(
 					children: [
@@ -169,6 +169,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			},
 		),
 
+		/*
 		// {@Item}
 		HighlightRule(
 			label: "item",
@@ -254,6 +255,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				);
 			},
 		),
+		*/
 
 
 
@@ -274,7 +276,18 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			// regex: RegExp(r'(\s+[\|].*[^\|]*?)+'),
 			// regex: RegExp(r'((\|([^\n])*\|)\n?)+'),
 			// regex: RegExp(r'(\n?\|(\s?[^\n])*\|)+'),
-			regex: RegExp(r'(\|(\s?[^\n])*\|)+'),
+
+			// regex: RegExp(r'(\|(\s?[^\n])*\|)+'),
+			// regex: RegExp(r'(?:\h*\|.*?(?=\s*\|)(?:\s*\||$)(?:\n|$))+'),
+			// regex: RegExp(r'(?:\s*\|.*?(?=\s*\|)(?:\s*\||$)(?:\n|$))+', multiLine: true),
+			// regex: RegExp(r'(\s*\|.*?(?=\s*\|)(?:\s*\||$)(?:\n|$))+', multiLine: true),
+			// regex: RegExp(r'(?:\|.*?(?=\|)(?:\||$)(?:\n|$))(?:\n\n|\n)(?:\|.*?(?=\|)(?:\||$)(?:\n|$))*', multiLine: true),
+			// regex: RegExp(r'((^\s*([^\\n ].*)\n?)(?=[^\n]))+'),
+			// regex: RegExp(r'(\s?((?:|\s{1,}[^\n])\|[^\n]*\|)+)+'),
+			// regex: RegExp(r'(\s?((?:|\s{1,}[^\n])\|[^\n]*\|(?:\s|$))){3,}'),
+			// regex: RegExp(r'(\s?((?:|\s{0,}[^\n])\|.*\|(?:\s|$))){3,}'),
+			// regex: RegExp(r'(^\h*?\|.*\|\h?$\s?)+'),
+			regex: RegExp(r'^( *?(?!semi)\|.*\|\s?)+'),
 
 			action: (txt, _){
 				// return getTableSpan(context: context, txt: txt, variables: variables);

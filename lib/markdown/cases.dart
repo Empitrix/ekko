@@ -55,12 +55,13 @@ TextSpan applyRules({
 		onNonMatch: (n) {
 			spans.add(
 				TextSpan(
+				text: n,
 					// text: nonMatchedText,
 					// text: n != "\n" ? n.replaceAll(RegExp(r'\n(?!\n)'), "") : n,
 					// text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)'), "") : n,
 
 					// text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)[^$]'), "") : n,
-					text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)(?!$)'), "") : n,
+					// text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)(?!$)'), "") : n,
 					style: Provider.of<ProviderManager>(context).defaultStyle
 				)
 			);
