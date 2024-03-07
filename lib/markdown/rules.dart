@@ -9,6 +9,7 @@ import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
+import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/markdown/table.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
@@ -77,6 +78,22 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 
 				// Detected as HTML
 				// return TextSpan();
+				try{
+					return applyHtmlRules(
+						context: context,
+						txt: txt,
+						variables: variables,
+						recognizer: opt.recognizer,
+						noteId: noteId,
+						hotRefresh: hotRefresh,
+						forceStyle: const TextStyle()
+					);
+				} catch(_){
+					// TODO: STACK-OVERFLOW ERR
+					debugPrint("ERR: $_");
+					return const TextSpan();
+				}
+				/*
 				return applyHtmlRules(
 					context: context,
 					txt: txt,
@@ -86,6 +103,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					hotRefresh: hotRefresh,
 					forceStyle: const TextStyle()
 				);
+				*/
 			},
 		),
 
@@ -169,7 +187,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			},
 		),
 
-		/*
 		// {@Item}
 		HighlightRule(
 			label: "item",
@@ -196,7 +213,15 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			// // Working (Maximum amount of whitespace)
 			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
 			// // Working (Minimum amount of whitespace)
-			regex: RegExp(r'^(?!\s*$)(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
+			// regex: RegExp(r'^(?!\s*$)(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
+
+
+
+			regex: RegExp(r'(^ *?[\+\-\*]\s.*\n(^ (?:(?!\s*[-+*0-9]).*)*$)|^ *?[\+\-\*]\s.*)', multiLine: true),
+
+
+			// regex: RegExp(r'^ *?[\+\-\*]\s.*(?(?=\b\s+(?![\+\-\*])\b)\n(?: .*\n)|$)'),
+			// regex: RegExp(r'(^ *?[\+\-\*]\s.*\n +.*|^ *?[\+\-\*]\s(?![0-9])(?![\-\+\*]).*)'),
 
 
 
@@ -240,8 +265,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 							Icons.square,
 							size: 8,
 						),
-						// TODO: Fix indentation by value not space
-						indentation: indentStep * 0,
+						indentation: indentStep * 20,
 						data: TextSpan(
 							children: [formattingTexts(
 								context: context,
@@ -255,7 +279,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				);
 			},
 		),
-		*/
 
 
 
