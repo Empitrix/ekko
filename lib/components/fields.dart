@@ -157,9 +157,11 @@ class ContentTextFiled extends StatelessWidget {
 	final AwesomeController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
+	final ValueChanged<LineStatus> lineChanged;
 	const ContentTextFiled({
 		super.key,
 		required this.controller,
+		required this.lineChanged,
 		required this.focusNode,
 		required this.previousFocus
 	});
@@ -211,6 +213,8 @@ class ContentTextFiled extends StatelessWidget {
 										const Color(0xff1a232e):
 										const Color(0xffc8dffa),
 								),
+								// lineChanged: (LineStatus status){},
+								lineChanged: lineChanged,
 								regexStyle: allFieldRules(context),
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,

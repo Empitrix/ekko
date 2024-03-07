@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:ekko/components/editor/buffer.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:flutter/services.dart';
@@ -41,6 +44,7 @@ class ModifyPageState extends State<ModifyPage> {
 	FocusNode descriptionF = FocusNode();
 	AwesomeController content = AwesomeController();
 	ValueNotifier<List<String>> tags = ValueNotifier([]);
+	ValueNotifier<LineStatus> lineStatus = ValueNotifier(LineStatus(lineNumber: 0, lineHeight: 20, currentLine: 0));
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;
@@ -300,8 +304,13 @@ class ModifyPageState extends State<ModifyPage> {
 								ContentTextFiled(
 									controller: content,
 									focusNode: contentF,
+									lineChanged: (LineStatus status){
+										Future.microtask((){
+											lineStatus.value = status;
+										});
+									},
 									previousFocus: () => descriptionF.requestFocus()
-								)
+								),
 								// SizedBox(
 								// 	// height: MediaQuery.sizeOf(context).height,
 								// 	child: ContentTextFiled(
@@ -310,6 +319,19 @@ class ModifyPageState extends State<ModifyPage> {
 								// 		previousFocus: () => descriptionF.requestFocus()
 								// 	)
 								// )
+
+								ValueListenableBuilder(
+									valueListenable: lineStatus,
+									builder: (_, status, __){
+										return EditorBuffer(
+											controller: content,
+											lineStatus: status,
+											note: widget.note,
+											folderId: widget.folderId,
+										);
+									}
+								)
+
 							],
 						);
 

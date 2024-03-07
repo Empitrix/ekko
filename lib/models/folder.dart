@@ -49,7 +49,7 @@ class Folder {
 }
 
 
-class FolderInfo{
+class FolderInfo {
 	final String name;
 	final int id;
 	FolderInfo({
