@@ -233,28 +233,6 @@ class ModifyPageState extends State<ModifyPage> {
 						// Loading
 						if(!isLoaded){return const Center(child: CircularProgressIndicator());}
 						// Widgets
-						Widget header = Padding(
-							padding: const EdgeInsets.all(12),
-							child: Column(
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children: [
-									TitleTextField(
-										controller: title,
-										focusNode: titleF,
-										autofocus: widget.note == null,
-										nextFocus: () => descriptionF.requestFocus(),
-									),
-									DescriptionTextFiled(
-										controller: description,
-										tags: tags,
-										focusNode: descriptionF,
-										previousFocus: () => titleF.requestFocus(),
-										nextFocus: () => contentF.requestFocus()
-									),
-								],
-							),
-						);
-						/*
 						Widget header = ListView(
 							padding: EdgeInsets.zero,
 							children: [
@@ -279,7 +257,7 @@ class ModifyPageState extends State<ModifyPage> {
 										],
 									),
 								),
-								// const SizedBox(height: 20),
+								const SizedBox(height: 20),
 								// ContentTextFiled(
 								// 	controller: content,
 								// 	focusNode: contentF,
@@ -287,29 +265,14 @@ class ModifyPageState extends State<ModifyPage> {
 								// )
 							],
 						);
-						*/
-
-
 						return Column(
-							crossAxisAlignment: CrossAxisAlignment.start,
-							mainAxisAlignment: MainAxisAlignment.start,
 							children: [
-								// Expanded(child: header),
 								header,
-								// SizedBox(height: 250, child: header),
 								ContentTextFiled(
 									controller: content,
 									focusNode: contentF,
 									previousFocus: () => descriptionF.requestFocus()
 								)
-								// SizedBox(
-								// 	// height: MediaQuery.sizeOf(context).height,
-								// 	child: ContentTextFiled(
-								// 		controller: content,
-								// 		focusNode: contentF,
-								// 		previousFocus: () => descriptionF.requestFocus()
-								// 	)
-								// )
 							],
 						);
 
