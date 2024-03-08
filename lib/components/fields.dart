@@ -219,7 +219,8 @@ class ContentTextFiled extends StatelessWidget {
 								regexStyle: allFieldRules(context),
 
 								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 5)) - (MediaQuery.of(context).viewInsets.bottom > 0 ? 275 : 0),
-								widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 5)) - (MediaQuery.of(context).viewInsets.bottom),
+								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
+								widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
 
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,
