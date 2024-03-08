@@ -158,12 +158,14 @@ class ContentTextFiled extends StatelessWidget {
 	final AwesomeController controller;
 	final FocusNode focusNode;
 	final Function previousFocus;
+	final double widgetHeight;
 	final ValueChanged<LineStatus> lineChanged;
 	const ContentTextFiled({
 		super.key,
 		required this.controller,
 		required this.lineChanged,
 		required this.focusNode,
+		required this.widgetHeight,
 		required this.previousFocus
 	});
 
@@ -220,7 +222,9 @@ class ContentTextFiled extends StatelessWidget {
 
 								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 5)) - (MediaQuery.of(context).viewInsets.bottom > 0 ? 275 : 0),
 								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
-								widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
+								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
+
+								widgetHeight: widgetHeight,
 
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,

@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:ekko/animation/expand.dart';
 import 'package:ekko/components/editor/buffer.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
@@ -16,6 +15,8 @@ import 'package:ekko/io/md_file.dart';
 import 'package:ekko/models/file_out.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 
 
 class ModifyPage extends StatefulWidget {
@@ -37,7 +38,8 @@ class ModifyPage extends StatefulWidget {
 	State<ModifyPage> createState() => ModifyPageState();
 }
 
-class ModifyPageState extends State<ModifyPage> {
+class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
+
 	TextEditingController title = TextEditingController();
 	FocusNode titleF = FocusNode();
 	TextEditingController description = TextEditingController();
@@ -49,6 +51,10 @@ class ModifyPageState extends State<ModifyPage> {
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;
 	bool isLoaded = false;  // For imported notes
+
+	late GenAnimation headerAnim;
+
+	GlobalKey headerKey = GlobalKey();
 
 
 	void _backClose({bool isNew = false, bool force = false}){
@@ -153,24 +159,36 @@ class ModifyPageState extends State<ModifyPage> {
 		descriptionF.requestFocus();
 	}
 
+	void initializeAnimations(){
+		headerAnim = generateLinearAnimation(
+			ticket: this, initialValue: 1);
+	}
+
+	void initializeListiners(){
+		contentF.addListener(() {
+			if(contentF.hasFocus){
+				headerAnim.controller.reverse();
+				// headerAnim.controller.reverse().then((_) => setState(() {}));
+				// setState(() {});
+			} else {
+				headerAnim.controller.forward();
+				// headerAnim.controller.forward().then((_) => setState(() {}));
+				// setState(() {});
+			}
+		});
+	}
+
 	@override
 	void initState() {
 		loadTheNote();
+		initializeAnimations();
+		initializeListiners();
 		titleF.requestFocus();  // Auto request for ttiel (prime field)
 		super.initState();
 	}
 
 	@override
 	Widget build(BuildContext context) {
-
-
-
-		// if(WidgetsBinding.instance.window.viewInsets.bottom > 0.0){
-		// 	debugPrint(".\n\nVISIBLE\n\nValue: ${WidgetsBinding.instance.window.viewInsets.bottom}\n.");
-		// } else {
-		// 	debugPrint(".\n\nHIDE\n\n.");
-		// }
-
 		return PopScope(
 			canPop: false,
 			onPopInvoked: (bool didPop) async {
@@ -226,7 +244,6 @@ class ModifyPageState extends State<ModifyPage> {
 								icon: Icon(
 									Icons.check,
 									color: dMode ?
-										// Theme.of(context).colorScheme.primary:
 										Colors.pink:
 										Colors.amber,
 								),
@@ -247,6 +264,7 @@ class ModifyPageState extends State<ModifyPage> {
 						if(!isLoaded){return const Center(child: CircularProgressIndicator());}
 						// Widgets
 						Widget header = Padding(
+							key: headerKey,
 							padding: const EdgeInsets.all(12),
 							child: Column(
 								crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,19 +325,52 @@ class ModifyPageState extends State<ModifyPage> {
 							crossAxisAlignment: CrossAxisAlignment.start,
 							mainAxisAlignment: MainAxisAlignment.start,
 							children: [
-								// Expanded(child: header),
-								header,
-								// SizedBox(height: 250, child: header),
-								ContentTextFiled(
-									controller: content,
-									focusNode: contentF,
-									lineChanged: (LineStatus status){
-										Future.microtask((){
-											lineStatus.value = status;
-										});
-									},
-									previousFocus: () => descriptionF.requestFocus()
+								expandAnimation(
+									animation: headerAnim.animation,
+									mode: ExpandMode.height,
+									body: header
 								),
+								// const Row(
+								// 	mainAxisAlignment: MainAxisAlignment.end,
+								// 	children: [
+								// 		Icon(Icons.open_with)
+								// 	],
+								// ),
+
+								AnimatedBuilder(
+									animation: headerAnim.animation,
+									builder: (BuildContext context, Widget? child){
+										// Calculate current widget height
+										double cwh = ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14));
+										cwh = cwh - (MediaQuery.of(context).viewInsets.bottom);
+										double currentLost = ((headerAnim.animation.value - 1) * 128);
+										cwh = cwh - currentLost;
+
+										return ContentTextFiled(
+											controller: content,
+											focusNode: contentF,
+											widgetHeight: cwh,
+											lineChanged: (LineStatus status){
+												Future.microtask((){
+													lineStatus.value = status;
+												});
+											},
+											previousFocus: () => descriptionF.requestFocus()
+										);
+									}
+								),
+								// ContentTextFiled(
+								// 	controller: content,
+								// 	focusNode: contentF,
+								// 	widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom) - (headerAnim.animation.value == 1 ? 0 : -128),
+								// 	lineChanged: (LineStatus status){
+								// 		Future.microtask((){
+								// 			lineStatus.value = status;
+								// 		});
+								// 	},
+								// 	previousFocus: () => descriptionF.requestFocus()
+								// ),
+
 								// SizedBox(
 								// 	// height: MediaQuery.sizeOf(context).height,
 								// 	child: ContentTextFiled(
@@ -328,6 +379,17 @@ class ModifyPageState extends State<ModifyPage> {
 								// 		previousFocus: () => descriptionF.requestFocus()
 								// 	)
 								// )
+
+								// // Sized: 128
+								// Builder(builder: (ctx){
+								// 	WidgetsBinding.instance.addPostFrameCallback((_){
+								// 		if(headerKey.currentContext != null){
+								// 			RenderBox a = headerKey.currentContext!.findRenderObject() as RenderBox;
+								// 			debugPrint("Header Height: ${a.size.height}");
+								// 		}
+								// 	});
+								// 	return const SizedBox();
+								// }),
 
 								ValueListenableBuilder(
 									valueListenable: lineStatus,
