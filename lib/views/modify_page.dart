@@ -162,6 +162,15 @@ class ModifyPageState extends State<ModifyPage> {
 
 	@override
 	Widget build(BuildContext context) {
+
+
+
+		// if(WidgetsBinding.instance.window.viewInsets.bottom > 0.0){
+		// 	debugPrint(".\n\nVISIBLE\n\nValue: ${WidgetsBinding.instance.window.viewInsets.bottom}\n.");
+		// } else {
+		// 	debugPrint(".\n\nHIDE\n\n.");
+		// }
+
 		return PopScope(
 			canPop: false,
 			onPopInvoked: (bool didPop) async {

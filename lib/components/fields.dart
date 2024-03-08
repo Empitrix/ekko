@@ -1,4 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';
@@ -216,6 +217,10 @@ class ContentTextFiled extends StatelessWidget {
 								// lineChanged: (LineStatus status){},
 								lineChanged: lineChanged,
 								regexStyle: allFieldRules(context),
+
+								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 5)) - (MediaQuery.of(context).viewInsets.bottom > 0 ? 275 : 0),
+								widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 5)) - (MediaQuery.of(context).viewInsets.bottom),
+
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,
 									fontFamily: "RobotoMono"
