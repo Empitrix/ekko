@@ -344,7 +344,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 										double cwh = ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14));
 										cwh = cwh - (MediaQuery.of(context).viewInsets.bottom);
 										double currentLost = ((headerAnim.animation.value - 1) * 128);
-										cwh = cwh - currentLost;
+										cwh = cwh - (currentLost) -
+											(currentLost == 0 ? 0 : !isDesktop() ? -12 : 0);
 
 										return ContentTextFiled(
 											controller: content,
