@@ -138,8 +138,12 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			action: (txt, _){
 				txt = txt.trim();
 				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
+				String content = txt.substring(sharpLength + 1);
+				Key headerKey = Key(content.toLowerCase().replaceAll(RegExp(r'\W'), "-"));
+				// print(headerKey);
 				TextSpan span = TextSpan(
-					text: txt.substring(sharpLength + 1),
+					// text: txt.substring(sharpLength + 1),
+					text: content,
 					// style: getHeadlineStyle(context, sharpLength).merge(_.forceStyle)
 					style: getHeadlineStyle(context, sharpLength)
 				);
@@ -148,7 +152,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 						child: Column(
 							crossAxisAlignment: CrossAxisAlignment.start,
 							children: [
-								Text.rich(TextSpan(children: [
+								Text.rich(key: headerKey, TextSpan(children: [
 									endLineChar(),
 									span
 								])),
@@ -157,7 +161,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 						)
 					);
 				}
-				return span;
+				// return WidgetSpan(child: Column(children: [Expanded(child:Text.rich(span))]));
+				return TextSpan(children: [
+					WidgetSpan(child: Text.rich(key: headerKey, span)),
+					const TextSpan(text: "\n")
+				]);
 			},
 		),
 
@@ -337,17 +345,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 			// regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\(([\s\S]*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			action: (txt, _){
-
-				// if(txt.contains("What is the best prompt style in the configuration wizard?")){
-				// 	debugPrint("HYPER DETECTED !");
-				// 	debugPrint(txt);
-				// 	print("---------\n\n");
-				// 	// debugPrint(txt);
-				// 	// debugPrint("${txt.contains('\n')}");
-				// }
-				// txt = txt.replaceAll("\n", "");
-
-
 				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
 				String name = txt.substring(1, lastWhere.start);
 				String link = txt.substring(lastWhere.end - 1);

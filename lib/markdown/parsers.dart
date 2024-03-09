@@ -61,6 +61,18 @@ double getNonRenderedWidgetSize(Widget input){
 
 
 TapGestureRecognizer useLinkRecognizer(BuildContext context, String link){
+	link = link.trim();
+	if(link.substring(0, 1) == "#"){
+		link = link.substring(1).toLowerCase().replaceAll(RegExp(r'\W'), "-");
+		// KeyedSubtree a = KeyedSubtree(key: headerKey, child: Container());
+		// print(a.child.key);
+		// return TapGestureRecognizer()..onTap = () async {
+		// 	Scrollable.ensureVisible(
+		// 	headerKey.currentContext!,
+		// 		duration: const Duration(milliseconds: 200)
+		// 	);
+		// };
+	}
 	return TapGestureRecognizer()..onTap = () async {
 		await launchThis(
 			context: context, url: link);
