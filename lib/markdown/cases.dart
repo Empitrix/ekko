@@ -1,5 +1,6 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 TextSpan applyRules({
 	required BuildContext context,
 	required String content,
+	required GlobalKeyManager keyManager,
 	required List<HighlightRule> rules,
 	required int id,
 	TapGestureRecognizer? recognizer,
@@ -16,7 +18,6 @@ TextSpan applyRules({
 	}){
 	
 	List<InlineSpan> spans = [];
-	//** bool trimNext = false;
 
 	content.splitMapJoin(
 		RegExp(rules.map((rule) => rule.regex.pattern).join('|'), multiLine: true),
@@ -36,32 +37,13 @@ TextSpan applyRules({
 				forceStyle: forceStyle
 			);
 
-
-			// content.splitMapJoin(
-			// 	RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>', multiLine: true),
-			// 	onMatch: (Match m){
-			// 		// print(m.group(0)!);
-			// 		return "";
-			// 	},
-			// 	onNonMatch: (n){
-			// 		return "";
-			// 	}
-			// );
-
 			spans.add(mRule.action(mText, opt));  // Add the releated rule
-
 			return "";
 		},
 		onNonMatch: (n) {
 			spans.add(
 				TextSpan(
-				text: n,
-					// text: nonMatchedText,
-					// text: n != "\n" ? n.replaceAll(RegExp(r'\n(?!\n)'), "") : n,
-					// text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)'), "") : n,
-
-					// text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)[^$]'), "") : n,
-					// text: n.replaceAll("\n", "").isNotEmpty ? n.replaceAll(RegExp(r'\n(?!\n)(?!$)'), "") : n,
+					text: n,
 					style: Provider.of<ProviderManager>(context).defaultStyle
 				)
 			);
@@ -71,3 +53,4 @@ TextSpan applyRules({
 
 	return TextSpan(children: spans);
 }
+

@@ -1,5 +1,6 @@
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:flutter/material.dart';
 
 Map<String, String> variables = {};
@@ -40,6 +41,7 @@ class MDGenerator extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 
+		GlobalKeyManager keyManager = GlobalKeyManager();
 		String data = "";
 
 		// Apply rules and add to widgetTree
@@ -75,8 +77,6 @@ class MDGenerator extends StatelessWidget {
 				}
 			);
 		}
-
-
 		/*
 			NOTE:
 				Put images in a row (remove end-line char in `[!...]`) 
@@ -86,12 +86,11 @@ class MDGenerator extends StatelessWidget {
 				this part can be deleted and instead of `rowInData` can be only data += '\n'
 				and don't need to formatize the images that contaisn [![]...] regex!
 		*/
-		// {@Image-GFM}
+		// {@Image-GFM} (remove spaces between images)
 		bool isFirst = true;
 		String rowInData = "";
 		data.splitMapJoin(
 			// Two way to use regex (for all the white-spaces || for only one end-line (\n))
-			// RegExp(r'\s*\[\!.*(\)|\])'),
 			RegExp(r'\n\[\!.*(\)|\])'),
 			onMatch: (Match m){
 				rowInData += "${isFirst ? '\n' : ''}${m.group(0)!.trim()}";
@@ -104,46 +103,18 @@ class MDGenerator extends StatelessWidget {
 			}
 		);
 
-
-
-		// // Apply GFM end-line
-		// String gfmEndlined = "";
-
-		// rowInData.splitMapJoin(
-		// 	RegExp(r'(^(-|\+|\*)\s+).*(?:\n^\h+.*?$)*', multiLine: true),
-		// 	onMatch: (Match m){
-		// 		// One less
-		// 		print("------------------");
-		// 		print(m.group(0)!);
-		// 		print("------------------\n\n\n\n");
-		// 		gfmEndlined += m.group(0)!.replaceAll("\n", "");
-		// 		return "";
-		// 	},
-		// 	onNonMatch: (n){
-		// 		gfmEndlined += n;
-		// 		return "";
-		// 	}
-		// );
-		// data = "$gfmEndlined\n";
-
-
 		data = "$rowInData\n";
-
-		/* {@GFM end} */
-		// Other (not GFM): ```dart
-		// 	data += "\n";
-		// ```
-
-		// data = data.replaceAll(RegExp(r'\n$', multiLine: true), "");
-
 
 		TextSpan spanWidget = applyRules(
 			context: context,
+			keyManager: keyManager,
 			id: noteId,
-			// content: content,
-			// variables: variables
 			content: data,
-			rules: allSyntaxRules(context, variables, noteId, hotRefresh)
+			rules: allSyntaxRules(
+				context: context, variables: variables,
+				noteId: noteId,
+				hotRefresh: hotRefresh,
+				keyManager: keyManager)
 		);
 
 		return Text.rich(spanWidget);

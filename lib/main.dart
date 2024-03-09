@@ -21,8 +21,8 @@ Future<void> main() async {
 			const WindowOptions(titleBarStyle: TitleBarStyle.hidden), (){});
 
 		doWhenWindowReady(() async {
-			appWindow.minSize = const Size(600, 450);
-			appWindow.size = const Size(800, 550);
+			appWindow.minSize = const Size(500, 450);
+			appWindow.size = const Size(580, 700);
 			appWindow.title = "Ekko";
 			appWindow.show();
 		});

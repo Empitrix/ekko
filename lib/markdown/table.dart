@@ -1,5 +1,6 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 InlineSpan getTableSpan({
 	required BuildContext context,
 	required String txt,
+	required GlobalKeyManager keyManager,
 	required Map variables,
 	required int id,
 	required Function hotRefresh,
@@ -97,7 +99,12 @@ InlineSpan getTableSpan({
 						alignment: alignment[idx - 1],
 						child: Text.rich(
 							// Add markdonw styles
-							formattingTexts(context: context, content: row.trim(), variables: variables, id: id, hotRefresh: hotRefresh),
+							formattingTexts(
+								context: context,
+								content: row.trim(),
+								variables: variables,
+								id: id, hotRefresh: hotRefresh,
+								keyManager: keyManager),
 							// TextSpan(text: "XXX"),
 							style: Provider.of<ProviderManager>(context).defaultStyle
 						),

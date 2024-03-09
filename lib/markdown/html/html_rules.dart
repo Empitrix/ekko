@@ -5,11 +5,19 @@ import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/html/html_utils.dart';
 import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/parsers.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/material.dart';
 
 
-List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int noteId, Function hotRefresh, TextStyle? forceStyle){
+List<HtmlHighlightRule> allHtmlRules({
+	required BuildContext context,
+	required Map variables,
+	required GlobalKeyManager keyManager,
+	required int noteId,
+	required Function hotRefresh,
+	required TextStyle? forceStyle
+}){
 	return [
 
 		// {@Headlines}
@@ -29,6 +37,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 							Text.rich(htmlFormatting(
 								context: context,
 								content: txt,
+								keyManager: keyManager,
 								variables: variables,
 								id: noteId,
 								hotRefresh: hotRefresh,
@@ -43,6 +52,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 										content: txt.trim(),  // IDK about triming
 										variables: variables,
 										id: noteId,
+										keyManager: keyManager,
 										hotRefresh: hotRefresh,
 										option: opt
 									))
@@ -67,11 +77,12 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 					decoration: TextDecoration.underline,
 					decorationColor: Colors.blue).merge(opt.forceStyle);
 				opt.recognizer = useLinkRecognizer(
-					context, opt.data.attributes['href'] ?? "");
+					context, opt.data.attributes['href'] ?? "", keyManager);
 
 				// debugPrint("\n\n\nA-TAG detected: ${txt.replaceAll('\n', ' ')} -> ${opt.recognizer}");
 				return htmlFormatting(
 					context: context,
+					keyManager: keyManager,
 					content: txt,
 					variables: variables,
 					id: noteId,
@@ -92,6 +103,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 						children: [
 							Text.rich(htmlFormatting(
 								context: context,
+								keyManager: keyManager,
 								content: txt,
 								variables: variables,
 								id: noteId,
@@ -113,6 +125,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 				if(opt.data.attributes["src"] == null){
 					return htmlFormatting(
 						context: context,
+						keyManager: keyManager,
 						content: _,
 						variables: variables,
 						id: noteId,
@@ -163,6 +176,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 				return htmlFormatting(
 					context: context,
 					content: txt,
+					keyManager: keyManager,
 					variables: variables,
 					id: noteId,
 					hotRefresh: hotRefresh,
@@ -202,6 +216,7 @@ List<HtmlHighlightRule> allHtmlRules(BuildContext context, Map variables, int no
 						children: [
 							Text.rich(htmlFormatting(
 								context: context,
+								keyManager: keyManager,
 								content: txt.trim(),  // IDK about triming
 								variables: variables,
 								id: noteId,

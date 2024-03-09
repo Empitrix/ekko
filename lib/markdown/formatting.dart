@@ -1,5 +1,6 @@
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ TextSpan formattingTexts({
 	required String content,
 	required Map variables,
 	required int id,
+	required GlobalKeyManager keyManager,
 	required Function hotRefresh,
 	TextStyle? forceStyle,
 	// bool fromHTML = false,
@@ -35,8 +37,12 @@ TextSpan formattingTexts({
 		content: content,
 		id: id,
 		recognizer: recognizer,
+		keyManager: keyManager,
 		forceStyle: forceStyle,
-		rules: allSyntaxRules(context, variables, id, hotRefresh)
+		rules: allSyntaxRules(
+			context: context, variables: variables,
+			noteId: id, hotRefresh: hotRefresh,
+			keyManager: keyManager)
 	);
 
 	return applied;

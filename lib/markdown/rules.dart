@@ -11,6 +11,7 @@ import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/markdown/table.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,13 @@ int lastIndent = 0;
 int indentStep = 0;
 
 
-List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int noteId, Function hotRefresh){
+List<HighlightRule> allSyntaxRules({
+	required BuildContext context,
+	required Map variables,
+	required int noteId,
+	required GlobalKeyManager keyManager,
+	required Function hotRefresh
+}){
 	List<HighlightRule> rules = [
 
 
@@ -35,7 +42,10 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 
 				bool toContinue = true;
 
-				List<HighlightRule> rls = allSyntaxRules(context, variables, noteId, hotRefresh).sublist(1);
+				List<HighlightRule> rls = allSyntaxRules(
+					context: context, variables: variables,
+					noteId: noteId, hotRefresh: hotRefresh,
+					keyManager: keyManager).sublist(1);
 				for(HighlightRule r in rls){
 					Match? m = r.regex.firstMatch(txt);
 					if(m != null){
@@ -49,7 +59,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					return applyRules(
 						context: context,
 						content: txt,
-						rules: allSyntaxRules(context, variables, noteId, hotRefresh).sublist(1),
+						keyManager: keyManager,
+						rules: allSyntaxRules(
+							context: context, variables: variables,
+							noteId: noteId, hotRefresh: hotRefresh,
+							keyManager: keyManager).sublist(1),
 						id: noteId
 					);
 				}
@@ -84,6 +98,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 						txt: txt,
 						variables: variables,
 						recognizer: opt.recognizer,
+						keyManager: keyManager,
 						noteId: noteId,
 						hotRefresh: hotRefresh,
 						forceStyle: const TextStyle()
@@ -139,8 +154,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				txt = txt.trim();
 				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 				String content = txt.substring(sharpLength + 1);
-				Key headerKey = Key(content.toLowerCase().replaceAll(RegExp(r'\W'), "-"));
-				// print(headerKey);
+				
+				// Key headerKey = Key(content.toLowerCase().replaceAll(RegExp(r'\W'), "-"));
+				GlobalKey? headerKey = keyManager.addNewKey(content);
+				// print(content);
+
 				TextSpan span = TextSpan(
 					// text: txt.substring(sharpLength + 1),
 					text: content,
@@ -189,6 +207,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					child: CheckBoxSubList(
 						txt: txt,
 						hotRefresh: hotRefresh,
+						keyManager: keyManager,
 						noteId: noteId,
 						variables: variables,
 						nm: opt
@@ -280,6 +299,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 							children: [formattingTexts(
 								context: context,
 								variables: variables,
+								keyManager: keyManager,
 								hotRefresh: hotRefresh,
 								id: noteId,
 								content: txt.trim().substring(1).trim(),
@@ -326,7 +346,9 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				// return getTableSpan(context: context, txt: txt, variables: variables);
 				InlineSpan? outTable = runZoned((){
 					return getTableSpan(
-						context: context, txt: txt, variables: variables, id: noteId, hotRefresh: hotRefresh);
+						context: context, txt: txt,
+						variables: variables, id: noteId,
+						hotRefresh: hotRefresh, keyManager: keyManager);
 				// ignore: deprecated_member_use
 				}, onError: (e, s){
 					debugPrint("Index ERR on Loading: $e");
@@ -355,12 +377,13 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					color: Colors.blue);
 
 				List<InlineSpan> spoon = [];
-				TapGestureRecognizer rec = useLinkRecognizer(context, link);
+				TapGestureRecognizer rec = useLinkRecognizer(context, link, keyManager);
 
 				List<InlineSpan> appliedRules = formattingTexts(
 					context: context,
 					variables: variables,
 					id: noteId,
+					keyManager: keyManager,
 					hotRefresh: hotRefresh,
 					content: name,
 					recognizer: rec,
@@ -384,7 +407,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 				
 				return TextSpan(
 					children: spoon,
-					recognizer: useLinkRecognizer(context, link),
+					recognizer: useLinkRecognizer(context, link, keyManager),
 					style: linkStyle
 				);
 			}
@@ -439,7 +462,7 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 					decorationColor: Colors.blue,
 					decoration: TextDecoration.underline
 				),
-				recognizer: useLinkRecognizer(context, txt),
+				recognizer: useLinkRecognizer(context, txt, keyManager),
 			),
 		),
 

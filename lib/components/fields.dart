@@ -1,5 +1,4 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';

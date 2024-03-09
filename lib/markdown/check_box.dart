@@ -2,6 +2,7 @@ import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 class CheckBoxSubList extends StatelessWidget {
 	final String txt;
 	final Function hotRefresh;
+	final GlobalKeyManager keyManager;
 	final Map variables;
 	final int noteId;
 	final RuleOption nm;
@@ -18,6 +20,7 @@ class CheckBoxSubList extends StatelessWidget {
 		required this.txt,
 		required this.hotRefresh,
 		required this.noteId,
+		required this.keyManager,
 		required this.variables,
 		required this.nm
 	});
@@ -28,6 +31,7 @@ class CheckBoxSubList extends StatelessWidget {
 		TextSpan textData = TextSpan(
 			children: [formattingTexts(
 				context: context,
+				keyManager: keyManager,
 				variables: variables,
 				id: noteId,
 				hotRefresh: hotRefresh,

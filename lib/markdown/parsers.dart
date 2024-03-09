@@ -1,4 +1,5 @@
 import 'package:ekko/backend/launcher.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -60,18 +61,23 @@ double getNonRenderedWidgetSize(Widget input){
 }
 
 
-TapGestureRecognizer useLinkRecognizer(BuildContext context, String link){
+TapGestureRecognizer useLinkRecognizer(BuildContext context, String link, GlobalKeyManager keyManager){
 	link = link.trim();
 	if(link.substring(0, 1) == "#"){
-		link = link.substring(1).toLowerCase().replaceAll(RegExp(r'\W'), "-");
-		// KeyedSubtree a = KeyedSubtree(key: headerKey, child: Container());
-		// print(a.child.key);
-		// return TapGestureRecognizer()..onTap = () async {
-		// 	Scrollable.ensureVisible(
-		// 	headerKey.currentContext!,
-		// 		duration: const Duration(milliseconds: 200)
-		// 	);
-		// };
+		return TapGestureRecognizer()..onTap = () async {
+			GlobalKey? hKey = keyManager.getGlobalKey(link.trim().substring(1));
+			if(hKey != null && hKey.currentContext != null){
+				/* There is a glich that need to do this for 3 times for accurecy */
+				for(int i = 0; i < 3; i++){
+					await Scrollable.ensureVisible(
+						hKey.currentContext!,
+						duration: const Duration(milliseconds: 300)
+					);
+				}
+			} else {
+				debugPrint("Couldn't found: $link header");
+			}
+		};
 	}
 	return TapGestureRecognizer()..onTap = () async {
 		await launchThis(

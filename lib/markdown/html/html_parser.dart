@@ -1,6 +1,6 @@
-import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_rules.dart';
+import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -100,6 +100,7 @@ InlineSpan applyHtmlRules({
 		required String txt,
 		required Map variables,
 		required int noteId,
+		required GlobalKeyManager keyManager,
 		required Function hotRefresh,
 		required TextStyle? forceStyle,
 		TapGestureRecognizer? recognizer,
@@ -128,6 +129,7 @@ InlineSpan applyHtmlRules({
 			context: context,
 			content: txt,
 			variables: variables,
+			keyManager: keyManager,
 			id: noteId,
 			hotRefresh: hotRefresh,
 			recognizer: recognizer,
@@ -135,7 +137,10 @@ InlineSpan applyHtmlRules({
 		);
 	}
 
-	List<HtmlHighlightRule> rules = allHtmlRules(context, variables, noteId, hotRefresh, forceStyle);
+	List<HtmlHighlightRule> rules = allHtmlRules(
+		context: context, variables: variables,
+		noteId: noteId, hotRefresh: hotRefresh,
+		forceStyle: forceStyle, keyManager: keyManager);
 
 	HtmlHighlightRule? currentRule;
 	try{
