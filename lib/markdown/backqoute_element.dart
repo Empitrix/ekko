@@ -70,29 +70,63 @@ BackqouteObj getBackqouteElements(BuildContext context, String input){
 		line = line.substring(1).trim();
 		if(RegExp(r"\[\!\w+\]").allMatches(line).length == 1 && lineColor == null){
 			String nameTag = line.substring(2, line.length - 1);
-			if(["note", "tip", "important", "warning", "caution"].contains(nameTag)){
-				BackqouteOptStyle bqStyle = _getQouteStyle(nameTag);
-				spans.add(WidgetSpan(
-					child: Row(
-						crossAxisAlignment: CrossAxisAlignment.center,
-						children: [
-							Icon(bqStyle.icon, color: bqStyle.color, size: 20),
-							const SizedBox(width: 8),
-							Text(
-								bqStyle.name.title(),
-								style: TextStyle(
-									color: bqStyle.color,
-									fontWeight: FontWeight.bold,
-									letterSpacing: 0.7,
-									fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! + 1
-								),
-							)
-						],
-					)
-				));
-				lineColor = bqStyle.color;
-				continue;
+			// if(["note", "tip", "important", "warning", "caution"].contains(nameTag)){
+			// print(nameTag);
+
+			bool added = false;
+
+			for(String vtn in ["NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"]){
+				if(vtn == nameTag){
+					added = true;
+					BackqouteOptStyle bqStyle = _getQouteStyle(nameTag);
+					spans.add(WidgetSpan(
+						child: Row(
+							crossAxisAlignment: CrossAxisAlignment.center,
+							children: [
+								Icon(bqStyle.icon, color: bqStyle.color, size: 20),
+								const SizedBox(width: 8),
+								Text(
+									bqStyle.name.title(),
+									style: TextStyle(
+										color: bqStyle.color,
+										fontWeight: FontWeight.bold,
+										letterSpacing: 0.7,
+										fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! + 1
+									),
+								)
+							],
+						)
+					));
+					lineColor = bqStyle.color;
+					continue;
+				}
 			}
+
+			if(added){ continue; }
+			
+			// if(["NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"].contains(nameTag)){
+			// 	BackqouteOptStyle bqStyle = _getQouteStyle(nameTag);
+			// 	spans.add(WidgetSpan(
+			// 		child: Row(
+			// 			crossAxisAlignment: CrossAxisAlignment.center,
+			// 			children: [
+			// 				Icon(bqStyle.icon, color: bqStyle.color, size: 20),
+			// 				const SizedBox(width: 8),
+			// 				Text(
+			// 					bqStyle.name.title(),
+			// 					style: TextStyle(
+			// 						color: bqStyle.color,
+			// 						fontWeight: FontWeight.bold,
+			// 						letterSpacing: 0.7,
+			// 						fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! + 1
+			// 					),
+			// 				)
+			// 			],
+			// 		)
+			// 	));
+			// 	lineColor = bqStyle.color;
+			// 	continue;
+			// }
 		}
 
 		spans.add(
@@ -104,7 +138,10 @@ BackqouteObj getBackqouteElements(BuildContext context, String input){
 		spans.add(const TextSpan(text: "\n"));
 	}
 
-	obj.span = TextSpan(children: spans.sublist(0, spans.length - 1));
+	try{
+		obj.span = TextSpan(children: spans.sublist(0, spans.length - 1));
+	} catch(_){}
+	// obj.span = TextSpan(children: spans.sublist(0, 1));
 	obj.color = lineColor ?? Colors.grey;
 	return obj;
 }
