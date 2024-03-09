@@ -134,6 +134,8 @@ class MDGenerator extends StatelessWidget {
 		// 	data += "\n";
 		// ```
 
+		// data = data.replaceAll(RegExp(r'\n$', multiLine: true), "");
+
 
 		TextSpan spanWidget = applyRules(
 			context: context,

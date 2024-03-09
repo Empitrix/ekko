@@ -149,7 +149,9 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 	);
 
 	return WidgetSpan(
-		child: Padding(
+		child: Container(
+			// margin: const EdgeInsets.symmetric(vertical: 12),
+			// margin: const EdgeInsets.only(bottom: 12, top: 8),
 			padding: const EdgeInsets.only(right: 5, bottom: 2),
 			// child: child
 			child: ClipRRect(

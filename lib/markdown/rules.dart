@@ -133,8 +133,10 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Headlines}
 		HighlightRule(
 			label: "headline",
-			regex: RegExp(r"^#{1,6} [\s\S]*?$"),
+			// regex: RegExp(r"^#{1,6} [\s\S]*?$"),
+			regex: RegExp(r"^#{1,6} [\s\S]*?$\s*"),
 			action: (txt, _){
+				txt = txt.trim();
 				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 				TextSpan span = TextSpan(
 					text: txt.substring(sharpLength + 1),
@@ -416,8 +418,11 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		// {@Monospace}
 		HighlightRule(
 			label: "monospace",
-			regex: RegExp(r'\`(.*?)\`', multiLine: false),
+			// regex: RegExp(r'\`(.*?)\`', multiLine: false),
+			// regex: RegExp(r'\`(.*?)\`', multiLine: false),
+			regex: RegExp(r'\`(.|\n)*?\`', multiLine: false),
 			action: (txt, opt){
+				txt = txt.replaceAll("\n", ' ');
 				return getMonospaceTag(
 					text: txt.substring(1, txt.length - 1),
 					recognizer: opt.recognizer,
@@ -445,7 +450,6 @@ List<HighlightRule> allSyntaxRules(BuildContext context, Map variables, int note
 		HighlightRule(
 			label: "italic&bold_bold_italic",
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
-			// regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
 			action: (txt, opt){
 				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }
