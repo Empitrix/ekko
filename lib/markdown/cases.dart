@@ -23,8 +23,31 @@ TextSpan applyRules({
 		RegExp(rules.map((rule) => rule.regex.pattern).join('|'), multiLine: true),
 		onMatch: (match) {
 			// Capture rules
+
 			String mText = match.group(0)!;
+
+
+			// if(mText.contains('What is the best prompt')){
+			// 	debugPrint("${match.group(0)}\n${'- ' * 20}");
+			// }
+		
+
 			HighlightRule mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
+			// HighlightRule mRule;
+			// try{
+			// 	mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
+			// }catch(_){
+			// 	mRule = rules.where((e) => e.label == "item").first;
+			// 	return "";
+			// }
+
+
+			// HighlightRule? mRule;
+			// try{
+			// 	mRule = rules.firstWhere((rule) => rule.regex.hasMatch(mText));
+			// }catch(_){
+			// 	return "";
+			// }
 
 			// {@Re-Count for Sub-list}
 			if(mRule.label != "item"){ lastIndent = 0; indentStep = 0; }

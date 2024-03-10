@@ -41,6 +41,8 @@ class MDGenerator extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 
+		// print("REBUILD!");
+
 		GlobalKeyManager keyManager = GlobalKeyManager();
 		String data = "";
 
@@ -105,11 +107,29 @@ class MDGenerator extends StatelessWidget {
 
 		data = "$rowInData\n";
 
+		/* Remove indentatino of indented items*/
+		String newData = "";
+		data.splitMapJoin(
+			// RegExp(r'(?<=\()\n( )+(?=\#)'),
+			RegExp(r'(?<=\()\n(?=(?!( )+[0,9,\+\-\*]))'),
+			onMatch: (Match m){
+				return "";
+			},
+			onNonMatch: (n){
+				// newData += n.trimLeft();
+				newData += n;
+				return "";
+			}
+		);
+
+		data = "${newData.trim()}\n";
+
 		TextSpan spanWidget = applyRules(
 			context: context,
 			keyManager: keyManager,
 			id: noteId,
-			content: data,
+			// content: data,
+			content: newData,
 			rules: allSyntaxRules(
 				context: context, variables: variables,
 				noteId: noteId,

@@ -216,6 +216,7 @@ List<HighlightRule> allSyntaxRules({
 			},
 		),
 
+
 		// {@Item}
 		HighlightRule(
 			label: "item",
@@ -246,7 +247,15 @@ List<HighlightRule> allSyntaxRules({
 
 
 
-			regex: RegExp(r'(^ *?[\+\-\*]\s.*\n(^ (?:(?!\s*[-+*0-9]).*)*$)|^ *?[\+\-\*]\s.*)', multiLine: true),
+			/* regex: RegExp(r'(^ *?[\+\-\*]\s.*\n(^ (?:(?!\s*[-+*0-9]).*)*$)|^ *?[\+\-\*]\s.*)', multiLine: true), */
+			// regex: RegExp(r'^( )*[\+\-\*]( )+(.*)(?=(\n( )*.*))|^( )*[\+\-\*]( )+(.*)', multiLine: true),
+			// regex: RegExp(r'^ *[\+\-\*] +.*(?=(\n *.*))|^ *[\+\-\*] +.*', multiLine: true),
+			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
+
+
+			// regex: RegExp(r'^ *[\+\-\*] +.*(?=(\n +.+))|^\s*(-|\+|\*)\s+.+$', multiLine: true),
+			// regex: RegExp(r'^ *[\+\-\*] +.*(?=(\n +.+))?'),
+			// regex: RegExp(r'^ *[\+\-\*] +.*$(\n(?![\+\-\*]) *.*)?'),
 
 
 			// regex: RegExp(r'^ *?[\+\-\*]\s.*(?(?=\b\s+(?![\+\-\*])\b)\n(?: .*\n)|$)'),
@@ -269,6 +278,11 @@ List<HighlightRule> allSyntaxRules({
 			// regex: RegExp(r'^\s*(-|\+|\*)\s+((?:.*(?:[^-]|\n)){2})'),
 			// regex: RegExp(r'^\s*([-+\*])\s+([\s\S]*?)(?=\n{2})'),
 			action: (txt, _){
+				txt = txt.replaceAll(RegExp(r'\n( )*', multiLine: true), "");
+				
+				// if(txt.contains('What is the best prompt')){
+				// 	debugPrint("$txt\n${'- ' * 20}");
+				// }
 
 				// txt = txt.replaceAll("\n", "");
 				// print(">" + txt.trim().substring(1).trim() + "<");
