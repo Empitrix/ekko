@@ -1,9 +1,11 @@
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_rules.dart';
 import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 /*
@@ -35,7 +37,8 @@ enum HTMLTag {
 	center,
 	picture,
 	source,
-	div
+	div,
+	u,
 }
 
 
@@ -57,6 +60,7 @@ HTMLTag _getEnumTag(String tName){
 		case "picture": { tag = HTMLTag.picture; }
 		case "source": { tag = HTMLTag.source; }
 		case "div": { tag = HTMLTag.div; }
+		case "u": { tag = HTMLTag.u; }
 		case _:{ tag = HTMLTag.p; }  // Default
 	}
 	return tag;
@@ -118,6 +122,11 @@ InlineSpan applyHtmlRules({
 	if(data == null){
 		
 		if(forceStyle != null && forceStyle.compareTo(const TextStyle()) != RenderComparison.identical){
+			if(forceStyle.fontSize == null){
+				forceStyle = forceStyle
+					.copyWith(fontSize: Provider.of<ProviderManager>
+					(context).defaultStyle.fontSize);
+			}
 			return TextSpan(
 				text: txt,
 				style: forceStyle,

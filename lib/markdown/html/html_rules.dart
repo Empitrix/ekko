@@ -1,4 +1,5 @@
 import 'package:ekko/backend/backend.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
@@ -203,7 +204,7 @@ List<HtmlHighlightRule> allHtmlRules({
 			}
 		),
 
-
+		// {@Div}
 		HtmlHighlightRule(
 			label: "div",
 			tag: HTMLTag.div,
@@ -229,6 +230,32 @@ List<HtmlHighlightRule> allHtmlRules({
 			}
 		),
 
+		// {@U-underscore}
+		HtmlHighlightRule(
+			label: "u",
+			tag: HTMLTag.u,
+			action: (txt, opt){
+				// // print("U: $txt");
+
+				opt.forceStyle = TextStyle(
+					decoration: TextDecoration.underline,
+					decorationColor:
+						opt.forceStyle!.decorationColor ??
+						(dMode ? Colors.white : Colors.black)
+						// Theme.of(context).colorScheme.inverseSurface.withOpacity(1)
+				).merge(opt.forceStyle);
+
+				return htmlFormatting(
+					context: context,
+					keyManager: keyManager,
+					content: txt.trim(),  // IDK about triming
+					variables: variables,
+					id: noteId,
+					hotRefresh: hotRefresh,
+					option: opt
+				);
+			}
+		),
 		// etc..
 
 
