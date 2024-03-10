@@ -1,7 +1,9 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/table_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 List<RegexFormattingStyle> allFieldRules(BuildContext context){
@@ -107,7 +109,6 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 		// {@Table}
 		RegexActionStyle(
 			regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
-			// regex: RegExp(r'(\|(\s?[^\n])*\|)+'),
 			style: const TextStyle(),
 			action: (String txt, _){
 				TextStyle borderStyle = const TextStyle(color: Colors.orange);
@@ -156,7 +157,6 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			style: const TextStyle(),
 			action: (txt, match){
 				RegExpMatch char = RegExp(r'(-|\+|\*)').firstMatch(txt)!;
-				// debugPrint("[${char.start}, ${char.end}] => \"${char.group(0)!}\"");
 				return TextSpan(
 					children: [
 						TextSpan(
@@ -170,6 +170,44 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 				);
 			},
 		),
+
+		// {@Hyper-Link}
+		RegexActionStyle(
+			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\(([\s\S]*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
+			style: const TextStyle(),
+			action: (txt, match){
+				TextStyle txtStyle = const TextStyle(color: Colors.blue);
+				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
+				List<TextSpan> parts = [];
+				txt.substring(lastWhere.start).splitMapJoin(
+					RegExp(r'(\(|\)|\[|\])'),
+					onMatch: (Match m){
+					parts.add(TextSpan(text: m.group(0)!, style: txtStyle));
+						return "";
+					},
+					onNonMatch: (n){
+						parts.add(TextSpan(text: n,
+							style: TextStyle(color: Colors.blue[700],
+							decoration: TextDecoration.underline,
+							decorationColor: Colors.blue[700])));
+						return "";
+					}
+				);
+				return TextSpan(
+					// style: Provider.of<ProviderManager>(context).defaultStyle,
+					children: [
+						TextSpan(text: txt.substring(0, 1), style: txtStyle),
+						reApply.parse(txt.substring(1, lastWhere.start)),
+						// TextSpan(text: txt.substring(1, lastWhere.start),
+						// 	style: const TextStyle(color: Colors.white,
+						// 	fontWeight: FontWeight.bold)),
+						// // TextSpan(text: txt.substring(lastWhere.start), style: txtStyle),
+						...parts
+					]
+				);
+			}
+		),
+
 
 		// {@Monospace}
 		RegexGroupStyle(
@@ -195,13 +233,8 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			)
 		),
 
-
 		// {@Italic-Bold-Italic&Bold}
 		RegexActionStyle(
-			// regex: RegExp(r'\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*'),
-			// regex: RegExp(r'(\*\*\*|___)(.*?)(\1)|(\*\*|__)(.*?)(\4)|(\*|_)(.*?)(\7)'),
-			// regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
-			// regex: RegExp(r'(\*\*\*|___).*?(\1)|(\*\*|__).*?(\3)|(\*|_).*?(\5)'),
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
 			style: const TextStyle(),
 			action: (txt, match){
