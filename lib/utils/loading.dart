@@ -30,7 +30,7 @@ Future<void> essentialLoading(BuildContext context)async{
 	markdownThemeName = await _db.readMarkdownTheme();
 	acrylicMode = await _db.readBool("acrylicMode");
 	wrapCodeMode = await _db.readBool("readWrapCodeMode");
-	checkListCheckable = await _db.readBool("readCheckListBehavior");
+	checkListCheckable = await _db.readBool("checkableCheckList");
 	double opacity = await _db.readAcrylicOpacity();
 
 	// Text-Style
