@@ -150,7 +150,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							value: checkListCheckable,
 							onChange: (bool newMode) async {
 								setState(() => checkListCheckable = newMode );
-								await db.writeBool("updateCheckListBehavior", newMode);
+								await db.writeBool("checkableCheckList", newMode);
 							}
 						),
 
