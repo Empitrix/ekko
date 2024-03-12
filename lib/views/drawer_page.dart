@@ -35,6 +35,20 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 		changeView(context, view, name, isPush: true);
 	}
 
+	void longAction(BuildContext context, FolderInfo info) async {
+		// NO ACTION FOR ROOT FOLDER
+		if(info.id == 0){ return; }  
+
+			Folder folder = (await DB().loadFolders()).firstWhere((f) => f.id == info.id);
+
+		// Show general-dialog
+		generalFolderSheet(
+			// ignore: use_build_context_synchronously
+			context: context,
+			load: () => setState(() {}),
+			folder: folder
+		);
+	}
 
 	@override
 	void initState() {
@@ -118,7 +132,7 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 						// ),
 						InkWell(
 							child: Padding(
-								padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+								padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 18),
 								child: Row(
 									children: [
 										const Icon(Icons.folder),
@@ -173,37 +187,49 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 								builder: (BuildContext context, AsyncSnapshot<List<FolderInfo>> snap){
 									if(!snap.hasData){ return const SizedBox(); }
 									return Column(
+										crossAxisAlignment: CrossAxisAlignment.start,
 										children: [
-											for(int idx = 0; idx < snap.data!.length; idx++) InkWell(
-												child: Row(
-													children: [
-														const SizedBox(width: 25),
-														// Icon(Icons.folder, color: idx == 0 ? Colors.amber : null),
-														// Icon(Icons.folder, color: idx == 0 ? Colors.amber : null),
-														NfFont(
-															unicode: idx == widget.currentFolderId ? "\ue5fe " : "\ue5ff ",
-															color: idx == 0 ? Colors.amber : null,
-															size: 20
-														).widget(),
-														const SizedBox(width: 3),
-														Expanded(child: Text(
-															snap.data![idx].name,
-															overflow: TextOverflow.ellipsis,
-															style: const TextStyle(fontSize: 14)
-														))
-													],
-												),
-												onTap: (){
-													/* Move to the sleected folder */
-													Navigator.of(context).pop();  // Close Drawer
-													changeView(
-														context,
-														LandPage(folderId: snap.data![idx].id),
-														"LandPage",
-														isPush: true,
-														isReplace: true
-													);
+											for(int idx = 0; idx < snap.data!.length; idx++) Listener(
+												onPointerDown: (event){
+													if(event.buttons == 2){
+														longAction(context, snap.data![idx]);
+													}
 												},
+												child: InkWell(
+													onLongPress: !isDesktop() ? (){
+														longAction(context, snap.data![idx]);
+													} : null,
+													onTap: (){
+														/* Move to the sleected folder */
+														Navigator.of(context).pop();  // Close Drawer
+														changeView(
+															context,
+															LandPage(folderId: snap.data![idx].id),
+															"LandPage",
+															isPush: true,
+															isReplace: true
+														);
+													},
+													child: Padding(
+														padding: const EdgeInsets.symmetric(vertical: 2),
+														child: Row(
+															children: [
+																const SizedBox(width: 28),
+																NfFont(
+																	unicode: snap.data![idx].id == widget.currentFolderId ? "\ue5fe " : "\ue5ff ",
+																	color: idx == 0 ? Colors.amber : null,
+																	size: 20
+																).widget(),
+																const SizedBox(width: 3),
+																Expanded(child: Text(
+																	snap.data![idx].name,
+																	overflow: TextOverflow.ellipsis,
+																	style: const TextStyle(fontSize: 14)
+																))
+															],
+														)
+													),
+												)
 											)
 										],
 									);
