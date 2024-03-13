@@ -46,7 +46,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 	FocusNode descriptionF = FocusNode();
 	AwesomeController content = AwesomeController();
 	ValueNotifier<List<String>> tags = ValueNotifier([]);
-	ValueNotifier<LineStatus> lineStatus = ValueNotifier(LineStatus(lineNumber: 0, lineHeight: 20, currentLine: 0));
+	ValueNotifier<LineStatus> lineStatus = ValueNotifier(
+		LineStatus(lineNumber: 0, lineHeight: 20, currentLine: 0, currentCol: 0));
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
 	NoteMode mode = NoteMode.copy;

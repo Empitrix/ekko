@@ -1,4 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';
@@ -37,7 +38,6 @@ class TitleTextField extends StatelessWidget {
 		return KeyboardListener(
 			focusNode: FocusNode(),
 			onKeyEvent: (KeyEvent event) async {
-			// onKey: (RawKeyEvent event) async {
 				await Future.delayed(const Duration(milliseconds: 100));
 				if(event.logicalKey.keyId == 4294968065){
 					// Down
@@ -128,25 +128,7 @@ class DescriptionTextFiled extends StatelessWidget {
 						.copyWith(
 							color: Theme.of(context).colorScheme.inverseSurface),
 					onEnd: () => nextFocus(),
-					// decoration: const InputDecoration(
-					// 	border: InputBorder.none,
-					// 	hintText: "Description"
-					// ),
 				),
-				/*
-				child: TextField(
-					controller: controller,
-					focusNode: focusNode,
-					style: Theme.of(context).primaryTextTheme.titleLarge!
-						.copyWith(
-							color: Theme.of(context).colorScheme.inverseSurface),
-					onSubmitted: (_) => nextFocus(),
-					decoration: const InputDecoration(
-						border: InputBorder.none,
-						hintText: "Description"
-					),
-				),
-				*/
 			),
 		);
 	}
@@ -159,13 +141,15 @@ class ContentTextFiled extends StatelessWidget {
 	final Function previousFocus;
 	final double widgetHeight;
 	final ValueChanged<LineStatus> lineChanged;
+	final double lessOpt;
 	const ContentTextFiled({
 		super.key,
 		required this.controller,
 		required this.lineChanged,
 		required this.focusNode,
 		required this.widgetHeight,
-		required this.previousFocus
+		required this.previousFocus,
+		this.lessOpt = -0.1
 	});
 
 	@override
@@ -193,45 +177,34 @@ class ContentTextFiled extends StatelessWidget {
 								decoration: const InputDecoration(hintText: "Write..."),
 								borderRadius: const BorderRadius.only(
 									bottomRight: Radius.circular(0),
-									// topRight: Radius.circular(5),
 									topRight: Radius.circular(0),
 								),
 								border: Border(
 									right: BorderSide(
-										color: Theme.of(context).colorScheme.inverseSurface, width: 1),
-									top: BorderSide(
 										color: Theme.of(context).colorScheme.inverseSurface, width: 1),
 								),
 								lineNumberColor: LineNumberPalette(
 									indexColor: dMode ?
 										const Color(0xff95949C):
 										const Color(0xff69686e),
-									onSelectIndex: dMode ? Colors.black : Colors.white,
-									onSelectBackground: dMode ? Colors.amber : Colors.indigo,
-									background: dMode ?
+									onSelectIndex: (dMode ? Colors.black : Colors.white),
+									onSelectBackground: (dMode ? Colors.amber : Colors.indigo),
+									background: (dMode ?
 										const Color(0xff1a232e):
-										const Color(0xffc8dffa),
-									indexBackground: dMode ?
+										const Color(0xffc8dffa)).aae(context, lessOpt),
+									indexBackground: (dMode ?
 										const Color(0xff1a232e):
-										const Color(0xffc8dffa),
+										const Color(0xffc8dffa)).aae(context, lessOpt),
 								),
-								// lineChanged: (LineStatus status){},
 								lineChanged: lineChanged,
 								regexStyle: allFieldRules(context),
-
-								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 5)) - (MediaQuery.of(context).viewInsets.bottom > 0 ? 275 : 0),
-								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
-								// widgetHeight: ((MediaQuery.sizeOf(context).height - 235) - (isDesktop() ? 2 : 14)) - (MediaQuery.of(context).viewInsets.bottom),
-
 								widgetHeight: widgetHeight,
-
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,
 									fontFamily: "RobotoMono"
 								),
 							),
 						),
-
 					],
 				),
 			),

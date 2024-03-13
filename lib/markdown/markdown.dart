@@ -5,6 +5,7 @@ import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 
@@ -102,7 +103,7 @@ class MarkdownWidget extends StatelessWidget {
 							icon: ValueListenableBuilder(
 								valueListenable: onCopyNotifier,
 								builder: (_, onCopy, __) => Icon(
-									onCopy ? Icons.check : Icons.copy,
+									onCopy ? Icons.check : FontAwesomeIcons.solidCopy,
 									color: onCopy ? Colors.green : Colors.white,
 									size: 15,  // DFLT:17
 								),

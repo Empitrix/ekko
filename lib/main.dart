@@ -10,9 +10,9 @@ import 'package:window_manager/window_manager.dart';
 
 
 Future<void> main() async {
-	// WidgetsFlutterBinding.ensureInitialized();
+	WidgetsFlutterBinding.ensureInitialized();
 	if(isDesktop()){
-		WidgetsFlutterBinding.ensureInitialized();
+		// WidgetsFlutterBinding.ensureInitialized();
 		await Window.initialize();  // Acrylic Window
 		await windowManager.ensureInitialized();  // Window manager
 
