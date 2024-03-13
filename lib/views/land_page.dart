@@ -260,7 +260,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 									itemBuilder: (context, index){
 										return NoteItem(
 											note: value[index],
-											backLoad: (){loadAll(false);},
+											backLoad: (){ loadAll(false); },
 										);
 									},
 								),

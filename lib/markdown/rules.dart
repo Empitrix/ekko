@@ -37,11 +37,8 @@ List<HighlightRule> allSyntaxRules({
 		HighlightRule(
 			label: "html",
 			regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
-			// regex: RegExp(r'<(?<tag>\w+)(.*?)>([^<]+(?:<(?!\/\k<tag>\s*>)[\s\S]*?)?)?<\/\k<tag>\s*>|<?<tag>\w+[^>]*\s*\/?>|<(\w+)[^>]*\s*\/?>'),
 			action: (txt, opt){
-
 				bool toContinue = true;
-
 				List<HighlightRule> rls = allSyntaxRules(
 					context: context, variables: variables,
 					noteId: noteId, hotRefresh: hotRefresh,
@@ -54,7 +51,6 @@ List<HighlightRule> allSyntaxRules({
 						}
 					}
 				}
-
 				if(!toContinue){
 					return applyRules(
 						context: context,
@@ -67,31 +63,6 @@ List<HighlightRule> allSyntaxRules({
 						id: noteId
 					);
 				}
-
-				// print(RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>').hasMatch(txt));
-				// Detected as Syntax-Hihglighting
-				// For some languages like rust the tag detection is issue, to fix:
-
-				// if(txt.contains("```")){
-				// 	return TextSpan(
-				// 		children: [
-				// 			const TextSpan(text: "\n"),
-				// 			WidgetSpan(
-				// 				child: MarkdownWidget(
-				// 					content: txt,
-				// 					height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-				// 				)
-				// 			),
-				// 			const TextSpan(text: "\n")
-				// 		]
-				// 	);
-				// }
-
-				// print(opt.recognizer);
-				// debugPrint("${'\n ' * 12}$txt");
-
-				// Detected as HTML
-				// return TextSpan();
 				try{
 					return applyHtmlRules(
 						context: context,
@@ -104,30 +75,16 @@ List<HighlightRule> allSyntaxRules({
 						forceStyle: const TextStyle()
 					);
 				} catch(_){
-					// TODO: STACK-OVERFLOW ERR
-					debugPrint("ERR: $_");
+					debugPrint("ERR: $_"); // Possibly Stack-Overflow Err
 					return const TextSpan();
 				}
-				/*
-				return applyHtmlRules(
-					context: context,
-					txt: txt,
-					variables: variables,
-					recognizer: opt.recognizer,
-					noteId: noteId,
-					hotRefresh: hotRefresh,
-					forceStyle: const TextStyle()
-				);
-				*/
 			},
 		),
-
 
 		// {@Syntax-Hihglighting}
 		HighlightRule(
 			label: "markdown",
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?', multiLine: true),
-			// regex: RegExp(r'``` *(\w+)\n([\s\S]+?)\n```', multiLine: true),
 			action: (txt, _){
 				return TextSpan(
 					children: [
@@ -144,25 +101,17 @@ List<HighlightRule> allSyntaxRules({
 			},
 		),
 
-
 		// {@Headlines}
 		HighlightRule(
 			label: "headline",
-			// regex: RegExp(r"^#{1,6} [\s\S]*?$"),
 			regex: RegExp(r"^#{1,6} [\s\S]*?$\s*"),
 			action: (txt, _){
 				txt = txt.trim();
 				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 				String content = txt.substring(sharpLength + 1);
-				
-				// Key headerKey = Key(content.toLowerCase().replaceAll(RegExp(r'\W'), "-"));
 				GlobalKey? headerKey = keyManager.addNewKey(content);
-				// print(content);
-
 				TextSpan span = TextSpan(
-					// text: txt.substring(sharpLength + 1),
 					text: content,
-					// style: getHeadlineStyle(context, sharpLength).merge(_.forceStyle)
 					style: getHeadlineStyle(context, sharpLength)
 				);
 				if(sharpLength == 1 || sharpLength == 2){
@@ -179,7 +128,6 @@ List<HighlightRule> allSyntaxRules({
 						)
 					);
 				}
-				// return WidgetSpan(child: Column(children: [Expanded(child:Text.rich(span))]));
 				return TextSpan(children: [
 					WidgetSpan(child: Text.rich(key: headerKey, span)),
 					const TextSpan(text: "\n")
@@ -194,7 +142,6 @@ List<HighlightRule> allSyntaxRules({
 			trimNext: true,
 			action: (_, __) => const WidgetSpan(
 				child: DividerLine(height: 3, lineSide: LineSide.none)
-				// child: Divider(height: 1)
 			),
 		),
 
@@ -220,73 +167,9 @@ List<HighlightRule> allSyntaxRules({
 		// {@Item}
 		HighlightRule(
 			label: "item",
-			// regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
-			// regex: RegExp(r'((^\s*(-|\+|\*)\s+).*(?:\n^\h+.*)*)'),
-			// regex: RegExp(r'((^(-|\+|\*)\s+).*(?:\n^\h+.*$)*)', multiLine: true),
-			// regex: RegExp(r'((^(-|\+|\*)\s+).*(?:\n^\h+.*?$)*)'),
-			// regex: RegExp(r'(^(-|\+|\*)\s+).*(?:\n^\h+.*?$)*', multiLine: true),
-
-
-
-			// regex: RegExp(r'^(\s*(-|\+|\*)\s+.*(?:\n\s+.*?)?(.*)$)', multiLine: true),
-
-
-
-			// regex: RegExp(r'^((-|\+|\*)\s+.*?(?:\n\s?).*)', multiLine: true),
-			// regex: RegExp(r'^(-|\+|\*)\h+.*(?:\n\h+.*)*', multiLine: true),
-
-
-
-			// regex: RegExp(r'^(-|\+|\*)\s+.*(?:\n\s+.*)?', multiLine: true),
-
-
-			// // Working (Maximum amount of whitespace)
-			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
-			// // Working (Minimum amount of whitespace)
-			// regex: RegExp(r'^(?!\s*$)(\s*)(-|\+|\*)\s+(.*(?:\n(?!\1(-|\+|\*)\s|$).*)*)', multiLine: true),
-
-
-
-			/* regex: RegExp(r'(^ *?[\+\-\*]\s.*\n(^ (?:(?!\s*[-+*0-9]).*)*$)|^ *?[\+\-\*]\s.*)', multiLine: true), */
-			// regex: RegExp(r'^( )*[\+\-\*]( )+(.*)(?=(\n( )*.*))|^( )*[\+\-\*]( )+(.*)', multiLine: true),
-			// regex: RegExp(r'^ *[\+\-\*] +.*(?=(\n *.*))|^ *[\+\-\*] +.*', multiLine: true),
 			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
-
-
-			// regex: RegExp(r'^ *[\+\-\*] +.*(?=(\n +.+))|^\s*(-|\+|\*)\s+.+$', multiLine: true),
-			// regex: RegExp(r'^ *[\+\-\*] +.*(?=(\n +.+))?'),
-			// regex: RegExp(r'^ *[\+\-\*] +.*$(\n(?![\+\-\*]) *.*)?'),
-
-
-			// regex: RegExp(r'^ *?[\+\-\*]\s.*(?(?=\b\s+(?![\+\-\*])\b)\n(?: .*\n)|$)'),
-			// regex: RegExp(r'(^ *?[\+\-\*]\s.*\n +.*|^ *?[\+\-\*]\s(?![0-9])(?![\-\+\*]).*)'),
-
-
-
-
-			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!\1(-|\+|\*)\s|$)\s+.*)?', multiLine: true),
-			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!(\s*)(-|\+|\*)\s|\s{0}(-|\+|\*)\s|$)\s+.*)?', multiLine: true),
-			
-
-			// regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!(\s*)(-|\+|\*)\s|$)\s+.*)?'),
-			//regex: RegExp(r'^(\s*)(-|\+|\*)\s+.*(?:\n(?!\s+(-|\+|\*)\s|$)\s+.*)?'),
-			// regex: RegExp(r'^(?:\s*[-+*]\s.*(?:\n\s+(?![\s*+-]).*)?)'),
-
-			// ^\s*(-|\+|\*)\s+
-
-			// regex: RegExp(r'^\s*(-|\+|\*)\s+(.*[^\n]\s)*?'),
-			// regex: RegExp(r'^\s*(-|\+|\*)\s+((?:.*(?:[^-]|\n)){2})'),
-			// regex: RegExp(r'^\s*([-+\*])\s+([\s\S]*?)(?=\n{2})'),
 			action: (txt, _){
 				txt = txt.replaceAll(RegExp(r'\n( )*', multiLine: true), "");
-				
-				// if(txt.contains('What is the best prompt')){
-				// 	debugPrint("$txt\n${'- ' * 20}");
-				// }
-
-				// txt = txt.replaceAll("\n", "");
-				// print(">" + txt.trim().substring(1).trim() + "<");
-
 				int iLvl = getIndentationLevel(txt);
 				int step = iLvl - lastIndent;
 				if(step != 0){
@@ -298,6 +181,7 @@ List<HighlightRule> allSyntaxRules({
 					}
 				}
 				indentStep += step;
+
 				if(iLvl != lastIndent){ lastIndent = iLvl; }
 
 				return WidgetSpan(
@@ -329,35 +213,8 @@ List<HighlightRule> allSyntaxRules({
 		// {@Table}
 		HighlightRule(
 			label: "table",
-			//regex: RegExp(r'(?!smi)(\|[\s\S]*?)\|(?:\n)$'),
-			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)+\|$'),
-			// regex: RegExp(r'(?!smi)(\|[\s\S]*?)+\|(\n)?$'),
-			// regex: RegExp(r'^\|\s+.*(?:\n\|[\s\S]*)*'),
-			// regex: RegExp(r'(\s*\|[\s\S]*?\|\s?$)+'),
-
-			//regex: RegExp(r'((\s?\|)[\s\S]*?(\|)$)+'),
-			// regex: RegExp(r'(\s+[\|].*[^\|]*?)+'),
-
-
-
-			// regex: RegExp(r'(\s+[\|].*[^\|]*?)+'),
-			// regex: RegExp(r'((\|([^\n])*\|)\n?)+'),
-			// regex: RegExp(r'(\n?\|(\s?[^\n])*\|)+'),
-
-			// regex: RegExp(r'(\|(\s?[^\n])*\|)+'),
-			// regex: RegExp(r'(?:\h*\|.*?(?=\s*\|)(?:\s*\||$)(?:\n|$))+'),
-			// regex: RegExp(r'(?:\s*\|.*?(?=\s*\|)(?:\s*\||$)(?:\n|$))+', multiLine: true),
-			// regex: RegExp(r'(\s*\|.*?(?=\s*\|)(?:\s*\||$)(?:\n|$))+', multiLine: true),
-			// regex: RegExp(r'(?:\|.*?(?=\|)(?:\||$)(?:\n|$))(?:\n\n|\n)(?:\|.*?(?=\|)(?:\||$)(?:\n|$))*', multiLine: true),
-			// regex: RegExp(r'((^\s*([^\\n ].*)\n?)(?=[^\n]))+'),
-			// regex: RegExp(r'(\s?((?:|\s{1,}[^\n])\|[^\n]*\|)+)+'),
-			// regex: RegExp(r'(\s?((?:|\s{1,}[^\n])\|[^\n]*\|(?:\s|$))){3,}'),
-			// regex: RegExp(r'(\s?((?:|\s{0,}[^\n])\|.*\|(?:\s|$))){3,}'),
-			// regex: RegExp(r'(^\h*?\|.*\|\h?$\s?)+'),
 			regex: RegExp(r'^( *?(?!semi)\|.*\|\s?)+'),
-
 			action: (txt, _){
-				// return getTableSpan(context: context, txt: txt, variables: variables);
 				InlineSpan? outTable = runZoned((){
 					return getTableSpan(
 						context: context, txt: txt,
@@ -374,11 +231,9 @@ List<HighlightRule> allSyntaxRules({
 			},
 		),
 
-
 		// {@Hyper-Link}
 		HighlightRule(
 			label: "links",
-			// regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\((.*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			regex: RegExp(r'(?<!\!)\[((?:\[[^\]]*\]|[^\[\]])*)\]\(([\s\S]*?)\)|\[((?:\[[^\]]*\]|[^\[\]])*)\]\[([^\]]+)\]'),
 			action: (txt, _){
 				Match lastWhere = RegExp(r'(\)|\])(\(|\[)').allMatches(txt).last;
@@ -427,11 +282,9 @@ List<HighlightRule> allSyntaxRules({
 			}
 		),
 
-		
 		// {@Image-Link}
 		HighlightRule(
 			label: "link_image",
-			// regex: RegExp(r'\!\[(.*?)\](\(|\[)(.*?)(\)|\])'),
 			regex: RegExp(r'\!\[([\s\S]*?)\](\(|\[)([\s\S]*?)(\)|\])'),
 			action: (String txt, opt){
 				InlineSpan? outImg = runZoned((){
@@ -448,12 +301,9 @@ List<HighlightRule> allSyntaxRules({
 			},
 		),
 
-
 		// {@Monospace}
 		HighlightRule(
 			label: "monospace",
-			// regex: RegExp(r'\`(.*?)\`', multiLine: false),
-			// regex: RegExp(r'\`(.*?)\`', multiLine: false),
 			regex: RegExp(r'\`(.|\n)*?\`', multiLine: false),
 			action: (txt, opt){
 				txt = txt.replaceAll("\n", ' ');
@@ -577,54 +427,8 @@ List<HighlightRule> allSyntaxRules({
 			}
 		),
 
-
-
-
-
-		
-		/*
-		// {@HTMl}
-		HighlightRule(
-			label: "html",
-			// regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
-			regex: RegExp(r'<(?<tag>\w+)(.*?)>([^<]+(?:<(?!\/\k<tag>\s*>)[\s\S]*?)?)?<\/\k<tag>\s*>|<?<tag>\w+[^>]*\s*\/?>|<(\w+)[^>]*\s*\/?>'),
-			action: (txt, opt){
-				// print(RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>').hasMatch(txt));
-				// Detected as Syntax-Hihglighting
-				// For some languages like rust the tag detection is issue, to fix:
-				if(txt.contains("```")){
-					return TextSpan(
-						children: [
-							const TextSpan(text: "\n"),
-							WidgetSpan(
-								child: MarkdownWidget(
-									content: txt,
-									height: Provider.of<ProviderManager>(context).defaultStyle.height!,
-								)
-							),
-							const TextSpan(text: "\n")
-						]
-					);
-				}
-
-				print(opt.recognizer);
-
-				// Detected as HTML
-				return applyHtmlRules(
-					context: context,
-					txt: txt,
-					variables: variables,
-					noteId: noteId,
-					hotRefresh: hotRefresh,
-					forceStyle: const TextStyle()
-				);
-			},
-		),
-		*/
-
-
-
 		// etc..
+
 	];
 
 	return rules;

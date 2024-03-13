@@ -1,6 +1,7 @@
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/tools/key_manager.dart';
+import 'package:ekko/markdown/tools/pre_formatting.dart';
 import 'package:flutter/material.dart';
 
 Map<String, String> variables = {};
@@ -108,28 +109,35 @@ class MDGenerator extends StatelessWidget {
 		data = "$rowInData\n";
 
 		/* Remove indentatino of indented items*/
-		String newData = "";
-		data.splitMapJoin(
-			// RegExp(r'(?<=\()\n( )+(?=\#)'),
-			RegExp(r'(?<=\()\n(?=(?!( )+[0,9,\+\-\*]))'),
-			onMatch: (Match m){
-				return "";
-			},
-			onNonMatch: (n){
-				// newData += n.trimLeft();
-				newData += n;
-				return "";
-			}
+		// String newData = "";
+		// data.splitMapJoin(
+		// 	RegExp(r'(?<=\()\n(?=(?!( )+[0,9,\+\-\*]))'),
+		// 	// RegExp(r'(?<=\()\n(?=(?!( )+[0,9,\+\-\*]))|((?<=\w)\n(?=\w))'),
+		// 	onMatch: (Match m){
+		// 		newData += " ";
+		// 		return "";
+		// 	},
+		// 	onNonMatch: (n){
+		// 		newData += n;
+		// 		return "";
+		// 	}
+		// );
+
+		data = preFormat(
+			input: data,
+			regex: RegExp(r'(?<=\()\n(?=(?!( )+[0,9,\+\-\*]))'),
+			stringMatch: FormattingAction.non
 		);
 
-		data = "${newData.trim()}\n";
+		// data = "${newData.trim()}\n";
+		data = "$data\n";
 
 		TextSpan spanWidget = applyRules(
 			context: context,
 			keyManager: keyManager,
 			id: noteId,
-			// content: data,
-			content: newData,
+			content: data,
+			// content: newData,
 			rules: allSyntaxRules(
 				context: context, variables: variables,
 				noteId: noteId,

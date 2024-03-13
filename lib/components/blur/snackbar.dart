@@ -1,3 +1,4 @@
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
@@ -17,10 +18,8 @@ SnackBar blurSnakBar({
 			child: Container(
 				padding: const EdgeInsets.all(12),
 				decoration: BoxDecoration(
-					// color: Colors.black.withOpacity(0.5)
-					// color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3)
-					// color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
-					color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(0.5)
+					// color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(0.5)
+					color: (dMode ? Colors.black : Colors.white).withOpacity(0.5)
 				),
 				child: content,
 				// child: Container()

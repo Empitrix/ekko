@@ -1,6 +1,5 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
-import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
@@ -8,12 +7,10 @@ import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/folder.dart';
-import 'package:ekko/views/folders_page.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class DrawerPage extends StatefulWidget {
@@ -125,56 +122,49 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 							title: const Text("Settings"),
 							onTap: () => _newView(const SettingsPage(), "SettingsPage"),
 						),
-						// ListTile(
-						// 	leading: const Icon(Icons.folder),
-						// 	title: const Text("Folders"),
-						// 	onTap: () => _newView(FoldersPage(closeLoading: widget.closeLoading, previousId: widget.currentFolderId,), "FoldersPage"),
-						// ),
-						InkWell(
-							child: Padding(
-								padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 18),
-								child: Row(
-									children: [
-										const Icon(Icons.folder),
-										const SizedBox(width: 12),
-										const Text("Folder"),
-										const Expanded(child: SizedBox()),
-										SizedBox(
-											height: 32,
-											width: 32,
-											child: IconButton(
-												icon: const Icon(Icons.add),
-												// icon: const Icon(FontAwesomeIcons.circlePlus),
-												iconSize: 16,
-												style: ButtonStyle(
-													backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.secondaryContainer)
-												),
-												onPressed: (){
-													if(folderAnim.animation.value == 0){
-														folderAnim.controller.forward();
-													}
-													Dialogs(context).textFieldDialog(
-														title: "Name",
-														hint: "Name",
-														action: (String name) async {
-															name = name.trim();
-															debugPrint("Name: $name");
-															await DB().createFolder(folderName: name); 
-															setState(() {});
-														}
-													);
-												},
-											)
-										)
-									],
-								),
+
+						ListTile(
+							leading: NfFont(
+								unicode: folderAnim.animation.value == 1 ?
+									"\udb81\udf70":
+									"\udb80\ude4b",
+								size: 25
+							).widget(),
+							title: const Text("Folder"),
+							trailing: SizedBox(
+								height: 32,
+								width: 32,
+								child: IconButton(
+									icon: const Icon(Icons.add),
+									iconSize: 16,
+									style: ButtonStyle(
+										backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.secondaryContainer)
+									),
+									onPressed: () async {
+										Dialogs(context).textFieldDialog(
+											title: "Name",
+											hint: "Name",
+											action: (String name) async {
+												name = name.trim();
+												debugPrint("Name: $name");
+												await DB().createFolder(folderName: name); 
+												setState(() {});
+											}
+										);
+										if(folderAnim.animation.value == 0){
+											await folderAnim.controller.forward();
+											setState(() {});
+										}
+									},
+								)
 							),
-							onTap: (){
+							onTap: () async {
 								if(folderAnim.animation.value == 1){
-									folderAnim.controller.reverse();
+									await folderAnim.controller.reverse();
 								} else {
-									folderAnim.controller.forward();
+									await folderAnim.controller.forward();
 								}
+								setState(() {});
 							},
 						),
 
