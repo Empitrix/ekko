@@ -1,4 +1,6 @@
+import 'package:ekko/config/navigator.dart';
 import 'package:flutter/material.dart';
+
 
 class SettingItem extends StatelessWidget {
 	final String title;
@@ -14,8 +16,10 @@ class SettingItem extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-		return InkWell(
-			onTap: (){},
+		Widget inkWell = InkWell(
+			onTap: (){
+				// changeView(context, screen, name);
+			},
 			borderRadius: BorderRadius.circular(5),
 			child: Container(
 				padding: const EdgeInsets.only(top: 12, bottom: 5, left: 12, right: 5),
@@ -54,5 +58,11 @@ class SettingItem extends StatelessWidget {
 				),
 			),
 		);
+
+		// return Hero(
+		// 	tag: "uniqueTag",
+		// 	child: inkWell
+		// );
+		return inkWell;
 	}
 }

@@ -1,20 +1,13 @@
 import 'package:ekko/animation/expand.dart';
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/extensions.dart';
-import 'package:ekko/components/divider.dart';
-import 'package:ekko/components/sheets.dart';
-import 'package:ekko/components/tiles.dart';
-import 'package:ekko/config/manager.dart';
+import 'package:ekko/components/settings/router.dart';
+import 'package:ekko/components/settings/panel.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
-import 'package:ekko/markdown/markdown_themes.dart';
+import 'package:ekko/views/change_page.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'dart:async';
 
 
 class SettingsPage extends StatefulWidget {
@@ -66,6 +59,29 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 						onPressed: () => changeView(context, const LandPage(), "LandPage", isPush: false),
 					),
 				),
+
+				body: ListView(
+					children: [
+						SettingPanel(
+							title: const Text("Options"),
+							children: [
+
+								for(SettingItemEnum itm in SettingItemEnum.values) ...[
+										ListTile(
+										title: Text(itm.name.title()),
+										trailing: const Icon(Icons.arrow_right),
+										onTap: () => changeView(context, ChangePage(
+											item: itm,
+										), "ChangePage"),
+									),
+								]
+
+							]
+						)
+					],
+				),
+
+				/*
 				body: ListView(
 					padding: const EdgeInsets.only(bottom: 12),
 					children: [
@@ -374,8 +390,17 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							},
 						),
 
+						// SettingPanel(
+						// 	title: const Text("Awesome"),
+						// 	children: [
+						// 		ListTile(leading: const Icon(Icons.dark_mode), title: const Text("Dark Mode"), onTap: (){}),
+						// 		ListTile(leading: const Icon(Icons.edit), title: const Text("Editor"), onTap: (){})
+						// 	]
+						// ),
+
 					],
 				),
+				*/
 			),
 		);
 	}
