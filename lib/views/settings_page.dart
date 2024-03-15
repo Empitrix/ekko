@@ -197,6 +197,10 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							},
 						),
 
+
+
+
+
 						// Fonts
 						const TitleDivider(title: "Font"),
 						// Font Family

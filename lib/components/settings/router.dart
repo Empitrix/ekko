@@ -1,14 +1,13 @@
 import 'package:ekko/components/settings/components/appearance.dart';
+import 'package:ekko/components/settings/components/fonts.dart';
 import 'package:flutter/material.dart';
 
 class SettingObject {
-
 	final BuildContext context;
 	final TickerProvider ticker;
 	final void Function(void Function()) setState; 
 
 	SettingObject(this.context, this.ticker, this.setState);
-
 
 	void init(){}
 	Widget load() => const SizedBox();
@@ -29,6 +28,7 @@ SettingObject getCurrentSetting({
 }){
 	List<Map<SettingItemEnum, SettingObject>> objects = [
 		{ SettingItemEnum.appearance: SettingAppearance(context, ticker, setState) },
+		{ SettingItemEnum.fonts: SettingFont(context, ticker, setState) },
 	];
 
 	for(Map<SettingItemEnum, SettingObject> m in objects){
