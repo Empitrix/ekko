@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 String appVersion = "4.20.0";
 
+int tabSize = 2;
+
 // Will update when app started
 String dbPath = "";
 // Dark mode

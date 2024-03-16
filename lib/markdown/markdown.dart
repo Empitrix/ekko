@@ -1,5 +1,6 @@
 import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/backend/indentation.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
@@ -14,11 +15,13 @@ class MarkdownWidget extends StatelessWidget {
 	final double radius;
 	final double height;
 	final double lessOpt;
+	final bool deIndent;
 	const MarkdownWidget({
 		super.key,
 		required this.content,
 		this.radius = 5,
 		this.height = 0.0,
+		this.deIndent = true,
 		this.lessOpt = -0.1 // value of (more / less) of transparency (*Acrylic)
 	});
 
@@ -39,9 +42,19 @@ class MarkdownWidget extends StatelessWidget {
 		return lang;
 	}
 
+	// String _markdownData(){
+	// 	return _content()
+	// 		.replaceRange(0, _content().indexOf("\n") + 1, "");
+	// }
+
 	String _markdownData(){
-		return _content()
+		String data = _content()
 			.replaceRange(0, _content().indexOf("\n") + 1, "");
+		data = data.replaceAll("\t", " " * tabSize);
+		if(deIndent){
+			data = deIndentText(data).trimRight();
+		}
+		return data;
 	}
 
 	/* Markdown Contexts */
@@ -49,7 +62,7 @@ class MarkdownWidget extends StatelessWidget {
 		return HighlightView(
 			_markdownData(),
 			language: _langName(content).toLowerCase(),
-			tabSize: 2,
+			tabSize: tabSize,
 			theme: allMarkdownThemes[markdownThemeName]!,
 			
 		);
