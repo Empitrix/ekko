@@ -1,9 +1,7 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
-import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/table_field.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 List<RegexFormattingStyle> allFieldRules(BuildContext context){

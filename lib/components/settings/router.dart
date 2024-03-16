@@ -1,5 +1,7 @@
 import 'package:ekko/components/settings/components/appearance.dart';
+import 'package:ekko/components/settings/components/editor.dart';
 import 'package:ekko/components/settings/components/fonts.dart';
+import 'package:ekko/components/settings/components/general.dart';
 import 'package:flutter/material.dart';
 
 class SettingObject {
@@ -29,6 +31,8 @@ SettingObject getCurrentSetting({
 	List<Map<SettingItemEnum, SettingObject>> objects = [
 		{ SettingItemEnum.appearance: SettingAppearance(context, ticker, setState) },
 		{ SettingItemEnum.fonts: SettingFont(context, ticker, setState) },
+		{ SettingItemEnum.editor: SettingEditor(context, ticker, setState) },
+		{ SettingItemEnum.general: SettingGeneral(context, ticker, setState) },
 	];
 
 	for(Map<SettingItemEnum, SettingObject> m in objects){

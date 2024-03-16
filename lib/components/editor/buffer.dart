@@ -3,7 +3,6 @@ import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:ekko/models/note.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
