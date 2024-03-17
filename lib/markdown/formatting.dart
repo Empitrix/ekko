@@ -1,6 +1,7 @@
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/tools/key_manager.dart';
+import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -86,5 +87,50 @@ TextStyle getHeadlineStyle(BuildContext ctx, int idx){
 			fontSize: 13.6
 		)
 	][idx];
+}
+
+
+
+TextSpan ibbFormatting(String txt, RuleOption opt, [TextStyle? forceStyle]){
+	/*Formatting for [ITALIC - BOLD - ITALIC & BOLD] (i)talic (b)bold (b)oth*/
+	int specialChar = RegExp('\\${txt.substring(0, 1)}').allMatches(txt).length;
+	if(specialChar % 2 != 0){ specialChar--; }
+	specialChar = specialChar ~/ 2;
+
+	TextStyle currentStyle = 
+			specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
+			specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
+			const TextStyle(fontStyle: FontStyle.italic);
+
+	currentStyle = currentStyle.merge(opt.forceStyle);
+	List<InlineSpan> spans = [];
+	txt.substring(specialChar, txt.length - specialChar).splitMapJoin(
+		RegExp(r'(\*|\_).*?(\*|\_)'),
+		onMatch: (Match match){
+			String text = match.group(0)!;
+			spans.add(TextSpan(
+				text: text.substring(1, text.length - 1),
+				recognizer: opt.recognizer,
+				style: currentStyle.merge(const TextStyle(fontStyle: FontStyle.italic))
+			));
+			return "";
+		},
+		onNonMatch: (non){
+			spans.add(TextSpan(
+				text: non,
+				recognizer: opt.recognizer,
+				style: currentStyle,
+			));
+			return "";
+		}
+	);
+
+	return TextSpan(children: spans);
+
+	// return TextSpan(
+	// 	text: txt.substring(specialChar, txt.length - specialChar),
+	// 	recognizer: opt.recognizer,
+	// 	style: currentStyle
+	// );
 }
 
