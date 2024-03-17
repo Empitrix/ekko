@@ -29,6 +29,8 @@ TextSpan formattingTexts({
 			keyManager: keyManager)
 	);
 
+	// print(applied.children?.length);
+
 	return applied;
 }
 

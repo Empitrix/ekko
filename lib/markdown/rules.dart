@@ -335,16 +335,20 @@ List<HighlightRule> allSyntaxRules({
 			label: "italic&bold_bold_italic",
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
 			action: (txt, opt){
-				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
+				// int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
+				int specialChar = RegExp('\\${txt.substring(0, 1)}').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }
 				specialChar = specialChar ~/ 2;
+
+				TextStyle currentStyle = 
+						specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
+						specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
+						const TextStyle(fontStyle: FontStyle.italic);
+
 				return TextSpan(
 					text: txt.substring(specialChar, txt.length - specialChar),
 					recognizer: opt.recognizer,
-					style: 
-						specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
-						specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
-						const TextStyle(fontStyle: FontStyle.italic)
+					style: currentStyle
 				);
 			},
 		),
