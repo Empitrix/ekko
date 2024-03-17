@@ -42,11 +42,6 @@ class MarkdownWidget extends StatelessWidget {
 		return lang;
 	}
 
-	// String _markdownData(){
-	// 	return _content()
-	// 		.replaceRange(0, _content().indexOf("\n") + 1, "");
-	// }
-
 	String _markdownData(){
 		String data = _content()
 			.replaceRange(0, _content().indexOf("\n") + 1, "");

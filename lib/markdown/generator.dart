@@ -112,6 +112,13 @@ class MDGenerator extends StatelessWidget {
 			stringMatch: FormattingAction.non
 		);
 
+		// data = preFormat(
+		// 	input: data,
+		// 	regex: RegExp(r'(?<=.{1})$\n'),
+		// 	stringMatch: FormattingAction.non
+		// );
+
+
 		data = "$data\n";
 
 		TextSpan spanWidget = applyRules(

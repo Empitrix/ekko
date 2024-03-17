@@ -13,24 +13,8 @@ TextSpan formattingTexts({
 	required GlobalKeyManager keyManager,
 	required Function hotRefresh,
 	TextStyle? forceStyle,
-	// bool fromHTML = false,
-	// HTMLParser? htmlParser,
 	TapGestureRecognizer? recognizer}){
 	// using this function in rules list prevent to 'over-flow' error
-
-
-	// content.splitMapJoin(
-	// 	RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
-	// 	onMatch: (Match m){
-	// 		print(m.group(0)!);
-	// 		return "";
-	// 	},
-	// 	onNonMatch: (n){
-	// 		// print(n);
-	// 		return "";
-	// 	}
-	// );
-
 
 	TextSpan applied = applyRules(
 		context: context,
@@ -46,20 +30,6 @@ TextSpan formattingTexts({
 	);
 
 	return applied;
-
-	// if(htmlParser != null){
-	// 	return htmlFormatting(
-	// 		context: context,
-	// 		content: content,
-	// 		variables: variables,
-	// 		forceStyle: forceStyle,
-	// 		recognizer: recognizer,
-	// 		htmlParser: htmlParser,
-	// 		id: id,
-	// 		hotRefresh: hotRefresh);
-	// } else {
-	// 	return applied;
-	// }
 }
 
 
@@ -79,6 +49,7 @@ TextStyle getHeadlineStyle(BuildContext ctx, int idx){
 			color: Theme.of(ctx).colorScheme.inverseSurface,
 			fontWeight: FontWeight.w600,
 			letterSpacing: 0.9,
+			height: 1.2,
 			fontSize: 32
 		),
 		// 2

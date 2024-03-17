@@ -64,6 +64,7 @@ class InputSelector extends StatelessWidget {
 	final Type inputType;
 	final bool enabled;
 	final String hintText;
+	final double spacing;
 	final List<dynamic> arguments;
 
 	const InputSelector({
@@ -73,6 +74,7 @@ class InputSelector extends StatelessWidget {
 		this.enabled = true,
 		this.width,
 		this.height,
+		this.spacing = 2,
 		this.inputType = int,
 		this.hintText = "",
 	});
@@ -126,6 +128,7 @@ class InputSelector extends StatelessWidget {
 						onTap: () => _movement(-1),
 						child: const Icon(Icons.arrow_left),
 					),
+					SizedBox(width: spacing),
 					Container(
 						width: 30,
 						decoration: BoxDecoration(
@@ -147,6 +150,7 @@ class InputSelector extends StatelessWidget {
 							)
 						),
 					),
+					SizedBox(width: spacing),
 					SelectorButton(
 						borderRadius: const BorderRadius.only(
 							topRight: Radius.circular(5),
