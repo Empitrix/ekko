@@ -1,19 +1,15 @@
 import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/html/html_utils.dart';
-import 'package:ekko/markdown/tools/key_manager.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/material.dart';
 
 
 
 InlineSpan htmlFormatting({
-	required BuildContext context,
 	required String content,
-	required Map variables,
-	required GlobalKeyManager keyManager,
-	required int id,
-	required Function hotRefresh,
 	required HtmlRuleOption option,
+	required GeneralOption gOpt,
 }){
 
 	// content = content.trim();
@@ -70,12 +66,8 @@ InlineSpan htmlFormatting({
 								option.data.attributes['align']!),
 							children: [
 								Text.rich(htmlFormatting(
-									context: context,
-									keyManager: keyManager,
 									content: i.trim(),  // IDK about triming
-									variables: variables,
-									id: id,
-									hotRefresh: hotRefresh,
+									gOpt: gOpt,
 									option: option
 								))
 							],
@@ -91,12 +83,8 @@ InlineSpan htmlFormatting({
 	}
 
 	return applyHtmlRules(
-		context: context,
 		txt: content,
-		keyManager: keyManager,
-		variables: variables,
-		noteId: id,
-		hotRefresh: hotRefresh,
+		gOpt: gOpt,
 		forceStyle: option.forceStyle,
 		recognizer: option.recognizer,
 		option: option

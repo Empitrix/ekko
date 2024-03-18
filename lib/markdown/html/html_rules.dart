@@ -5,18 +5,14 @@ import 'package:ekko/markdown/html/html_formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/html/html_utils.dart';
 import 'package:ekko/markdown/image.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
-import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/material.dart';
 
 
 List<HtmlHighlightRule> allHtmlRules({
-	required BuildContext context,
-	required Map variables,
-	required GlobalKeyManager keyManager,
-	required int noteId,
-	required Function hotRefresh,
+	required GeneralOption gOpt,
 	required TextStyle? forceStyle
 }){
 	return [
@@ -28,7 +24,7 @@ List<HtmlHighlightRule> allHtmlRules({
 			action: (txt, opt){
 				// opt.forceStyle = getHeadlineStyle(context, 1).merge(opt.forceStyle);
 				// opt.forceStyle = opt.forceStyle!.merge(getHeadlineStyle(context, 1));
-				opt.forceStyle = getHeadlineStyle(context, 1).merge(opt.forceStyle);
+				opt.forceStyle = getHeadlineStyle(gOpt.context, 1).merge(opt.forceStyle);
 				// debugPrint(">$txt<");
 				return WidgetSpan(
 					child: Column(
@@ -36,26 +32,18 @@ List<HtmlHighlightRule> allHtmlRules({
 						children: [
 							opt.data.attributes['align'] == null ?
 							Text.rich(htmlFormatting(
-								context: context,
 								content: txt,
-								keyManager: keyManager,
-								variables: variables,
-								id: noteId,
-								hotRefresh: hotRefresh,
-								option: opt
+								option: opt,
+								gOpt: gOpt
 							)):
 							ApplyHtmlAlignment(
 								alignment: getHtmlAlignment(
 									opt.data.attributes['align']!),
 								children: [
 									Text.rich(htmlFormatting(
-										context: context,
 										content: txt.trim(),  // IDK about triming
-										variables: variables,
-										id: noteId,
-										keyManager: keyManager,
-										hotRefresh: hotRefresh,
-										option: opt
+										option: opt,
+										gOpt: gOpt
 									))
 								],
 							),
@@ -78,17 +66,13 @@ List<HtmlHighlightRule> allHtmlRules({
 					decoration: TextDecoration.underline,
 					decorationColor: Colors.blue).merge(opt.forceStyle);
 				opt.recognizer = useLinkRecognizer(
-					context, opt.data.attributes['href'] ?? "", keyManager);
+					gOpt.context, opt.data.attributes['href'] ?? "", gOpt.keyManager);
 
 				// debugPrint("\n\n\nA-TAG detected: ${txt.replaceAll('\n', ' ')} -> ${opt.recognizer}");
 				return htmlFormatting(
-					context: context,
-					keyManager: keyManager,
 					content: txt,
-					variables: variables,
-					id: noteId,
-					hotRefresh: hotRefresh,
-					option: opt
+					option: opt,
+					gOpt: gOpt
 				);
 			},
 		),
@@ -103,13 +87,9 @@ List<HtmlHighlightRule> allHtmlRules({
 							opt.data.attributes['align'] ?? ""),
 						children: [
 							Text.rich(htmlFormatting(
-								context: context,
-								keyManager: keyManager,
 								content: txt,
-								variables: variables,
-								id: noteId,
-								hotRefresh: hotRefresh,
-								option: opt
+								option: opt,
+								gOpt: gOpt
 							))
 						],
 					)
@@ -125,12 +105,8 @@ List<HtmlHighlightRule> allHtmlRules({
 				// Wrong image
 				if(opt.data.attributes["src"] == null){
 					return htmlFormatting(
-						context: context,
-						keyManager: keyManager,
 						content: _,
-						variables: variables,
-						id: noteId,
-						hotRefresh: hotRefresh,
+						gOpt: gOpt,
 						option: opt
 					);
 				}
@@ -151,8 +127,8 @@ List<HtmlHighlightRule> allHtmlRules({
 
 				// String? width = opt.data.attributes["width"];
 				// String? height = opt.data.attributes["height"];
-				double? w = getHtmlSize(context, opt.data.attributes["width"], "w");
-				double? h = getHtmlSize(context, opt.data.attributes["height"], "h");
+				double? w = getHtmlSize(gOpt.context, opt.data.attributes["width"], "w");
+				double? h = getHtmlSize(gOpt.context, opt.data.attributes["height"], "h");
 
 				return WidgetSpan(child: SizedBox(
 					// width: width != null ? int.parse(width).toDouble() : null,
@@ -161,7 +137,7 @@ List<HtmlHighlightRule> allHtmlRules({
 					height: h,
 					// child: Text.rich(showImageFrame("", opt.recognizer, variables, imgData)),
 					child: FittedBox(
-						child: Text.rich(showImageFrame("", opt.recognizer, variables, imgData)),
+						child: Text.rich(showImageFrame("", opt.recognizer, gOpt.variables, imgData)),
 					),
 				));
 			},
@@ -175,13 +151,9 @@ List<HtmlHighlightRule> allHtmlRules({
 			action: (txt, opt){
 				// debugPrint("PICTURE DETECTED");
 				return htmlFormatting(
-					context: context,
 					content: txt,
-					keyManager: keyManager,
-					variables: variables,
-					id: noteId,
-					hotRefresh: hotRefresh,
-					option: opt
+					option: opt,
+					gOpt: gOpt
 				);
 				// return TextSpan(
 				// 	text: txt.trim(),
@@ -216,12 +188,8 @@ List<HtmlHighlightRule> allHtmlRules({
 							opt.data.attributes['align']!),
 						children: [
 							Text.rich(htmlFormatting(
-								context: context,
-								keyManager: keyManager,
 								content: txt.trim(),  // IDK about triming
-								variables: variables,
-								id: noteId,
-								hotRefresh: hotRefresh,
+								gOpt: gOpt,
 								option: opt
 							))
 						],
@@ -246,12 +214,8 @@ List<HtmlHighlightRule> allHtmlRules({
 				).merge(opt.forceStyle);
 
 				return htmlFormatting(
-					context: context,
-					keyManager: keyManager,
 					content: txt.trim(),  // IDK about triming
-					variables: variables,
-					id: noteId,
-					hotRefresh: hotRefresh,
+					gOpt: gOpt,
 					option: opt
 				);
 			}

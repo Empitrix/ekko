@@ -6,12 +6,13 @@ import 'package:ekko/markdown/check_box.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/image.dart';
+import 'package:ekko/markdown/inline/headlines.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/markdown/table.dart';
-import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -23,25 +24,16 @@ int lastIndent = 0;
 int indentStep = 0;
 
 
-List<HighlightRule> allSyntaxRules({
-	required BuildContext context,
-	required Map variables,
-	required int noteId,
-	required GlobalKeyManager keyManager,
-	required Function hotRefresh
-}){
-	List<HighlightRule> rules = [
+List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 
+	List<HighlightRule> rules = [
 		// {@HTMl}
 		HighlightRule(
 			label: "html",
 			regex: RegExp(r'<(\w+)(.*?)>([^<\1][\s\S]*?)?<\/\s*\1\s*>|<(\w+)[^>]*\s*\/?>'),
 			action: (txt, opt){
 				bool toContinue = true;
-				List<HighlightRule> rls = allSyntaxRules(
-					context: context, variables: variables,
-					noteId: noteId, hotRefresh: hotRefresh,
-					keyManager: keyManager).sublist(1);
+				List<HighlightRule> rls = allSyntaxRules(gOpt: gOpt).sublist(1);
 				for(HighlightRule r in rls){
 					Match? m = r.regex.firstMatch(txt);
 					if(m != null){
@@ -52,25 +44,18 @@ List<HighlightRule> allSyntaxRules({
 				}
 				if(!toContinue){
 					return applyRules(
-						context: context,
+						context: gOpt.context,
 						content: txt,
-						keyManager: keyManager,
-						rules: allSyntaxRules(
-							context: context, variables: variables,
-							noteId: noteId, hotRefresh: hotRefresh,
-							keyManager: keyManager).sublist(1),
-						id: noteId
+						keyManager: gOpt.keyManager,
+						rules: allSyntaxRules(gOpt: gOpt).sublist(1),
+						id: gOpt.noteId
 					);
 				}
 				try{
 					return applyHtmlRules(
-						context: context,
 						txt: txt,
-						variables: variables,
 						recognizer: opt.recognizer,
-						keyManager: keyManager,
-						noteId: noteId,
-						hotRefresh: hotRefresh,
+						gOpt: gOpt,
 						forceStyle: const TextStyle()
 					);
 				} catch(_){
@@ -91,7 +76,7 @@ List<HighlightRule> allSyntaxRules({
 						WidgetSpan(
 							child: MarkdownWidget(
 								content: txt,
-								height: Provider.of<ProviderManager>(context).defaultStyle.height!,
+								height: Provider.of<ProviderManager>(gOpt.context).defaultStyle.height!,
 							)
 						),
 						const TextSpan(text: "\n")
@@ -104,33 +89,8 @@ List<HighlightRule> allSyntaxRules({
 		HighlightRule(
 			label: "headline",
 			regex: RegExp(r"^#{1,6} [\s\S]*?$\s*"),
-			action: (txt, _){
-				txt = txt.trim();
-				int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
-				String content = txt.substring(sharpLength + 1);
-				GlobalKey? headerKey = keyManager.addNewKey(content);
-				TextSpan span = TextSpan(
-					text: content,
-					style: getHeadlineStyle(context, sharpLength)
-				);
-				if(sharpLength == 1 || sharpLength == 2){
-					return WidgetSpan(
-						child: Column(
-							crossAxisAlignment: CrossAxisAlignment.start,
-							children: [
-								Text.rich(key: headerKey, TextSpan(children: [
-									endLineChar(),
-									span
-								])),
-								const Divider()
-							],
-						)
-					);
-				}
-				return TextSpan(children: [
-					WidgetSpan(child: Text.rich(key: headerKey, span)),
-					const TextSpan(text: "\n")
-				]);
+			action: (txt, opt){
+				return InlineHeadline(txt, opt, gOpt).span();
 			},
 		),
 
@@ -152,11 +112,8 @@ List<HighlightRule> allSyntaxRules({
 				return WidgetSpan(
 					child: CheckBoxSubList(
 						txt: txt,
-						hotRefresh: hotRefresh,
-						keyManager: keyManager,
-						noteId: noteId,
-						variables: variables,
-						nm: opt
+						gOpt: gOpt,
+						opt: opt
 					)
 				); 
 			},
@@ -194,11 +151,7 @@ List<HighlightRule> allSyntaxRules({
 						indentation: indentStep * 20,
 						data: TextSpan(
 							children: [formattingTexts(
-								context: context,
-								variables: variables,
-								keyManager: keyManager,
-								hotRefresh: hotRefresh,
-								id: noteId,
+								gOpt: gOpt,
 								content: txt.trim().substring(1).trim(),
 							)]
 						) 
@@ -215,10 +168,7 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'^( *?(?!semi)\|.*\|\s?)+'),
 			action: (txt, _){
 				InlineSpan? outTable = runZoned((){
-					return getTableSpan(
-						context: context, txt: txt,
-						variables: variables, id: noteId,
-						hotRefresh: hotRefresh, keyManager: keyManager);
+					return getTableSpan(txt: txt, gOpt: gOpt);
 				// ignore: deprecated_member_use
 				}, onError: (e, s){
 					debugPrint("Index ERR on Loading: $e");
@@ -245,15 +195,11 @@ List<HighlightRule> allSyntaxRules({
 					color: Colors.blue);
 
 				List<InlineSpan> spoon = [];
-				TapGestureRecognizer rec = useLinkRecognizer(context, link, keyManager);
+				TapGestureRecognizer rec = useLinkRecognizer(gOpt.context, link, gOpt.keyManager);
 
 				List<InlineSpan> appliedRules = formattingTexts(
-					context: context,
-					variables: variables,
-					id: noteId,
-					keyManager: keyManager,
-					hotRefresh: hotRefresh,
 					content: name,
+					gOpt: gOpt,
 					recognizer: rec,
 				).children!;
 
@@ -275,7 +221,7 @@ List<HighlightRule> allSyntaxRules({
 				
 				return TextSpan(
 					children: spoon,
-					recognizer: useLinkRecognizer(context, link, keyManager),
+					recognizer: useLinkRecognizer(gOpt.context, link, gOpt.keyManager),
 					style: linkStyle
 				);
 			}
@@ -287,7 +233,7 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'\!\[([\s\S]*?)\](\(|\[)([\s\S]*?)(\)|\])'),
 			action: (String txt, opt){
 				InlineSpan? outImg = runZoned((){
-					return showImageFrame(txt, opt.recognizer, variables);
+					return showImageFrame(txt, opt.recognizer, gOpt.variables);
 				// ignore: deprecated_member_use
 				}, onError: (e, s){
 					debugPrint("ERROR on Loading: $e");
@@ -325,7 +271,7 @@ List<HighlightRule> allSyntaxRules({
 					decorationColor: Colors.blue,
 					decoration: TextDecoration.underline
 				),
-				recognizer: useLinkRecognizer(context, txt, keyManager),
+				recognizer: useLinkRecognizer(gOpt.context, txt, gOpt.keyManager),
 			),
 		),
 
@@ -335,6 +281,7 @@ List<HighlightRule> allSyntaxRules({
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
 			action: (txt, opt){
 				return ibbFormatting(txt, opt);
+				/*
 				// int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
 				int specialChar = RegExp('\\${txt.substring(0, 1)}').allMatches(txt).length;
 				if(specialChar % 2 != 0){ specialChar--; }
@@ -353,6 +300,7 @@ List<HighlightRule> allSyntaxRules({
 					recognizer: opt.recognizer,
 					style: currentStyle
 				);
+				*/
 			},
 		),
 		
@@ -365,7 +313,7 @@ List<HighlightRule> allSyntaxRules({
 				recognizer: opt.recognizer,
 				style: TextStyle(
 					fontSize: 16,
-					decorationColor: Theme.of(context).colorScheme.inverseSurface,
+					decorationColor: Theme.of(gOpt.context).colorScheme.inverseSurface,
 					decorationStyle: TextDecorationStyle.solid,
 					decoration: TextDecoration.lineThrough
 				)
@@ -377,7 +325,7 @@ List<HighlightRule> allSyntaxRules({
 			label: "backqoute",
 			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
 			action: (txt, _){
-				BackqouteObj obj = getBackqouteElements(context, txt);
+				BackqouteObj obj = getBackqouteElements(gOpt.context, txt);
 				return WidgetSpan(
 					child: IntrinsicHeight(
 						child: Row(
@@ -414,7 +362,7 @@ List<HighlightRule> allSyntaxRules({
 			action: (String txt, _){
 				return WidgetSpan(
 					child: FutureBuilder(
-						future: DefaultAssetBundle.of(context)
+						future: DefaultAssetBundle.of(gOpt.context)
 							.loadString('assets/gemoji/data.json'),
 						builder: (context, AsyncSnapshot<String> data){
 							if(data.hasData){

@@ -1,4 +1,5 @@
 import 'package:ekko/markdown/cases.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/markdown/tools/pre_formatting.dart';
@@ -121,17 +122,20 @@ class MDGenerator extends StatelessWidget {
 
 		data = "$data\n";
 
+		GeneralOption gOpt = GeneralOption(
+			context: context,
+			keyManager: keyManager,
+			variables: variables,
+			noteId: noteId,
+			hotRefresh: hotRefresh
+		);
+
 		TextSpan spanWidget = applyRules(
 			context: context,
 			keyManager: keyManager,
 			id: noteId,
 			content: data,
-			// content: newData,
-			rules: allSyntaxRules(
-				context: context, variables: variables,
-				noteId: noteId,
-				hotRefresh: hotRefresh,
-				keyManager: keyManager)
+			rules: allSyntaxRules(gOpt: gOpt)
 		);
 
 		return Text.rich(spanWidget);

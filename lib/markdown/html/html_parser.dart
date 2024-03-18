@@ -1,7 +1,7 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_rules.dart';
-import 'package:ekko/markdown/tools/key_manager.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/models/html_rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -100,13 +100,9 @@ HTMLParser? getTagNameProperty(String txt){
 
 
 InlineSpan applyHtmlRules({
-		required BuildContext context,
 		required String txt,
-		required Map variables,
-		required int noteId,
-		required GlobalKeyManager keyManager,
-		required Function hotRefresh,
 		required TextStyle? forceStyle,
+		required GeneralOption gOpt,
 		TapGestureRecognizer? recognizer,
 		HtmlRuleOption? option
 	}){
@@ -125,7 +121,7 @@ InlineSpan applyHtmlRules({
 			if(forceStyle.fontSize == null){
 				forceStyle = forceStyle
 					.copyWith(fontSize: Provider.of<ProviderManager>
-					(context).defaultStyle.fontSize);
+					(gOpt.context).defaultStyle.fontSize);
 			}
 			return TextSpan(
 				text: txt,
@@ -135,21 +131,14 @@ InlineSpan applyHtmlRules({
 		}
 
 		return formattingTexts(
-			context: context,
 			content: txt,
-			variables: variables,
-			keyManager: keyManager,
-			id: noteId,
-			hotRefresh: hotRefresh,
 			recognizer: recognizer,
-			forceStyle: forceStyle
+			forceStyle: forceStyle,
+			gOpt: gOpt
 		);
 	}
 
-	List<HtmlHighlightRule> rules = allHtmlRules(
-		context: context, variables: variables,
-		noteId: noteId, hotRefresh: hotRefresh,
-		forceStyle: forceStyle, keyManager: keyManager);
+	List<HtmlHighlightRule> rules = allHtmlRules(gOpt: gOpt, forceStyle: forceStyle);
 
 	HtmlHighlightRule? currentRule;
 	try{
@@ -163,7 +152,7 @@ InlineSpan applyHtmlRules({
 	}
 
 
-	HtmlRuleOption ruleOpt = HtmlRuleOption(id: noteId, forceStyle: forceStyle, recognizer: recognizer, data: data);
+	HtmlRuleOption ruleOpt = HtmlRuleOption(id: gOpt.noteId, forceStyle: forceStyle, recognizer: recognizer, data: data);
 
 	// Merge the current one with it's parrents
 	if(option != null){ ruleOpt = ruleOpt.merge(option); }

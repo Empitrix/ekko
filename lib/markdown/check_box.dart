@@ -1,28 +1,23 @@
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
-import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/note.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 
+
 class CheckBoxSubList extends StatelessWidget {
 	final String txt;
-	final Function hotRefresh;
-	final GlobalKeyManager keyManager;
-	final Map variables;
-	final int noteId;
-	final RuleOption nm;
+	final GeneralOption gOpt;
+	final RuleOption opt;
 
 	const CheckBoxSubList({
 		super.key,
 		required this.txt,
-		required this.hotRefresh,
-		required this.noteId,
-		required this.keyManager,
-		required this.variables,
-		required this.nm
+		required this.gOpt,
+		required this.opt,
 	});
 
 	@override
@@ -30,12 +25,8 @@ class CheckBoxSubList extends StatelessWidget {
 		bool isChecked = txt.trim().substring(0, 5).contains("x");
 		TextSpan textData = TextSpan(
 			children: [formattingTexts(
-				context: context,
-				keyManager: keyManager,
-				variables: variables,
-				id: noteId,
-				hotRefresh: hotRefresh,
 				content: txt.trim().substring(5).trim(),  // Rm <whitespaces>
+				gOpt: gOpt
 			)]
 		); 
 
@@ -62,17 +53,17 @@ class CheckBoxSubList extends StatelessWidget {
 		return SublistWidget(
 			iconHasAction: true,
 			leadingOnTap: () async {
-				Note current = await DB().loadThisNote(nm.id);
+				Note current = await DB().loadThisNote(opt.id);
 				// debugPrint(current.content.substring(nm.match.start, nm.match.end));
-				String l = current.content.substring(nm.match.start + 3, nm.match.start + 4);
+				String l = current.content.substring(opt.match.start + 3, opt.match.start + 4);
 				if(l == "x"){
-					current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, " ");
+					current.content = current.content.replaceRange(opt.match.start + 3, opt.match.start + 4, " ");
 				} else {
-					current.content = current.content.replaceRange(nm.match.start + 3, nm.match.start + 4, "x");
+					current.content = current.content.replaceRange(opt.match.start + 3, opt.match.start + 4, "x");
 				}
 				// debugPrint(current.content.substring(nm.match.start, nm.match.end));
 				await DB().updateNote(current);
-				hotRefresh();
+				gOpt.hotRefresh();
 			},
 			type: SublistWidgetType.icon,
 			leading: MouseRegion(

@@ -1,17 +1,18 @@
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
-import 'package:ekko/markdown/tools/key_manager.dart';
+import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
 InlineSpan getTableSpan({
-	required BuildContext context,
 	required String txt,
-	required GlobalKeyManager keyManager,
-	required Map variables,
-	required int id,
-	required Function hotRefresh,
+	required GeneralOption gOpt,
+	// required BuildContext context,
+	// required GlobalKeyManager keyManager,
+	// required Map variables,
+	// required int id,
+	// required Function hotRefresh,
 }){
 	Map<String, Alignment> alignmentsMap = {
 		"-:": Alignment.centerRight,
@@ -67,17 +68,17 @@ InlineSpan getTableSpan({
 				label: idx == 1 || idx == alignment.length ? Expanded(child: Text(
 					column.trim(),
 					textAlign: textAlignments[idx - 1],
-					style: Provider.of<ProviderManager>(context).defaultStyle.copyWith(
+					style: Provider.of<ProviderManager>(gOpt.context).defaultStyle.copyWith(
 						fontWeight: FontWeight.bold,
-						fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize!
+						fontSize: Provider.of<ProviderManager>(gOpt.context).defaultStyle.fontSize!
 					),
 				)) : Align(
 					alignment: alignment[idx - 1],
 					child: Text(
 						column.trim(),
-						style: Provider.of<ProviderManager>(context).defaultStyle.copyWith(
+						style: Provider.of<ProviderManager>(gOpt.context).defaultStyle.copyWith(
 							fontWeight: FontWeight.bold,
-							fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize!
+							fontSize: Provider.of<ProviderManager>(gOpt.context).defaultStyle.fontSize!
 						),
 					),
 				)
@@ -100,13 +101,9 @@ InlineSpan getTableSpan({
 						child: Text.rich(
 							// Add markdonw styles
 							formattingTexts(
-								context: context,
-								content: row.trim(),
-								variables: variables,
-								id: id, hotRefresh: hotRefresh,
-								keyManager: keyManager),
+								content: row.trim(), gOpt: gOpt),
 							// TextSpan(text: "XXX"),
-							style: Provider.of<ProviderManager>(context).defaultStyle
+							style: Provider.of<ProviderManager>(gOpt.context).defaultStyle
 						),
 					)
 				)
@@ -120,7 +117,7 @@ InlineSpan getTableSpan({
 
 	DataTable dataTable = DataTable(
 		border: TableBorder.all(
-			color: Theme.of(context).colorScheme.inverseSurface,
+			color: Theme.of(gOpt.context).colorScheme.inverseSurface,
 			width: 1
 		),
 		// columnSpacing: 200,
