@@ -2,10 +2,10 @@ import 'package:ekko/components/divider.dart';
 import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/cases.dart';
-import 'package:ekko/markdown/check_box.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/image.dart';
+import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/markdown.dart';
@@ -90,7 +90,7 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			label: "headline",
 			regex: RegExp(r"^#{1,6} [\s\S]*?$\s*"),
 			action: (txt, opt){
-				return InlineHeadline(txt, opt, gOpt).span();
+				return InlineHeadline(opt, gOpt).span(txt);
 			},
 		),
 
@@ -109,13 +109,7 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			label: "checkbox",
 			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
 			action: (txt, opt){
-				return WidgetSpan(
-					child: CheckBoxSubList(
-						txt: txt,
-						gOpt: gOpt,
-						opt: opt
-					)
-				); 
+				return InlineCheckbox(opt, gOpt).span(txt);
 			},
 		),
 

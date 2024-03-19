@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 
 
 class InlineHeadline extends InlineModule {
-	InlineHeadline(super.text, super.opt, super.gOpt);
-
+	InlineHeadline(super.opt, super.gOpt);
 	@override
-	InlineSpan span() {
-		String txt = text.trim();
+	InlineSpan span(txt){
+		txt = txt.trim();
 		int sharpLength = RegExp(r'^\#{1,6}\s?').firstMatch(txt)!.group(0)!.trim().length;
 		String content = txt.substring(sharpLength + 1);
 		GlobalKey? headerKey = gOpt.keyManager.addNewKey(content);
@@ -34,7 +33,6 @@ class InlineHeadline extends InlineModule {
 			WidgetSpan(child: Text.rich(key: headerKey, span)),
 			const TextSpan(text: "\n")
 		]);
-		// return super.span();
 	}
 }
 

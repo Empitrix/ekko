@@ -19,19 +19,19 @@ class GeneralOption {
 	});
 }
 
+
+
 class InlineModule {
-	final String text;
 	final RuleOption opt;
 	final GeneralOption gOpt;
 
 	InlineModule(
-		this.text,
 		this.opt,
 		this.gOpt
 	);
 
-	InlineSpan span(){
-		return TextSpan(text: text, style: opt.forceStyle);
+	InlineSpan span(String txt){
+		return TextSpan(text: txt, style: opt.forceStyle);
 	}
 
 }
