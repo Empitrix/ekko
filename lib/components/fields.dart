@@ -201,7 +201,8 @@ class ContentTextFiled extends StatelessWidget {
 								widgetHeight: widgetHeight,
 								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 									color: Theme.of(context).colorScheme.inverseSurface,
-									fontFamily: "RobotoMono"
+									fontFamily: "RobotoMono",
+									height: 1.3
 								),
 							),
 						),

@@ -1,7 +1,9 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/public.dart';
+import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/markdown/table_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
 
 
 List<RegexFormattingStyle> allFieldRules(BuildContext context){
@@ -31,15 +33,6 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 				TextStyle store = const TextStyle(
 					color: Colors.purpleAccent, fontWeight: FontWeight.bold);
 
-				// // Syntax Highlighting
-				// HighlightView(
-				// 	txt.substring(nM!.end, lM.start),
-				// 	language: txt.substring(nM.start, nM.end).trim().toLowerCase(),
-				// 	tabSize: 2,
-				// 	theme: allMarkdownThemes[markdownThemeName]!,
-				// ).getSpan();
-
-
 				List<TextSpan> spans = (nM != null) ? [
 					// First Part
 					TextSpan(
@@ -48,17 +41,19 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 					// Name Part
 					TextSpan(
 						text: txt.substring(nM.start, nM.end),
-						style: const TextStyle(color: Colors.brown, fontWeight: FontWeight.bold)),
+						style: TextStyle(color: dMode ? Colors.grey : Colors.grey[700])),
 					// Content Part
+					/*
 					TextSpan(
 						text: txt.substring(nM.end, lM.start),
 						style: TextStyle(color: dMode ? Colors.cyan: Colors.indigo)),
-					// HighlightView(
-					// 	txt.substring(nM.end, lM.start),
-					// 	language: txt.substring(nM.start, nM.end).trim().toLowerCase(),
-					// 	tabSize: 2,
-					// 	theme: allMarkdownThemes[markdownThemeName]!,
-					// ).getSpan(),
+					*/
+					HighlightView(
+						txt.substring(nM.end, lM.start),
+						language: txt.substring(nM.start, nM.end).trim().toLowerCase(),
+						tabSize: 2,
+						theme: allMarkdownThemes[dMode ? 'atom-one-dark' : 'atom-one-light']!,
+					).getSpan(),
 
 					// End Part
 					TextSpan(
