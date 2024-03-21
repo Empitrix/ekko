@@ -168,44 +168,64 @@ class ContentTextFiled extends StatelessWidget {
 					mainAxisAlignment: MainAxisAlignment.start,
 					children: [
 
-						// {@Awesome}
-						Padding(
-							padding: const EdgeInsets.only(right: 8),
-							child: AwesomeTextField(
-								controller: controller,
-								focusNode: focusNode,
-								decoration: const InputDecoration(hintText: "Write..."),
-								borderRadius: const BorderRadius.only(
-									bottomRight: Radius.circular(0),
-									topRight: Radius.circular(0),
-								),
-								border: Border(
-									right: BorderSide(
-										color: Theme.of(context).colorScheme.inverseSurface, width: 1),
-								),
-								lineNumberColor: LineNumberPalette(
-									indexColor: dMode ?
-										const Color(0xff95949C):
-										const Color(0xff69686e),
-									onSelectIndex: (dMode ? Colors.black : Colors.white),
-									onSelectBackground: (dMode ? Colors.amber : Colors.indigo),
-									background: (dMode ?
-										const Color(0xff1a232e):
-										const Color(0xffc8dffa)).aae(context, lessOpt),
-									indexBackground: (dMode ?
-										const Color(0xff1a232e):
-										const Color(0xffc8dffa)).aae(context, lessOpt),
-								),
-								lineChanged: lineChanged,
-								regexStyle: allFieldRules(context),
-								widgetHeight: widgetHeight,
-								style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
-									color: Theme.of(context).colorScheme.inverseSurface,
-									fontFamily: "RobotoMono",
-									height: 1.3
-								),
-							),
-						),
+						Builder(
+							builder: (context){
+
+								// {@Awesome}
+								Padding editor = Padding(
+									padding: const EdgeInsets.only(right: 8),
+									child: AwesomeTextField(
+										controller: controller,
+										focusNode: focusNode,
+										decoration: const InputDecoration(hintText: "Write..."),
+										borderRadius: const BorderRadius.only(
+											bottomRight: Radius.circular(0),
+											topRight: Radius.circular(0),
+										),
+										border: Border(
+											right: BorderSide(
+												color: Theme.of(context).colorScheme.inverseSurface, width: 1),
+										),
+										lineNumberColor: LineNumberPalette(
+											indexColor: dMode ?
+												const Color(0xff95949C):
+												const Color(0xff69686e),
+											onSelectIndex: (dMode ? Colors.black : Colors.white),
+											onSelectBackground: (dMode ? Colors.amber : Colors.indigo),
+											background: (dMode ?
+												const Color(0xff1a232e):
+												const Color(0xffc8dffa)).aae(context, lessOpt),
+											indexBackground: (dMode ?
+												const Color(0xff1a232e):
+												const Color(0xffc8dffa)).aae(context, lessOpt),
+										),
+										lineChanged: lineChanged,
+										regexStyle: allFieldRules(context),
+										widgetHeight: widgetHeight,
+										// widgetHeight: MediaQuery.of(context).size.height,
+										// widgetHeight: MediaQuery.of(context).size.height,
+										style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
+											color: Theme.of(context).colorScheme.inverseSurface,
+											fontFamily: "RobotoMono",
+											height: 1.3
+										),
+									),
+								);
+
+
+								// CustomMultiChildLayout(delegate: delegate)
+
+								// return LayoutBuilder(
+								// 	builder: (BuildContext context, BoxConstraints box){
+								// 		return editor;
+								// 	}
+								// );
+
+								return editor;
+
+							}
+						)
+
 					],
 				),
 			),

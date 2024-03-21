@@ -52,7 +52,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 						txt.substring(nM.end, lM.start),
 						language: txt.substring(nM.start, nM.end).trim().toLowerCase(),
 						tabSize: 2,
-						theme: allMarkdownThemes[dMode ? 'atom-one-dark' : 'atom-one-light']!,
+						theme: allMarkdownThemes['atom-one-${dMode ? "dark" : "light"}']!,
 					).getSpan(),
 
 					// End Part
