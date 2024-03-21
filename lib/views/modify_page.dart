@@ -195,7 +195,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 				double headerHeight = (headerKey.currentContext!.findRenderObject() as RenderBox).size.height;
 				double appbarHeight = (appbarKey.currentContext!.findRenderObject() as RenderBox).size.height;
 				double bufferHeight = 20.0;
-				double platformHeight = isDesktop() ? 0 : 2;
+				// double platformHeight = isDesktop() ? 0 : 2;
+				double platformHeight = isDesktop() ? 33 : 0;
 
 				// if(!headerEnabled){ headerHeight = 0; }
 
@@ -204,7 +205,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 				wh = MediaQuery.of(context).size.height - wh;
 				wh = wh - MediaQuery.of(context).viewInsets.bottom;
 
-				wh = wh - 33;
+				// wh = wh - 33;
 				hH = headerHeight;
 			}
 		});
