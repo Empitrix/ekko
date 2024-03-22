@@ -122,14 +122,18 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 							title: const Text("Settings"),
 							onTap: () => _newView(const SettingsPage(), "SettingsPage"),
 						),
-
 						ListTile(
-							leading: NfFont(
-								unicode: folderAnim.animation.value == 1 ?
-									"\udb81\udf70":
-									"\udb80\ude4b",
-								size: 25
-							).widget(),
+							leading: AnimatedBuilder(
+								animation: folderAnim.animation,
+								builder: (context, child){
+									return NfFont(
+										unicode: folderAnim.animation.value != 0 ?
+											"\udb81\udf70":
+											"\udb80\ude4b",
+										size: 25
+									).widget();
+								}
+							),
 							title: const Text("Folder"),
 							trailing: SizedBox(
 								height: 32,

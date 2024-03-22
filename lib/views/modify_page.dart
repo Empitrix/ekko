@@ -115,13 +115,9 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		);
 
 		if(widget.note == null){
-			// Add
 			await db.addNote(note);
-			// snk.message(icon, message);
 		} else {
-			// Edit
 			await db.updateNote(note);
-			// snk.message(icon, message);
 		}
 
 		if(mounted) _backClose(isNew: true, force: true);
@@ -172,12 +168,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		contentF.addListener(() async {
 			if(contentF.hasFocus){
 				headerAnim.controller.reverse();
-				// headerAnim.controller.reverse().then((_) => setState(() {}));
-				// setState(() {});
 			} else {
 				headerAnim.controller.forward();
-				// headerAnim.controller.forward().then((_) => setState(() {}));
-				// setState(() {});
 			}
 		});
 	}
@@ -187,25 +179,15 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		double wh = 0.0;
 		double hH = 0.0;
 		Completer<List<double>> onFetchCompleter = Completer<List<double>>();
-		// WidgetsBinding.instance.addPostFrameCallback((_) async {
 		await Future.microtask((){
 			if(appbarKey.currentContext != null && headerKey.currentContext != null){
-				// bool headerEnabled = headerAnim.animation.value == 1;
-				// double headerHeight = animValue * (headerKey.currentContext!.findRenderObject() as RenderBox).size.height;
 				double headerHeight = (headerKey.currentContext!.findRenderObject() as RenderBox).size.height;
 				double appbarHeight = (appbarKey.currentContext!.findRenderObject() as RenderBox).size.height;
 				double bufferHeight = 20.0;
-				// double platformHeight = isDesktop() ? 0 : 2;
 				double platformHeight = isDesktop() ? 33 : 0;
-
-				// if(!headerEnabled){ headerHeight = 0; }
-
 				wh = (headerHeight + appbarHeight + bufferHeight) + platformHeight;
-				// ignore: use_build_context_synchronously
 				wh = MediaQuery.of(context).size.height - wh;
 				wh = wh - MediaQuery.of(context).viewInsets.bottom;
-
-				// wh = wh - 33;
 				hH = headerHeight;
 			}
 		});
@@ -230,7 +212,6 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 				if(didPop) { return; }
 				_backClose();
 			},
-			// child: Scaffold(
 			child: ShortcutScaffold(
 				focusNode: screenShortcutFocus["ModifyPage"],
 				autofocus: true,
@@ -321,100 +302,6 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 								],
 							),
 						);
-						/*
-						Widget header = ListView(
-							padding: EdgeInsets.zero,
-							children: [
-								Padding(
-									padding: const EdgeInsets.all(12),
-									child: Column(
-										crossAxisAlignment: CrossAxisAlignment.start,
-										children: [
-											TitleTextField(
-												controller: title,
-												focusNode: titleF,
-												autofocus: widget.note == null,
-												nextFocus: () => descriptionF.requestFocus(),
-											),
-											DescriptionTextFiled(
-												controller: description,
-												tags: tags,
-												focusNode: descriptionF,
-												previousFocus: () => titleF.requestFocus(),
-												nextFocus: () => contentF.requestFocus()
-											),
-										],
-									),
-								),
-								// const SizedBox(height: 20),
-								// ContentTextFiled(
-								// 	controller: content,
-								// 	focusNode: contentF,
-								// 	previousFocus: () => descriptionF.requestFocus()
-								// )
-							],
-						);
-						*/
-
-
-						/*
-						Column columnWidget = Column(
-							crossAxisAlignment: CrossAxisAlignment.start,
-							mainAxisAlignment: MainAxisAlignment.start,
-							children: [
-								expandAnimation(
-									animation: headerAnim.animation,
-									mode: ExpandMode.height,
-									body: header
-								),
-								// const Row(
-								// 	mainAxisAlignment: MainAxisAlignment.end,
-								// 	children: [
-								// 		Icon(Icons.open_with)
-								// 	],
-								// ),
-
-								AnimatedBuilder(
-									animation: headerAnim.animation,
-									builder: (BuildContext context, Widget? child){
-										// Calculate current widget height
-										double cwh = ((MediaQuery.sizeOf(context).height - (235 - 8)) - (isDesktop() ? 2 : 14));
-										cwh = cwh - (MediaQuery.of(context).viewInsets.bottom);
-										double currentLost = ((headerAnim.animation.value - 1) * (128 - 8));
-										cwh = cwh - (currentLost) -
-											(currentLost == 0 ? 0 : !isDesktop() ? -12 : 0);
-
-										return ContentTextFiled(
-											controller: content,
-											focusNode: contentF,
-											widgetHeight: cwh,
-											lineChanged: (LineStatus status){
-												Future.microtask((){
-													lineStatus.value = status;
-												});
-											},
-											previousFocus: () => descriptionF.requestFocus()
-										);
-									}
-								),
-
-								ValueListenableBuilder(
-									valueListenable: lineStatus,
-									builder: (_, status, __){
-										return EditorBuffer(
-											controller: content,
-											lineStatus: status,
-											note: widget.note,
-											folderId: widget.folderId,
-										);
-									}
-								)
-
-							],
-						);
-						*/
-
-
 						return AnimatedBuilder(
 							animation: headerAnim.animation,
 							builder: (BuildContext context, Widget? child){
@@ -424,7 +311,6 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 										if(snapshot.hasData && snapshot.data!.first == 0){
 											WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
 										}
-
 										if(snapshot.hasData){
 											return Column(
 												crossAxisAlignment: CrossAxisAlignment.start,
@@ -435,23 +321,12 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 														mode: ExpandMode.height,
 														body: header
 													),
-
 													AnimatedBuilder(
 														animation: headerAnim.animation,
 														builder: (BuildContext context, Widget? child){
-															/*
-															// Calculate current widget height
-															double cwh = ((MediaQuery.sizeOf(context).height - (235 - 8)) - (isDesktop() ? 2 : 14));
-															cwh = cwh - (MediaQuery.of(context).viewInsets.bottom);
-															double currentLost = ((headerAnim.animation.value - 1) * (128 - 8));
-															cwh = cwh - (currentLost) -
-																(currentLost == 0 ? 0 : !isDesktop() ? -12 : 0);
-															*/
-
 															return ContentTextFiled(
 																controller: content,
 																focusNode: contentF,
-																// widgetHeight: snapshot.data![0] - (headerAnim.animation.value * snapshot.data![1] / 100),
 																widgetHeight: snapshot.data![0] + ((1 - headerAnim.animation.value) * snapshot.data![1]),
 																lineChanged: (LineStatus status){
 																	Future.microtask((){
@@ -476,17 +351,11 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 												],
 											);
 										}
-
 										return const SizedBox();
 									}
 								);
-
-
 							},
 						);
-
-
-
 					}
 				)
 			),
