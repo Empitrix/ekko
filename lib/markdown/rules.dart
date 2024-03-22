@@ -6,6 +6,7 @@ import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
+import 'package:ekko/markdown/inline/emoji.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/markdown.dart';
@@ -17,8 +18,8 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'dart:async';
+
 
 int lastIndent = 0;
 int indentStep = 0;
@@ -352,28 +353,8 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		// {@Emojies}
 		HighlightRule(
 			label: "emojies",
-			regex: RegExp(r'\:\w+\:', multiLine: true),
-			action: (String txt, _){
-				return WidgetSpan(
-					child: FutureBuilder(
-						future: DefaultAssetBundle.of(gOpt.context)
-							.loadString('assets/gemoji/data.json'),
-						builder: (context, AsyncSnapshot<String> data){
-							if(data.hasData){
-								List<Map<String, dynamic>> emojies =
-									List<Map<String, dynamic>>
-									.from(json.decode(data.data!)['emoji']);
-								String selected = parseEmojiString(txt, emojies);
-								return Text.rich(TextSpan(
-									text: selected,
-									style: Provider.of<ProviderManager>(context).defaultStyle));
-							} else {
-								return const SizedBox();
-							}
-						},
-					)
-				);
-			}
+			regex: RegExp(r'\:\w+\:'),
+			action: (txt, opt) => InlineEmoji(opt, gOpt).span(txt)
 		),
 
 		// etc..
