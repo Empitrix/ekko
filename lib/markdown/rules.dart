@@ -1,10 +1,10 @@
 import 'package:ekko/components/divider.dart';
-import 'package:ekko/markdown/backqoute_element.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/image.dart';
+import 'package:ekko/markdown/inline/backqoute.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
@@ -319,35 +319,7 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		HighlightRule(
 			label: "backqoute",
 			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
-			action: (txt, _){
-				BackqouteObj obj = getBackqouteElements(gOpt.context, txt);
-				return WidgetSpan(
-					child: IntrinsicHeight(
-						child: Row(
-							crossAxisAlignment: CrossAxisAlignment.start,
-							children: [
-								Container(
-									width: 3.5,
-									height: double.infinity,
-									decoration: BoxDecoration(
-										color: obj.color,
-										borderRadius: BorderRadius.circular(1)
-									),
-								),
-								const SizedBox(width: 12),
-								Expanded(
-									child: Column(
-										crossAxisAlignment: CrossAxisAlignment.start,
-										children: [
-											Text.rich(obj.span)
-										],
-									)
-								)
-							],
-						),
-					)
-				);
-			},
+			action: (txt, opt) => InlineBackqoute(opt, gOpt).span(txt)
 		),
 
 		// {@Emojies}
