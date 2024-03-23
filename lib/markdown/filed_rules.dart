@@ -257,6 +257,15 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			},
 		),
 
+		// {@Strike}
+		RegexFormattingStyle(
+			regex: RegExp(r'~~.*~~'),
+			style: TextStyle(
+				decoration: TextDecoration.lineThrough,
+				decorationColor: Theme.of(context).colorScheme.inverseSurface
+			)
+		),
+
 
 
 	];

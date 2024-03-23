@@ -8,6 +8,7 @@ import 'package:ekko/markdown/inline/backqoute.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
+import 'package:ekko/markdown/inline/isbb.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/monospace.dart';
@@ -274,45 +275,14 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		HighlightRule(
 			label: "italic&bold_bold_italic",
 			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
-			action: (txt, opt){
-				return ibbFormatting(txt, opt);
-				/*
-				// int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
-				int specialChar = RegExp('\\${txt.substring(0, 1)}').allMatches(txt).length;
-				if(specialChar % 2 != 0){ specialChar--; }
-				specialChar = specialChar ~/ 2;
-
-				TextStyle currentStyle = 
-						specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
-						specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
-						const TextStyle(fontStyle: FontStyle.italic);
-
-				// currentStyle = currentStyle.merge(opt.forceStyle);
-				debugPrint(opt.forceStyle.toString());
-
-				return TextSpan(
-					text: txt.substring(specialChar, txt.length - specialChar),
-					recognizer: opt.recognizer,
-					style: currentStyle
-				);
-				*/
-			},
+			action: (txt, opt) => InlineIBB(opt, gOpt).span(txt),
 		),
 		
 		// {@Straight}
 		HighlightRule(
 			label: "strike",
 			regex: RegExp(r'~~.*~~'),
-			action: (txt, opt) => TextSpan(
-				text: txt.substring(2, txt.length - 2),
-				recognizer: opt.recognizer,
-				style: TextStyle(
-					fontSize: 16,
-					decorationColor: Theme.of(gOpt.context).colorScheme.inverseSurface,
-					decorationStyle: TextDecorationStyle.solid,
-					decoration: TextDecoration.lineThrough
-				)
-			),
+			action: (txt, opt) => InlineStrike(opt, gOpt).span(txt),
 		),
 
 		// {@Backqoute}
