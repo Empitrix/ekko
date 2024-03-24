@@ -9,9 +9,10 @@ import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline/isbb.dart';
+import 'package:ekko/markdown/inline/monospace.dart';
+import 'package:ekko/markdown/inline/url.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/markdown.dart';
-import 'package:ekko/markdown/monospace.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:ekko/markdown/table.dart';
@@ -246,29 +247,14 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		HighlightRule(
 			label: "monospace",
 			regex: RegExp(r'\`(.|\n)*?\`', multiLine: false),
-			action: (txt, opt){
-				txt = txt.replaceAll("\n", ' ');
-				return getMonospaceTag(
-					text: txt.substring(1, txt.length - 1),
-					recognizer: opt.recognizer,
-				);
-			},
+			action: (txt, opt) => InlineMonospace(opt, gOpt).span(txt),
 		),
 
 		// {@URL}
 		HighlightRule(
 			label: "url",
 			regex: RegExp(r'(https\:|http\:|www)(\/\/|\.)([A-Za-z0-9@:%\.\_\+\~\#\=\/\?\-\&]*)'),
-			action: (txt, _) => TextSpan(
-				text: txt,
-				style: const TextStyle(
-					color: Colors.blue,
-					fontSize: 16,
-					decorationColor: Colors.blue,
-					decoration: TextDecoration.underline
-				),
-				recognizer: useLinkRecognizer(gOpt.context, txt, gOpt.keyManager),
-			),
+			action: (txt, opt) => InlineURL(opt, gOpt).span(txt)
 		),
 
 		// {@Italic-Bold, Bold, Italic}

@@ -1,22 +1,15 @@
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/rules.dart';
-import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
 TextSpan formattingTexts({
-	// required BuildContext context,
 	required String content,
-	// required Map variables,
-	// required int id,
-	// required GlobalKeyManager keyManager,
-	// required Function hotRefresh,
 	required GeneralOption gOpt,
 	TextStyle? forceStyle,
 	TapGestureRecognizer? recognizer}){
-	// using this function in rules list prevent to 'over-flow' error
 
 	TextSpan applied = applyRules(
 		context: gOpt.context,
@@ -27,8 +20,6 @@ TextSpan formattingTexts({
 		forceStyle: forceStyle,
 		rules: allSyntaxRules(gOpt: gOpt)
 	);
-
-	// print(applied.children?.length);
 
 	return applied;
 }

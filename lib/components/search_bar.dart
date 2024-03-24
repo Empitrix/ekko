@@ -84,18 +84,19 @@ class SearchBarField extends StatelessWidget implements PreferredSizeWidget {
 						body: Container(
 							height: isDesktop() ? 40 : 45,
 							width: MediaQuery.of(context).size.width - (isDesktop() ? 145 : 152),
-							padding: isDesktop() ? const EdgeInsets.only(
-								left: 8, right: 8,
-								bottom: 4
-							) : const EdgeInsets.only(
-								left: 8, right: 8,
-								top: 0, bottom: 0
-							),
+							// padding: isDesktop() ? const EdgeInsets.only(
+							// 	left: 8, right: 8,
+							// 	bottom: 4
+							// ) : const EdgeInsets.only(
+							// 	left: 8, right: 8,
+							// 	top: 0, bottom: 0
+							// ),
+							padding: const EdgeInsets.all(8),
 							decoration: BoxDecoration(
 								borderRadius: BorderRadius.circular(5),
 								color: Theme.of(context).scaffoldBackgroundColor.aae(context)
 							),
-							child: TextField(
+							child: Center(child: TextField(
 								// focusNode: focus,
 								focusNode: fNode,
 								autofocus: true,
@@ -109,9 +110,10 @@ class SearchBarField extends StatelessWidget implements PreferredSizeWidget {
 								},
 								decoration: const InputDecoration(
 									border: InputBorder.none,
+									isDense: true,
 									hintText: "Search..."
 								),
-							)
+							))
 						)
 					),
 					expandAnimation(
