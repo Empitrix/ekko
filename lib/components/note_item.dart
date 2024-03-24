@@ -125,11 +125,11 @@ class NoteItem extends StatelessWidget {
 										Wrap(
 											crossAxisAlignment: WrapCrossAlignment.center,
 											children: [
-												for(String tag in note.description.trim().split(" ")) textTag(
-													context: context, 
-													txt: tag,
-													margin: const EdgeInsets.only(right: 5, top: 5),
-													padding: const EdgeInsets.symmetric(horizontal: 5),
+												for(String tag in note.description.trim().split(" ")) TextTag(
+													// context: context, 
+													tag: tag,
+													// margin: const EdgeInsets.only(right: 5, top: 5),
+													// padding: const EdgeInsets.symmetric(horizontal: 5),
 												),
 											],
 										),

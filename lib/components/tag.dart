@@ -1,7 +1,118 @@
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:math';
+
+
+class TagData {
+	final String icon;
+	final Color color;
+	TagData({required this.icon, required this.color});
+}
+
+
+int getColorNum(String c){
+	c = c.toUpperCase().replaceAll("#", "");
+	if(c.length == 6){
+		c += "FF";
+	}
+	return int.parse(c, radix: 16);
+}
+
+
+
+Color getForeground(Color backgroundColor, {double bias = 0.0}) {
+	int v = sqrt(pow(backgroundColor.red, 2) * 0.299 +
+		pow(backgroundColor.green, 2) * 0.587 +
+		pow(backgroundColor.blue, 2) * 0.114).round();
+	return v < 130 + bias ? Colors.white : Colors.black;
+}
+
+
+
+
+TagData getTagData(BuildContext context, String text){
+	text = text.toLowerCase().trim();
+	Map<String, dynamic> selectedIcon = {};
+
+	List<Map<String, dynamic>> icons = [
+		{"i": "\ue235", "w": "python", "c": const Color(0xFF4584b6)},
+		{"i": "\ue64c", "w": "dart", "c": const Color(0xFF2BB7F6)},
+		{"i": "\udb81\udee6", "w": "typescript", "c": const Color(0xFF007acc)},
+		{"i": "\udb80\udf1e", "w": "javascript", "c": const Color(0xFFF0DB4F)},
+		{"i": "\uebca", "w": "bash", "c": const Color(0xFF282E34)},
+		{"i": "\udb82\ude0a", "w": "powershell", "c": const Color(0xFF002353)},
+		{"i": "\ue256", "w": "java", "c": const Color(0xFFFFA500)},
+		{"i": "\ue7a8", "w": "rust", "c": const Color(0xFFb7410e)},
+		{"i": "\uf09b", "w": "github", "c": const Color(0xFF6c727a)},
+		{"i": "\ue702", "w": "git", "c": const Color(0xFF6c727a)},
+		{"i": "\ue73e", "w": "markdown", "c": const Color(0xFF6c727a)},
+		{"i": "\udb81\ude68", "w": "test", "c": Colors.purple},
+		{"i": "\ue736", "w": "html", "c": const Color(0xFFE5532D)},
+		{"i": "\ue62e", "w": "electron", "c": const Color(0xFF37384A)},
+		{"i": "\ue60b", "w": "json", "c": Colors.amber},
+		{"i": "\ue620", "w": "lua", "c": const Color(0xFF080884)},
+	];
+
+	for(Map<String, dynamic> icon in icons){
+		if(text.contains(icon['w']!)){
+			selectedIcon = icon;
+			break;
+		}
+	}
+
+	if(selectedIcon.isNotEmpty){
+		return TagData(
+			color: selectedIcon['c']! is String ?
+				Color(getColorNum(selectedIcon['c']!)):
+				selectedIcon['c']! as Color,
+			icon: selectedIcon['i']!
+		);
+	}
+
+	return TagData(color: Colors.grey, icon: "");
+}
+
+
+class TextTag extends StatelessWidget {
+	final String tag;
+	const TextTag({super.key, required this.tag});
+
+	@override
+	Widget build(BuildContext context) {
+		TagData tagData = getTagData(context, tag);
+		Color foregroundColor = getForeground(tagData.color);
+		return Container(
+			height: 20,
+			margin: const EdgeInsets.only(right: 5, bottom: 2),
+			// padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+			padding: const EdgeInsets.only(left: 5, right: 5, bottom: 2),
+			decoration: BoxDecoration(
+				color: tagData.color,
+				borderRadius: BorderRadius.circular(12),
+				border: Border.all(color: tagData.color, width: 1)
+			),
+			child: SizedBox(
+				height: 22,
+				child: IntrinsicWidth(child: Row(
+					crossAxisAlignment: CrossAxisAlignment.end,
+					children: [
+						if(tagData.icon != "") NfFont(
+							unicode: tagData.icon, color: foregroundColor, size: 16).widget(),
+						Text("${tagData.icon != '' ? ' ': ''}${tag.trim()}",
+							style: TextStyle(
+							color: foregroundColor,
+							fontWeight: FontWeight.w600,
+							fontSize: 12))
+					]
+				)),
+			)
+		);
+	}
+}
+
+/*
+
+color: alphaForeground(_colors[index].color) ? Colors.white : Colors.black,
 
 
 Widget textTag(
@@ -85,3 +196,4 @@ Widget textTag(
 	);
 }
 
+*/

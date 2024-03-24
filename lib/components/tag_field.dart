@@ -1,5 +1,7 @@
+import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/tag.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 
 List<String> _addMatch(TextEditingController ctrl, ValueNotifier<List<String>> tags){
@@ -73,10 +75,8 @@ class TagField extends StatelessWidget {
 									cursor: SystemMouseCursors.move,
 									child: Row(
 										children: [
-											for(String tag in tags.value) textTag(
-												txt: tag,
-												context: context,
-												style: tagStyle
+											for(String tag in tags.value) TextTag(
+												tag: tag,
 											)
 										],
 									)
@@ -85,28 +85,52 @@ class TagField extends StatelessWidget {
 						),
 
 						IntrinsicWidth(
-							child: TextField(
-								autofocus: autofocus,
-								focusNode: focusNode,
-								onSubmitted: (_){
-									if(controller.text.trim().isNotEmpty){
-										List<String> last = tags.value;
-										last.add(controller.text.trim());
-										tags.value = last.toList();
-										controller.text = "";
-									}
-									if(onEnd != null){
-										onEnd!();
-										controller.text = " ";
-									}
-								},
-								style: style,
-								controller: controller,
-								decoration: const InputDecoration(border: InputBorder.none, hintText: "Tags..."),
-								onChanged: (word){
-									tags.value = _addMatch(controller, tags).toList();
-								},
+							child: Material(
+								color: Theme.of(context).colorScheme.tertiaryContainer,
+								borderRadius: BorderRadius.circular(12),
+								child: InkWell(
+									borderRadius: BorderRadius.circular(12),
+									onTap: (){},
+									child: Container(
+										clipBehavior: Clip.antiAlias,
+										padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+										decoration: BoxDecoration(
+											borderRadius: BorderRadius.circular(12),
+											color: Colors.transparent
+										),
+										child: Row(
+											children: [
+												NfFont(unicode: "\udb81\udf22", size: 19, color: const Color(0xffdddFFF)).widget(),
+												const SizedBox(width: 7),
+												const Text("Add a tag", style: TextStyle(color: Color(0xffdddFFF))),
+												
+											],
+										)
+									),
+								)
 							)
+							// child: TextField(
+							// 	autofocus: autofocus,
+							// 	focusNode: focusNode,
+							// 	onSubmitted: (_){
+							// 		if(controller.text.trim().isNotEmpty){
+							// 			List<String> last = tags.value;
+							// 			last.add(controller.text.trim());
+							// 			tags.value = last.toList();
+							// 			controller.text = "";
+							// 		}
+							// 		if(onEnd != null){
+							// 			onEnd!();
+							// 			controller.text = " ";
+							// 		}
+							// 	},
+							// 	style: style,
+							// 	controller: controller,
+							// 	decoration: const InputDecoration(border: InputBorder.none, hintText: "Tags..."),
+							// 	onChanged: (word){
+							// 		tags.value = _addMatch(controller, tags).toList();
+							// 	},
+							// )
 						)
 					],
 				),
