@@ -81,7 +81,14 @@ class TextTag extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-		TagData tagData = getTagData(context, tag);
+		String tagString = tag;
+
+		// add "ellipsis" for text
+		if(tag.length > 50){
+			tagString = "${tag.substring(0, 50)}...";
+		}
+
+		TagData tagData = getTagData(context, tagString);
 		Color foregroundColor = getForeground(tagData.color);
 		double height = isDense ? 18 : 23;
 
@@ -106,19 +113,19 @@ class TextTag extends StatelessWidget {
 									f: 2,
 									color: foregroundColor,
 									size: 16).widget(),
-								Text("${tagData.icon != '' ? ' ': ''}${tag.trim()}",
+								Text("${tagData.icon != '' ? ' ': ''}${tagString.trim()}",
 									style: TextStyle(
 									color: foregroundColor,
 									fontWeight: FontWeight.w600,
 									fontSize: 12)),
 								if(onDelete != null) InkWell(
-										onTap: (){ onDelete!(tag); },
-										child: NfFont(
-											unicode: " \udb80\udd59",
-											size: 16,
-											color: Colors.red
-											).widget(),
-									)
+									onTap: (){ onDelete!(tagString); },
+									child: NfFont(
+										unicode: " \udb80\udd59",
+										size: 16,
+										color: Colors.red
+									).widget(),
+								)
 							]
 						)),
 					);

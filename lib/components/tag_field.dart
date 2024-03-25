@@ -2,7 +2,6 @@ import 'package:ekko/animation/expand.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /*
 List<String> _addMatch(TextEditingController ctrl, ValueNotifier<List<String>> tags){
@@ -200,6 +199,13 @@ class TagField extends StatelessWidget {
 	Widget build(BuildContext context) {
 		FocusNode fieldFocus = FocusNode();
 		ScrollController scroll = ScrollController();
+		/* Auto close when not focused */
+		fieldFocus.addListener((){
+			if(!fieldFocus.hasFocus){
+				anim.controller.forward();
+				controller.text = "";
+			}
+		});
 
 		return Row(
 			children: [
@@ -207,7 +213,9 @@ class TagField extends StatelessWidget {
 					animation: anim.animation,
 					reverse: true,
 					mode: ExpandMode.width,
-					body: IntrinsicWidth(
+					// body: IntrinsicWidth(
+					body: SizedBox(
+						width: 140,
 						child: TextField(
 							focusNode: fieldFocus,
 							controller: controller,
@@ -238,9 +246,7 @@ class TagField extends StatelessWidget {
 						focus: FocusNode()
 					)
 				),
-
 				const SizedBox(width: 12),
-
 				Expanded(child: GestureDetector(
 					onHorizontalDragUpdate: (DragUpdateDetails details){
 						scroll.jumpTo(scroll.offset - details.primaryDelta!);

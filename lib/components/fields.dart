@@ -93,23 +93,31 @@ class TitleTextField extends StatelessWidget {
 
 class DescriptionTextFiled extends StatelessWidget {
 	final TextEditingController controller;
-	final FocusNode focusNode;
-	final Function previousFocus;
-	final Function nextFocus;
+	// final FocusNode focusNode;
+	// final Function previousFocus;
+	// final Function nextFocus;
 	final ValueNotifier<List<String>> tags;
 	final GenAnimation animation;
 	const DescriptionTextFiled({
 		super.key,
 		required this.controller,
-		required this.focusNode,
-		required this.previousFocus,
-		required this.nextFocus,
+		// required this.focusNode,
+		// required this.previousFocus,
+		// required this.nextFocus,
 		required this.tags,
 		required this.animation,
 	});
 
 	@override
 	Widget build(BuildContext context) {
+		return SizedBox(
+			child: TagField(
+				anim: animation,
+				controller: controller,
+				tags: tags,
+			),
+		);
+		/*
 		return KeyboardListener(
 			focusNode: FocusNode(),
 			onKeyEvent: (KeyEvent event) async {
@@ -137,6 +145,7 @@ class DescriptionTextFiled extends StatelessWidget {
 				),
 			),
 		);
+		*/
 	}
 }
 

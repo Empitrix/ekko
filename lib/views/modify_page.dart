@@ -44,7 +44,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 	FocusNode titleF = FocusNode();
 	TextEditingController description = TextEditingController();
 	late GenAnimation desAnim;
-	FocusNode descriptionF = FocusNode();
+	// FocusNode descriptionF = FocusNode();
 	AwesomeController content = AwesomeController();
 	ValueNotifier<List<String>> tags = ValueNotifier([]);
 	ValueNotifier<LineStatus> lineStatus = ValueNotifier(
@@ -142,12 +142,16 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		mode = note.mode;
 		isPinned = note.isPinned;
 
+
 		// Load Tags
 		for(String tag in description.text.split("|")){
-			if(tag.trim().isEmpty){ return; }
-			tags.value.add(tag);
+			if(tag.trim().isNotEmpty){
+				tags.value.add(tag);
+			}
 		}
-		
+		description.text = "";
+
+
 		if(note.content.length > waitForLoading){
 			await Future.delayed(Duration(
 				milliseconds: waitLoadingSize));
@@ -163,8 +167,10 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		if(fileData == null) { return; }
 		content.text = fileData.content;
 		title.text = fileData.name;
+		// 
 		// Set focus to descript filed becasue it's not filled
-		descriptionF.requestFocus();
+		// descriptionF.requestFocus();
+		titleF.requestFocus();
 	}
 
 	void initializeAnimations(){
@@ -300,15 +306,16 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 										controller: title,
 										focusNode: titleF,
 										autofocus: widget.note == null,
-										nextFocus: () => descriptionF.requestFocus(),
+										// nextFocus: () => descriptionF.requestFocus(),
+										nextFocus: () => contentF.requestFocus(),
 									),
 									DescriptionTextFiled(
 										controller: description,
 										tags: tags,
 										animation: desAnim,
-										focusNode: descriptionF,
-										previousFocus: () => titleF.requestFocus(),
-										nextFocus: () => contentF.requestFocus()
+										// focusNode: descriptionF,
+										// previousFocus: () => titleF.requestFocus(),
+										// nextFocus: () => contentF.requestFocus()
 									),
 								],
 							),
@@ -344,7 +351,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																		lineStatus.value = status;
 																	});
 																},
-																previousFocus: () => descriptionF.requestFocus()
+																// previousFocus: () => descriptionF.requestFocus()
+																previousFocus: () => titleF.requestFocus()
 															);
 														}
 													),

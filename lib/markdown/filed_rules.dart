@@ -53,7 +53,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 						language: txt.substring(nM.start, nM.end).trim().toLowerCase(),
 						tabSize: 2,
 						theme: allMarkdownThemes['atom-one-${dMode ? "dark" : "light"}']!,
-					).getSpan(),
+					).getSpan(style: const TextStyle(fontFamily: "SauceCodeProNerdFont")),
 
 					// End Part
 					TextSpan(
