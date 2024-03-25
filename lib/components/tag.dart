@@ -76,47 +76,67 @@ TagData getTagData(BuildContext context, String text){
 class TextTag extends StatelessWidget {
 	final String tag;
 	final void Function(String name)? onDelete;
-	const TextTag({super.key, required this.tag, this.onDelete});
+	final bool isDense;
+	const TextTag({super.key, required this.tag, this.onDelete, this.isDense = false});
 
 	@override
 	Widget build(BuildContext context) {
 		TagData tagData = getTagData(context, tag);
 		Color foregroundColor = getForeground(tagData.color);
-		return Container(
-			height: 23,
+		double height = isDense ? 18 : 23;
+
+		Widget tagWidget = Container(
+			height: height,
 			margin: const EdgeInsets.only(right: 5, top: 2),
-			// padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
 			padding: const EdgeInsets.only(left: 5, right: 5, bottom: 2),
 			decoration: BoxDecoration(
-				color: tagData.color,
+				color: tagData.color.withOpacity(0.7),
 				borderRadius: BorderRadius.circular(12),
 				border: Border.all(color: tagData.color, width: 1)
 			),
-			child: SizedBox(
-				height: 23,
-				child: IntrinsicWidth(child: Row(
-					crossAxisAlignment: CrossAxisAlignment.end,
-					children: [
-						if(tagData.icon != "") NfFont(
-							unicode: tagData.icon, color: foregroundColor, size: 16).widget(),
-						Text("${tagData.icon != '' ? ' ': ''}${tag.trim()}",
-							style: TextStyle(
-							color: foregroundColor,
-							fontWeight: FontWeight.w600,
-							fontSize: 12)),
-						if(onDelete != null) InkWell(
-								onTap: (){ onDelete!(tag); },
-								child: NfFont(
-									unicode: " \udb80\udd59",
-									size: 16,
-									color: Colors.red
-									).widget(),
-							)
-
-					]
-				)),
+			child: Builder(
+				builder: (context){
+					Widget tagW = SizedBox(
+						height: height,
+						child: IntrinsicWidth(child: Row(
+							crossAxisAlignment: CrossAxisAlignment.end,
+							children: [
+								if(tagData.icon != "") NfFont(
+									unicode: tagData.icon,
+									f: 2,
+									color: foregroundColor,
+									size: 16).widget(),
+								Text("${tagData.icon != '' ? ' ': ''}${tag.trim()}",
+									style: TextStyle(
+									color: foregroundColor,
+									fontWeight: FontWeight.w600,
+									fontSize: 12)),
+								if(onDelete != null) InkWell(
+										onTap: (){ onDelete!(tag); },
+										child: NfFont(
+											unicode: " \udb80\udd59",
+											size: 16,
+											color: Colors.red
+											).widget(),
+									)
+							]
+						)),
+					);
+					if(isDense){
+						return FittedBox(child: tagW);
+					}
+					return tagW;
+				}
 			)
 		);
+
+		// if(isDense){
+		// 	return Transform.scale(
+		// 		scale: 0.9,
+		// 		child: tagWidget,
+		// 	);
+		// }
+		return tagWidget;
 	}
 }
 

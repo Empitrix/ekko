@@ -127,6 +127,7 @@ class NoteItem extends StatelessWidget {
 											children: [
 												for(String tag in note.description.trim().split("|")) if(tag.isNotEmpty) TextTag(
 													// context: context, 
+													isDense: true,
 													tag: tag,
 													// margin: const EdgeInsets.only(right: 5, top: 5),
 													// padding: const EdgeInsets.symmetric(horizontal: 5),
