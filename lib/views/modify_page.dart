@@ -43,6 +43,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 	TextEditingController title = TextEditingController();
 	FocusNode titleF = FocusNode();
 	TextEditingController description = TextEditingController();
+	late GenAnimation desAnim;
 	FocusNode descriptionF = FocusNode();
 	AwesomeController content = AwesomeController();
 	ValueNotifier<List<String>> tags = ValueNotifier([]);
@@ -100,7 +101,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 
 		String extractedTags = "";
 		for(String tag in tags.value){
-			extractedTags += "${tag.trim()} ";
+			// extractedTags += "${tag.trim()} ";
+			extractedTags += "${tag.trim()}|";
 		}
 
 		Note note = Note(
@@ -139,6 +141,12 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		content.text = note.content;
 		mode = note.mode;
 		isPinned = note.isPinned;
+
+		// Load Tags
+		for(String tag in description.text.split("|")){
+			if(tag.trim().isEmpty){ return; }
+			tags.value.add(tag);
+		}
 		
 		if(note.content.length > waitForLoading){
 			await Future.delayed(Duration(
@@ -161,6 +169,8 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 
 	void initializeAnimations(){
 		headerAnim = generateLinearAnimation(
+			ticket: this, initialValue: 1, durations: [200]);
+		desAnim = generateLinearAnimation(
 			ticket: this, initialValue: 1, durations: [200]);
 	}
 
@@ -295,6 +305,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 									DescriptionTextFiled(
 										controller: description,
 										tags: tags,
+										animation: desAnim,
 										focusNode: descriptionF,
 										previousFocus: () => titleF.requestFocus(),
 										nextFocus: () => contentF.requestFocus()

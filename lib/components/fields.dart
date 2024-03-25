@@ -1,4 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
@@ -96,13 +97,15 @@ class DescriptionTextFiled extends StatelessWidget {
 	final Function previousFocus;
 	final Function nextFocus;
 	final ValueNotifier<List<String>> tags;
+	final GenAnimation animation;
 	const DescriptionTextFiled({
 		super.key,
 		required this.controller,
 		required this.focusNode,
 		required this.previousFocus,
 		required this.nextFocus,
-		required this.tags
+		required this.tags,
+		required this.animation,
 	});
 
 	@override
@@ -121,13 +124,16 @@ class DescriptionTextFiled extends StatelessWidget {
 			child: SizedBox(
 				// height: 30,
 				child: TagField(
+					anim: animation,
 					controller: controller,
 					tags: tags,
+					/*
 					focusNode: focusNode,
 					style: Theme.of(context).primaryTextTheme.titleLarge!
 						.copyWith(
 							color: Theme.of(context).colorScheme.inverseSurface),
 					onEnd: () => nextFocus(),
+					*/
 				),
 			),
 		);
@@ -202,8 +208,6 @@ class ContentTextFiled extends StatelessWidget {
 										lineChanged: lineChanged,
 										regexStyle: allFieldRules(context),
 										widgetHeight: widgetHeight,
-										// widgetHeight: MediaQuery.of(context).size.height,
-										// widgetHeight: MediaQuery.of(context).size.height,
 										style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 											color: Theme.of(context).colorScheme.inverseSurface,
 											fontFamily: "RobotoMono",

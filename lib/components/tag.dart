@@ -75,15 +75,16 @@ TagData getTagData(BuildContext context, String text){
 
 class TextTag extends StatelessWidget {
 	final String tag;
-	const TextTag({super.key, required this.tag});
+	final void Function(String name)? onDelete;
+	const TextTag({super.key, required this.tag, this.onDelete});
 
 	@override
 	Widget build(BuildContext context) {
 		TagData tagData = getTagData(context, tag);
 		Color foregroundColor = getForeground(tagData.color);
 		return Container(
-			height: 20,
-			margin: const EdgeInsets.only(right: 5, bottom: 2),
+			height: 23,
+			margin: const EdgeInsets.only(right: 5, top: 2),
 			// padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
 			padding: const EdgeInsets.only(left: 5, right: 5, bottom: 2),
 			decoration: BoxDecoration(
@@ -92,7 +93,7 @@ class TextTag extends StatelessWidget {
 				border: Border.all(color: tagData.color, width: 1)
 			),
 			child: SizedBox(
-				height: 22,
+				height: 23,
 				child: IntrinsicWidth(child: Row(
 					crossAxisAlignment: CrossAxisAlignment.end,
 					children: [
@@ -102,7 +103,16 @@ class TextTag extends StatelessWidget {
 							style: TextStyle(
 							color: foregroundColor,
 							fontWeight: FontWeight.w600,
-							fontSize: 12))
+							fontSize: 12)),
+						if(onDelete != null) InkWell(
+								onTap: (){ onDelete!(tag); },
+								child: NfFont(
+									unicode: " \udb80\udd59",
+									size: 16,
+									color: Colors.red
+									).widget(),
+							)
+
 					]
 				)),
 			)
