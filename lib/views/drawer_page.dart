@@ -130,6 +130,7 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 										unicode: folderAnim.animation.value != 0 ?
 											"\udb81\udf70":
 											"\udb80\ude4b",
+										color: Theme.of(context).colorScheme.inverseSurface,
 										size: 25
 									).widget();
 								}
@@ -211,7 +212,9 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 																const SizedBox(width: 28),
 																NfFont(
 																	unicode: snap.data![idx].id == widget.currentFolderId ? "\ue5fe " : "\ue5ff ",
-																	color: idx == 0 ? Colors.amber : null,
+																	color: idx == 0 ?
+																		Colors.amber :
+																		Theme.of(context).colorScheme.inverseSurface,
 																	size: 20
 																).widget(),
 																const SizedBox(width: 3),
