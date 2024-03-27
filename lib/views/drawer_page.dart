@@ -33,16 +33,37 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 	}
 
 	void longAction(BuildContext context, FolderInfo info) async {
+		DB db = DB();
 		// NO ACTION FOR ROOT FOLDER
 		if(info.id == 0){ return; }  
 
-			Folder folder = (await DB().loadFolders()).firstWhere((f) => f.id == info.id);
+			Folder folder = (await db.loadFolders()).firstWhere((f) => f.id == info.id);
 
 		// Show general-dialog
 		generalFolderSheet(
 			// ignore: use_build_context_synchronously
 			context: context,
-			load: () => setState(() {}),
+			// load: () => setState(() {}),
+			load: () async {
+				setState(() {});
+				if(widget.currentFolderId == folder.id){
+					FolderInfo? currentFolder;
+					try{
+						currentFolder = (await db.loadFoldersInfo())
+							.firstWhere((e) => e.id == widget.currentFolderId);
+					}catch(_){/* */}
+					if(currentFolder == null){
+						changeView(
+							// ignore: use_build_context_synchronously
+							context,
+							const LandPage(folderId: 0),
+							"LandPage",
+							isPush: true,
+							isReplace: true
+						);
+					}
+				}
+			},
 			folder: folder
 		);
 	}
@@ -53,11 +74,6 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 			ticket: this, initialValue: 0);
 		super.initState();
 	}
-
-	// @override
-	// void dispose() {
-	// 	super.dispose();
-	// }
 
 	@override
 	Widget build(BuildContext context) {
