@@ -1,5 +1,4 @@
 import 'package:ekko/markdown/cases.dart';
-import 'package:ekko/markdown/html_range.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/tools/key_manager.dart';
@@ -114,23 +113,7 @@ class MDGenerator extends StatelessWidget {
 			stringMatch: FormattingAction.non
 		);
 
-		// data = preFormat(
-		// 	input: data,
-		// 	regex: RegExp(r'(?<=.{1})$\n'),
-		// 	stringMatch: FormattingAction.non
-		// );
-
-
 		data = "$data\n";
-
-
-
-		detectRawHtml(data);
-
-		// for(Range r in detectRawHtml(data)){
-		// 	data = data.replaceRange(r.start, r.end, " " * (r.end - r.start));
-		// }
-
 
 		GeneralOption gOpt = GeneralOption(
 			context: context,
