@@ -17,6 +17,80 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 
 	return <RegexFormattingStyle>[
 
+		RegexActionStyle(
+			regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			style: const TextStyle(),
+			action: (String txt, Match match){
+				List<TextSpan> spans = [];
+				txt.splitMapJoin(
+					RegExp(r'''(<\w+|\w+=(".*?"|'.*?')|>|<\/\w+>)''', multiLine: true),
+					onMatch: (Match m){
+						String txt = m.group(0)!;
+						if(txt.contains(RegExp(r'''\w+=(".*?"|'.*?')'''))){
+							txt.splitMapJoin(
+								RegExp(r'\='),
+								onMatch: (Match e){
+									spans.add(TextSpan(
+										text: e.group(0)!,
+										style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface)
+									));
+									return "";
+								},
+								onNonMatch: (String non){
+									if(non.contains(RegExp('''("|')'''))){
+										spans.add(TextSpan(
+											text: non,
+											style: const TextStyle(color: Color(0xff719E07))
+										));
+									} else {
+										spans.add(TextSpan(
+											text: non,
+											style: const TextStyle(color: Color(0xff268BD2))
+										));
+									}
+									return "";
+								}
+							);
+						// } else if (txt.contains(RegExp(r'<\w+'))){
+						// 	spans.add(TextSpan(
+						// 		text: txt,
+						// 		style: const TextStyle(color: Colors.red)
+						// 	));
+
+						} else {
+							txt.splitMapJoin(
+								RegExp(r'\w+'),
+								onMatch: (Match m){
+									spans.add(TextSpan(
+										text: m.group(0)!,
+										style: const TextStyle(color: Colors.green)
+									));
+									return "";
+								},
+								onNonMatch: (n){
+									spans.add(TextSpan(
+										text: n,
+										style: const TextStyle(color: Colors.red)
+									));
+									return "";
+								}
+							);
+							// spans.add(TextSpan(
+							// 	text: txt,
+							// 	style: const TextStyle(color: Colors.red)
+							// ));
+						}
+						return "";
+					},
+					onNonMatch: (String n){
+						spans.add(TextSpan(text: n));
+						return "";
+					}
+				);
+				return TextSpan(children: spans);
+			}
+		),
+
 		// {@Syntax}
 		RegexActionStyle(
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?'),
