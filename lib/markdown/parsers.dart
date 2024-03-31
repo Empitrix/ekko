@@ -63,6 +63,10 @@ double getNonRenderedWidgetSize(Widget input){
 
 TapGestureRecognizer useLinkRecognizer(BuildContext context, String link, GlobalKeyManager keyManager){
 	link = link.trim();
+
+	// Check if link did not exsited
+	if(link.isEmpty){ return TapGestureRecognizer()..onTap = (){}; }
+
 	if(link.substring(0, 1) == "#"){
 		return TapGestureRecognizer()..onTap = () async {
 			GlobalKey? hKey = keyManager.getGlobalKey(link.trim().substring(1));

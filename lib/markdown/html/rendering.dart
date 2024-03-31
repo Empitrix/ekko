@@ -1,3 +1,4 @@
+import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/parser.dart';
 import 'package:ekko/markdown/html/tools.dart';
 import 'package:ekko/markdown/html/widgets/html_block.dart';
@@ -7,6 +8,7 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 /*
 
@@ -143,7 +145,9 @@ InlineSpan htmlRendering({
 
 			case 'a': {
 				style = style.merge(const TextStyle(color: Colors.blue));
-				GestureRecognizer rec = useLinkRecognizer(gOpt.context, raw['attributes']['href'] ?? "", gOpt.keyManager);
+				GestureRecognizer rec = useLinkRecognizer(
+					gOpt.context, raw['attributes']['href'] ?? "",
+					gOpt.keyManager);
 				for(Map itm in raw['children']){
 					spans.add(htmlRendering(
 						content: content,
@@ -176,6 +180,69 @@ InlineSpan htmlRendering({
 			}
 
 
+			case 'h1' || 'h2': {
+				List<InlineSpan> children = [];
+				style = style.merge(getHeadlineStyle(
+					gOpt.context, raw['tag'] == "h1" ? 1 : 2));
+				GlobalKey? headerKey;
+				if(raw['attributes']['id'] != null){
+					headerKey = gOpt.keyManager.addNewKey(
+						raw['attributes']['id'].substring(1));
+				}
+				for(Map itm in raw['children']){
+					children.add(htmlRendering(
+						content: content,
+						opt: opt,
+						gOpt: gOpt,
+						style: style,
+						rawInput: itm,
+						recognizer: recognizer
+					));
+				}
+				spans.add(WidgetSpan(child: Column(
+					key: headerKey,
+					crossAxisAlignment: CrossAxisAlignment.start,
+					children: [
+						HtmlBlock(
+							attr: raw['attributes'],
+							child: TextSpan(children: children)
+						),
+						const Divider()
+					],
+				)));
+				break;
+			}
+
+			case 'h3' || 'h4' || 'h5' || 'h6': {
+				List<InlineSpan> children = [];
+				style = style.merge(getHeadlineStyle(
+					gOpt.context, int.parse(raw['tag'].replaceAll("h", ""))));
+				GlobalKey? headerKey;
+				if(raw['attributes']['id'] != null){
+					headerKey = gOpt.keyManager.addNewKey(
+						raw['attributes']['id'].substring(1));
+				}
+				for(Map itm in raw['children']){
+					children.add(htmlRendering(
+						content: content,
+						opt: opt,
+						gOpt: gOpt,
+						style: style,
+						rawInput: itm,
+						recognizer: recognizer
+					));
+				}
+				spans.add(WidgetSpan(
+					style: const TextStyle(color: Colors.red),
+					child: Text.rich(
+						key: headerKey,
+						TextSpan(children: children),
+					)
+				));
+				break;
+			}
+
+
 
 			case 'div': {
 				List<InlineSpan> children = [];
@@ -191,12 +258,10 @@ InlineSpan htmlRendering({
 						));
 					}
 				}
-				spans.add(
-					WidgetSpan(child: HtmlBlock(
-						attr: raw['attributes'],
-						child: TextSpan(children: children)
-					))
-				);
+				spans.add(WidgetSpan(child: HtmlBlock(
+					attr: raw['attributes'],
+					child: TextSpan(children: children)
+				)));
 				break;
 			}
 
