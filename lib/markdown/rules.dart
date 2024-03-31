@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:ekko/components/divider.dart';
 import 'package:ekko/config/manager.dart';
 // import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/html/parser.dart';
 // import 'package:ekko/markdown/html/parser.dart';
 import 'package:ekko/markdown/html/rendering.dart';
 // import 'package:ekko/markdown/html/html_parser.dart';
@@ -74,22 +77,25 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		),
 		*/
 
-
+		// {@HTML}
 		HighlightRule(
 			label: "html",
 			regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
 			action: (txt, opt){
 				// JsonEncoder encoder = JsonEncoder.withIndent(' ' * 2);
+				// Map data = htmlToJson(txt);
+				// return TextSpan(text: encoder.convert(data), style: TextStyle(color: Colors.red.withBlue(100).withOpacity(0.7)));
+
 				return htmlRendering(
-					content: txt,
+					// content: txt,
+					content: "",
+					rawInput: htmlToJson(txt),
+					style: const TextStyle(),
 					opt: opt,
 					gOpt: gOpt
 				);
 
 
-				// debugPrint("${'- ' * 20}\n${encoder.convert(data['children'])}\n${'- ' * 20}");
-				// // return TextSpan(text: data, style: TextStyle(color: Colors.red.withBlue(100).withOpacity(0.7)));
-				// return TextSpan(text: encoder.convert(data['children']), style: TextStyle(color: Colors.red.withBlue(100).withOpacity(0.7)));
 			}
 		),
 

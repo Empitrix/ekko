@@ -26,7 +26,8 @@ class HtmlCalculator {
 		required this.context
 	});
 
-	double? value(String input){
+	double? value(String? input){
+		if(input == null){ return null; }
 		try{
 			return double.parse(input);
 		} catch(_){
@@ -35,9 +36,24 @@ class HtmlCalculator {
 	}
 
 
-	BorderRadiusGeometry borderRadius(String input){
-		return BorderRadius.circular(0);
+	BorderRadiusGeometry borderRadius(String? input){
+		if(input == null){ return BorderRadius.zero; }
+
+		return BorderRadius.circular(20);
 	}
 
 }
+
+
+
+
+String textTrimLeft(String? input){
+	if(input == null){ return ""; }
+	List<String> txt = [];
+	for(String idx in input.split('\n')){
+		txt.add(idx.trimLeft());
+	}
+	return txt.join("\n");
+}
+
 
