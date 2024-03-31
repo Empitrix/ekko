@@ -232,13 +232,23 @@ InlineSpan htmlRendering({
 						recognizer: recognizer
 					));
 				}
-				spans.add(WidgetSpan(
-					style: const TextStyle(color: Colors.red),
-					child: Text.rich(
-						key: headerKey,
-						TextSpan(children: children),
+				// spans.add(WidgetSpan(
+				// 	style: const TextStyle(color: Colors.red),
+				// 	child: Text.rich(
+				// 		key: headerKey,
+				// 		TextSpan(children: children),
+				// 	)
+				// ));
+				spans.add(WidgetSpan(child: HtmlBlock(
+					attr: raw['attributes'],
+					child: WidgetSpan(
+						style: const TextStyle(color: Colors.red),
+						child: Text.rich(
+							key: headerKey,
+							TextSpan(children: children),
+						)
 					)
-				));
+				)));
 				break;
 			}
 
