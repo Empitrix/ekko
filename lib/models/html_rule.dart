@@ -1,4 +1,4 @@
-import 'package:ekko/markdown/html/html_parser.dart';
+/*
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,7 @@ enum HtmlAlignment{
 class HtmlRuleOption {
 	final int id;
 	late TextStyle? forceStyle;
-	final HTMLParser data;
+	final HtmlParser data;
 	late TapGestureRecognizer? recognizer;
 
 	HtmlRuleOption({
@@ -52,4 +52,6 @@ class HtmlHighlightRule {
 		// this.trimNext = false
 	});
 }
+
+*/
 

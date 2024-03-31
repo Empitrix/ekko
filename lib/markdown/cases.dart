@@ -1,6 +1,6 @@
 import 'package:ekko/config/manager.dart';
-import 'package:ekko/markdown/inline_html/models.dart';
-import 'package:ekko/markdown/inline_html/parser.dart';
+// import 'package:ekko/markdown/inline_html/models.dart';
+// import 'package:ekko/markdown/inline_html/parser.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/tools/key_manager.dart';
 import 'package:ekko/models/rule.dart';
@@ -64,14 +64,13 @@ TextSpan applyRules({
 	TextStyle? forceStyle
 }){
 
-	String textData = "";
+	// String textData = "";
+
+	/*
 	int endIdx = 0;
-
-
-
 	/* Remove HTML */
 	List<Range> htmlRange = detectRawHtml(content);
-	if(htmlRange.isNotEmpty){
+	if(htmlRange.isNotEmpty && false){
 		for(Range r in htmlRange){
 			debugPrint(r.toString());
 			textData += content.substring(endIdx, r.start);
@@ -81,6 +80,7 @@ TextSpan applyRules({
 	} else {
 		textData = content;
 	}
+	*/
 
 
 
@@ -94,7 +94,7 @@ TextSpan applyRules({
 	return __applyRules(
 		context: context,
 		// content: content,
-		content: textData,
+		content: content,
 		keyManager: keyManager,
 		rules: rules,
 		id: id,

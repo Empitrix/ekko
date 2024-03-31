@@ -1,8 +1,10 @@
 import 'package:ekko/components/divider.dart';
 import 'package:ekko/config/manager.dart';
-import 'package:ekko/markdown/cases.dart';
+// import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/formatting.dart';
-import 'package:ekko/markdown/html/html_parser.dart';
+// import 'package:ekko/markdown/html/parser.dart';
+import 'package:ekko/markdown/html/rendering.dart';
+// import 'package:ekko/markdown/html/html_parser.dart';
 import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/inline/backqoute.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
@@ -11,6 +13,7 @@ import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline/isbb.dart';
 import 'package:ekko/markdown/inline/monospace.dart';
 import 'package:ekko/markdown/inline/url.dart';
+// import 'package:ekko/markdown/inline_html/parser.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/markdown.dart';
 import 'package:ekko/markdown/parsers.dart';
@@ -20,6 +23,7 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'dart:convert';
 import 'dart:async';
 
 
@@ -30,6 +34,7 @@ int indentStep = 0;
 List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 
 	List<HighlightRule> rules = [
+		/*
 		// {@HTMl}
 		HighlightRule(
 			label: "html",
@@ -67,6 +72,27 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 				}
 			},
 		),
+		*/
+
+
+		HighlightRule(
+			label: "html",
+			regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			action: (txt, opt){
+				// JsonEncoder encoder = JsonEncoder.withIndent(' ' * 2);
+				return htmlRendering(
+					content: txt,
+					opt: opt,
+					gOpt: gOpt
+				);
+
+
+				// debugPrint("${'- ' * 20}\n${encoder.convert(data['children'])}\n${'- ' * 20}");
+				// // return TextSpan(text: data, style: TextStyle(color: Colors.red.withBlue(100).withOpacity(0.7)));
+				// return TextSpan(text: encoder.convert(data['children']), style: TextStyle(color: Colors.red.withBlue(100).withOpacity(0.7)));
+			}
+		),
+
 
 		// {@Syntax-Hihglighting}
 		HighlightRule(
