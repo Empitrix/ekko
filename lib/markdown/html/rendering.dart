@@ -36,8 +36,9 @@ InlineSpan htmlRendering({
 	} else {
 		switch(raw['tag']){
 			case 'p': {
+				List<InlineSpan> children = [];
 				for(Map itm in raw['children']){
-					spans.add(htmlRendering(
+					children.add(htmlRendering(
 						content: content,
 						opt: opt,
 						gOpt: gOpt,
@@ -46,6 +47,12 @@ InlineSpan htmlRendering({
 						recognizer: recognizer
 					));
 				}
+				spans.add(WidgetSpan(
+					child: HtmlBlock(
+						attr: raw['attributes'],
+						child: TextSpan(children: children)
+					)
+				));
 				break;
 			}
 
