@@ -1,8 +1,10 @@
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/parser.dart';
 import 'package:ekko/markdown/html/tools.dart';
 import 'package:ekko/markdown/html/widgets/html_block.dart';
+import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
@@ -193,9 +195,32 @@ InlineSpan htmlRendering({
 			}
 
 
+
+			// {@img}
 			case 'img': {
-				raw['attributes'];
-				spans.add(WidgetSpan(child: Container(height: 20, width: 20, color: Colors.red)));
+				if(raw['attributes']["src"] == null){ break; }
+				String link = raw['attributes']["src"]!.trim();
+				String format = link.substring(link.lastIndexOf(".") + 1);
+				format = format.split("?")[0];
+				format = vStr(format);
+
+				// get image parser
+				Map<String, dynamic> imgData = {
+					"name": raw['attributes']["alt"] ?? "",
+					"url": raw['attributes']["src"],
+					"format": format == "svg" ? ImageType.svg : ImageType.picture
+				};
+
+				double? w = getHtmlSize(gOpt.context, raw['attributes']["width"], "w");
+				double? h = getHtmlSize(gOpt.context, raw['attributes']["height"], "h");
+
+				spans.add(WidgetSpan(child: SizedBox(
+					width: w,
+					height: h,
+					child: FittedBox(
+						child: Text.rich(showImageFrame("", opt.recognizer, gOpt.variables, imgData)),
+					),
+				)));
 				break;
 			}
 
