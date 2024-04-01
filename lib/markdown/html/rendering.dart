@@ -1,7 +1,9 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
+import 'package:ekko/markdown/html/models.dart';
 import 'package:ekko/markdown/html/parser.dart';
+import 'package:ekko/markdown/html/tags/img.dart';
 import 'package:ekko/markdown/html/tools.dart';
 import 'package:ekko/markdown/html/widgets/html_block.dart';
 import 'package:ekko/markdown/image.dart';
@@ -198,29 +200,36 @@ InlineSpan htmlRendering({
 
 			// {@img}
 			case 'img': {
-				if(raw['attributes']["src"] == null){ break; }
-				String link = raw['attributes']["src"]!.trim();
-				String format = link.substring(link.lastIndexOf(".") + 1);
-				format = format.split("?")[0];
-				format = vStr(format);
+				spans.add(htmlRawImg(raw, opt, gOpt));
+				// if(raw['attributes']["src"] == null){ break; }
+				// String link = raw['attributes']["src"]!.trim();
+				// String format = link.substring(link.lastIndexOf(".") + 1);
+				// format = format.split("?")[0];
+				// format = vStr(format);
 
-				// get image parser
-				Map<String, dynamic> imgData = {
-					"name": raw['attributes']["alt"] ?? "",
-					"url": raw['attributes']["src"],
-					"format": format == "svg" ? ImageType.svg : ImageType.picture
-				};
+				// // get image parser
+				// Map<String, dynamic> imgData = {
+				// 	"name": raw['attributes']["alt"] ?? "",
+				// 	"url": raw['attributes']["src"],
+				// 	"format": format == "svg" ? ImageType.svg : ImageType.picture
+				// };
 
-				double? w = getHtmlSize(gOpt.context, raw['attributes']["width"], "w");
-				double? h = getHtmlSize(gOpt.context, raw['attributes']["height"], "h");
+				// double? w = getHtmlSize(gOpt.context, raw['attributes']["width"], "w");
+				// double? h = getHtmlSize(gOpt.context, raw['attributes']["height"], "h");
 
-				spans.add(WidgetSpan(child: SizedBox(
-					width: w,
-					height: h,
-					child: FittedBox(
-						child: Text.rich(showImageFrame("", opt.recognizer, gOpt.variables, imgData)),
-					),
-				)));
+				// spans.add(WidgetSpan(child: SizedBox(
+				// 	width: w,
+				// 	height: h,
+				// 	child: FittedBox(
+				// 		child: Text.rich(showImageFrame("", opt.recognizer, gOpt.variables, imgData)),
+				// 	),
+				// )));
+				break;
+			}
+
+
+			case 'picture': {
+				debugPrint("PICTURE: ${raw['children']}");
 				break;
 			}
 
