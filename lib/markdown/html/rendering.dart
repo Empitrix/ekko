@@ -1,3 +1,4 @@
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/parser.dart';
 import 'package:ekko/markdown/html/tools.dart';
@@ -7,6 +8,7 @@ import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 InlineSpan htmlRendering({
@@ -75,12 +77,13 @@ InlineSpan htmlRendering({
 			}
 
 			case 'u': {
+				List<InlineSpan> children = [];
 				style = style.merge(TextStyle(
 					decoration: TextDecoration.underline,
 					decorationColor: Theme.of(gOpt.context).colorScheme.inverseSurface
 				));
 				for(Map itm in raw['children']){
-					spans.add(htmlRendering(
+					children.add(htmlRendering(
 						content: content,
 						opt: opt,
 						gOpt: gOpt,
@@ -89,6 +92,7 @@ InlineSpan htmlRendering({
 						recognizer: recognizer
 					));
 				}
+				spans.add(TextSpan(children: children));
 				break;
 			}
 
@@ -196,7 +200,7 @@ InlineSpan htmlRendering({
 			}
 
 
-
+			/*
 			case 'body': {
 				List<InlineSpan> children = [];
 				if(raw['children'] != null){
@@ -218,6 +222,30 @@ InlineSpan htmlRendering({
 				);
 				break;
 			}
+			*/
+
+			case 'body': {
+				List<InlineSpan> children = [];
+				if(raw['children'] != null){
+					for(Map itm in raw['children']){
+						children.add(htmlRendering(
+							content: content,
+							opt: opt,
+							gOpt: gOpt,
+							rawInput: itm,
+							style: style
+						));
+					}
+				}
+				// spans.add(
+				// 	WidgetSpan(child: HtmlBlock(
+				// 		attr: raw['attributes'],
+				// 		child: TextSpan(children: children)
+				// 	))
+				// );
+				spans.add(TextSpan(children: children));
+				break;
+			}
 
 			default: {
 				if(raw['text'] != null){
@@ -229,7 +257,19 @@ InlineSpan htmlRendering({
 
 
 	}
+	// return TextSpan(children: spans);
+	// return WidgetSpan(child: Text.rich(TextSpan(children: spans)));
 	return TextSpan(children: spans);
+	// return TextSpan(text: "AWESOME", style: Provider.of<ProviderManager>(gOpt.context).defaultStyle);
+	// return WidgetSpan(baseline: TextBaseline.alphabetic, child: Column(
+	// 	children: [
+	// 		const SizedBox(height: 20),
+	// 		Text.rich(TextSpan(children: spans)),
+	// 	],
+	// ));
+	// return WidgetSpan(
+	// 	// child: TextSpan(children: spans)
+	// );
 }
 
 

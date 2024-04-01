@@ -17,8 +17,12 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 
 	return <RegexFormattingStyle>[
 
+		// {@HTML}
 		RegexActionStyle(
-			regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			// regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			// regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			// regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>[\s\S]*?[^>]<\/\w+>', multiLine: true),
+			regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
 			style: const TextStyle(),
 			action: (String txt, Match match){
 				List<TextSpan> spans = [];

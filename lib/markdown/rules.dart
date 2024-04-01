@@ -78,7 +78,10 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		// {@HTML}
 		HighlightRule(
 			label: "html",
-			regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			// regex: RegExp(r'^( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			// regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)', multiLine: true),
+			// regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>[\s\S]*?[^>]<\/\w+>', multiLine: true),
+			regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
 			action: (txt, opt){
 				// JsonEncoder encoder = JsonEncoder.withIndent(' ' * 2);
 				// Map data = htmlToJson(txt);
@@ -96,7 +99,8 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 					content: "",
 					// rawInput: htmlToJson(txt),
 					rawInput: htmlToJson(formatted),
-					style: const TextStyle(),
+					// style: Provider.of<ProviderManager>(gOpt.context).defaultStyle,
+					style: Provider.of<ProviderManager>(gOpt.context).defaultStyle,
 					opt: opt,
 					gOpt: gOpt
 				);
