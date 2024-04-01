@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class HtmlBlock extends StatelessWidget {
 	final Map attr;
-	// final Widget child;
 	final InlineSpan child;
 
 	const HtmlBlock({

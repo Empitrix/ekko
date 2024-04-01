@@ -7,100 +7,6 @@ import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-
-/*
-
-
-InlineSpan renderCurrentTag({
-	required Map tag,
-	required RuleOption opt,
-	required GeneralOption gOpt,
-	required TextStyle fs
-}){
-	List<InlineSpan> spans = [];
-
-	for(Map child in tag['children']){
-		if(child['text'] != null){
-			spans.add(TextSpan(text: child['text']));
-			break;
-		}
-
-		if(child['tag'] != null){
-
-		}
-
-	
-	}
-
-	return TextSpan(children: spans);
-}
-
-
-
-
-InlineSpan htmlRendering({
-	required String content,
-	required RuleOption opt,
-	required GeneralOption gOpt
-}){
-
-	List<InlineSpan> spans = [];
-	Map htmlData = htmlToJson(content);
-	TextStyle fs = const TextStyle();  // Force Style
-
-	for(Map raw in htmlData['children']){
-
-		switch (raw['tag']) {
-			case 'p': {
-				spans.add(
-					WidgetSpan(child: HtmlBlock(
-						attr: raw['attributes'],
-						child: renderCurrentTag(tag: raw, opt: opt, gOpt: gOpt, fs: fs)
-					))
-				);
-				break;
-			}
-			case 'div': {
-				spans.add(
-					WidgetSpan(child: HtmlBlock(
-						attr: raw['attributes'],
-						child: renderCurrentTag(tag: raw, opt: opt, gOpt: gOpt, fs: fs)
-					))
-				);
-				break;
-			}
-
-			default: {
-				if(raw['text'] != null){
-					spans.add(TextSpan(text: raw['text']));
-				}
-			}
-		} // Switch
-	}
-
-	return TextSpan(children: spans);
-}
-*/
-
-
-
-/*
-class HtmlRenderingParams{
-	final RuleOption opt;
-	final GeneralOption gOpt;
-	final TextStyle style;
-
-	HtmlRenderingParams({
-		required this.opt,
-		required this.gOpt,
-		required this.style,
-	});
-}
-*/
-
-
 
 
 InlineSpan htmlRendering({
@@ -274,6 +180,14 @@ InlineSpan htmlRendering({
 				)));
 				break;
 			}
+
+
+			case 'img': {
+				raw['attributes'];
+				spans.add(WidgetSpan(child: Container(height: 20, width: 20, color: Colors.red)));
+				break;
+			}
+
 
 
 			case 'body': {

@@ -86,10 +86,18 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 				// Map data = htmlToJson(txt);
 				// return TextSpan(text: encoder.convert(data), style: TextStyle(color: Colors.red.withBlue(100).withOpacity(0.7)));
 
+				String formatted = txt;
+				formatted = formatted.replaceAll(RegExp(r'^ +', multiLine: true), "");
+				// formatted = formatted.replaceAll(RegExp(r'(?<!\n)\n(?!\n)'), " ");
+				formatted = formatted.replaceAll(RegExp(r'(?<!\w>)(?<!\n)\n(?!\n)'), " ");
+				// Apply <BR />
+				formatted = formatted.replaceAll(RegExp(r'< *br *(\/)?>'), "\n");
+
 				return htmlRendering(
 					// content: txt,
 					content: "",
-					rawInput: htmlToJson(txt),
+					// rawInput: htmlToJson(txt),
+					rawInput: htmlToJson(formatted),
 					style: const TextStyle(),
 					opt: opt,
 					gOpt: gOpt

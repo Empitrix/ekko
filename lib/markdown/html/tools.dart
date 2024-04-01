@@ -35,11 +35,9 @@ class HtmlCalculator {
 		}
 	}
 
-
 	BorderRadiusGeometry borderRadius(String? input){
 		if(input == null){ return BorderRadius.zero; }
-
-		return BorderRadius.circular(20);
+		return BorderRadius.circular(0);
 	}
 
 }

@@ -23,7 +23,7 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 			action: (String txt, Match match){
 				List<TextSpan> spans = [];
 				txt.splitMapJoin(
-					RegExp(r'''(<\w+|\w+=(".*?"|'.*?')|>|<\/\w+>)''', multiLine: true),
+					RegExp(r'''(<\w+|\w+=(".*?"|'.*?')|>|\/>|<\/\w+>)''', multiLine: true),
 					onMatch: (Match m){
 						String txt = m.group(0)!;
 						if(txt.contains(RegExp(r'''\w+=(".*?"|'.*?')'''))){
