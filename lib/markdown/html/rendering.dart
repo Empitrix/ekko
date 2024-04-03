@@ -1,18 +1,13 @@
-import 'package:ekko/backend/backend.dart';
-import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
-import 'package:ekko/markdown/html/models.dart';
 import 'package:ekko/markdown/html/parser.dart';
 import 'package:ekko/markdown/html/tags/img.dart';
 import 'package:ekko/markdown/html/tools.dart';
 import 'package:ekko/markdown/html/widgets/html_block.dart';
-import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 InlineSpan htmlRendering({
@@ -41,6 +36,7 @@ InlineSpan htmlRendering({
 		}
 	} else {
 		switch(raw['tag']){
+
 			case 'p': {
 				List<InlineSpan> children = [];
 				for(Map itm in raw['children']){
@@ -100,7 +96,6 @@ InlineSpan htmlRendering({
 				break;
 			}
 
-
 			case 'h1' || 'h2': {
 				List<InlineSpan> children = [];
 				style = style.merge(getHeadlineStyle(
@@ -153,13 +148,6 @@ InlineSpan htmlRendering({
 						recognizer: recognizer
 					));
 				}
-				// spans.add(WidgetSpan(
-				// 	style: const TextStyle(color: Colors.red),
-				// 	child: Text.rich(
-				// 		key: headerKey,
-				// 		TextSpan(children: children),
-				// 	)
-				// ));
 				spans.add(WidgetSpan(child: HtmlBlock(
 					attr: raw['attributes'],
 					child: WidgetSpan(
@@ -172,8 +160,6 @@ InlineSpan htmlRendering({
 				)));
 				break;
 			}
-
-
 
 			case 'div': {
 				List<InlineSpan> children = [];
@@ -196,67 +182,44 @@ InlineSpan htmlRendering({
 				break;
 			}
 
-
-
 			// {@img}
 			case 'img': {
 				spans.add(htmlRawImg(raw, opt, gOpt));
-				// if(raw['attributes']["src"] == null){ break; }
-				// String link = raw['attributes']["src"]!.trim();
-				// String format = link.substring(link.lastIndexOf(".") + 1);
-				// format = format.split("?")[0];
-				// format = vStr(format);
-
-				// // get image parser
-				// Map<String, dynamic> imgData = {
-				// 	"name": raw['attributes']["alt"] ?? "",
-				// 	"url": raw['attributes']["src"],
-				// 	"format": format == "svg" ? ImageType.svg : ImageType.picture
-				// };
-
-				// double? w = getHtmlSize(gOpt.context, raw['attributes']["width"], "w");
-				// double? h = getHtmlSize(gOpt.context, raw['attributes']["height"], "h");
-
-				// spans.add(WidgetSpan(child: SizedBox(
-				// 	width: w,
-				// 	height: h,
-				// 	child: FittedBox(
-				// 		child: Text.rich(showImageFrame("", opt.recognizer, gOpt.variables, imgData)),
-				// 	),
-				// )));
 				break;
 			}
-
 
 			case 'picture': {
-				debugPrint("PICTURE: ${raw['children']}");
-				break;
-			}
-
-
-			/*
-			case 'body': {
+				// debugPrint("PICTURE: ${raw['children']}");
+				bool foundImg = false;
 				List<InlineSpan> children = [];
-				if(raw['children'] != null){
-					for(Map divChild in raw['children']){
+				for(Map itm in raw['children']){
+					if(itm['text'] != null && itm['tag'] != "img" && itm['tag'] != 'source'){
 						children.add(htmlRendering(
 							content: content,
 							opt: opt,
 							gOpt: gOpt,
-							rawInput: divChild,
+							rawInput: itm,
 							style: style
 						));
+					} else {
+						if(!foundImg){
+							if(itm['tag'] == 'source'){
+								bool canShow = checkSourceMedia(itm['attributes']['media']);
+								if(canShow){
+									foundImg = true;
+									spans.add(htmlRawImg(itm, opt, gOpt, "srcset"));
+								} else {
+									continue;
+								}
+							} else {
+								spans.add(htmlRawImg(itm, opt, gOpt));
+								foundImg = true;
+							}
+						}
 					}
 				}
-				spans.add(
-					WidgetSpan(child: HtmlBlock(
-						attr: raw['attributes'],
-						child: TextSpan(children: children)
-					))
-				);
 				break;
 			}
-			*/
 
 			case 'body': {
 				List<InlineSpan> children = [];
@@ -288,23 +251,8 @@ InlineSpan htmlRendering({
 				break;
 			}
 		}
-
-
 	}
-	// return TextSpan(children: spans);
-	// return WidgetSpan(child: Text.rich(TextSpan(children: spans)));
+
 	return TextSpan(children: spans);
-	// return TextSpan(text: "AWESOME", style: Provider.of<ProviderManager>(gOpt.context).defaultStyle);
-	// return WidgetSpan(baseline: TextBaseline.alphabetic, child: Column(
-	// 	children: [
-	// 		const SizedBox(height: 20),
-	// 		Text.rich(TextSpan(children: spans)),
-	// 	],
-	// ));
-	// return WidgetSpan(
-	// 	// child: TextSpan(children: spans)
-	// );
 }
-
-
 

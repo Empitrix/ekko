@@ -1,3 +1,5 @@
+import 'package:ekko/backend/backend.dart';
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 
 
@@ -76,3 +78,17 @@ double? getHtmlSize(BuildContext ctx, String? attr, String type){
 	return null;
 }
 
+
+
+bool checkSourceMedia(String? op){
+	if(op == null){ return false; }
+	op = op.replaceAll(RegExp(r'\(|\)'), "");
+	String k = vStr(op.split(':').first);
+	String v = vStr(op.split(':').last);
+
+	if(k == "prefers-color-scheme"){
+		return (v == "dark") == dMode;
+	}
+
+	return false;
+}

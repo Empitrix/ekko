@@ -5,10 +5,10 @@ import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';
 
-InlineSpan htmlRawImg(Map raw, RuleOption opt, GeneralOption gOpt){
-	if(raw['attributes']["src"] == null){ return const TextSpan(); }
+InlineSpan htmlRawImg(Map raw, RuleOption opt, GeneralOption gOpt, [caller = "src"]){
+	if(raw['attributes'][caller] == null){ return const TextSpan(); }
 
-	String link = raw['attributes']["src"]!.trim();
+	String link = raw['attributes'][caller]!.trim();
 	String format = link.substring(link.lastIndexOf(".") + 1);
 	format = format.split("?")[0];
 	format = vStr(format);
@@ -16,7 +16,7 @@ InlineSpan htmlRawImg(Map raw, RuleOption opt, GeneralOption gOpt){
 	// get image parser
 	Map<String, dynamic> imgData = {
 		"name": raw['attributes']["alt"] ?? "",
-		"url": raw['attributes']["src"],
+		"url": link,
 		"format": format == "svg" ? ImageType.svg : ImageType.picture
 	};
 

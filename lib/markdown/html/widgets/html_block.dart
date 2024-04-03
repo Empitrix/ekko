@@ -14,9 +14,7 @@ class HtmlBlock extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-
-		debugPrint(attr.toString());
-
+		// debugPrint(attr.toString());
 		HtmlCalculator calc = HtmlCalculator(context: context);
 		return ClipRRect(
 			borderRadius: calc.borderRadius(attr['border-radius']),
@@ -28,7 +26,6 @@ class HtmlBlock extends StatelessWidget {
 					builder: (BuildContext context){
 						if(attr['align'] != null){
 							return Align(
-								// alignment: Alignment.center,
 								child: Text.rich(child),
 							);
 						}
@@ -39,3 +36,4 @@ class HtmlBlock extends StatelessWidget {
 		);
 	}
 }
+
