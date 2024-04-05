@@ -9,7 +9,6 @@ class MDFile {
 	static Future<bool> write(BuildContext context, String data, String fileName) async {
 		/* Write as markdown file */
 		FileOut? selectedFile = await getMdFilePath(context, fileName);
-		// End the function 
 		if(selectedFile == null){ return false; }
 
 		// Create file if not exsits

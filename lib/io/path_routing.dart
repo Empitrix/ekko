@@ -49,6 +49,7 @@ Future<FileOut?> getMdFilePath([BuildContext? context, String fileName = "New Ma
 			openAppSettings();
 		}
 
+		bool isFileSelected = false;
 		// Get file name
 		await dialogs.asyncTextFieldDialog(
 			title: "File Name",
@@ -56,12 +57,15 @@ Future<FileOut?> getMdFilePath([BuildContext? context, String fileName = "New Ma
 			loadedText: fileName,
 			action: (inputName) async {
 				fileName = _getValidName(inputName);
+				isFileSelected = true;
 			}
 		).then((_) async {
-			// get export directory
-			result = await FilePicker.platform.getDirectoryPath(
-				dialogTitle: "Select Directory"
-			);
+			if(isFileSelected){
+				// get export directory
+				result = await FilePicker.platform.getDirectoryPath(
+					dialogTitle: "Select Directory"
+				);
+			}
 		});
 
 		if(result != null){

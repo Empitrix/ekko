@@ -317,9 +317,6 @@ void inViewNoteSheet({
 	required BuildContext context,
 	required Note note,
 	}){
-
-
-
 	showDialog(
 		context: context,
 		builder: (_){
@@ -380,11 +377,6 @@ void inViewNoteSheet({
 					),
 
 					// TODO: Apply Actions
-					ListTile(
-						leading: const Icon(FontAwesomeIcons.filePen, size: 20),
-						title: const Text("Rename"),
-						onTap:(){}
-					),
 					ListTile(
 						leading: const Icon(FontAwesomeIcons.share, size: 20),
 						title: const Text("Share"),
