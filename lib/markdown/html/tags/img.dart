@@ -1,4 +1,4 @@
-import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/markdown/html/tools.dart';
 import 'package:ekko/markdown/image.dart';
 import 'package:ekko/markdown/inline_module.dart';
@@ -10,8 +10,7 @@ InlineSpan htmlRawImg(Map raw, RuleOption opt, GeneralOption gOpt, [caller = "sr
 
 	String link = raw['attributes'][caller]!.trim();
 	String format = link.substring(link.lastIndexOf(".") + 1);
-	format = format.split("?")[0];
-	format = vStr(format);
+	format = format.split("?")[0].mini();
 
 	// get image parser
 	Map<String, dynamic> imgData = {

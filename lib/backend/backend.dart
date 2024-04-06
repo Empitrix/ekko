@@ -1,3 +1,4 @@
+import 'package:ekko/backend/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
@@ -6,9 +7,6 @@ import 'dart:math' as math;
 import 'package:path/path.dart';
 
 
-String vStr(String input){
-	return input.toLowerCase().trim();
-}
 
 class TxtCtrl{
 	final TextEditingController a;
@@ -21,20 +19,20 @@ class TxtCtrl{
 	);
 
 	bool isAllFilled(){
-		if(vStr(a.text) == ""){ return false;}
+		if(a.text.mini() == ""){ return false;}
 		if(b != null){
-			if(vStr(b!.text) == ""){ return false;}
+			if(b!.text.mini() == ""){ return false;}
 		}
-		if(vStr(c.text) == ""){ return false;}
+		if(c.text.mini() == ""){ return false;}
 		return true;
 	}
 
 	bool isAllEmpty(){
-		if(vStr(a.text) != ""){ return false;}
+		if(a.text.mini() != ""){ return false;}
 		if(b != null){
-			if(vStr(b!.text) != ""){ return false;}
+			if(b!.text.mini() != ""){ return false;}
 		}
-		if(vStr(c.text) != ""){ return false;}
+		if(c.text.mini() != ""){ return false;}
 		return true;
 	}
 }

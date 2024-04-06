@@ -8,7 +8,7 @@ import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:ekko/backend/extensions.dart';
 
 InlineSpan htmlRendering({
 	required String content,
@@ -16,6 +16,7 @@ InlineSpan htmlRendering({
 	required GeneralOption gOpt,
 	required TextStyle style,
 	Map? rawInput,
+	// Map? attr,
 	GestureRecognizer? recognizer,
 }){
 
@@ -33,12 +34,14 @@ InlineSpan htmlRendering({
 				style: style,
 				recognizer: recognizer
 			));
+			// attr = {};
 		}
 	} else {
 		switch(raw['tag']){
 
 			case 'p': {
 				List<InlineSpan> children = [];
+				// attr = attr.merge(raw['attributes']),
 				for(Map itm in raw['children']){
 					children.add(htmlRendering(
 						content: content,
@@ -46,12 +49,14 @@ InlineSpan htmlRendering({
 						gOpt: gOpt,
 						style: style,
 						rawInput: itm,
+						// attr: attr,
 						recognizer: recognizer
 					));
 				}
 				spans.add(WidgetSpan(
 					child: HtmlBlock(
 						attr: raw['attributes'],
+						// attr: attr ?? raw['attributes'],
 						child: TextSpan(children: children)
 					)
 				));
@@ -68,6 +73,7 @@ InlineSpan htmlRendering({
 						content: content,
 						opt: opt,
 						gOpt: gOpt,
+						// attr: attr,
 						style: style,
 						rawInput: itm,
 						recognizer: rec
@@ -88,6 +94,7 @@ InlineSpan htmlRendering({
 						opt: opt,
 						gOpt: gOpt,
 						style: style,
+						// attr: attr,
 						rawInput: itm,
 						recognizer: recognizer
 					));
@@ -142,6 +149,7 @@ InlineSpan htmlRendering({
 					children.add(htmlRendering(
 						content: content,
 						opt: opt,
+						// attr: attr,
 						gOpt: gOpt,
 						style: style,
 						rawInput: itm,
@@ -165,6 +173,11 @@ InlineSpan htmlRendering({
 				List<InlineSpan> children = [];
 				if(raw['children'] != null){
 					for(Map divChild in raw['children']){
+						// Update attr
+						if(divChild['attributes'] != null){
+							divChild['attributes'] = (divChild['attributes'] as Map)
+								.merge(raw['attributes']);
+						}
 						children.add(htmlRendering(
 							content: content,
 							opt: opt,
@@ -184,12 +197,16 @@ InlineSpan htmlRendering({
 
 			// {@img}
 			case 'img': {
-				spans.add(htmlRawImg(raw, opt, gOpt));
+				spans.add(WidgetSpan(
+					child: HtmlBlock(
+						attr: raw['attributes'],
+						child: htmlRawImg(raw, opt, gOpt)
+					)
+				));
 				break;
 			}
 
 			case 'picture': {
-				// debugPrint("PICTURE: ${raw['children']}");
 				bool foundImg = false;
 				List<InlineSpan> children = [];
 				for(Map itm in raw['children']){
@@ -198,6 +215,7 @@ InlineSpan htmlRendering({
 							content: content,
 							opt: opt,
 							gOpt: gOpt,
+							// attr: attr,
 							rawInput: itm,
 							style: style
 						));
@@ -229,6 +247,7 @@ InlineSpan htmlRendering({
 							content: content,
 							opt: opt,
 							gOpt: gOpt,
+							// attr: attr,
 							rawInput: itm,
 							style: style
 						));

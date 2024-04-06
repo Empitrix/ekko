@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,8 +30,7 @@ Map<String, dynamic> _getImageLinkData(String input, Map variables){
 	String link = input.split(r)[1].trim();
 	link = link.substring(0, link.length - 1).trim();
 	String format = link.substring(link.lastIndexOf(".") + 1);
-	format = format.split("?")[0];
-	format = vStr(format);
+	format = format.split("?")[0].mini();
 
 	if(link.isEmpty){
 		link = name;
@@ -65,7 +64,7 @@ Map<String, dynamic>? _imageTagData(String inputTag){
 	String base64 = base64m.group(0)!;
 	base64 = base64.substring(base64.lastIndexOf(",") + 1, base64.length - 1).trim();
 	params["base64"] = base64;
-	params["extention"] = vStr(base64.substring(0, 1)) == "p" ? ImageType.svg : ImageType.picture;
+	params["extention"] = base64.substring(0, 1).mini() == "p" ? ImageType.svg : ImageType.picture;
 	return params;
 }
 

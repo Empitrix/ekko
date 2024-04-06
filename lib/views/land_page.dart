@@ -1,6 +1,6 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
-import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/note_item.dart';
 import 'package:ekko/components/search_bar.dart';
 import 'package:ekko/components/shortcut/intents.dart';
@@ -68,7 +68,7 @@ class _LandPageState extends State<LandPage> with TickerProviderStateMixin{
 	void _filterSearch(String words){
 		for(int i = 0; i < notes.value.length; i++){
 			if(notes.value[i].title.toLowerCase()
-				.contains(vStr(words))){
+				.contains(words.mini())){
 				notes.value[i].isVisible = true;
 			} else {
 				notes.value[i].isVisible = false;

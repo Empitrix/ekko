@@ -1,3 +1,5 @@
+import 'package:permission_handler/permission_handler.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/models/file_out.dart';
@@ -6,15 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
-import 'package:permission_handler/permission_handler.dart';
-
 
 String _getValidName(String fileName){
 	fileName = fileName.replaceAll(RegExp(r'(\\|\/|\||\:|\*|\?|\"|\<|\>)'), "").trim();
 	if(fileName.isEmpty){ fileName = "New Markdown.md"; }
 
 	// Update file name contains (md) if not exists
-	if(vStr(fileName.split(".").last) != "md"){ fileName += ".md"; }
+	if(fileName.split(".").last.mini() != "md"){ fileName += ".md"; }
 	return fileName;
 }
 

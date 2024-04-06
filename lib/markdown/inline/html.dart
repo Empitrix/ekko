@@ -43,6 +43,7 @@ class InlineHtml extends InlineModule{
 			content: "",
 			rawInput: htmlToJson(formatted),
 			style: Provider.of<ProviderManager>(gOpt.context).defaultStyle,
+			// attr: {},
 			opt: opt,
 			gOpt: gOpt
 		);

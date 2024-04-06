@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-extension StringExtensions on String { 
+extension TitleExtension on String { 
 	String title() { 
 		return "${this[0].toUpperCase()}${substring(1)}"; 
 	}
 }
 
+extension MiniExtension on String { 
+	String mini() {  return toLowerCase().trim(); }
+}
 
 // extension ColorExtentions on Color {
 // 	Color aae(BuildContext context, [double less = 0 ]){
@@ -17,7 +20,7 @@ extension StringExtensions on String {
 // 	}
 // }
 
-extension ColorExtentions on Color {
+extension ColorExtention on Color {
 	Color aae(BuildContext context, [double less = 0 ]){
 		double value = Provider.of<ProviderManager>(context, listen: false).acrylicOpacity - less;
 		if(value > 1){
@@ -29,3 +32,23 @@ extension ColorExtentions on Color {
 		return withOpacity(value);
 	}
 }
+
+
+
+extension MergeExtention on Map {
+	Map merge(Map? secondary, {bool force = false}){
+		if(secondary == null){ return this; }
+		// Map merged = {};
+		Map merged = this;
+		for(String ck in secondary.keys.toList()){
+			if(merged.containsKey(ck) && force){
+				// Update values that already in
+				merged[ck] = secondary[ck];
+			} else {
+				merged[ck] = secondary[ck];
+			}
+		}
+		return merged;
+	}
+}
+

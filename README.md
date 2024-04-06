@@ -36,3 +36,7 @@ Requirements:
 - [ ] Get all the Html CHILDREN and not only 1
 
 
+
+
+## HTML TODO
+- [ ] add `justify` alignment to html-calculator

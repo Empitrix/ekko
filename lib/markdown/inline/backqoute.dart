@@ -1,6 +1,5 @@
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
-import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,7 +55,7 @@ BackqouteOptStyle _getQouteStyle(String txt){
 			icon: FontAwesomeIcons.circleExclamation
 		),
 	];
-	BackqouteOptStyle? style = opts.firstWhere((e) => vStr(e.name) == vStr(txt));
+	BackqouteOptStyle? style = opts.firstWhere((e) => e.name.mini() == txt.mini());
 	return style;
 }
 

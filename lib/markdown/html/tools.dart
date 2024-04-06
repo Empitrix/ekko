@@ -1,4 +1,4 @@
-import 'package:ekko/backend/backend.dart';
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 
@@ -42,9 +42,81 @@ class HtmlCalculator {
 		return BorderRadius.circular(0);
 	}
 
+
+	MainAxisAlignment align(String? input){
+		if(input == null){ return MainAxisAlignment.start; }
+		input = input.mini();
+		late MainAxisAlignment align;
+		switch(input){
+			case "left": { align = MainAxisAlignment.start; break; }
+			case "right": { align = MainAxisAlignment.end; break; }
+			case "center": { align = MainAxisAlignment.center; break; }
+			case "justify": { align = MainAxisAlignment.spaceEvenly; break; }
+			default: { align = MainAxisAlignment.start; break; }
+		}
+		return align;
+	}
+
+	CrossAxisAlignment alignCross(String? input){
+		if(input == null){ return CrossAxisAlignment.start; }
+		input = input.mini();
+		late CrossAxisAlignment align;
+		switch(input){
+			case "left": { align = CrossAxisAlignment.start; break; }
+			case "right": { align = CrossAxisAlignment.end; break; }
+			case "center": { align = CrossAxisAlignment.center; break; }
+			case "justify": { align = CrossAxisAlignment.stretch; break; }
+			default: { align = CrossAxisAlignment.start; break; }
+		}
+		return align;
+	}
+
+	Alignment alignment(String? input){
+		if(input == null){ return Alignment.centerLeft; }
+		input = input.mini();
+		late Alignment align;
+		switch(input){
+			case "left": { align = Alignment.centerLeft; break; }
+			case "right": { align = Alignment.centerRight; break; }
+			case "center": { align = Alignment.center; break; }
+			case "justify": { align = Alignment.center; break; }
+			default: { align = Alignment.centerLeft; break; }
+		}
+		return align;
+	}
+
 }
 
+/*
+/* Alignment */
+enum HtmlAlignment {left, right, center, justify}
 
+HtmlAlignment getHtmlAlignment(String input){
+	/* Get HTML alignemt value and turn it to enum for html-aligment */
+	input = input.mini();
+	late HtmlAlignment align;
+	switch(input){
+		case "left": { align = HtmlAlignment.left; }
+		case "right": { align = HtmlAlignment.right; }
+		case "center": { align = HtmlAlignment.center; }
+		case "justify": { align = HtmlAlignment.justify; }
+		case _: { align = HtmlAlignment.left; }  // Default (like text)
+	}
+	return align;
+}
+
+Alignment htmlToFlutterAlign(HtmlAlignment alignment){
+	/* convert to html alignment ( not for justify ) */
+	late Alignment align;
+	switch(alignment){
+		case HtmlAlignment.left: { align = Alignment.centerLeft; }
+		case HtmlAlignment.right: { align = Alignment.centerRight; }
+		case HtmlAlignment.center: { align = Alignment.center; }
+		case _: { align = Alignment.centerLeft; }
+	}
+	return align;
+}
+*/
 
 
 String textTrimLeft(String? input){
@@ -83,8 +155,8 @@ double? getHtmlSize(BuildContext ctx, String? attr, String type){
 bool checkSourceMedia(String? op){
 	if(op == null){ return false; }
 	op = op.replaceAll(RegExp(r'\(|\)'), "");
-	String k = vStr(op.split(':').first);
-	String v = vStr(op.split(':').last);
+	String k = op.split(':').first.mini();
+	String v = op.split(':').last.mini();
 
 	if(k == "prefers-color-scheme"){
 		return (v == "dark") == dMode;
@@ -92,3 +164,6 @@ bool checkSourceMedia(String? op){
 
 	return false;
 }
+
+
+
