@@ -50,6 +50,10 @@ class MDGenerator extends StatelessWidget {
 		lastIndent = 0;
 		indentStep = 0;
 
+		// lastBulletNum = 0;
+		// lastBulletNumStatus = {"state": 0, "value": 1};
+		lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
+
 		data = _updateVariablesMap(content).trim();
 
 		// Ignore comments
@@ -114,6 +118,22 @@ class MDGenerator extends StatelessWidget {
 		);
 
 		data = "$data\n";
+
+
+		String updateUnbreaking = "";
+		data.splitMapJoin(
+			RegExp(r'\n^ +.*$(?=\n(?=[0-9]|\-|\+\*))', multiLine: true),
+			onMatch: (Match m){
+				updateUnbreaking += m.group(0)!.replaceAll(RegExp(r'^\s*', multiLine: true), " ");
+				return "";
+			},
+			onNonMatch: (String n){
+				updateUnbreaking += n;
+				return "";
+			}
+		);
+		data = "$updateUnbreaking\n";
+
 
 		GeneralOption gOpt = GeneralOption(
 			context: context,

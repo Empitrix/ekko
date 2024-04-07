@@ -1,4 +1,5 @@
 import 'package:ekko/markdown/inline/backqoute.dart';
+import 'package:ekko/markdown/inline/bullet_num.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/divider.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
@@ -17,6 +18,8 @@ import 'package:ekko/models/rule.dart';
 
 int lastIndent = 0;
 int indentStep = 0;
+Map<String, int> lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
+// int lastBulletNum = 0;
 
 
 List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
@@ -48,6 +51,14 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
 			trimNext: true,
 			action: (_, __) => InlineDivder(__, gOpt).span(_),
+		),
+
+		// {@Checkbox}
+		HighlightRule(
+			label: "bulleted_num",
+			// regex: RegExp(r'^\s*[0-9]+\s?\.\s?(.+)'),
+			regex: RegExp(r'(^\s*[0-9]+\s?\.\s?(.+)\s?)+'),
+			action: (txt, opt) => InlineBulletNum(opt, gOpt).span(txt)
 		),
 
 		// {@Checkbox}
