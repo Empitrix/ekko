@@ -5,6 +5,7 @@ import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/blur/float_menu.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/general_widgets.dart';
+import 'package:ekko/components/tag.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
@@ -335,15 +336,28 @@ void inViewNoteSheet({
 										)
 									),
 								),
+								Padding(
+									padding: const EdgeInsets.symmetric(horizontal: 12),
+									child: Wrap(
+										children: [
+											for(String tName in note.description.split("|")) if(tName.isNotEmpty) TextTag(
+												tag: tName,
+												isDense: true,
+											)
+										],
+									),
+								),
+								/*
 								SheetText(
 									text: Text(
-										note.description,
+										[for(String i in note.description.split('|')) i].join(", "),
 										style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
 											fontSize: 16,
 											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5)
 										)
 									),
 								)
+								*/
 							],
 						))
 					],
