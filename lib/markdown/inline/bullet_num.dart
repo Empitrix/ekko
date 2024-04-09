@@ -2,52 +2,11 @@ import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parser.dart';
-import 'package:ekko/markdown/rules.dart';
+import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 /*
-int __getNum(int currentNum){
-	int num = 1;
-	// debugPrint(lastBulletNumStatus.toString());
-	if(!(lastBulletNumStatus['state'] == currentNum)){
-		num = currentNum;
-	} else {
-		num = lastBulletNumStatus['value']! + 1;
-	}
-	lastBulletNumStatus['state'] = currentNum;
-	lastBulletNumStatus['value'] = num;
-	debugPrint("$currentNum -> $num");
-	return num;
-}
-*/
-
-/*
-int __getNum(int currentNum){
-	// lastBulletNumStatus['state']
-	// lastBulletNumStatus['value']
-	// lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
-	debugPrint(lastBulletNumStatus.toString());
-
-	lastBulletNumStatus['written'];
-	lastBulletNumStatus['returned'];
-	lastBulletNumStatus['counter'];
-
-	int num = 0;
-	// if(currentNum == lastBulletNumStatus['written']){
-	// 	lastBulletNumStatus['counter'] = lastBulletNumStatus['counter']! + 1;
-	// 	num = lastBulletNumStatus['counter']!;
-	// }
-
-
-	lastBulletNumStatus['written'] = currentNum;
-	lastBulletNumStatus['returned'] = num;
-	return num;
-}
-*/
-
-
 class NumWidget extends StatelessWidget {
 	final int indentLvl;
 	final int num;
@@ -78,6 +37,60 @@ class NumWidget extends StatelessWidget {
 		return Text.rich(TextSpan(children: spans));
 	}
 }
+*/
+
+class NumWidget extends StatelessWidget {
+	final int indentLvl;
+	final int num;
+	final String content;
+	final GeneralOption gOpt;
+	final int maxValue;
+
+	const NumWidget({
+		super.key,
+		required this.indentLvl,
+		required this.num,
+		required this.content,
+		required this.maxValue,
+		required this.gOpt
+	});
+
+	@override
+	Widget build(BuildContext context) {
+
+
+		debugPrint("Max Value: $maxValue");
+		// List<InlineSpan> spans = [];
+		TextStyle numStyle = Provider.of<ProviderManager>(gOpt.context).defaultStyle;
+		numStyle = numStyle.merge(const TextStyle(fontFamily: "RobotoMono"));
+
+		// spans.add(WidgetSpan(
+		// 	child: SelectionContainer.disabled(
+		// 		child: Text.rich(TextSpan(text: "$num. ", style: numStyle))
+		// 	)
+		// ));
+
+		return Text.rich(WidgetSpan(
+			child: Row(
+				crossAxisAlignment: CrossAxisAlignment.start,
+				children: [
+					SizedBox(
+						width: calcTextSize(gOpt.context, "$maxValue.", numStyle).width,
+						child: SelectionContainer.disabled(
+							child: Text.rich(TextSpan(text: "$num.", style: numStyle))
+						),
+					),
+					const SizedBox(width: 5),
+					Expanded(child: Text.rich(formattingTexts(gOpt: gOpt, content: content.trim())))
+				],
+			)
+		));
+
+		// spans.add(formattingTexts(gOpt: gOpt, content: content));
+		// return Text.rich(TextSpan(children: spans));
+	}
+}
+
 
 
 List<int> __getNums(List<String> lines){
@@ -95,12 +108,9 @@ class InlineBulletNum extends InlineModule {
 
 	@override
 	InlineSpan span(String txt){
-		// List<NumWidget> numWidgets = [];
 		List<InlineSpan> spans = [];
-
 		List<String> lines = txt.trim().split("\n");
 		List<int> nums = __getNums(lines);
-
 		int counter = 0;
 		bool useCounter = nums.length != nums.toSet().length;
 
@@ -111,18 +121,16 @@ class InlineBulletNum extends InlineModule {
 			spans.add(WidgetSpan(child: NumWidget(
 				indentLvl: iLvl,
 				num: useCounter ? counter : nums[i],
-				// num: useCounter ? counter : 0,
-				// num: 0,
+				maxValue: useCounter ? lines.length : nums.last,
 				content: content,
 				gOpt: gOpt
 			)));
-
-			// spans.add(const TextSpan(text: "\n"));
 			spans.add(endLineChar());
 		}
 
+		// int maxNum = useCounter ? counter : nums.last;  // max index
+
 		return TextSpan(children: spans);
 	}
-
 }
 

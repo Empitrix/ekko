@@ -29,7 +29,7 @@ TextSpan __applyRules({
 			// {@Re-Count for Sub-list}
 			if(mRule.label != "item"){ lastIndent = 0; indentStep = 0; }
 			// if(mRule.label != "bulleted_num") { lastBulletNumStatus = {"state": 0, "value": 1}; }
-			if(mRule.label != "bulleted_num") { lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0}; }
+			// if(mRule.label != "bulleted_num") { lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0}; }
 
 
 			// Add Widgets

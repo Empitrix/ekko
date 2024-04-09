@@ -52,7 +52,7 @@ class MDGenerator extends StatelessWidget {
 
 		// lastBulletNum = 0;
 		// lastBulletNumStatus = {"state": 0, "value": 1};
-		lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
+		// lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
 
 		data = _updateVariablesMap(content).trim();
 

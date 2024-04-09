@@ -18,7 +18,7 @@ import 'package:ekko/models/rule.dart';
 
 int lastIndent = 0;
 int indentStep = 0;
-Map<String, int> lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
+// Map<String, int> lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
 // int lastBulletNum = 0;
 
 
