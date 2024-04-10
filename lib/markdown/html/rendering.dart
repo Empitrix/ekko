@@ -310,29 +310,27 @@ InlineSpan htmlRendering({
 						children: [
 							Text.rich(TextSpan(
 								children: [
-									// WidgetSpan(
-									// 	child: SelectionContainer.disabled(
-									// 		child: Transform.rotate(
-									// 			angle: getAngle(isOpen ? 90 : 180),
-									// 			child: NfFont(unicode: "\udb81\udd36", size: 14).widget(),
-									// 		),
-									// 	)
-									// ),
 									WidgetSpan(
-										child: SelectionContainer.disabled(
-											child: ValueListenableBuilder(
-											valueListenable: isOpenNotifier,
-												builder: (context, value, child){
-													return Transform.rotate(
-														angle: getAngle(isOpenNotifier.value ? 180 : 90),
-														child: NfFont(unicode: "\udb81\udd36", size: 14).widget(),
-													);
-												}
-											),
+										child: MouseRegion(
+											cursor: SystemMouseCursors.click,
+											child: SelectionContainer.disabled(
+												child: ValueListenableBuilder(
+												valueListenable: isOpenNotifier,
+													builder: (context, value, child){
+														return Transform.rotate(
+															angle: getAngle(isOpenNotifier.value ? 180 : 90),
+															child: NfFont(unicode: "\udb81\udd36", size: 14).widget(),
+														);
+													}
+												),
+											)
 										)
 									),
 									const WidgetSpan(child: SizedBox(width: 8)),
-									TextSpan(text: summaryText,
+
+									TextSpan(
+										text: summaryText,
+										mouseCursor: SystemMouseCursors.click,
 										style: Provider.of<ProviderManager>(gOpt.context).defaultStyle),
 
 									const TextSpan(text: "\n"),
