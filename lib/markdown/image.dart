@@ -92,7 +92,13 @@ WidgetSpan showImageFrame(String txt, TapGestureRecognizer? recognizer, Map vari
 			
 			bool skipped = RegExp(r'(https?:\/\/.*\.(?:png|jpg|gif))').hasMatch(data['url']);
 			if(skipped){
-				img = Image.memory(snap.data!.bodyBytes, fit: boxFit);
+				// img = Image.memory(snap.data!.bodyBytes, fit: boxFit);
+
+				img = SizedBox(
+					width: MediaQuery.of(context).size.width - 67,
+					child: Image.memory(snap.data!.bodyBytes, fit: boxFit),
+				);
+
 				// img = FittedBox(child: Image.memory(snap.data!.bodyBytes));
 			}
 

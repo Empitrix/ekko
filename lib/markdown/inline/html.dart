@@ -16,6 +16,8 @@ class InlineHtml extends InlineModule{
 	InlineSpan span(String txt){
 		bool toContinue = true;
 		List<HighlightRule> rls = allSyntaxRules(gOpt: gOpt).sublist(1);
+
+		// Detect default MD format
 		for(HighlightRule r in rls){
 			Match? m = r.regex.firstMatch(txt);
 			if(m != null){
@@ -41,6 +43,10 @@ class InlineHtml extends InlineModule{
 		formatted = formatted.replaceAll(RegExp(r'^ +', multiLine: true), "");
 		formatted = formatted.replaceAll(RegExp(r'(?<!\w>)(?<!\n)\n(?!\n)'), " ");
 		formatted = formatted.replaceAll(RegExp(r'< *br *(\/)?>'), "\n");
+
+
+
+
 		return htmlRendering(
 			content: "",
 			rawInput: htmlToJson(formatted),

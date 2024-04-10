@@ -27,7 +27,11 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		// {@HTML}
 		HighlightRule(
 			label: "html",
-			regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
+			/* Html group */
+			// regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
+
+			/* Add tags that can support inline defualt markdonw inside them */
+			regex: RegExp(r'<details>[\s\S]*?<\/details>|( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
 			action: (txt, opt) => InlineHtml(opt, gOpt).span(txt)
 		),
 

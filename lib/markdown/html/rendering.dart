@@ -1,3 +1,6 @@
+import 'package:ekko/backend/backend.dart';
+import 'package:ekko/components/nf_icons.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/parser.dart';
 import 'package:ekko/markdown/html/tags/img.dart';
@@ -6,9 +9,11 @@ import 'package:ekko/markdown/html/widgets/html_block.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:provider/provider.dart';
 
 InlineSpan htmlRendering({
 	required String content,
@@ -262,6 +267,99 @@ InlineSpan htmlRendering({
 				spans.add(TextSpan(children: children));
 				break;
 			}
+
+
+
+			case 'details': {
+				List<InlineSpan> children = [];
+				String summaryText = "";
+				if(raw['children'] != null){
+					// JsonEncoder encoder = const JsonEncoder.withIndent("  ");
+					// debugPrint("---\n\n${encoder.convert(raw)}\n\n---");
+					for(Map itm in raw['children']){
+						// debugPrint(itm.toString());
+						if(itm['tag'] != null){
+							if(itm['tag'] == "summary" && summaryText.isEmpty){
+								summaryText = (itm['children']).firstWhere((e) => e['text'] != null)['text'] ?? "";
+							} else {
+								children.add(htmlRendering(
+									content: content,
+									opt: opt,
+									gOpt: gOpt,
+									rawInput: itm,
+									style: style
+								));
+							}
+						} else {
+							children.add(formattingTexts(content: itm['text'] ?? "", gOpt: gOpt));
+						}
+
+					}
+				}
+
+
+
+				ValueNotifier<bool> isOpenNotifier = ValueNotifier<bool>(false);
+
+				Widget detialWidget = GestureDetector(
+					onTap: (){
+						isOpenNotifier.value = !isOpenNotifier.value;
+						// gOpt.hotRefresh();
+					},
+					child: Row(
+						children: [
+							Text.rich(TextSpan(
+								children: [
+									// WidgetSpan(
+									// 	child: SelectionContainer.disabled(
+									// 		child: Transform.rotate(
+									// 			angle: getAngle(isOpen ? 90 : 180),
+									// 			child: NfFont(unicode: "\udb81\udd36", size: 14).widget(),
+									// 		),
+									// 	)
+									// ),
+									WidgetSpan(
+										child: SelectionContainer.disabled(
+											child: ValueListenableBuilder(
+											valueListenable: isOpenNotifier,
+												builder: (context, value, child){
+													return Transform.rotate(
+														angle: getAngle(isOpenNotifier.value ? 180 : 90),
+														child: NfFont(unicode: "\udb81\udd36", size: 14).widget(),
+													);
+												}
+											),
+										)
+									),
+									const WidgetSpan(child: SizedBox(width: 8)),
+									TextSpan(text: summaryText,
+										style: Provider.of<ProviderManager>(gOpt.context).defaultStyle),
+
+									const TextSpan(text: "\n"),
+
+									WidgetSpan(child: ValueListenableBuilder(
+										valueListenable: isOpenNotifier,
+										builder: (context, value, child){
+											if(isOpenNotifier.value){
+												return FittedBox(
+													fit: BoxFit.cover,
+													child: Text.rich(TextSpan(children: children))
+												);
+											}
+											return const SizedBox();
+										}
+									))
+								]
+							)),
+						],
+					),
+				);
+
+				// spans.add(TextSpan(children: children));
+				spans.add(WidgetSpan(child: detialWidget));
+				break;
+			}
+
 
 			default: {
 				if(raw['text'] != null){

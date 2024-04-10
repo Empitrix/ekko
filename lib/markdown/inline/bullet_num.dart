@@ -26,8 +26,6 @@ class NumWidget extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 
-
-		debugPrint("Max Value: $maxValue");
 		TextStyle numStyle = Provider.of<ProviderManager>(gOpt.context).defaultStyle;
 		numStyle = numStyle.merge(const TextStyle(fontFamily: "RobotoMono"));
 
