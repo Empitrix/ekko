@@ -6,38 +6,6 @@ import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/*
-class NumWidget extends StatelessWidget {
-	final int indentLvl;
-	final int num;
-	final String content;
-	final GeneralOption gOpt;
-
-	const NumWidget({
-		super.key,
-		required this.indentLvl,
-		required this.num,
-		required this.content,
-		required this.gOpt
-	});
-
-	@override
-	Widget build(BuildContext context) {
-		List<InlineSpan> spans = [];
-		TextStyle numStyle = Provider.of<ProviderManager>(gOpt.context).defaultStyle;
-
-		spans.add(WidgetSpan(
-			child: SelectionContainer.disabled(
-				child: Text.rich(TextSpan(text: "$num. ", style: numStyle))
-			)
-		));
-
-		spans.add(formattingTexts(gOpt: gOpt, content: content));
-
-		return Text.rich(TextSpan(children: spans));
-	}
-}
-*/
 
 class NumWidget extends StatelessWidget {
 	final int indentLvl;
@@ -60,15 +28,8 @@ class NumWidget extends StatelessWidget {
 
 
 		debugPrint("Max Value: $maxValue");
-		// List<InlineSpan> spans = [];
 		TextStyle numStyle = Provider.of<ProviderManager>(gOpt.context).defaultStyle;
 		numStyle = numStyle.merge(const TextStyle(fontFamily: "RobotoMono"));
-
-		// spans.add(WidgetSpan(
-		// 	child: SelectionContainer.disabled(
-		// 		child: Text.rich(TextSpan(text: "$num. ", style: numStyle))
-		// 	)
-		// ));
 
 		return Text.rich(WidgetSpan(
 			child: Row(
@@ -125,10 +86,9 @@ class InlineBulletNum extends InlineModule {
 				content: content,
 				gOpt: gOpt
 			)));
-			spans.add(endLineChar());
+			spans.add(const TextSpan(
+				text: "\n\n", style: TextStyle(fontSize: 0.5)));
 		}
-
-		// int maxNum = useCounter ? counter : nums.last;  // max index
 
 		return TextSpan(children: spans);
 	}
