@@ -20,6 +20,8 @@ class InlineHeadline extends InlineModule {
 				child: Column(
 					crossAxisAlignment: CrossAxisAlignment.start,
 					children: [
+						// ** GFM have this
+						const SizedBox(width: double.infinity, height: 20),
 						Text.rich(key: headerKey, TextSpan(children: [
 							endLineChar(),
 							span

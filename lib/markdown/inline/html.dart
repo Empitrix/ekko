@@ -36,6 +36,8 @@ class InlineHtml extends InlineModule{
 		}
 
 		String formatted = txt;
+		formatted = formatted.replaceAll("\n", "");
+
 		formatted = formatted.replaceAll(RegExp(r'^ +', multiLine: true), "");
 		formatted = formatted.replaceAll(RegExp(r'(?<!\w>)(?<!\n)\n(?!\n)'), " ");
 		formatted = formatted.replaceAll(RegExp(r'< *br *(\/)?>'), "\n");
@@ -43,10 +45,16 @@ class InlineHtml extends InlineModule{
 			content: "",
 			rawInput: htmlToJson(formatted),
 			style: Provider.of<ProviderManager>(gOpt.context).defaultStyle,
-			// attr: {},
 			opt: opt,
 			gOpt: gOpt
 		);
+
+		// List<InlineSpan> spans = [];
+		// spans.add(htmlSpan);
+		// // spans.add(const WidgetSpan(child: SizedBox(height: 50, child: Placeholder(),)));
+		// // spans.add(const WidgetSpan(child: SizedBox(height: 0, width: double.infinity)));
+
+		// return TextSpan(children: spans);
 	}
 }
 
