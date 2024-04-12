@@ -9,11 +9,11 @@ import 'package:ekko/markdown/html/widgets/html_block.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/models/rule.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:provider/provider.dart';
+
 
 InlineSpan htmlRendering({
 	required String content,

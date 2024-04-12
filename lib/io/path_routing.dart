@@ -8,9 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
+String formatLocalName(String name, [bool protect = true]){
+	name = name.replaceAll(RegExp(r'(\\|\/|\||\:|\*|\?|\"|\<|\>)'), "").trim();
+	if(name.isEmpty && protect){ return "file"; }
+	return name;
+}
+
 
 String _getValidName(String fileName){
-	fileName = fileName.replaceAll(RegExp(r'(\\|\/|\||\:|\*|\?|\"|\<|\>)'), "").trim();
+	// fileName = fileName.replaceAll(RegExp(r'(\\|\/|\||\:|\*|\?|\"|\<|\>)'), "").trim();
+	fileName = formatLocalName(fileName, false);
 	if(fileName.isEmpty){ fileName = "New Markdown.md"; }
 
 	// Update file name contains (md) if not exists

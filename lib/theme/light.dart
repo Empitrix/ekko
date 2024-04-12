@@ -35,7 +35,7 @@ ThemeData light(BuildContext context){
 
 		outlinedButtonTheme: OutlinedButtonThemeData(
 			style: ButtonStyle(
-				side: MaterialStatePropertyAll(
+				side: WidgetStatePropertyAll(
 					BorderSide(
 						color: pColor
 					)

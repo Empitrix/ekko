@@ -15,10 +15,10 @@ class CustomModifyButton extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return TextButton.icon(
 			style: const ButtonStyle(
-				foregroundColor: MaterialStatePropertyAll(
+				foregroundColor: WidgetStatePropertyAll(
 					Colors.white
 				),
-				shape: MaterialStatePropertyAll(
+				shape: WidgetStatePropertyAll(
 					RoundedRectangleBorder(
 						borderRadius: BorderRadius.only(
 							topRight: Radius.zero,

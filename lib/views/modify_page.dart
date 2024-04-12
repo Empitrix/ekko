@@ -72,7 +72,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 			return;  // Close the function
 		}
 
-		// TODO: CHECK FOR TAGS LIST && ADD DON'T SHOW CHECK DIALOG
+		// Ignore tags (they are optional)
 		if(!TxtCtrl(title, null, content).isAllEmpty()){
 			Dialogs(context).ask(
 				title: "Exit",
@@ -280,7 +280,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 										Colors.pink:
 										Colors.amber,
 								),
-								style: ButtonStyle(side: MaterialStatePropertyAll(BorderSide(
+								style: ButtonStyle(side: WidgetStatePropertyAll(BorderSide(
 										width: 1,
 										color: dMode ?
 											Colors.pink:

@@ -10,6 +10,7 @@ import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/io/md_file.dart';
+import 'package:ekko/io/share_file.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:flutter/material.dart';
@@ -390,11 +391,14 @@ void inViewNoteSheet({
 						}
 					),
 
-					// TODO: Apply Actions
 					ListTile(
 						leading: const Icon(FontAwesomeIcons.share, size: 20),
 						title: const Text("Share"),
-						onTap:(){}
+						onTap:() async {
+							Navigator.pop(context);
+							ShareNoteObj sharedNote = ShareNoteObj(context: context, note: note);
+							await sharedNote.share();
+						}
 					),
 
 

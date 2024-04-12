@@ -80,9 +80,12 @@ class MarkdownWidget extends StatelessWidget {
 				right: 5
 			),
 			decoration: BoxDecoration(
+				// color: dMode ?
+				// 	Theme.of(context).colorScheme.background.aae(context, lessOpt) :
+				// 	Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
 				color: dMode ?
-					Theme.of(context).colorScheme.background.aae(context, lessOpt) :
-					Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
+					Theme.of(context).colorScheme.surface.aae(context, lessOpt) :
+					Theme.of(context).colorScheme.onSurface.aae(context, lessOpt),
 				borderRadius: BorderRadius.only(
 					topLeft: Radius.circular(radius),
 					topRight: Radius.circular(radius),
@@ -178,9 +181,12 @@ class MarkdownWidget extends StatelessWidget {
 		ScrollController horizontalMarkdown = ScrollController();
 		return Container(
 			decoration: BoxDecoration(
+				// color: dMode ?
+				// 	Theme.of(context).colorScheme.background.aae(context, lessOpt) :
+				// 	Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
 				color: dMode ?
-					Theme.of(context).colorScheme.background.aae(context, lessOpt) :
-					Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
+					Theme.of(context).colorScheme.surface.aae(context, lessOpt) :
+					Theme.of(context).colorScheme.onSurface.aae(context, lessOpt),
 				borderRadius: BorderRadius.circular(radius)
 			),
 			margin: const EdgeInsets.symmetric(vertical: 8),
