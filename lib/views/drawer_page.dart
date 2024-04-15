@@ -159,7 +159,7 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 									icon: const Icon(Icons.add),
 									iconSize: 16,
 									style: ButtonStyle(
-										backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.secondaryContainer)
+										backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondaryContainer)
 									),
 									onPressed: () async {
 										Dialogs(context).textFieldDialog(

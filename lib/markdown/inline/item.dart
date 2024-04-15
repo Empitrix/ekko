@@ -1,7 +1,6 @@
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parser.dart';
-import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
 import 'package:flutter/material.dart';
