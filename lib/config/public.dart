@@ -18,6 +18,9 @@ bool acrylicMode = false;
 // Wrap code Mode
 bool wrapCodeMode = false;
 
+// Wrap code Mode
+bool editorWrapMode = false;
+
 // Check-List Checkable
 bool checkListCheckable = false;
 

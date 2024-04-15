@@ -117,8 +117,7 @@ class MDGenerator extends StatelessWidget {
 			stringMatch: FormattingAction.non
 		);
 
-		data = "$data\n";
-
+		// data = "$data\n";
 
 		/*
 		String updateUnbreaking = "";
@@ -126,6 +125,32 @@ class MDGenerator extends StatelessWidget {
 			RegExp(r'\n^ +.*$(?=\n(?=[0-9]|\-|\+\*))', multiLine: true),
 			onMatch: (Match m){
 				updateUnbreaking += m.group(0)!.replaceAll(RegExp(r'^\s*', multiLine: true), " ");
+				return "";
+			},
+			onNonMatch: (String n){
+				updateUnbreaking += n;
+				return "";
+			}
+		);
+		*/
+
+		/*
+		String updateUnbreaking = "";
+		data.splitMapJoin(
+			RegExp(r'(\s?```([\s\S]*?)\n\s*```\s?)|(\n(\n *)+)', multiLine: true),
+			onMatch: (Match m){
+				String txt = m.group(0)!;
+				if(txt.trim().isEmpty){
+					// correct
+					if(txt == "\n"){
+						updateUnbreaking += " ";
+					} else {
+						updateUnbreaking += "\n";
+					}
+				} else {
+					// dont touch
+					updateUnbreaking += txt;
+				}
 				return "";
 			},
 			onNonMatch: (String n){

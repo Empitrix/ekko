@@ -19,9 +19,10 @@ class DB {
 				darkMode BIT,
 				acrylicMode BIT,
 				wrapCodeMode BIT,
+				editorWrapMode BIT,
 				checkableCheckList BIT,
 				acrylicOpacity FLOAT,
-				fontFamily Text,
+				fontFamily TEXT,
 				fontSize FLOAT,
 				fontWeight INT,
 				fontHeight FLOAT,
@@ -53,28 +54,68 @@ class DB {
 		""");
 
 
+		// Map<String, Object?> initData = {
+		// 	"darkMode": 1,  // Default: DARK-MODE
+		// 	"acrylicMode": 0,
+		// 	"wrapCodeMode": 0,
+		// 	"editorWrapMode" : 0, // New
+		// 	"checkableCheckList": 0,
+		// 	"acrylicOpacity": 1.0,
+		// 	"markdownThemeName": "gruvbox-dark",
+		// 	// About font
+		// 	"fontFamily": "Rubik",
+		// 	"fontSize": 16,
+		// 	"fontWeight": 400,
+		// 	"fontHeight": 1.4,
+		// 	"letterSpacing": 0.7,
+		// };  // Init table
+
+		Map<String, List> initData = {
+			"darkMode": ["BIT", 1],
+			"acrylicMode": ["BIT", 0],
+			"wrapCodeMode": ["BIT", 0],
+			"editorWrapMode" : ["BIT", 0],
+			"checkableCheckList": ["BIT", 0],
+			"acrylicOpacity": ["FLOAT", 1.0],
+			"markdownThemeName": ["TEXT", "gruvbox-dark"],
+			"fontFamily": ["TEXT", "Rubik"],
+			"fontSize": ["FLOAT", 16],
+			"fontWeight": ["INT", 400],
+			"fontHeight": ["FLOAT", 1.4],
+			"letterSpacing": ["FLOAT", 0.7],
+		};  // Init table
+
+		// Map<String, Object?> extracted = initData.map((key, value) => MapEntry(key, value.last));
+		// print(extracted);
+		// print("0000");
+
 		if(List.from(await db.query("local")).isEmpty){
-			Map<String, Object?> initData = {
-				"darkMode": 1,  // Default: DARK-MODE
-				"acrylicMode": 0,
-				"wrapCodeMode": 0,
-				"checkableCheckList": 0,
-				"acrylicOpacity": 1.0,
-				"markdownThemeName": "gruvbox-dark",
-				// About font
-				"fontFamily": "Rubik",
-				"fontSize": 16,
-				"fontWeight": 400,
-				"fontHeight": 1.4,
-				"letterSpacing": 0.7,
-			};  // Init table
+
+			// Map<String, Object?> extracted = initData.map(convert);
+			// print(extracted)
 			// Set parameters on db 
-			await db.insert("local", initData);
+			// await db.insert("local", initData);
+			await db.insert("local", initData.map((key, value) => MapEntry(key, value.last)));
 			
 			await DB().createFolder(folderName: "~", isPrime: true);  // Root Folder
 
 			debugPrint("[DATABASE INITIALIZED]");
-		}{
+		} else {
+			// debugPrint(initData.toString());
+			Map<String, Object?> fromLocal = (await db.query('local'))[0];
+			for(String par in initData.keys.toList()){
+				if(fromLocal[par] == null){
+					// print(par);
+					// print(initData[par].runtimeType);
+					// debugPrint('''ALTER TABLE local ADD $par ${initData[par]!.last};''');
+					// db.execute('''ALTER TABLE local ADD IF NOT EXISTS $par ${initData[par]!.first};''');
+					// await db.execute('''ALTER TABLE local ADD COLUMN $par ${initData[par]!.first};''');
+					try{
+						await db.execute('''ALTER TABLE local ADD COLUMN $par ${initData[par]!.first} DEFAULT ${initData[par]!.last};''').then((_){});
+					}catch(_){}
+				}
+			}
+
 			debugPrint("[RUNNING DATABASE]");
 		}
 		await db.close();
@@ -84,6 +125,9 @@ class DB {
 	// R/W/U for boolean variables
 	Future<bool> readBool(String name) async {
 		Map data = await getQuery("local");
+		// if(data[name] == null){
+		// 	print("$name -> NULL");
+		// }
 		return data[name] == 1;
 	}
 
