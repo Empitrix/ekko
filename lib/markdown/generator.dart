@@ -120,6 +120,7 @@ class MDGenerator extends StatelessWidget {
 		data = "$data\n";
 
 
+		/*
 		String updateUnbreaking = "";
 		data.splitMapJoin(
 			RegExp(r'\n^ +.*$(?=\n(?=[0-9]|\-|\+\*))', multiLine: true),
@@ -133,6 +134,7 @@ class MDGenerator extends StatelessWidget {
 			}
 		);
 		data = "$updateUnbreaking\n";
+		*/
 
 
 		GeneralOption gOpt = GeneralOption(

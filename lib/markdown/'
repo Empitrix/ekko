@@ -16,6 +16,7 @@ class InlineCheckbox extends InlineModule {
 		// bool isChecked = txt.trim().substring(0, 5).contains("x");
 
 		getIlvl(txt);
+		debugPrint(indentStep.toString());
 
 		bool isChecked = txt.trim().substring(0, 5).contains("x");
 		TextSpan textData = TextSpan(
@@ -53,18 +54,21 @@ class InlineCheckbox extends InlineModule {
 				iconHasAction: true,
 				indentation: indentStep * 20,
 				leadingOnTap: () async {
+					debugPrint("[${opt.match.start}, ${opt.match.end}]");
+					/*
 					DB db = DB();
-					Note cn = await db.loadThisNote(opt.id);
-					int start = opt.match.start + afterWhiteChar(
-						cn.content.substring(opt.match.start, opt.match.end));
-					String l = cn.content.substring(start + 3, start + 4);
+					Note current = await db.loadThisNote(opt.id);
+					// debugPrint(current.content.substring(nm.match.start, nm.match.end));
+					String l = current.content.substring(opt.match.start + 3, opt.match.start + 4);
 					if(l == "x"){
-						cn.content = cn.content.replaceRange(start + 3, start + 4, " ");
+						current.content = current.content.replaceRange(opt.match.start + 3, opt.match.start + 4, " ");
 					} else {
-						cn.content = cn.content.replaceRange(start + 3, start + 4, "x");
+						current.content = current.content.replaceRange(opt.match.start + 3, opt.match.start + 4, "x");
 					}
-					await db.updateNote(cn);
+					// debugPrint(current.content.substring(nm.match.start, nm.match.end));
+					await db.updateNote(current);
 					gOpt.hotRefresh();
+					*/
 				},
 				type: SublistWidgetType.icon,
 				leading: MouseRegion(

@@ -1,5 +1,6 @@
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/inline_module.dart';
+import 'package:ekko/markdown/parser.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/rules.dart';
 import 'package:ekko/markdown/sublist_widget.dart';
@@ -12,19 +13,21 @@ class InlineItem extends InlineModule {
 	@override
 	InlineSpan span(String txt){
 		txt = txt.replaceAll(RegExp(r'\n( )*', multiLine: true), "");
-		int iLvl = getIndentationLevel(txt);
-		int step = iLvl - lastIndent;
-		if(step != 0){
-			if(step < 0 && step != -1){
-				step ++;
-			}
-			if(step > 0 && step != 1){
-				step --;
-			}
-		}
-		indentStep += step;
 
-		if(iLvl != lastIndent){ lastIndent = iLvl; }
+		// int iLvl = getIndentationLevel(txt);
+		// int step = iLvl - lastIndent;
+		// if(step != 0){
+		// 	if(step < 0 && step != -1){
+		// 		step ++;
+		// 	}
+		// 	if(step > 0 && step != 1){
+		// 		step --;
+		// 	}
+		// }
+		// indentStep += step;
+
+		// if(iLvl != lastIndent){ lastIndent = iLvl; }
+		getIlvl(txt);
 
 		return WidgetSpan(
 			child: SublistWidget(

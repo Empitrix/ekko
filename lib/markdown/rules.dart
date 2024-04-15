@@ -18,8 +18,6 @@ import 'package:ekko/models/rule.dart';
 
 int lastIndent = 0;
 int indentStep = 0;
-// Map<String, int> lastBulletNumStatus = {"written": 0, "returned": 1, "counter": 0};
-// int lastBulletNum = 0;
 
 
 List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
@@ -29,7 +27,6 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			label: "html",
 			/* Html group */
 			// regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
-
 			/* Add tags that can support inline defualt markdonw inside them */
 			regex: RegExp(r'<details>[\s\S]*?<\/details>|( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
 			action: (txt, opt) => InlineHtml(opt, gOpt).span(txt)
@@ -57,7 +54,7 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			action: (_, __) => InlineDivder(__, gOpt).span(_),
 		),
 
-		// {@Checkbox}
+		// {@Bulleted Item}
 		HighlightRule(
 			label: "bulleted_num",
 			// regex: RegExp(r'^\s*[0-9]+\s?\.\s?(.+)'),
@@ -68,7 +65,8 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 		// {@Checkbox}
 		HighlightRule(
 			label: "checkbox",
-			regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
+			// regex: RegExp(r'^(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
+			regex: RegExp(r'^ *(-|\+|\*)\s{1}(\[ \]|\[x\])\s+(.*)$', multiLine: true),
 			action: (txt, opt) => InlineCheckbox(opt, gOpt).span(txt)
 		),
 

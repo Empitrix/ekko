@@ -1,3 +1,6 @@
+import 'package:ekko/markdown/parsers.dart';
+import 'package:ekko/markdown/rules.dart';
+
 int afterWhiteChar(String sample){
 	int counter = 0;
 	for(String c in sample.split("")){
@@ -27,3 +30,19 @@ int firstCharPos(String sample, String char){
 	return -1;
 }
 
+
+void getIlvl(String txt){
+	int iLvl = getIndentationLevel(txt);
+	int step = iLvl - lastIndent;
+	if(step != 0){
+		if(step < 0 && step != -1){
+			step ++;
+		}
+		if(step > 0 && step != 1){
+			step --;
+		}
+	}
+	indentStep += step;
+	if(iLvl != lastIndent){ lastIndent = iLvl; }
+	// return indentStep;
+}
