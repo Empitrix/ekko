@@ -2,6 +2,8 @@ import 'package:ekko/animation/expand.dart';
 import 'package:ekko/components/editor/buffer.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
+import 'package:ekko/config/manager.dart';
+import 'package:ekko/markdown/filed_rules.dart';
 import 'package:flutter/services.dart';
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/backend/backend.dart';
@@ -16,6 +18,8 @@ import 'package:ekko/models/file_out.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:provider/provider.dart';
 
 
 
