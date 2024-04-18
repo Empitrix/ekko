@@ -2,12 +2,10 @@ import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/tag_field.dart';
-import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class TitleTextField extends StatelessWidget {

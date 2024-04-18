@@ -1,8 +1,6 @@
-import 'package:ekko/backend/backend.dart';
-import 'package:ekko/components/nf_icons.dart';
-import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/html/parser.dart';
+import 'package:ekko/markdown/html/tags/details.dart';
 import 'package:ekko/markdown/html/tags/img.dart';
 import 'package:ekko/markdown/html/tools.dart';
 import 'package:ekko/markdown/html/widgets/html_block.dart';
@@ -12,7 +10,6 @@ import 'package:ekko/models/rule.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/backend/extensions.dart';
-import 'package:provider/provider.dart';
 
 
 InlineSpan htmlRendering({
@@ -21,16 +18,11 @@ InlineSpan htmlRendering({
 	required GeneralOption gOpt,
 	required TextStyle style,
 	Map? rawInput,
-	// Map? attr,
 	GestureRecognizer? recognizer,
 }){
 
 	List<InlineSpan> spans = [];
 	Map raw = rawInput ?? htmlToJson(content);
-
-	// debugPrint("${'-' * 10}Raw${'-' * 10}\n\n$raw\n\n${'-' * 10}END${'-' * 10}");
-	// try{ print(raw['tag']); }catch(_){}
-
 
 	if(raw['children'] == null){
 		if(raw['text'] != null){
@@ -39,14 +31,12 @@ InlineSpan htmlRendering({
 				style: style,
 				recognizer: recognizer
 			));
-			// attr = {};
 		}
 	} else {
 		switch(raw['tag']){
 
 			case 'p': {
 				List<InlineSpan> children = [];
-				// attr = attr.merge(raw['attributes']),
 				for(Map itm in raw['children']){
 					children.add(htmlRendering(
 						content: content,
@@ -54,14 +44,12 @@ InlineSpan htmlRendering({
 						gOpt: gOpt,
 						style: style,
 						rawInput: itm,
-						// attr: attr,
 						recognizer: recognizer
 					));
 				}
 				spans.add(WidgetSpan(
 					child: HtmlBlock(
 						attr: raw['attributes'],
-						// attr: attr ?? raw['attributes'],
 						child: TextSpan(children: children)
 					)
 				));
@@ -78,7 +66,6 @@ InlineSpan htmlRendering({
 						content: content,
 						opt: opt,
 						gOpt: gOpt,
-						// attr: attr,
 						style: style,
 						rawInput: itm,
 						recognizer: rec
@@ -99,7 +86,6 @@ InlineSpan htmlRendering({
 						opt: opt,
 						gOpt: gOpt,
 						style: style,
-						// attr: attr,
 						rawInput: itm,
 						recognizer: recognizer
 					));
@@ -154,7 +140,6 @@ InlineSpan htmlRendering({
 					children.add(htmlRendering(
 						content: content,
 						opt: opt,
-						// attr: attr,
 						gOpt: gOpt,
 						style: style,
 						rawInput: itm,
@@ -220,7 +205,6 @@ InlineSpan htmlRendering({
 							content: content,
 							opt: opt,
 							gOpt: gOpt,
-							// attr: attr,
 							rawInput: itm,
 							style: style
 						));
@@ -252,112 +236,25 @@ InlineSpan htmlRendering({
 							content: content,
 							opt: opt,
 							gOpt: gOpt,
-							// attr: attr,
 							rawInput: itm,
 							style: style
 						));
 					}
 				}
-				// spans.add(
-				// 	WidgetSpan(child: HtmlBlock(
-				// 		attr: raw['attributes'],
-				// 		child: TextSpan(children: children)
-				// 	))
-				// );
 				spans.add(TextSpan(children: children));
 				break;
 			}
 
-
-
 			case 'details': {
-				List<InlineSpan> children = [];
-				String summaryText = "";
-				if(raw['children'] != null){
-					// JsonEncoder encoder = const JsonEncoder.withIndent("  ");
-					// debugPrint("---\n\n${encoder.convert(raw)}\n\n---");
-					for(Map itm in raw['children']){
-						// debugPrint(itm.toString());
-						if(itm['tag'] != null){
-							if(itm['tag'] == "summary" && summaryText.isEmpty){
-								summaryText = (itm['children']).firstWhere((e) => e['text'] != null)['text'] ?? "";
-							} else {
-								children.add(htmlRendering(
-									content: content,
-									opt: opt,
-									gOpt: gOpt,
-									rawInput: itm,
-									style: style
-								));
-							}
-						} else {
-							children.add(formattingTexts(content: itm['text'] ?? "", gOpt: gOpt));
-						}
-
-					}
-				}
-
-
-
-				ValueNotifier<bool> isOpenNotifier = ValueNotifier<bool>(false);
-
-				Widget detialWidget = GestureDetector(
-					onTap: (){
-						isOpenNotifier.value = !isOpenNotifier.value;
-						// gOpt.hotRefresh();
-					},
-					child: Row(
-						children: [
-							Text.rich(TextSpan(
-								children: [
-									WidgetSpan(
-										child: MouseRegion(
-											cursor: SystemMouseCursors.click,
-											child: SelectionContainer.disabled(
-												child: ValueListenableBuilder(
-												valueListenable: isOpenNotifier,
-													builder: (context, value, child){
-														return Transform.rotate(
-															angle: getAngle(isOpenNotifier.value ? 180 : 90),
-															child: NfFont(unicode: "\udb81\udd36", size: 14).widget(),
-														);
-													}
-												),
-											)
-										)
-									),
-									const WidgetSpan(child: SizedBox(width: 8)),
-
-									TextSpan(
-										text: summaryText,
-										mouseCursor: SystemMouseCursors.click,
-										style: Provider.of<ProviderManager>(gOpt.context).defaultStyle),
-
-									const TextSpan(text: "\n"),
-
-									WidgetSpan(child: ValueListenableBuilder(
-										valueListenable: isOpenNotifier,
-										builder: (context, value, child){
-											if(isOpenNotifier.value){
-												return FittedBox(
-													fit: BoxFit.cover,
-													child: Text.rich(TextSpan(children: children))
-												);
-											}
-											return const SizedBox();
-										}
-									))
-								]
-							)),
-						],
-					),
-				);
-
-				// spans.add(TextSpan(children: children));
-				spans.add(WidgetSpan(child: detialWidget));
+				spans.add(htmlRawDetails(
+					raw: raw,
+					opt: opt,
+					gOpt: gOpt,
+					content: content,
+					style: style
+				));
 				break;
 			}
-
 
 			default: {
 				if(raw['text'] != null){

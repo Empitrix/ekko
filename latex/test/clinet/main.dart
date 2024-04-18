@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'dart:typed_data';
@@ -13,11 +14,11 @@ void main() async {
 		Uri.parse("http://127.0.0.1:5000/latex"),
 		headers: { "Content-Type": "application/json" },
 		encoding: Encoding.getByName('UTF-8'),
-		body: JsonEncoder().convert({ "latex": r"$$f(x) = x^2 - x^\frac{1}{\pi}$$" })
+		body: const JsonEncoder().convert({ "latex": r"$$f(x) = x^2 - x^\frac{1}{\pi}$$" })
 	);
 
 	if(res.statusCode == 200){
-		Map output = JsonDecoder().convert(res.body);
+		Map output = const JsonDecoder().convert(res.body);
 		if(output['msg'] == null){
 			Uint8List data = Uint8List.fromList(List<int>.from(output['data']));
 			file.writeAsBytesSync(data);
