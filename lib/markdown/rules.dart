@@ -8,6 +8,7 @@ import 'package:ekko/markdown/inline/html.dart';
 import 'package:ekko/markdown/inline/image.dart';
 import 'package:ekko/markdown/inline/isbb.dart';
 import 'package:ekko/markdown/inline/item.dart';
+import 'package:ekko/markdown/inline/latex.dart';
 import 'package:ekko/markdown/inline/links.dart';
 import 'package:ekko/markdown/inline/monospace.dart';
 import 'package:ekko/markdown/inline/syntax.dart';
@@ -103,6 +104,14 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			label: "monospace",
 			regex: RegExp(r'\`(.|\n)*?\`', multiLine: false),
 			action: (txt, opt) => InlineMonospace(opt, gOpt).span(txt),
+		),
+
+
+		// {@Latex}
+		HighlightRule(
+			label: "latex",
+			regex: RegExp(r'\$\$(.|\n)*?\$\$|\$(.|\n)*?\$'),
+			action: (txt, opt) => InlineLatex(opt, gOpt).span(txt),
 		),
 
 		// {@URL}

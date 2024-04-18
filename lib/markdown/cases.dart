@@ -43,8 +43,9 @@ TextSpan __applyRules({
 		onNonMatch: (n) {
 			spans.add(
 				TextSpan(
+					text: n,
 					// text: n.replaceAll(RegExp(r'$\n', multiLine: true), " "),
-					text: n.replaceAll(RegExp(r'(?<!\n)\n(?!\n)', multiLine: true), " "),
+					// text: n.replaceAll(RegExp(r'(?<!\n)\n(?!\n)', multiLine: true), " "),
 					style: Provider.of<ProviderManager>(context).defaultStyle
 				)
 			);
