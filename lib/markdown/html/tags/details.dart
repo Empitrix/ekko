@@ -56,7 +56,9 @@ InlineSpan htmlRawDetails({
 							children: [
 								Transform.rotate(
 									angle: getAngle(isOpenNotifier.value ? 180 : 90),
-									child: NfFont(unicode: "\udb81\udd36", size: 12).widget(),
+									child: NfFont(
+										unicode: "\udb81\udd36", size: 12,
+										color: Theme.of(context).colorScheme.inverseSurface).widget(),
 								),
 								const SizedBox(width: 6),
 								Text.rich(TextSpan(
