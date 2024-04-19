@@ -1,10 +1,12 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/settings/router.dart';
 import 'package:ekko/components/settings/panel.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/database/latex_temp_db.dart';
 import 'package:ekko/views/change_page.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +77,19 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 									),
 								]
 							]
+						),
+						ListTile(
+							title: const Text("Clear Temp"),
+							leading: const Icon(Icons.cleaning_services),
+							onTap: (){
+								Dialogs(context).ask(
+									title: "Clean",
+									content: "All the temporary files will be deleted.",
+									action: () async {
+										TempDB().init(force: true);
+									}
+								);
+							},
 						)
 					],
 				),

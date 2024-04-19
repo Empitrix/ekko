@@ -20,6 +20,10 @@ Future<void> updateDbPath() async {
 		(await getApplicationSupportDirectory()).absolute.path,
 		"temp.json"
 	);
+	tempFolder = p.join(
+		(await getApplicationSupportDirectory()).absolute.path,
+		"temp/"
+	);
 }
 
 Future<void> essentialLoading(BuildContext context)async{
