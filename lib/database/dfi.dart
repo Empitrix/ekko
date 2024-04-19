@@ -1,4 +1,6 @@
 /* Database Functions Interface */
+import 'dart:convert';
+
 import 'package:ekko/config/public.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sq;
 import 'package:sqflite/sqflite.dart';
@@ -28,5 +30,16 @@ Future<void> updateTable(String tName, Map<String, Object?> data) async {
 	Database db = await createDB();
 	await db.update(tName, data);
 	await db.close();
+}
+
+
+class TempOffice{
+	File tempDb = File(tempDbPath);
+	Future<void> write(Map data) async {
+		tempDb.writeAsStringSync(const JsonEncoder().convert(data));
+	}
+	Future<Map> read() async {
+		return const JsonDecoder().convert(tempDb.readAsStringSync());
+	}
 }
 

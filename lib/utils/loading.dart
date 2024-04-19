@@ -2,6 +2,7 @@ import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
+import 'package:ekko/database/latex_temp_db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:path/path.dart' as p;
@@ -15,6 +16,10 @@ Future<void> updateDbPath() async {
 		(await getApplicationSupportDirectory()).absolute.path,
 		"ekko.db"
 	);
+	tempDbPath = p.join(
+		(await getApplicationSupportDirectory()).absolute.path,
+		"temp.json"
+	);
 }
 
 Future<void> essentialLoading(BuildContext context)async{
@@ -26,6 +31,9 @@ Future<void> essentialLoading(BuildContext context)async{
 	/* Load all the essentials */
 	await updateDbPath();
 	await _db.init();
+
+	await TempDB().init();  // innit temp db
+
 	dMode = await _db.readBool("darkMode");
 	markdownThemeName = await _db.readMarkdownTheme();
 	acrylicMode = await _db.readBool("acrylicMode");

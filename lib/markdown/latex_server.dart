@@ -1,11 +1,10 @@
-import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'dart:convert';
 
 
-Future<Uint8List?> latexPngAPI(String latexString) async {
+Future<Uint8List?> latexPngAPI(String latexString, bool mode) async {
 	http.Response res = await http.post(
 		Uri.parse(const String.fromEnvironment('latex_api')),
 		headers: { "Content-Type": "application/json" },
@@ -13,7 +12,7 @@ Future<Uint8List?> latexPngAPI(String latexString) async {
 		body: const JsonEncoder().convert({
 			"latex": latexString,
 			"euler": false,
-			"dMode": dMode
+			"dMode": mode
 		})
 	);
 

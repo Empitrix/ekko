@@ -1,3 +1,4 @@
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/markdown/parsers.dart';
 import 'package:ekko/markdown/rules.dart';
 
@@ -45,4 +46,10 @@ void getIlvl(String txt){
 	indentStep += step;
 	if(iLvl != lastIndent){ lastIndent = iLvl; }
 	// return indentStep;
+}
+
+
+String extractLatexPattern(String pattern){
+	bool isInline = pattern.substring(0, 2).replaceAll("\$", "").isNotEmpty;
+	return pattern.middle(isInline ? 1 : 2);
 }

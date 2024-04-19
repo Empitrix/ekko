@@ -15,6 +15,7 @@ A cross-platform, open source note-taking app that written in flutter
 - [x] Mix IN-FOLDER-PAGE with main HOME-PAGE for loaing notes
 - [x] Improve `DB` class and Optimize it
 - [x] Fix `numeric` issue on datatalbe only for first item(column)
+- [ ] Update Temp db for images as binary (Uint8Added As Test for checking the idea)
 
 ## Build
 you can run the following code to create your own

@@ -8,6 +8,7 @@ int tabSize = 2;
 
 // Will update when app started
 String dbPath = "";
+String tempDbPath = "";
 
 // Dark mode
 bool dMode = false;

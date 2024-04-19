@@ -4,21 +4,17 @@ import 'package:provider/provider.dart';
 
 
 extension TitleExtension on String { 
-	String title() { 
-		return "${this[0].toUpperCase()}${substring(1)}"; 
-	}
+	String title() {  return "${this[0].toUpperCase()}${substring(1)}"; }
 }
 
 extension MiniExtension on String { 
 	String mini() {  return toLowerCase().trim(); }
 }
 
-// extension ColorExtentions on Color {
-// 	Color aae(BuildContext context, [double less = 0 ]){
-// 		return withOpacity(
-// 			Provider.of<ProviderManager>(context, listen: false).acrylicOpacity - less);
-// 	}
-// }
+extension CenterCutExtension on String { 
+	String middle(int side) {  return substring(side, length - side); }
+}
+
 
 extension ColorExtention on Color {
 	Color aae(BuildContext context, [double less = 0 ]){
