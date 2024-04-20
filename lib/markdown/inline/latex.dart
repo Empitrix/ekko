@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/database/latex_temp_db.dart';
 import 'package:ekko/markdown/inline_module.dart';
@@ -17,6 +18,9 @@ class InlineLatex extends InlineModule {
 		double defaultHeight = calcTextSize(gOpt.context, " ", Provider.of<ProviderManager>(gOpt.context).defaultStyle).height;
 		bool isInline = txt.substring(0, 2).replaceAll("\$", "").isNotEmpty;
 		TempDB tdb = TempDB();
+		FilterQuality filter = FilterQuality.medium;
+		// FilterQuality filter = isDesktop() ? FilterQuality.medium : FilterQuality.medium;
+
 		return WidgetSpan(
 			child: FutureBuilder<String?>(
 				future: tdb.getLatex(txt, true),
@@ -26,10 +30,10 @@ class InlineLatex extends InlineModule {
 							if(isInline){
 								return SizedBox(
 									height: defaultHeight - (28 * defaultHeight / 100),
-									child: Image.file(File(snap.data!), filterQuality: FilterQuality.none)
+									child: Image.file(File(snap.data!), filterQuality: filter)
 								);
 							}
-							return Center(child: Image.file(File(snap.data!), filterQuality: FilterQuality.none));
+							return Center(child: Image.file(File(snap.data!), filterQuality: filter));
 						}
 						return const SizedBox();
 					}

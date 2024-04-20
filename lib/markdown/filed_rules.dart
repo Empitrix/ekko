@@ -4,6 +4,7 @@ import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/markdown/table_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:path/path.dart';
 
 
 List<RegexFormattingStyle> allFieldRules(BuildContext context){
@@ -213,6 +214,40 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 				),
 			)
 		),
+
+
+		// {@Latex}
+		RegexActionStyle(
+			regex: RegExp(r'\$\$(.|\n)*?\$\$|\$(.|\n)*?\$'),
+			style: const TextStyle(color: Colors.brown),
+			action: (txt, match){
+				List<TextSpan> spans = [];
+				txt.splitMapJoin(
+					RegExp(r'^(\$\$|\$)|(\$\$|\$)$', multiLine: true),
+					onMatch: (Match end){
+						spans.add(TextSpan(text: end.group(0)!, style: const TextStyle(color: Colors.red)));
+						return "";
+					},
+					onNonMatch: (n){
+						n.splitMapJoin(
+							RegExp(r'\\\w+'),
+							onMatch: (Match word){
+								spans.add(TextSpan(text: word.group(0)!, style: const TextStyle(color: Colors.blue)));
+								return "";
+							},
+							onNonMatch: (non){
+								spans.add(TextSpan(text: non));
+								return "";
+							}
+						);
+						return "";
+					}
+				);
+
+				return TextSpan(children: spans);
+			}
+		),
+
 
 		// {@Emoji}
 		RegexGroupStyle(
