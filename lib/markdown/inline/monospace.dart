@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,7 @@ class InlineMonospace extends InlineModule {
 
 		double radius = 5;
 		double padding = 5;
-		
-		// List<String> words = breakPhrase(txt ?? "");
+
 		List<String> words = breakPhrase(txt);
 		List<WidgetSpan> tags = [];
 		for(String w in words){
@@ -62,9 +62,6 @@ class InlineMonospace extends InlineModule {
 						),
 						color: getMonoBgColor()
 					),
-					// child: Text(w, style: const TextStyle(
-					// 	fontFamily: "RobotoMono" 
-					// )),
 					child: Text.rich(TextSpan(
 						text: w,
 						style: TextStyle(
@@ -80,5 +77,20 @@ class InlineMonospace extends InlineModule {
 			...tags,
 		]);
 	}
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexGroupStyle(
+			regex: RegExp(r'\`.*?\`'),
+			style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.brown),
+			regexStyle: RegexStyle(
+				regex: RegExp(r'\`'),
+				style: const TextStyle(
+					color: Colors.orange,
+				),
+			)
+		);
+	}
+
 }
 

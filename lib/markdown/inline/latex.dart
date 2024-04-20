@@ -1,12 +1,11 @@
-import 'dart:io';
-
-import 'package:ekko/backend/backend.dart';
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/database/latex_temp_db.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/utils/calc.dart';
+import 'dart:io';
 
 
 class InlineLatex extends InlineModule {
@@ -40,6 +39,49 @@ class InlineLatex extends InlineModule {
 					return const SizedBox();
 				}
 			)
+		);
+	}
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r'\$\$(.|\n)*?\$\$|\$(.|\n)*?\$'),
+			style: const TextStyle(color: Colors.brown),
+			action: (txt, match){
+				List<TextSpan> spans = [];
+				txt.splitMapJoin(
+					RegExp(r'^(\$\$|\$)|(\$\$|\$)$', multiLine: true),
+					onMatch: (Match end){
+						spans.add(TextSpan(text: end.group(0)!, style: TextStyle(color: Colors.pink[600])));
+						return "";
+					},
+					onNonMatch: (n){
+						n.splitMapJoin(
+							RegExp(r'(\\(\w+|\W))|(?<=\{)\w+(?=\})'),
+							onMatch: (Match word){
+								String m = word.group(0)!;
+								if(m.replaceAll(RegExp(r'(?<!\\|\s)\w+'), "").isEmpty){
+									// spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.cyan)));
+									spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.green)));
+								} else {
+									if(m.contains(RegExp(r'\\\W'))){
+										spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.red)));
+									} else {
+										spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.blue)));
+									}
+								}
+								return "";
+							},
+							onNonMatch: (non){
+								// spans.add(TextSpan(text: non, style: const TextStyle(fontStyle: FontStyle.italic)));
+								spans.add(TextSpan(text: non));
+								return "";
+							}
+						);
+						return "";
+					}
+				);
+				return TextSpan(children: spans);
+			}
 		);
 	}
 }

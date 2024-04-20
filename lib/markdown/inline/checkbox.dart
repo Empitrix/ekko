@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/formatting.dart';
@@ -84,6 +85,31 @@ class InlineCheckbox extends InlineModule {
 				),
 				data: textData 
 			)
+		);
+	}
+
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r"^\s*(-|\*|\+)\s{1}\[(\s{1}|\x)\]\s{1}"),
+			style: const TextStyle(),
+			action: (txt, match){
+				int openingIdx = txt.split("").indexOf("[") + 1; 
+				return TextSpan(
+					children: [
+						TextSpan(
+							text: txt.substring(0, openingIdx),
+							style: const TextStyle(color: Colors.orange)),
+						TextSpan(text: txt.substring(openingIdx, openingIdx + 1),
+							style: const TextStyle(
+								color: Colors.cyan, fontWeight: FontWeight.bold)),
+						TextSpan(
+							text: txt.substring(openingIdx + 1),
+							style: const TextStyle(color: Colors.orange)),
+					],
+				);
+			},
 		);
 	}
 }

@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/backend/extensions.dart';
@@ -152,6 +153,68 @@ class InlineBackqoute extends InlineModule {
 					],
 				),
 			)
+		);
+	}
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
+			style: const TextStyle(),
+			action: (txt, match){
+				TextStyle style = const TextStyle(fontStyle: FontStyle.italic);
+				List<String> lines = txt.split("\n");
+				String firstLineTxt = "${lines.first}\n";
+				bool firstLineHasMatch = false;
+
+				// Not Enough
+				if(lines.length == 1){
+					return TextSpan(text: txt, style: style);
+				}
+
+				if(firstLineTxt.contains(RegExp(r'\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]'))){
+					firstLineHasMatch = true;
+				}
+
+				List<TextSpan> spans = [];
+				firstLineTxt.splitMapJoin(
+					RegExp(r'\w+| +'),
+					onMatch: (Match match){
+						String i = match.group(0)!;
+						if(i.contains(RegExp(r'(NOTE|TIP|IMPORTANT|WARNING|CAUTION)'))){
+							spans.add(TextSpan(text: i, style: TextStyle(
+								color: Colors.red,
+								decoration: TextDecoration.underline,
+								decorationThickness: 0.5,
+								fontStyle: FontStyle.italic,
+								decorationColor: Theme.of(opts.context).colorScheme.inverseSurface
+							)));
+						}else {
+							spans.add(TextSpan(text: i, style: style));
+						}
+						return "";
+					},
+					onNonMatch: (n){
+					 if(n.contains(RegExp(r'\[|\]')) && firstLineHasMatch){
+							spans.add(TextSpan(text: n, style: TextStyle(
+								color: Colors.pink,
+								decoration: TextDecoration.underline,
+								decorationThickness: 0.5,
+								fontWeight: FontWeight.bold,
+								decorationColor: Theme.of(opts.context).colorScheme.inverseSurface
+							)));
+						} else {
+							spans.add(TextSpan(text: n, style: style));
+						}
+						return "";
+					}
+				);
+				return TextSpan(
+					children: [
+						TextSpan(children: spans),
+						TextSpan(text: lines.sublist(1).join("\n"), style: style),
+					]
+				);
+			},
 		);
 	}
 }

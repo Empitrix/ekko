@@ -1,4 +1,5 @@
 /* Italic - Strike - Bold - Italic & Bold (BOTh) */
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
@@ -51,25 +52,38 @@ class InlineIBB extends InlineModule{
 
 		return TextSpan(children: spans);
 	}
-}
 
 
 
-class InlineStrike extends InlineModule {
-	InlineStrike(super.opt, super.gOpt);
-
-	@override
-	InlineSpan span(String txt){
-		return TextSpan(
-			text: txt.substring(2, txt.length - 2),
-			recognizer: opt.recognizer,
-			style: TextStyle(
-				fontSize: 16,
-				decorationColor: Theme.of(gOpt.context).colorScheme.inverseSurface,
-				decorationStyle: TextDecorationStyle.solid,
-				decoration: TextDecoration.lineThrough
-			)
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r'(\*\*\*|\_\_\_).*?(\*\*\*|\_\_\_)|(\*\*|\_\_).*?(\*\*|\_\_)|(\*|\_).*?(\*|\_)'),
+			style: const TextStyle(),
+			action: (txt, match){
+				int specialChar = RegExp(r'(\*|\_)').allMatches(txt).length;
+				if(specialChar % 2 != 0){ specialChar--; }
+				specialChar = specialChar ~/ 2;
+				const TextStyle asteriskStyle = TextStyle(
+					color: Colors.deepOrange, fontWeight: FontWeight.w500);
+				// Get plain text style
+				TextStyle plainStyle = 
+					specialChar == 3 ? const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic):
+					specialChar == 2 ? const TextStyle(fontWeight: FontWeight.bold):
+					const TextStyle(fontStyle: FontStyle.italic);
+				return TextSpan(
+					children: [
+						TextSpan(
+							text: txt.substring(0, specialChar),
+							style: asteriskStyle),
+						TextSpan(
+							text: txt.substring(specialChar, txt.length - specialChar),
+							style: plainStyle),
+						TextSpan(
+							text: txt.substring(txt.length - specialChar),
+							style: asteriskStyle),
+					]
+				);
+			},
 		);
 	}
 }
-

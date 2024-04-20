@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,22 @@ class InlineHeadline extends InlineModule {
 			WidgetSpan(child: Text.rich(key: headerKey, span)),
 			const TextSpan(text: "\n")
 		]);
+	}
+
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexGroupStyle(
+			regex: RegExp(r'^#{1,6} [\s\S]*?$'),
+			style: const TextStyle(fontWeight: FontWeight.bold),
+			regexStyle: RegexStyle(
+				regex: RegExp(r'^\#{1,6}\s?'),
+				style: const TextStyle(
+					color: Colors.red,
+					fontWeight: FontWeight.bold
+				),
+			)
+		);
 	}
 }
 

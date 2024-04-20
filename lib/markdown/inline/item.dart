@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parser.dart';
@@ -44,6 +45,29 @@ class InlineItem extends InlineModule {
 					)]
 				) 
 			)
+		);
+	}
+
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r'^\s*(-|\+|\*)\s+.+$'),
+			style: const TextStyle(),
+			action: (txt, match){
+				RegExpMatch char = RegExp(r'(-|\+|\*)').firstMatch(txt)!;
+				return TextSpan(
+					children: [
+						TextSpan(
+							text: txt.substring(0, char.end),
+							style: const TextStyle(
+								color: Colors.deepOrange, fontWeight: FontWeight.bold)
+						),
+						opts.reApply.parse(txt.substring(char.end)),
+						// TextSpan(text: txt.substring(char.end))
+					]
+				);
+			},
 		);
 	}
 }

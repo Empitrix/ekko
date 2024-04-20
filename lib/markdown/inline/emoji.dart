@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
@@ -28,6 +29,20 @@ class InlineEmoji extends InlineModule{
 						return const SizedBox();
 					}
 				},
+			)
+		);
+	}
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexGroupStyle(
+			regex: RegExp(r'\:\w+\:'),
+			style: const TextStyle(color: Color(0xff94b2e3)),
+			regexStyle: RegexStyle(
+				regex: RegExp(r':'),
+				style: const TextStyle(
+					color: Colors.orange,
+				),
 			)
 		);
 	}

@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/cases.dart';
 import 'package:ekko/markdown/html/parser.dart';
@@ -61,6 +62,75 @@ class InlineHtml extends InlineModule{
 		// // spans.add(const WidgetSpan(child: SizedBox(height: 0, width: double.infinity)));
 
 		// return TextSpan(children: spans);
+	}
+
+
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r'( )*(<.*>\s*)+?(?=\s$|$)|<.*>.*?<\/\w+>', multiLine: true),
+			style: const TextStyle(),
+			action: (String txt, Match match){
+				List<TextSpan> spans = [];
+				txt.splitMapJoin(
+					RegExp(r'''(<\w+|\w+=(".*?"|'.*?')|>|\/>|<\/\w+>)''', multiLine: true),
+					onMatch: (Match m){
+						String txt = m.group(0)!;
+						if(txt.contains(RegExp(r'''\w+=(".*?"|'.*?')'''))){
+							txt.splitMapJoin(
+								RegExp(r'\='),
+								onMatch: (Match e){
+									spans.add(TextSpan(
+										text: e.group(0)!,
+										style: TextStyle(color: Theme.of(opts.context).colorScheme.inverseSurface)
+									));
+									return "";
+								},
+								onNonMatch: (String non){
+									if(non.contains(RegExp('''("|')'''))){
+										spans.add(TextSpan(
+											text: non,
+											style: const TextStyle(color: Color(0xff719E07))
+										));
+									} else {
+										spans.add(TextSpan(
+											text: non,
+											style: const TextStyle(color: Color(0xff268BD2))
+										));
+									}
+									return "";
+								}
+							);
+						} else {
+							txt.splitMapJoin(
+								RegExp(r'\w+'),
+								onMatch: (Match m){
+									spans.add(TextSpan(
+										text: m.group(0)!,
+										style: const TextStyle(color: Colors.green)
+									));
+									return "";
+								},
+								onNonMatch: (n){
+									spans.add(TextSpan(
+										text: n,
+										style: const TextStyle(color: Colors.red)
+									));
+									return "";
+								}
+							);
+						}
+						return "";
+					},
+					onNonMatch: (String n){
+						spans.add(TextSpan(text: n));
+						return "";
+					}
+				);
+				return TextSpan(children: spans);
+			}
+		);
 	}
 }
 

@@ -5,12 +5,13 @@ import 'package:ekko/markdown/inline/divider.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline/html.dart';
+import 'package:ekko/markdown/inline/ibb.dart';
 import 'package:ekko/markdown/inline/image.dart';
-import 'package:ekko/markdown/inline/isbb.dart';
 import 'package:ekko/markdown/inline/item.dart';
 import 'package:ekko/markdown/inline/latex.dart';
 import 'package:ekko/markdown/inline/links.dart';
 import 'package:ekko/markdown/inline/monospace.dart';
+import 'package:ekko/markdown/inline/strike.dart';
 import 'package:ekko/markdown/inline/syntax.dart';
 import 'package:ekko/markdown/inline/table.dart';
 import 'package:ekko/markdown/inline/url.dart';
@@ -128,7 +129,7 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			action: (txt, opt) => InlineIBB(opt, gOpt).span(txt),
 		),
 		
-		// {@Straight}
+		// {@Strike}
 		HighlightRule(
 			label: "strike",
 			regex: RegExp(r'~~.*~~'),
