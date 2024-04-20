@@ -225,17 +225,28 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 				txt.splitMapJoin(
 					RegExp(r'^(\$\$|\$)|(\$\$|\$)$', multiLine: true),
 					onMatch: (Match end){
-						spans.add(TextSpan(text: end.group(0)!, style: const TextStyle(color: Colors.red)));
+						spans.add(TextSpan(text: end.group(0)!, style: TextStyle(color: Colors.pink[600])));
 						return "";
 					},
 					onNonMatch: (n){
 						n.splitMapJoin(
-							RegExp(r'\\\w+'),
+							RegExp(r'(\\(\w+|\W))|(?<=\{)\w+(?=\})'),
 							onMatch: (Match word){
-								spans.add(TextSpan(text: word.group(0)!, style: const TextStyle(color: Colors.blue)));
+								String m = word.group(0)!;
+								if(m.replaceAll(RegExp(r'(?<!\\|\s)\w+'), "").isEmpty){
+									// spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.cyan)));
+									spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.green)));
+								} else {
+									if(m.contains(RegExp(r'\\\W'))){
+										spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.red)));
+									} else {
+										spans.add(TextSpan(text: m, style: const TextStyle(color: Colors.blue)));
+									}
+								}
 								return "";
 							},
 							onNonMatch: (non){
+								// spans.add(TextSpan(text: non, style: const TextStyle(fontStyle: FontStyle.italic)));
 								spans.add(TextSpan(text: non));
 								return "";
 							}
@@ -243,7 +254,6 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 						return "";
 					}
 				);
-
 				return TextSpan(children: spans);
 			}
 		),
