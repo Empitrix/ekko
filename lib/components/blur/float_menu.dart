@@ -36,7 +36,7 @@ class FloatMenu extends StatelessWidget {
 							filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
 							child: Container(
 								decoration: BoxDecoration(
-									color: (dMode ? Colors.black : Colors.white).withOpacity(0.5),
+									color: (settingModes['dMode'] ? Colors.black : Colors.white).withOpacity(0.5),
 								),
 								padding: const EdgeInsets.symmetric(vertical: 20),
 								constraints: BoxConstraints(
@@ -53,7 +53,7 @@ class FloatMenu extends StatelessWidget {
 										for(ListTile action in actions) Material(
 											color: Colors.transparent,
 											child: ListTile(
-												splashColor: (dMode ? Colors.white : Colors.black).withOpacity(0.1),
+												splashColor: (settingModes['dMode'] ? Colors.white : Colors.black).withOpacity(0.1),
 												leading: action.leading,
 												trailing: action.trailing,
 												title: action.title,

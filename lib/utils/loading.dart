@@ -38,12 +38,12 @@ Future<void> essentialLoading(BuildContext context)async{
 
 	await TempDB().init();  // innit temp db
 
-	dMode = await _db.readBool("darkMode");
-	markdownThemeName = await _db.readMarkdownTheme();
-	acrylicMode = await _db.readBool("acrylicMode");
-	wrapCodeMode = await _db.readBool("wrapCodeMode");
-	editorWrapMode = await _db.readBool("editorWrapMode");
-	checkListCheckable = await _db.readBool("checkableCheckList");
+	settingModes['dMode'] = await _db.readBool("darkMode");
+	settingModes['markdownThemeName'] = await _db.readMarkdownTheme();
+	settingModes['acrylicMode'] = await _db.readBool("acrylicMode");
+	settingModes['wrapCodeMode'] = await _db.readBool("wrapCodeMode");
+	settingModes['editorWrapMode'] = await _db.readBool("editorWrapMode");
+	settingModes['checkListCheckable'] = await _db.readBool("checkableCheckList");
 	double opacity = await _db.readAcrylicOpacity();
 
 	// Text-Style
@@ -65,13 +65,13 @@ Future<void> essentialLoading(BuildContext context)async{
 
 	// ignore: use_build_context_synchronously
 	Provider.of<ProviderManager>(context, listen: false).changeTmode(
-		dMode ? ThemeMode.dark : ThemeMode.light
+		settingModes['dMode'] ? ThemeMode.dark : ThemeMode.light
 	);
 	// ignore: use_build_context_synchronously
 	Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(
 		opacity
 	);
-	if(acrylicMode){
+	if(settingModes['acrylicMode']){
 		await Window.setEffect(
 			effect: WindowEffect.acrylic,
 			// ignore: use_build_context_synchronously

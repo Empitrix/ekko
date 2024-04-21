@@ -167,7 +167,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 															style: TextStyle(
 																fontSize: 14,
 																overflow: TextOverflow.fade,
-																color: dMode ? Colors.grey : Colors.grey[400]
+																color: settingModes['dMode'] ? Colors.grey : Colors.grey[400]
 															)
 														)
 													],

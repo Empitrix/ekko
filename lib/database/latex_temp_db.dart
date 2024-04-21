@@ -88,7 +88,7 @@ class TempDB {
 			if(l['latex'] == extractLatexPattern(pattern)){
 				// return dMode ? l['dark'] : l['light'];
 				// return Uint8List.fromList(List<int>.from(dMode ? l['dark'] : l['light']));
-				return (dMode ? l['dark'] : l['light']).toString();
+				return (settingModes['dMode'] ? l['dark'] : l['light']).toString();
 			}
 		}
 

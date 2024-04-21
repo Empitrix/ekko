@@ -14,20 +14,20 @@ class ShimmerIt extends StatelessWidget {
 				borderRadius: BorderRadius.circular(5),
 				border: Border.all(
 					width: 2,
-					color: dMode ?
+					color: settingModes['dMode'] ?
 						Theme.of(context).colorScheme.tertiaryContainer.withOpacity(0.5):
 						Colors.grey.shade500
 				),
 			),
 			child: Shimmer.fromColors(
-				baseColor: dMode ?
+				baseColor: settingModes['dMode'] ?
 					Theme.of(context).appBarTheme.backgroundColor!:
 					Colors.grey.shade400,
-				highlightColor: dMode ?
+				highlightColor: settingModes['dMode'] ?
 					Theme.of(context).appBarTheme.backgroundColor!.withOpacity(0.5):
 						Colors.grey.shade300,
 				child: Container(
-					color: dMode ?
+					color: settingModes['dMode'] ?
 						Theme.of(context).appBarTheme.backgroundColor!:
 						Colors.grey,
 					width: widthRatio * MediaQuery.sizeOf(context).height / 100,

@@ -60,7 +60,7 @@ class NoteItem extends StatelessWidget {
 					child: Row(
 						children: [
 							Badge(
-								backgroundColor: dMode ? 
+								backgroundColor: settingModes['dMode'] ? 
 									const Color(0xffed3232):
 									const Color(0xffbf1111),
 								label: Transform.rotate(
@@ -152,7 +152,7 @@ class NoteItem extends StatelessWidget {
 												style: Provider.of<ProviderManager>(context).defaultStyle.merge(
 													TextStyle(
 														fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,
-														color: dMode ? Colors.teal : Colors.teal[800],
+														color: settingModes['dMode'] ? Colors.teal : Colors.teal[800],
 														fontWeight: FontWeight.w700
 													)
 												),

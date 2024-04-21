@@ -159,7 +159,7 @@ bool checkSourceMedia(String? op){
 	String v = op.split(':').last.mini();
 
 	if(k == "prefers-color-scheme"){
-		return (v == "dark") == dMode;
+		return (v == "dark") == settingModes['dMode'];
 	}
 
 	return false;

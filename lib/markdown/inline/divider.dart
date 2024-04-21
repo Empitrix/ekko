@@ -1,6 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/components/divider.dart';
-import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
 

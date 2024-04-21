@@ -298,7 +298,7 @@ void selectMarkdownTheme({
 							),
 							title: Text(
 								name.replaceAll("-", " ").title()),
-							trailing: markdownThemeName == name ?
+							trailing: settingModes['markdownThemeName'] == name ?
 								const Icon(Icons.check) :
 								null,
 							onTap: (){

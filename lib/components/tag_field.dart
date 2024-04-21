@@ -19,7 +19,9 @@ class AddTagButton extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return IntrinsicWidth(
 			child: Material(
-				color: dMode ? Theme.of(context).colorScheme.tertiaryContainer : const Color(0xffa2a8fa),
+				color: settingModes['dMode'] ?
+					Theme.of(context).colorScheme.tertiaryContainer:
+					const Color(0xffa2a8fa),
 				borderRadius: BorderRadius.circular(12),
 				child: InkWell(
 					borderRadius: BorderRadius.circular(12),

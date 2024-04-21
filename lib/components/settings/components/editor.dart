@@ -21,9 +21,9 @@ class SettingEditor extends SettingObject {
 				SwitchTile(
 					leading: const Icon(Icons.wrap_text),
 					title: const Text("Wrap Mode"),
-					value: editorWrapMode,
+					value: settingModes['editorWrapMode'],
 					onChange: (bool newState) async {
-						setState(() => editorWrapMode = newState );
+						setState(() => settingModes['editorWrapMode'] = newState );
 						await db.writeBool("editorWrapMode", newState);
 					}
 				)

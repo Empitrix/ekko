@@ -52,7 +52,7 @@ class SublistWidget extends StatelessWidget {
 						(isDesktop() ? - (leadingOnTap == null ? 0 : 4):
 						(leadingOnTap == null ? 1 : -3))  // first: 2
 				),
-				child: checkListCheckable ? Padding(
+				child: settingModes['checkListCheckable'] ? Padding(
 					padding: (type == SublistWidgetType.icon && leadingOnTap == null) ?
 						EdgeInsets.only(left: (widgetSize / 2) + 1.0):
 						EdgeInsets.zero,

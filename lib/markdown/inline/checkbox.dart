@@ -26,7 +26,7 @@ class InlineCheckbox extends InlineModule {
 			)]
 		); 
 
-		if(!checkListCheckable){
+		if(!settingModes["checkListCheckable"]){
 			return WidgetSpan(
 				child: SublistWidget(
 					indentation: indentStep * 20,

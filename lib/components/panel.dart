@@ -38,7 +38,8 @@ class Panel extends StatelessWidget {
 				borderRadius: BorderRadius.circular(roundness),
 			),
 			child: Material(
-				color: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor!.aae(context).withOpacity(dMode ? 0.6 : 0.5),
+				color: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor!
+					.aae(context).withOpacity(settingModes['dMode'] ? 0.6 : 0.5),
 				borderRadius: BorderRadius.circular(roundness),
 				elevation: 0.5,
 				child: Column(

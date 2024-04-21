@@ -202,21 +202,21 @@ class ContentTextFiled extends StatelessWidget {
 												color: Theme.of(context).colorScheme.inverseSurface, width: 1),
 										),
 										lineNumberColor: LineNumberPalette(
-											indexColor: dMode ?
+											indexColor: settingModes['dMode'] ?
 												const Color(0xff95949C):
 												const Color(0xff69686e),
-											onSelectIndex: (dMode ? Colors.black : Colors.white),
-											onSelectBackground: (dMode ? Colors.amber : Colors.indigo),
-											background: (dMode ?
+											onSelectIndex: (settingModes['dMode'] ? Colors.black : Colors.white),
+											onSelectBackground: (settingModes['dMode'] ? Colors.amber : Colors.indigo),
+											background: (settingModes['dMode'] ?
 												const Color(0xff1a232e):
 												const Color(0xffc8dffa)).aae(context, lessOpt),
-											indexBackground: (dMode ?
+											indexBackground: (settingModes['dMode'] ?
 												const Color(0xff1a232e):
 												const Color(0xffc8dffa)).aae(context, lessOpt),
 										),
 										lineChanged: lineChanged,
 										regexStyle: allFieldRules(context),
-										wrapMode: editorWrapMode,
+										wrapMode: settingModes['editorWrapMode'],
 										widgetHeight: widgetHeight,
 										style: Theme.of(context).primaryTextTheme.bodyLarge!.copyWith(
 											color: Theme.of(context).colorScheme.inverseSurface,

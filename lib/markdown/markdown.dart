@@ -45,7 +45,7 @@ class MarkdownWidget extends StatelessWidget {
 	String _markdownData(){
 		String data = _content()
 			.replaceRange(0, _content().indexOf("\n") + 1, "");
-		data = data.replaceAll("\t", " " * tabSize);
+		data = data.replaceAll("\t", " " * settingModes['tabSize']);
 		if(deIndent){
 			data = deIndentText(data).trimRight();
 		}
@@ -57,8 +57,8 @@ class MarkdownWidget extends StatelessWidget {
 		return HighlightView(
 			_markdownData(),
 			language: _langName(content).toLowerCase(),
-			tabSize: tabSize,
-			theme: allMarkdownThemes[markdownThemeName]!,
+			tabSize: settingModes['tabSize'],
+			theme: allMarkdownThemes[settingModes['markdownThemeName']]!,
 			
 		);
 	}
@@ -83,7 +83,7 @@ class MarkdownWidget extends StatelessWidget {
 				// color: dMode ?
 				// 	Theme.of(context).colorScheme.background.aae(context, lessOpt) :
 				// 	Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
-				color: dMode ?
+				color: settingModes['dMode'] ?
 					Theme.of(context).colorScheme.surface.aae(context, lessOpt) :
 					Theme.of(context).colorScheme.onSurface.aae(context, lessOpt),
 				borderRadius: BorderRadius.only(
@@ -145,7 +145,7 @@ class MarkdownWidget extends StatelessWidget {
 					bottomRight: Radius.circular(radius)
 				)
 			),
-			child: wrapCodeMode ?
+			child: settingModes['wrapCodeMode'] ?
 				Text.rich(highlightView().getSpan(style: markdownStyle())):
 				Column(
 					mainAxisSize: MainAxisSize.min,
@@ -184,7 +184,7 @@ class MarkdownWidget extends StatelessWidget {
 				// color: dMode ?
 				// 	Theme.of(context).colorScheme.background.aae(context, lessOpt) :
 				// 	Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
-				color: dMode ?
+				color: settingModes['dMode'] ?
 					Theme.of(context).colorScheme.surface.aae(context, lessOpt) :
 					Theme.of(context).colorScheme.onSurface.aae(context, lessOpt),
 				borderRadius: BorderRadius.circular(radius)

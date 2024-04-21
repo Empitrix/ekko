@@ -21,7 +21,7 @@ class SNK {
 						Text(
 							message,
 							style: TextStyle(
-								color: dMode ? Colors.white : Colors.black
+								color: settingModes['dMode'] ? Colors.white : Colors.black
 							),
 						)
 					],

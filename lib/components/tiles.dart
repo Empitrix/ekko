@@ -28,8 +28,8 @@ class SwitchTile extends StatelessWidget {
 					child: Switch(
 						value: value,
 						onChanged: (_){},
-						inactiveThumbColor: dMode ? null : Colors.grey[600],
-						inactiveTrackColor: dMode ? null : Colors.grey[400],
+						inactiveThumbColor: settingModes['dMode'] ? null : Colors.grey[600],
+						inactiveTrackColor: settingModes['dMode'] ? null : Colors.grey[400],
 					),
 				),
 			),

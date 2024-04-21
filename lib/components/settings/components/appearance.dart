@@ -21,7 +21,7 @@ class SettingAppearance extends SettingObject{
 	void init(){
 		db = DB();
 		sliderAnim = generateLinearAnimation(
-			ticket: ticker, initialValue: acrylicMode ? 1: 0);
+			ticket: ticker, initialValue: settingModes['acrylicMode'] ? 1: 0);
 	}
 
 	@override
@@ -33,19 +33,19 @@ class SettingAppearance extends SettingObject{
 				SwitchTile(
 					leading: const Icon(Icons.dark_mode),
 					title: const Text("Dark Mode"),
-					value: dMode,
+					value: settingModes['dMode'],
 					onChange: (bool value) async {
-						setState(() { dMode = value; });
+						setState(() { settingModes['dMode'] = value; });
 						Provider.of<ProviderManager>(context, listen: false).changeTmode(
-							dMode ? ThemeMode.dark : ThemeMode.light);
-						await db.writeBool("darkMode", dMode);
+							settingModes['dMode'] ? ThemeMode.dark : ThemeMode.light);
+						await db.writeBool("darkMode", settingModes['dMode']);
 					}
 				), // Dark mode
 
 				if(isDesktop(["linux"])) SwitchTile(
 					leading: const Icon(Icons.window),
 					title: const Text("Acrylic Mode"),
-					value: acrylicMode,
+					value: settingModes['dMode'],
 					onChange: (bool value) async {
 						if(value){
 							await sliderAnim.controller.forward();
@@ -67,7 +67,7 @@ class SettingAppearance extends SettingObject{
 							// ignore: use_build_context_synchronously
 							Provider.of<ProviderManager>(context, listen: false).changeAcrylicOpacity(1);
 						}
-						setState(() { acrylicMode = value; });
+						setState(() { settingModes['acrylicMode'] = value; });
 						await db.writeBool("acrylicMode", value);
 					}
 				),	// Acrylic mode

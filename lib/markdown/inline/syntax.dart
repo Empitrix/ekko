@@ -33,7 +33,7 @@ class InlineSyntax extends InlineModule {
 		return RegexActionStyle(
 			regex: RegExp(r'\s?```([\s\S]*?)\n\s*```\s?'),
 			style: TextStyle(
-				color: dMode ? Colors.cyan: Colors.indigo
+				color: settingModes['dMode'] ? Colors.cyan: Colors.indigo
 			),
 			action: (String txt, Match match){
 				Match fM = RegExp(r'\s?```').firstMatch(txt)!;  // First Match
@@ -53,7 +53,7 @@ class InlineSyntax extends InlineModule {
 					// Name Part
 					TextSpan(
 						text: txt.substring(nM.start, nM.end),
-						style: TextStyle(color: dMode ? Colors.grey : Colors.grey[700])),
+						style: TextStyle(color: settingModes['dMode'] ? Colors.grey : Colors.grey[700])),
 					// Content Part
 					/*
 					TextSpan(
@@ -64,7 +64,7 @@ class InlineSyntax extends InlineModule {
 						txt.substring(nM.end, lM.start),
 						language: txt.substring(nM.start, nM.end).trim().toLowerCase(),
 						tabSize: 2,
-						theme: allMarkdownThemes['atom-one-${dMode ? "dark" : "light"}']!,
+						theme: allMarkdownThemes['atom-one-${settingModes['dMode'] ? "dark" : "light"}']!,
 					).getSpan(style: const TextStyle(fontFamily: "SauceCodeProNerdFont")),
 
 					// End Part

@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 	
 	void initAnimations(){
 		sliderAnim = generateLinearAnimation(
-			ticket: this, initialValue: acrylicMode ? 1: 0);
+			ticket: this, initialValue: settingModes['acrylicMode'] ? 1: 0);
 	}
 
 

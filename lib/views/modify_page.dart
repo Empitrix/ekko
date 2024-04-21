@@ -276,13 +276,13 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 								tooltip: "Submit",
 								icon: Icon(
 									Icons.check,
-									color: dMode ?
+									color: settingModes['dMode'] ?
 										Colors.pink:
 										Colors.amber,
 								),
 								style: ButtonStyle(side: WidgetStatePropertyAll(BorderSide(
 										width: 1,
-										color: dMode ?
+										color: settingModes['dMode'] ?
 											Colors.pink:
 											Colors.amber
 									))),

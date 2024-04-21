@@ -1,4 +1,3 @@
-import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/settings/router.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/components/tiles.dart';
@@ -28,9 +27,9 @@ class SettingGeneral extends SettingObject{
 				SwitchTile(
 					leading: const Icon(Icons.wrap_text),
 					title: const Text("Syntax Wrap Mode"),
-					value: wrapCodeMode,
+					value: settingModes['wrapCodeMode'],
 					onChange: (bool newMode) async {
-						setState(() => wrapCodeMode = newMode );
+						setState(() => settingModes['wrapCodeMode'] = newMode );
 						await db.writeBool("wrapCodeMode", newMode);
 					}
 				),
@@ -41,9 +40,9 @@ class SettingGeneral extends SettingObject{
 				SwitchTile(
 					leading: const Icon(FontAwesomeIcons.squareCheck),
 					title: const Text("Checkable checklist"),
-					value: checkListCheckable,
+					value: settingModes['checkListCheckable'],
 					onChange: (bool newMode) async {
-						setState(() => checkListCheckable = newMode );
+						setState(() => settingModes['checkListCheckable'] = newMode );
 						await db.writeBool("checkableCheckList", newMode);
 					}
 				),
@@ -55,11 +54,11 @@ class SettingGeneral extends SettingObject{
 					subtitle: Row(
 						children: [
 							TwoColorPalette(
-								baseColor: allMarkdownThemes[markdownThemeName]!["root"]!.backgroundColor,
-								borderColor: allMarkdownThemes[markdownThemeName]!["meta"]!.color!
+								baseColor: allMarkdownThemes[settingModes['markdownThemeName']]!["root"]!.backgroundColor,
+								borderColor: allMarkdownThemes[settingModes['markdownThemeName']]!["meta"]!.color!
 							),
 							const SizedBox(width: 12),
-							Text(markdownThemeName.replaceAll("-"," ").title())
+							Text(settingModes['markdownThemeName'].replaceAll("-"," ").title())
 						],
 					),
 					onTap: (){
@@ -67,7 +66,7 @@ class SettingGeneral extends SettingObject{
 							context: context,
 							onSelect: (String name) async {
 								debugPrint("Selected Name: $name");
-								setState(() { markdownThemeName = name; });
+								setState(() { settingModes['markdownThemeName'] = name; });
 								await db.updateMarkdownTheme(name);
 							}
 						);

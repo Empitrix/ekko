@@ -37,7 +37,7 @@ Widget folderItem({
 			leading: Icon(
 				Icons.folder,
 				color: folder.id != 0 ? Theme.of(context).colorScheme
-					.surfaceTint.withAlpha(dMode ? 255:200): Colors.orange,
+					.surfaceTint.withAlpha(settingModes['dMode'] ? 255:200): Colors.orange,
 				size: 34
 			),
 			dense: true,

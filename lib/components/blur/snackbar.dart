@@ -19,7 +19,7 @@ SnackBar blurSnakBar({
 				padding: const EdgeInsets.all(12),
 				decoration: BoxDecoration(
 					// color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(0.5)
-					color: (dMode ? Colors.black : Colors.white).withOpacity(0.5)
+					color: (settingModes['dMode'] ? Colors.black : Colors.white).withOpacity(0.5)
 				),
 				child: content,
 				// child: Container()
