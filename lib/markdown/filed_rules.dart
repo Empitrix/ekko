@@ -7,6 +7,7 @@ import 'package:ekko/markdown/inline/emoji.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline/html.dart';
 import 'package:ekko/markdown/inline/ibb.dart';
+import 'package:ekko/markdown/inline/image.dart';
 import 'package:ekko/markdown/inline/item.dart';
 import 'package:ekko/markdown/inline/latex.dart';
 import 'package:ekko/markdown/inline/links.dart';
@@ -14,6 +15,7 @@ import 'package:ekko/markdown/inline/monospace.dart';
 import 'package:ekko/markdown/inline/strike.dart';
 import 'package:ekko/markdown/inline/syntax.dart';
 import 'package:ekko/markdown/inline/table.dart';
+import 'package:ekko/markdown/inline/url.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +34,8 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 	return List<RegexFormattingStyle>.from(<RegexFormattingStyle?>[
 		// {@Syntax}
 		InlineSyntax.highlight(opts),
+		// {@HTML}
+		InlineHtml.highlight(opts),
 		// {@Headline}
 		InlineHeadline.highlight(opts),
 		// {@Divider}
@@ -46,18 +50,14 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 		InlineTable.highlight(opts),
 		// {@Hyper-Link}
 		InlineLink.highlight(opts),
-
-		// img
-
+		// {@Image-Link}
+		InlineImage.highlight(opts),
 		// {@Monospace}
-		InlineMonospace.highlight(opts),  // Highlight Span
+		InlineMonospace.highlight(opts),
 		// {@Latex}
 		InlineLatex.highlight(opts),
-
-
-		// URL
-
-
+		// {@URL}
+		InlineURL.highlight(opts),
 		// {@Italic-Bold-Italic&Bold}
 		InlineIBB.highlight(opts),
 		// {@Strike}
@@ -66,8 +66,6 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 		InlineBackqoute.highlight(opts),
 		// {@Emoji}
 		InlineEmoji.highlight(opts),
-		// {@HTML}
-		InlineHtml.highlight(opts),
 		// etc..
 
 	].where((s){ return s != null;}));

@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/markdown/parsers.dart';
@@ -19,6 +20,18 @@ class InlineURL extends InlineModule{
 			),
 			recognizer: useLinkRecognizer(
 				gOpt.context, txt, gOpt.keyManager),
+		);
+	}
+
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexFormattingStyle(
+			regex: RegExp(r'(https\:|http\:|www)(\/\/|\.)([A-Za-z0-9@:%\.\_\+\~\#\=\/\?\-\&]*)'),
+			style: const TextStyle(
+				color: Colors.blue,
+				decorationColor: Colors.blue,
+				decoration: TextDecoration.underline)
 		);
 	}
 }
