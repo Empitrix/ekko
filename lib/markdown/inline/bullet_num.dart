@@ -1,3 +1,4 @@
+import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/markdown/formatting.dart';
 import 'package:ekko/markdown/inline_module.dart';
@@ -89,6 +90,23 @@ class InlineBulletNum extends InlineModule {
 		}
 
 		return TextSpan(children: spans);
+	}
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			// regex: RegExp(r'(^\s*[0-9]+\s?\.\s?(.+)\s?)+'),
+			regex: RegExp(r'^ *[0-9]+\s?\.\s?(.+)'),
+			style: const TextStyle(),
+			action: (String txt, _){
+				List<InlineSpan> spans = [];
+				int dotIdx = txt.split("").indexOf('.');
+				spans.add(TextSpan(text: txt.substring(0, dotIdx), style: const TextStyle(color: Colors.red)));
+				spans.add(TextSpan(text: txt.substring(dotIdx, dotIdx + 1), style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)));
+				spans.add(opts.reApply.parse(txt.substring(dotIdx + 1, txt.length)));
+				return TextSpan(children: spans);
+			}
+		);
+
 	}
 }
 

@@ -1,5 +1,6 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/markdown/inline/backqoute.dart';
+import 'package:ekko/markdown/inline/bullet_num.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/divider.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
@@ -35,26 +36,36 @@ List<RegexFormattingStyle> allFieldRules(BuildContext context){
 		InlineHeadline.highlight(opts),
 		// {@Divider}
 		InlineDivder.highlight(opts),
-		// {@Table}
-		InlineTable.highlight(opts),
+		// {@Bulleted Item}
+		InlineBulletNum.highlight(opts),
 		// {@CheckBox}
 		InlineCheckbox.highlight(opts),
 		// {@Item}
 		InlineItem.highlight(opts),
+		// {@Table}
+		InlineTable.highlight(opts),
 		// {@Hyper-Link}
 		InlineLink.highlight(opts),
+
+		// img
+
 		// {@Monospace}
 		InlineMonospace.highlight(opts),  // Highlight Span
 		// {@Latex}
 		InlineLatex.highlight(opts),
-		// {@Emoji}
-		InlineEmoji.highlight(opts),
+
+
+		// URL
+
+
 		// {@Italic-Bold-Italic&Bold}
 		InlineIBB.highlight(opts),
 		// {@Strike}
 		InlineStrike.highlight(opts),
 		// {@Backqoute}
 		InlineBackqoute.highlight(opts),
+		// {@Emoji}
+		InlineEmoji.highlight(opts),
 		// {@HTML}
 		InlineHtml.highlight(opts),
 		// etc..
