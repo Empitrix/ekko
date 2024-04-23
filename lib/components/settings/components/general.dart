@@ -1,3 +1,4 @@
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/components/settings/router.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/components/tiles.dart';
@@ -58,7 +59,7 @@ class SettingGeneral extends SettingObject{
 								borderColor: allMarkdownThemes[settingModes['markdownThemeName']]!["meta"]!.color!
 							),
 							const SizedBox(width: 12),
-							Text(settingModes['markdownThemeName'].replaceAll("-"," ").title())
+							Text(settingModes['markdownThemeName'].replaceAll("-"," ").toString().title())
 						],
 					),
 					onTap: (){
