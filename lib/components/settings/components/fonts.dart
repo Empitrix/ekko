@@ -109,7 +109,7 @@ class SettingFont extends SettingObject{
 							borderRadius: BorderRadius.circular(5)
 						),
 						child: Text(
-							"${Provider.of<ProviderManager>(context).defaultStyle.fontWeight}".replaceAll("FontWeight.w", "W-"),
+							"W-${Provider.of<ProviderManager>(context).defaultStyle.fontWeight!.value}",
 							style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, fontFamily: "RobotoMono"),
 						),
 					),
@@ -120,10 +120,16 @@ class SettingFont extends SettingObject{
 							items: [
 								for(int idx = 100; idx < 1000; idx = idx + 100) ListTile(
 									title: Text("W-$idx"),
+									/*
 									trailing: int.parse(Provider.of<ProviderManager>
 										(context, listen: false)
 										.defaultStyle.fontWeight!
 										.toString().replaceAll("FontWeight.w", "")) == idx ?
+											const Icon(Icons.check) : null,
+									*/
+									trailing: Provider.of<ProviderManager>
+										(context, listen: false)
+										.defaultStyle.fontWeight!.value == idx ?
 											const Icon(Icons.check) : null,
 									onTap: () async {
 										Navigator.pop(context);
