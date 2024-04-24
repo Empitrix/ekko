@@ -1,5 +1,6 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/settings/router.dart';
 import 'package:ekko/components/settings/panel.dart';
@@ -79,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 							]
 						),
 						ListTile(
-							title: const Text("Clear Temp"),
+							title: const Text("Clear Temporary Data"),
 							leading: const Icon(Icons.cleaning_services),
 							onTap: (){
 								Dialogs(context).ask(
@@ -87,6 +88,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 									content: "All the temporary files will be deleted.",
 									action: () async {
 										TempDB().init(force: true);
+										SNK(context).message(const Icon(Icons.check_circle), "Temporary data has been removed!");
 									}
 								);
 							},
