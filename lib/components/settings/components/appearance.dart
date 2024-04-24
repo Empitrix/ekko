@@ -45,7 +45,7 @@ class SettingAppearance extends SettingObject{
 				if(isDesktop(["linux"])) SwitchTile(
 					leading: const Icon(Icons.window),
 					title: const Text("Acrylic Mode"),
-					value: settingModes['dMode'],
+					value: settingModes['acrylicMode'],
 					onChange: (bool value) async {
 						if(value){
 							await sliderAnim.controller.forward();
