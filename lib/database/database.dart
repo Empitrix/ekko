@@ -364,8 +364,9 @@ class DB {
 		Map<String, dynamic> data = {
 			"fontFamily": style.fontFamily,
 			"fontSize": style.fontSize!.toDouble(),
-			"fontWeight": int.parse(
-				style.fontWeight.toString().replaceAll("FontWeight.w", "")),
+			"fontWeight": style.fontWeight!.value,
+			// "fontWeight": int.parse(
+			// 	style.fontWeight.toString().replaceAll("FontWeight.w", "")),
 			"fontHeight": style.height!.toDouble(),
 			"letterSpacing": style.letterSpacing!.toDouble(),
 		};

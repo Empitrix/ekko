@@ -151,7 +151,8 @@ class NoteItem extends StatelessWidget {
 												formatizeVDate(differenceFromNow(note.lastEdit)),
 												style: Provider.of<ProviderManager>(context).defaultStyle.merge(
 													TextStyle(
-														fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,
+														// fontSize: Provider.of<ProviderManager>(context).defaultStyle.fontSize! - 4,
+														fontSize: 12,
 														color: settingModes['dMode'] ? Colors.teal : Colors.teal[800],
 														fontWeight: FontWeight.w700
 													)
