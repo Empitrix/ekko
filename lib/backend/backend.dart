@@ -80,6 +80,7 @@ String differenceFromNow(DateTime input){
 	Duration duration = DateTime.now().difference(input);
 	String fromNow = "";
 	List<Map<String, int>> timeData = [
+		{ "month": duration.inDays ~/ 30 },
 		{ "day": duration.inDays },
 		{ "hour": duration.inHours },
 		{ "minute": duration.inMinutes },
@@ -88,8 +89,9 @@ String differenceFromNow(DateTime input){
 
 	for(Map type in timeData){
 		String key = type.keys.toList().first;
+		// find the biggest that is not a 0 (empty)
 		if(type[key] != 0){
-				fromNow = _getNumAs(type[key], key);
+			fromNow = _getNumAs(type[key], key);
 		}
 		if(fromNow.isNotEmpty){
 			break;
@@ -107,6 +109,7 @@ String differenceFromNow(DateTime input){
 String formatizeVDate(String input){
 	/* Minimalist text (valid date[VDate]) formatting */
 	return input
+		.replaceAll(RegExp(r'(month|month)'), "mo")  // find a better short (mo/mos)
 		.replaceAll(RegExp(r'(days|day)'), "d")
 		.replaceAll(RegExp(r'(hours|hour)'), "h")
 		.replaceAll(RegExp(r'(minutes|minute)'), "m")
