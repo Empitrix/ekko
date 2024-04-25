@@ -3,6 +3,7 @@ import 'package:ekko/markdown/inline/bullet_num.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/divider.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
+import 'package:ekko/markdown/inline/headerline.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline/html.dart';
 import 'package:ekko/markdown/inline/ibb.dart';
@@ -46,6 +47,14 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			label: "headline",
 			regex: RegExp(r"^#{1,6} [\s\S]*?$\s*"),
 			action: (txt, opt) => InlineHeadline(opt, gOpt).span(txt)
+		),
+
+		// {@Header Line}
+		HighlightRule(
+			label: "header_line",
+			regex: RegExp(r'.+\n(\=+|\-+)(?=\s$|$)'),
+			action: (txt, opt) => InlineHeaderLine(opt, gOpt).span(txt)
+			// action: (txt, opt) => InlineModule(opt, gOpt).span(txt)
 		),
 
 		// {@Divider}

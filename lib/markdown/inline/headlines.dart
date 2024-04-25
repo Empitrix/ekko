@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class InlineHeadline extends InlineModule {
 	InlineHeadline(super.opt, super.gOpt);
+
 	@override
 	InlineSpan span(txt){
 		txt = txt.trim();
