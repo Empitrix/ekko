@@ -1,6 +1,6 @@
 import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/markdown/html/tools.dart';
-import 'package:ekko/markdown/image.dart';
+import 'package:ekko/markdown/image/frame_builder.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:ekko/models/rule.dart';
 import 'package:flutter/material.dart';

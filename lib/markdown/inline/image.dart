@@ -1,5 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
-import 'package:ekko/markdown/image.dart';
+import 'package:ekko/markdown/image/frame_builder.dart';
 import 'package:ekko/markdown/inline_module.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -44,7 +44,6 @@ class InlineImage extends InlineModule {
 					}
 				);
 				return TextSpan(
-					// style: Provider.of<ProviderManager>(context).defaultStyle,
 					children: [
 						TextSpan(text: txt.substring(0, 2), style: txtStyle),
 						opts.reApply.parse(txt.substring(2, lastWhere.start)),
