@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:ekko/markdown/image/extract.dart';
 import 'package:ekko/markdown/image/from_local.dart';
 import 'package:ekko/markdown/image/from_url.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shimmer/shimmer.dart';
-
 
 enum ImageType {picture, svg}
 enum ImageTypePath {online, local}

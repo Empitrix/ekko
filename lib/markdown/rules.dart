@@ -3,7 +3,7 @@ import 'package:ekko/markdown/inline/bullet_num.dart';
 import 'package:ekko/markdown/inline/checkbox.dart';
 import 'package:ekko/markdown/inline/divider.dart';
 import 'package:ekko/markdown/inline/emoji.dart';
-import 'package:ekko/markdown/inline/headerline.dart';
+import 'package:ekko/markdown/inline/header_line.dart';
 import 'package:ekko/markdown/inline/headlines.dart';
 import 'package:ekko/markdown/inline/html.dart';
 import 'package:ekko/markdown/inline/ibb.dart';

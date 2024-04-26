@@ -47,7 +47,7 @@ class InlineHeaderLine extends InlineModule {
 				bool levlOne = header.last.replaceAll("=", "").isEmpty;
 				spans.add(TextSpan(text: header.first, style: const TextStyle(fontWeight: FontWeight.bold)));
 				spans.add(const TextSpan(text: "\n"));
-				spans.add(TextSpan(text: header.last, style: TextStyle(color: levlOne ? Colors.blue: Colors.red, fontWeight: FontWeight.bold)));
+				spans.add(TextSpan(text: header.last, style: TextStyle(color: levlOne ? Colors.red : Colors.blue, fontWeight: FontWeight.bold)));
 				return TextSpan(children: spans);
 			}
 		);

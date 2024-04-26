@@ -183,7 +183,7 @@ class InlineBackqoute extends InlineModule {
 						if(i.contains(RegExp(r'(NOTE|TIP|IMPORTANT|WARNING|CAUTION)'))){
 							spans.add(TextSpan(text: i, style: TextStyle(
 								color: Colors.red,
-								decoration: TextDecoration.underline,
+								// decoration: TextDecoration.underline,
 								decorationThickness: 0.5,
 								fontStyle: FontStyle.italic,
 								decorationColor: Theme.of(opts.context).colorScheme.inverseSurface
