@@ -1,10 +1,12 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/backend/ccb.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/backend/launcher.dart';
 import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/blur/float_menu.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/general_widgets.dart';
+import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/tag.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';
@@ -435,7 +437,6 @@ void githubInfoSheet({
 											fontWeight: FontWeight.bold
 										),
 									),
-									const Text("Ekko is an open-source cross-platform application!"),
 									Text(
 										appVersion,
 										style: TextStyle(
@@ -443,6 +444,17 @@ void githubInfoSheet({
 											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
 										),
 									),
+									const SizedBox(height: 20),
+									const Text("Ekko is an open-source cross-platform application!"),
+									Align(
+										alignment: Alignment.centerRight,
+										child: IconButton(
+											tooltip: "Ekko's Github",
+											color: Colors.cyan,
+											onPressed: () => launchThis(context: context, url: "https://github.com/empitrix/ekko"),
+											icon: const Icon(FontAwesomeIcons.github),
+										),
+									)
 								],
 							),
 						),

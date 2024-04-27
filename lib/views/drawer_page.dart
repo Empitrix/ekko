@@ -1,16 +1,15 @@
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/dialogs.dart';
+import 'package:ekko/components/drawer_header.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/navigator.dart';
-import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 class DrawerPage extends StatefulWidget {
@@ -90,49 +89,8 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 				behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
 				child: ListView(
 					children: [
-						Container(
-							margin: const EdgeInsets.all(12),
-							child: Column(
-								mainAxisAlignment: MainAxisAlignment.start,
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children: [
-									Center(
-										child: Row(
-											mainAxisAlignment: MainAxisAlignment.center,
-											children: [
-												SvgPicture.asset(
-													"assets/icon/icon.svg",
-													height: 120,
-													width:  120,
-													// ignore: deprecated_member_use
-													color: Theme.of(context).colorScheme.inverseSurface,
-												),
-												const SizedBox(width: 25),
-												Text(
-													"Ekko",
-													style: TextStyle(
-														fontSize: 50,
-														color: Theme.of(context).colorScheme.inverseSurface,
-														fontFamily: "",
-														fontWeight: FontWeight.bold,
-														fontStyle: FontStyle.italic
-													),
-												),
-											],
-											// ].reversed.toList(),
-										),
-									),
-									Text(
-										"\t$appVersion",
-										style: TextStyle(
-											fontSize: 12,
-											color: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
-										),
-									),
-								],
-							),
-						),
-						const Divider(),
+						// Header
+						const EkkoDrawerHeader(),
 						ListTile(
 							leading: const Icon(Icons.settings),
 							title: const Text("Settings"),
@@ -249,30 +207,6 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 								}
 							)
 						),
-
-
-						/*
-						Listener(
-							onPointerDown: (pointer){
-								if(pointer.buttons == 2){
-									Navigator.pop(context);
-									githubInfoSheet(context: context);
-								}
-							},
-							child: ListTile(
-								leading: const Icon(FontAwesomeIcons.github),
-								title: const Text("Github"),
-								onTap: () async {
-									await launchThis(context: context, url: "https://github.com/empitrix/ekko");
-								},
-								onLongPress: !isDesktop() ? (){
-									Navigator.pop(context);
-									githubInfoSheet(context: context);
-								} : null,
-							)
-						)
-						*/
-
 					],
 				),
 			)
