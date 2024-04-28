@@ -24,6 +24,7 @@ class DB {
 				acrylicOpacity FLOAT,
 				fontFamily TEXT,
 				fontSize FLOAT,
+				tabSize INT,
 				fontWeight INT,
 				fontHeight FLOAT,
 				letterSpacing FLOAT,
@@ -80,6 +81,7 @@ class DB {
 			"markdownThemeName": ["TEXT", "gruvbox-dark"],
 			"fontFamily": ["TEXT", "Rubik"],
 			"fontSize": ["FLOAT", 16],
+			"tabSize": ["INT", 2],
 			"fontWeight": ["INT", 400],
 			"fontHeight": ["FLOAT", 1.4],
 			"letterSpacing": ["FLOAT", 0.7],
@@ -125,9 +127,6 @@ class DB {
 	// R/W/U for boolean variables
 	Future<bool> readBool(String name) async {
 		Map data = await getQuery("local");
-		// if(data[name] == null){
-		// 	print("$name -> NULL");
-		// }
 		return data[name] == 1;
 	}
 
@@ -136,6 +135,13 @@ class DB {
 	}
 
 
+	Future<int> readInt(String name) async {
+		Map data = await getQuery("local");
+		return data[name] as int;
+	}
+	Future<void> writeInt(String name, int value) async {
+		await updateTable('local', {name: value});
+	}
 
 	/* Acrylic Opacity */ 
 	Future<double> readAcrylicOpacity() async {

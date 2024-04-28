@@ -6,7 +6,6 @@ import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/blur/float_menu.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/general_widgets.dart';
-import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/tag.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';

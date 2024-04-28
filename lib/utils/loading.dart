@@ -44,6 +44,8 @@ Future<void> essentialLoading(BuildContext context)async{
 	settingModes['wrapCodeMode'] = await _db.readBool("wrapCodeMode");
 	settingModes['editorWrapMode'] = await _db.readBool("editorWrapMode");
 	settingModes['checkListCheckable'] = await _db.readBool("checkableCheckList");
+	settingModes['tabSize'] = await _db.readInt('tabSize');
+
 	double opacity = await _db.readAcrylicOpacity();
 
 	// Text-Style

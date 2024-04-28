@@ -20,7 +20,7 @@ class SelectorButton extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context){
-		late Timer timer;
+		Timer? timer;
 		bool called = false;
 		return SizedBox(
 			height: minHeight,
@@ -38,7 +38,7 @@ class SelectorButton extends StatelessWidget {
 					onLongPress: onLongPress,
 					borderRadius: borderRadius,
 					onTapDown: (TapDownDetails value) async {
-						timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+						timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
 							if(onTap != null){
 								onTap!();
 							}
@@ -46,8 +46,10 @@ class SelectorButton extends StatelessWidget {
 						});
 					},
 					onTapUp: (TapUpDetails value){
-						timer.cancel();
-						called = false;
+						if(timer != null){
+							timer!.cancel();
+							called = false;
+						}
 					},
 					child: child,
 				)
@@ -116,7 +118,7 @@ class InputSelector extends StatelessWidget {
 				borderRadius: BorderRadius.circular(5)
 			),
 			height: height,
-			width: width,
+			// width: width,
 			child: Row(
 				children: [
 					SelectorButton(
@@ -130,7 +132,8 @@ class InputSelector extends StatelessWidget {
 					),
 					SizedBox(width: spacing),
 					Container(
-						width: 30,
+						// width: 30,
+						width: width,
 						decoration: BoxDecoration(
 							color: Theme.of(context).colorScheme.secondaryContainer
 						),
