@@ -1,13 +1,11 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/extensions.dart';
-import 'package:ekko/backend/keyboard.dart';
 import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 
 class TitleTextField extends StatelessWidget {
@@ -233,6 +231,19 @@ class ContentTextFiled extends StatelessWidget {
 												const Color(0xffc8dffa)).aae(context, lessOpt),
 										),
 										lineChanged: lineChanged,
+										keyboardActivators: const [
+											/*
+											KeyboardActivator(
+												activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyS, onCtrl: true),
+												action: (_, __, ___){
+													// String before = controller.text.substring(0, controller.value.selection.baseOffset);
+													// String after = controller.text.substring(controller.value.selection.baseOffset, controller.text.length);
+													// controller.text = "$before${' ' * settingModes['tabSize']}$after";
+													return KeyEventResult.ignored;
+												}
+											)
+											*/
+										],
 										tabSize: settingModes['tabSize'],
 										regexStyle: allFieldRules(context),
 										wrapMode: settingModes['editorWrapMode'],
@@ -268,9 +279,6 @@ class ContentTextFiled extends StatelessWidget {
 		return Focus(
 			onKeyEvent: (FocusNode node, KeyEvent event){
 				if(checkKeyboardKey(event.logicalKey).onTab == true){
-					// String before = controller.text.substring(0, controller.value.selection.baseOffset);
-					// String after = controller.text.substring(controller.value.selection.baseOffset, controller.text.length);
-					// controller.text = "$before${' ' * settingModes['tabSize']}$after";
 					return KeyEventResult.handled;
 				}
 				return KeyEventResult.ignored;
