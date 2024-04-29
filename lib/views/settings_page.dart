@@ -88,7 +88,9 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 									content: "All the temporary files will be deleted.",
 									action: () async {
 										TempDB().init(force: true);
-										SNK(context).message(const Icon(Icons.check_circle), "Temporary data has been removed!");
+										SNK(context).message(
+											const Icon(Icons.check_circle),
+											"Temporary data has been removed!");
 									}
 								);
 							},

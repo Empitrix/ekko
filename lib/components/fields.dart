@@ -1,11 +1,13 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/backend/keyboard.dart';
 import 'package:ekko/components/tag_field.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/markdown/filed_rules.dart';
 import 'package:ekko/utils/calc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
 class TitleTextField extends StatelessWidget {
@@ -157,6 +159,7 @@ class ContentTextFiled extends StatelessWidget {
 	final double widgetHeight;
 	final ValueChanged<LineStatus> lineChanged;
 	final double lessOpt;
+
 	const ContentTextFiled({
 		super.key,
 		required this.controller,
@@ -169,14 +172,29 @@ class ContentTextFiled extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-		return KeyboardListener(
-			focusNode: FocusNode(),
+		Widget keyboard = KeyboardListener(
+			// focusNode: FocusNode(),
+			focusNode: FocusNode(canRequestFocus: false),
 			onKeyEvent: (KeyEvent event) async {
 				await Future.delayed(const Duration(milliseconds: 150));
+
+				// debugPrint("DEBUG NAME: ${event.physicalKey.debugName}");
+
+				/*
+				if(event.logicalKey.keyId == 4294967305){
+					// focusNode.requestFocus();
+					// controller.text += "\t";
+					// controller.text += "\u2022";
+					String newT = controller.text + (" " * settingModes['tabSize']);
+					controller.text = newT;
+					return;
+				}
+				*/
+
 				if(
-						event.logicalKey.keyId == 4294968068 &&
-						controller.selection.baseOffset == 0
-					){ previousFocus(); }
+					event.logicalKey.keyId == 4294968068 &&
+					controller.selection.baseOffset == 0
+				){ previousFocus(); }
 			},
 			child: SizedBox(
 				child: Column(
@@ -215,6 +233,7 @@ class ContentTextFiled extends StatelessWidget {
 												const Color(0xffc8dffa)).aae(context, lessOpt),
 										),
 										lineChanged: lineChanged,
+										tabSize: settingModes['tabSize'],
 										regexStyle: allFieldRules(context),
 										wrapMode: settingModes['editorWrapMode'],
 										widgetHeight: widgetHeight,
@@ -243,6 +262,20 @@ class ContentTextFiled extends StatelessWidget {
 					],
 				),
 			),
+		);
+
+		// return keyboard;
+		return Focus(
+			onKeyEvent: (FocusNode node, KeyEvent event){
+				if(checkKeyboardKey(event.logicalKey).onTab == true){
+					// String before = controller.text.substring(0, controller.value.selection.baseOffset);
+					// String after = controller.text.substring(controller.value.selection.baseOffset, controller.text.length);
+					// controller.text = "$before${' ' * settingModes['tabSize']}$after";
+					return KeyEventResult.handled;
+				}
+				return KeyEventResult.ignored;
+			},
+			child: keyboard,
 		);
 	}
 }
