@@ -1,5 +1,4 @@
 import 'package:ekko/backend/backend.dart';
-import 'package:ekko/backend/behaviors.dart';
 import 'package:ekko/components/nf_icons.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/components/tag.dart';
@@ -138,7 +137,7 @@ class NoteItem extends StatelessWidget {
 								)
 							),
 							const SizedBox(width: 12),
-
+							/*
 							FutureBuilder<Size>(
 								future: getParrentSize(thisKey),
 								builder: (BuildContext context, AsyncSnapshot<Size> h){
@@ -161,6 +160,22 @@ class NoteItem extends StatelessWidget {
 										],
 									);
 								},
+							),
+							*/
+							Padding(
+								padding: const EdgeInsets.only(top: 25),
+								child: Align(
+									child: Text(
+										formatizeVDate(differenceFromNow(note.lastEdit)),
+										style: Provider.of<ProviderManager>(context).defaultStyle.merge(
+											TextStyle(
+												fontSize: 12,
+												color: settingModes['dMode'] ? Colors.teal : Colors.teal[800],
+												fontWeight: FontWeight.w700
+											)
+										),
+									),
+								)
 							),
 
 							// IconButton(
