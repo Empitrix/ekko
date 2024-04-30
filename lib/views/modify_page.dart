@@ -61,6 +61,14 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 	GlobalKey headerKey = GlobalKey();
 	GlobalKey appbarKey = GlobalKey();
 
+	ValueNotifier<String> bufferLineMsg = ValueNotifier("");
+
+
+	void _setBufferMsg(String msg) async {
+		bufferLineMsg.value = msg;
+		await Future.delayed(const Duration(seconds: 1));
+		bufferLineMsg.value = "";
+	}
 
 	void _backClose({bool isNew = false, bool force = false}){
 		if(widget.backLoad != null && isNew){
@@ -88,7 +96,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		}
 	}
 
-	Future<void> submit() async {
+	Future<void> submit([bool changePage = true]) async {
 		DB db = DB();
 		SNK snk = SNK(context);
 
@@ -122,7 +130,14 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 			await db.updateNote(note);
 		}
 
-		if(mounted) _backClose(isNew: true, force: true);
+		_setBufferMsg("SAVED!");
+
+		if(changePage){
+			if(mounted) _backClose(isNew: true, force: true);
+		} else {
+			widget.backLoad!();
+			contentF.requestFocus();
+		}
 	}
 
 
@@ -233,7 +248,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 				autofocus: true,
 				resizeToAvoidBottomInset: false,
 				shortcuts: const <ShortcutActivator, Intent>{
-					SingleActivator(LogicalKeyboardKey.keyS, control: true): SubmitNoteIntent(),
+					SingleActivator(LogicalKeyboardKey.keyS, control: true, shift: true): SubmitNoteIntent(),
 				},
 				actions: <Type, Action<Intent>>{
 					SubmitNoteIntent: CallbackAction<SubmitNoteIntent>(
@@ -352,7 +367,16 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																	});
 																},
 																// previousFocus: () => descriptionF.requestFocus()
-																previousFocus: () => titleF.requestFocus()
+																previousFocus: () => titleF.requestFocus(),
+																activities: [
+																	KeyboardActivator(
+																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyS, onCtrl: true),
+																		action: (_, __, ___){
+																			submit(false);
+																			return KeyEventResult.ignored;
+																		}
+																	),
+																],
 															);
 														}
 													),
@@ -363,6 +387,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																controller: content,
 																lineStatus: status,
 																note: widget.note,
+																msg: bufferLineMsg,
 																folderId: widget.folderId,
 															);
 														}

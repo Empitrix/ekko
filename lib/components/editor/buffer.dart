@@ -12,10 +12,13 @@ class EditorBuffer extends StatelessWidget {
 	final SmallNote? note;
 	final int folderId;
 	final double lessOpt;
+	final ValueNotifier<String> msg;
+
 	const EditorBuffer({
 		super.key,
 		required this.controller,
 		required this.lineStatus,
+		required this.msg,
 		this.lessOpt = -0.5,
 		this.note,
 		required this.folderId,
@@ -25,6 +28,19 @@ class EditorBuffer extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return Row(
 			children: [
+				ValueListenableBuilder(
+					valueListenable: msg,
+					builder: (context, message, child){
+						if(message == ""){
+							return const SizedBox();
+						}
+						return Container(
+							color: Colors.blue,
+							child: Text(" $message ",
+								style: const TextStyle(color: Colors.black)),
+						);
+					}
+				),
 				Expanded(
 					child: Container(
 						height: 20,

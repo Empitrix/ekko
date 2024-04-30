@@ -157,6 +157,7 @@ class ContentTextFiled extends StatelessWidget {
 	final double widgetHeight;
 	final ValueChanged<LineStatus> lineChanged;
 	final double lessOpt;
+	final List<KeyboardActivator> activities;
 
 	const ContentTextFiled({
 		super.key,
@@ -165,7 +166,8 @@ class ContentTextFiled extends StatelessWidget {
 		required this.focusNode,
 		required this.widgetHeight,
 		required this.previousFocus,
-		this.lessOpt = -0.1
+		this.lessOpt = -0.1,
+		this.activities = const [],
 	});
 
 	@override
@@ -231,19 +233,7 @@ class ContentTextFiled extends StatelessWidget {
 												const Color(0xffc8dffa)).aae(context, lessOpt),
 										),
 										lineChanged: lineChanged,
-										keyboardActivators: const [
-											/*
-											KeyboardActivator(
-												activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyS, onCtrl: true),
-												action: (_, __, ___){
-													// String before = controller.text.substring(0, controller.value.selection.baseOffset);
-													// String after = controller.text.substring(controller.value.selection.baseOffset, controller.text.length);
-													// controller.text = "$before${' ' * settingModes['tabSize']}$after";
-													return KeyEventResult.ignored;
-												}
-											)
-											*/
-										],
+										keyboardActivators: activities,
 										tabSize: settingModes['tabSize'],
 										regexStyle: allFieldRules(context),
 										wrapMode: settingModes['editorWrapMode'],

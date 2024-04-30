@@ -38,6 +38,11 @@ Requirements:
 
 
 
+## TODO
+- [ ] Fix the focus issue on `CTRL + S`
+
+
+
 
 ## HTML TODO
 - [ ] add `justify` alignment to html-calculator
