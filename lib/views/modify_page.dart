@@ -376,6 +376,22 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																			return KeyEventResult.ignored;
 																		}
 																	),
+																	KeyboardActivator(
+																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyB, onCtrl: true),
+																		action: (_, __, TextEditingValue val){
+																			String main = content.text;
+																			int offset = val.selection.baseOffset;
+																			content.value = val.copyWith(
+																				text: "${main.substring(0, offset)}**"
+																					"**${main.substring(offset, main.length)}",
+																				selection: TextSelection(
+																					baseOffset: offset + 2,
+																					extentOffset: val.selection.extentOffset + 2
+																				),
+																			);
+																			return KeyEventResult.ignored;
+																		}
+																	),
 																],
 															);
 														}
