@@ -1,4 +1,5 @@
 import 'package:ekko/animation/expand.dart';
+import 'package:ekko/backend/shortcuts.dart';
 import 'package:ekko/components/editor/buffer.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
@@ -377,18 +378,25 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																		}
 																	),
 																	KeyboardActivator(
+																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyI, onCtrl: true),
+																		action: (_, __, TextEditingValue val) {
+																			content = (insertByShortcut(content, "_") as AwesomeController);
+																			return KeyEventResult.ignored;
+																		}
+																	),
+																	KeyboardActivator(
 																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyB, onCtrl: true),
 																		action: (_, __, TextEditingValue val){
-																			String main = content.text;
-																			int offset = val.selection.baseOffset;
-																			content.value = val.copyWith(
-																				text: "${main.substring(0, offset)}**"
-																					"**${main.substring(offset, main.length)}",
-																				selection: TextSelection(
-																					baseOffset: offset + 2,
-																					extentOffset: val.selection.extentOffset + 2
-																				),
-																			);
+																			content = (insertByShortcut(content, "**") as AwesomeController);
+																			return KeyEventResult.ignored;
+																		}
+																	),
+																	KeyboardActivator(
+																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyQ, onCtrl: true),
+																		action: (_, __, TextEditingValue val){
+																			if(lineStatus.value.currentCol == 0){
+																				content = (insertByShortcut(content, "> ", true) as AwesomeController);
+																			}
 																			return KeyEventResult.ignored;
 																		}
 																	),
