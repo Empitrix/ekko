@@ -158,6 +158,8 @@ class ContentTextFiled extends StatelessWidget {
 	final ValueChanged<LineStatus> lineChanged;
 	final double lessOpt;
 	final List<KeyboardActivator> activities;
+	// final Function(double)? onOffsetChange;
+	final Function(ScrollPosition)? onOffsetChange;
 
 	const ContentTextFiled({
 		super.key,
@@ -168,6 +170,7 @@ class ContentTextFiled extends StatelessWidget {
 		required this.previousFocus,
 		this.lessOpt = -0.1,
 		this.activities = const [],
+		this.onOffsetChange
 	});
 
 	@override
@@ -209,6 +212,7 @@ class ContentTextFiled extends StatelessWidget {
 									padding: const EdgeInsets.only(right: 8),
 									child: AwesomeTextField(
 										controller: controller,
+										onOffsetChange: onOffsetChange,
 										focusNode: focusNode,
 										decoration: const InputDecoration(hintText: "Write..."),
 										borderRadius: const BorderRadius.only(

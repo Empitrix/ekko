@@ -1,4 +1,5 @@
 import 'package:awesome_text_field/awesome_text_field.dart';
+import 'package:ekko/components/alerts.dart';
 import 'package:ekko/components/fields.dart';
 import 'package:ekko/markdown/generator.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,28 @@ class _PreviewPageState extends State<PreviewPage> {
 
 
 	AwesomeController controller = AwesomeController();
+	ScrollController scrollCtrl = ScrollController();
+	bool syncCtrl = false;
 
+
+	void _attach(ScrollPosition pos){
+		/* Method 1 */
+		// if(syncCtrl){
+		// 	scrollCtrl.animateTo(pos.pixels.toDouble(), duration: const Duration(milliseconds: 200), curve: Curves.ease);
+		// }
+
+		/* Method 2 */
+		double maxR = scrollCtrl.position.maxScrollExtent;
+		double maxE = pos.maxScrollExtent;
+		double val = pos.pixels.toDouble() * maxR / maxE;
+		if(syncCtrl){
+			scrollCtrl.animateTo(
+				val,
+				duration: const Duration(milliseconds: 200),
+				curve: Curves.ease
+			);
+		}
+	}
 
 
 	@override
@@ -30,12 +52,23 @@ class _PreviewPageState extends State<PreviewPage> {
 						icon: const Icon(Icons.close),
 						onPressed: () => Navigator.pop(context),
 					),
+					actions: [
+						Padding(
+							padding: const EdgeInsets.only(right: 12),
+							child: IconButton(
+								icon: Icon(syncCtrl ? Icons.close: Icons.merge),
+								onPressed: (){
+									setState(() => syncCtrl = !syncCtrl);
+									SNK(context).message(
+										Icon(syncCtrl ? Icons.merge : Icons.close),
+										syncCtrl ? "Synced": "Dissabled");
+								},
+							)
+						)
+					],
 				),
 				body: Row(
 					children: [
-						// Expanded(child: Center(child: Text("Panel 1"))),
-						// VerticalDivider(),
-						// Expanded(child: Center(child: Text("Panel 2")))
 						Expanded(
 							child: Center(
 								child: ContentTextFiled(
@@ -44,6 +77,7 @@ class _PreviewPageState extends State<PreviewPage> {
 										Future.microtask(() => setState((){}));
 									},
 									focusNode: FocusNode(),
+									onOffsetChange: (ScrollPosition pos) => _attach(pos),
 									widgetHeight: MediaQuery.sizeOf(context).height - 89,
 									previousFocus: (){}
 								),
@@ -58,6 +92,7 @@ class _PreviewPageState extends State<PreviewPage> {
 									Expanded(child: ScrollConfiguration(
 										behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
 										child: SelectionArea(child: SingleChildScrollView(
+											controller: scrollCtrl,
 											child: MDGenerator(
 												content: controller.text,
 												noteId: -1,
@@ -66,10 +101,11 @@ class _PreviewPageState extends State<PreviewPage> {
 												},
 											),
 										)),
-									))
+									)),
 								],
 							)
-						)
+						),
+						const SizedBox(width: 5)
 					],
 				),
 			),

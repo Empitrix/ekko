@@ -14,7 +14,8 @@ class InlineLatex extends InlineModule {
 	@override
 	InlineSpan span(String txt){
 
-		double defaultHeight = calcTextSize(gOpt.context, " ", Provider.of<ProviderManager>(gOpt.context).defaultStyle).height;
+		TextStyle ds = Provider.of<ProviderManager>(gOpt.context).defaultStyle;
+		double defaultHeight = calcTextSize(gOpt.context, " ", ds).height;
 		bool isInline = txt.substring(0, 2).replaceAll("\$", "").isNotEmpty;
 		TempDB tdb = TempDB();
 		FilterQuality filter = FilterQuality.medium;
@@ -27,10 +28,24 @@ class InlineLatex extends InlineModule {
 					if(snap.hasData){
 						if(snap.data != null){
 							if(isInline){
+								// return SizedBox(
+								// 	height: defaultHeight - (28 * defaultHeight / 100),
+								// 	child: Image.file(File(snap.data!), filterQuality: filter)
+								// );
 								return SizedBox(
+									// height: defaultHeight - (28 * defaultHeight / 100) + 20,
 									height: defaultHeight - (28 * defaultHeight / 100),
+									// height: defaultHeight,
+									// width: 20,
+									// width: 20,
+									// width: calcTextSize(context, txt, ds).width / 2,
 									child: Image.file(File(snap.data!), filterQuality: filter)
 								);
+								// return FittedBox(
+								// 	// fit: BoxFit.fitHeight,
+								// 	// fit: BoxFit.contain,
+								// 	child: Image.file(File(snap.data!), filterQuality: filter)
+								// );
 							}
 							return Center(child: Image.file(File(snap.data!), filterQuality: filter));
 						}

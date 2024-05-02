@@ -19,6 +19,7 @@ class InlineTable extends InlineModule {
 		});
 		if(outTable != null){
 			return outTable;
+			// return WidgetSpan(child: FittedBox(fit: BoxFit.fitHeight, child: Text.rich(outTable)));
 		}
 		return TextSpan(text: txt);
 	}
