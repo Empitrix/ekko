@@ -68,6 +68,9 @@ BackqouteObj getBackqouteElements(BuildContext context, String input){
 	Color? lineColor = null;
 
 	for(String line in input.split("\n")){
+		if(line.length == 0){
+			continue;
+		}
 		line = line.substring(1).trim();
 		if(RegExp(r"\[\!\w+\]").allMatches(line).length == 1 && lineColor == null){
 			String nameTag = line.substring(2, line.length - 1);
