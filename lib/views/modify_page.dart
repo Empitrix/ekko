@@ -104,6 +104,11 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		// Make sure that all the filed are fulled
 		if(!TxtCtrl(title, null, content).isAllFilled()){
 			debugPrint("Fill all the forms!");
+			if(title.text.trim().isEmpty){
+				if(headerAnim.animation.value == 0){
+					headerAnim.controller.forward();
+				}
+			}
 			snk.message(const Icon(Icons.close), "Fill all the forms");
 			return;
 		}
@@ -131,11 +136,11 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 			await db.updateNote(note);
 		}
 
-		_setBufferMsg("SAVED!");
 
 		if(changePage){
 			if(mounted) _backClose(isNew: true, force: true);
 		} else {
+			_setBufferMsg("SAVED!");
 			widget.backLoad!();
 			contentF.requestFocus();
 		}
@@ -373,7 +378,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																	KeyboardActivator(
 																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyS, onCtrl: true),
 																		action: (_, __, ___){
-																			submit(false);
+																			// submit(false);
 																			return KeyEventResult.ignored;
 																		}
 																	),
