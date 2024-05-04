@@ -68,7 +68,7 @@ BackqouteObj getBackqouteElements(BuildContext context, String input){
 	Color? lineColor = null;
 
 	for(String line in input.split("\n")){
-		if(line.length == 0){
+		if(line.isEmpty){
 			continue;
 		}
 		line = line.substring(1).trim();
@@ -159,6 +159,7 @@ class InlineBackqoute extends InlineModule {
 		);
 	}
 
+	/*
 	static RegexFormattingStyle? highlight(HighlightOption opts){
 		return RegexActionStyle(
 			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
@@ -200,7 +201,7 @@ class InlineBackqoute extends InlineModule {
 					 if(n.contains(RegExp(r'\[|\]')) && firstLineHasMatch){
 							spans.add(TextSpan(text: n, style: TextStyle(
 								color: Colors.pink,
-								decoration: TextDecoration.underline,
+								// decoration: TextDecoration.underline,
 								decorationThickness: 0.5,
 								fontWeight: FontWeight.bold,
 								decorationColor: Theme.of(opts.context).colorScheme.inverseSurface
@@ -217,6 +218,58 @@ class InlineBackqoute extends InlineModule {
 						TextSpan(text: lines.sublist(1).join("\n"), style: style),
 					]
 				);
+			},
+		);
+	}
+	*/
+
+
+
+	static RegexFormattingStyle? highlight(HighlightOption opts){
+		return RegexActionStyle(
+			regex: RegExp(r'^>\s+.*(?:\n>\s+.*)*'),
+			style: const TextStyle(),
+			action: (txt, match){
+				List<InlineSpan> spans = [];
+				TextStyle qouteStyle = const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold);
+				bool isHave = false;
+
+				if(txt.split('\n').length != 1){
+					if(txt.split('\n').first.contains(RegExp(r'(NOTE|TIP|IMPORTANT|WARNING|CAUTION)'))){
+						String t = txt.split('\n').first;
+						spans.add(TextSpan(text: t.substring(0, 1), style: qouteStyle));
+						t.substring(1).splitMapJoin(
+							RegExp(r'\w+'),
+							onMatch: (Match mtch){
+								spans.add(TextSpan(text: mtch.group(0)!, style: const TextStyle(
+									color: Colors.red)));
+								return "";
+							},
+							onNonMatch: (String n){
+								spans.add(TextSpan(text: n, style: const TextStyle(
+									color: Colors.pink, fontWeight: FontWeight.bold)));
+								return "";
+							}
+						);
+						if(txt.split('\n').length != 1){
+							spans.add(const TextSpan(text: "\n"));
+						}
+						isHave = true;
+					}
+				}
+
+				(isHave ? txt.split('\n').sublist(1).join("\n") : txt).splitMapJoin(
+					RegExp(r'^\s*>', multiLine: true),
+					onMatch: (Match m){
+						spans.add(TextSpan(text: m.group(0)!, style: qouteStyle));
+						return "";
+					},
+					onNonMatch: (String n){
+						spans.add(TextSpan(text: n));
+						return "";
+					}
+				);
+				return TextSpan(children: spans);
 			},
 		);
 	}
