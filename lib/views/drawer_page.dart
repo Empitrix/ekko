@@ -10,6 +10,7 @@ import 'package:ekko/models/folder.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/preview_page.dart';
 import 'package:ekko/views/settings_page.dart';
+import 'package:ekko/views/tracker_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -101,6 +102,11 @@ class _DrawerPageState extends State<DrawerPage> with TickerProviderStateMixin{
 							leading: const Icon(Icons.preview),
 							title: const Text("Preview"),
 							onTap: () => _newView(const PreviewPage(), "PreviewPage"),
+						),
+						ListTile(
+							leading: const Icon(Icons.remove_red_eye),
+							title: const Text("Tracker"),
+							onTap: () => _newView(const TrackerPage(), "TrackerPage"),
 						),
 						ListTile(
 							leading: AnimatedBuilder(

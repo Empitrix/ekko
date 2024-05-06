@@ -8,15 +8,18 @@ import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/general_widgets.dart';
 import 'package:ekko/components/tag.dart';
 import 'package:ekko/components/tiles.dart';
+import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/io/md_file.dart';
 import 'package:ekko/io/share_file.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
 import 'package:ekko/models/folder.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ekko/models/note.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 
 // Custom context builder
@@ -315,6 +318,70 @@ void selectMarkdownTheme({
 	);
 }
 
+void inTrackSheet({
+	required BuildContext context,
+	required Function onLoad,
+	required Function(String) onFilePick,
+}){
+	ValueNotifier<bool> themeNotif = ValueNotifier<bool>(settingModes['dMode']);
+
+	showDialog(
+		context: context,
+		builder: (_){
+			return FloatMenu(
+				header: Align(
+					alignment: Alignment.centerRight,
+					child: Padding(
+						padding: const EdgeInsets.only(right: 8),
+						child: IconButton(onPressed: () => Navigator.pop(context),
+							icon: const Icon(Icons.close_rounded)),
+					),
+				),
+				actions: [
+
+					ListTile(
+						leading: const Icon(Icons.file_open),
+						title: const Text("Chose a file"),
+						onTap:() async {
+							FilePickerResult? result = await FilePicker.platform.pickFiles(
+								type: FileType.custom,
+								allowedExtensions: ['md']);
+							if (result != null) {
+								onFilePick(result.paths.first!);
+							}
+							// ignore: use_build_context_synchronously
+							Navigator.pop(context);
+						}
+					),
+
+					ListTile(
+						leading: const Icon(Icons.dark_mode),
+						trailing: IgnorePointer(child: Transform.scale(
+							scale: 0.75,
+							child: ValueListenableBuilder<bool>(
+								valueListenable: themeNotif,
+								builder: (BuildContext context, bool val, Widget? child){
+									return Switch(value: val,
+										onChanged: (_){}
+									);
+								}
+							)
+						)),
+						title: const Text("Switch Theme"),
+						onTap: () async {
+							bool val = !settingModes['dMode'];
+							settingModes['dMode'] = val;
+							themeNotif.value = val;
+							Provider.of<ProviderManager>(context, listen: false).changeTmode(val ? ThemeMode.dark : ThemeMode.light);
+							onLoad();
+						}
+					),
+
+				],
+			);
+		},
+	);
+}
 
 void inViewNoteSheet({
 	required BuildContext context,
