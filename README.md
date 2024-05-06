@@ -39,7 +39,7 @@ Requirements:
 
 
 ## TODO
-- [ ] Fix the focus issue on `CTRL + S`
+- [x] Fix the focus issue on `CTRL + S`
 
 
 

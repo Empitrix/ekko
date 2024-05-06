@@ -62,13 +62,13 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 	GlobalKey headerKey = GlobalKey();
 	GlobalKey appbarKey = GlobalKey();
 
-	ValueNotifier<String> bufferLineMsg = ValueNotifier("");
+	ValueNotifier<BufferMsg> bufferLineMsg = ValueNotifier(BufferMsg(message: "", color: Colors.transparent));
 
 
-	void _setBufferMsg(String msg) async {
-		bufferLineMsg.value = msg;
+	void _setBufferMsg(String msg, [Color color = Colors.blue]) async {
+		bufferLineMsg.value = BufferMsg(message: msg, color: color);
 		await Future.delayed(const Duration(seconds: 1));
-		bufferLineMsg.value = "";
+		bufferLineMsg.value = BufferMsg(message: "", color: color);
 	}
 
 	void _backClose({bool isNew = false, bool force = false}){
@@ -100,6 +100,11 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 	Future<void> submit([bool changePage = true]) async {
 		DB db = DB();
 		SNK snk = SNK(context);
+
+		if(!changePage && widget.note == null){
+			_setBufferMsg("File Not Exsits!", Colors.red);
+			return;
+		}
 
 		// Make sure that all the filed are fulled
 		if(!TxtCtrl(title, null, content).isAllFilled()){
@@ -140,9 +145,11 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		if(changePage){
 			if(mounted) _backClose(isNew: true, force: true);
 		} else {
-			_setBufferMsg("SAVED!");
-			widget.backLoad!();
-			contentF.requestFocus();
+			if(widget.note != null){
+				_setBufferMsg("SAVED!");
+			}
+			// widget.backLoad!();
+			// contentF.requestFocus();
 		}
 	}
 
@@ -239,6 +246,15 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		initializeListiners();
 		titleF.requestFocus();  // Auto request for ttiel (prime field)
 		super.initState();
+	}
+
+
+	@override
+	void dispose() {
+		if(widget.backLoad != null){
+			widget.backLoad!();
+		}
+		super.dispose();
 	}
 
 	@override
@@ -376,9 +392,9 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 																previousFocus: () => titleF.requestFocus(),
 																activities: [
 																	KeyboardActivator(
-																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyS, onCtrl: true),
+																		activator: AlternateKeyboard(onKey: LogicalKeyboardKey.keyW, onCtrl: true),
 																		action: (_, __, ___){
-																			// submit(false);
+																			submit(false);
 																			return KeyEventResult.ignored;
 																		}
 																	),

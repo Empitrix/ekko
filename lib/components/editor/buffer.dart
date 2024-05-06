@@ -6,13 +6,24 @@ import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
 
 
+class BufferMsg{
+	final String message;
+	final Color color;
+
+	BufferMsg({
+		required this.message,
+		required this.color
+	});
+}
+
+
 class EditorBuffer extends StatelessWidget {
 	final TextEditingController controller;
 	final LineStatus lineStatus;
 	final SmallNote? note;
 	final int folderId;
 	final double lessOpt;
-	final ValueNotifier<String> msg;
+	final ValueNotifier<BufferMsg> msg;
 
 	const EditorBuffer({
 		super.key,
@@ -30,13 +41,13 @@ class EditorBuffer extends StatelessWidget {
 			children: [
 				ValueListenableBuilder(
 					valueListenable: msg,
-					builder: (context, message, child){
-						if(message == ""){
+					builder: (context, bmsg, child){
+						if(bmsg.message == ""){
 							return const SizedBox();
 						}
 						return Container(
-							color: Colors.blue,
-							child: Text(" $message ",
+							color: bmsg.color,
+							child: Text(" ${bmsg.message} ",
 								style: const TextStyle(color: Colors.black)),
 						);
 					}
