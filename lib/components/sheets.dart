@@ -136,18 +136,19 @@ void generalSmallNoteSheet({
 							leading: const Icon(Icons.file_open_rounded),
 							title: const Text("Export Markdown"),
 							onTap: () async {
-								SNK snk = SNK(context);
+								// SNK snk = SNK(context);
 								Navigator.pop(ctx);
 								Note realNote = await note.toRealNote();
 								// ignore: use_build_context_synchronously
-								bool isDone = await MDFile.write(context, realNote.content, realNote.title);
-								if(isDone){
-									snk.message(
-										const Icon(Icons.file_open_rounded), "File Exported!");
-								} else {
-									snk.message(
-										const Icon(Icons.cancel), "Faield To Export!");
-								}
+								await MDFile.write(context, realNote.content, realNote.title);
+								// bool isDone = await MDFile.write(context, realNote.content, realNote.title);
+								// if(isDone){
+								// 	snk.message(
+								// 		const Icon(Icons.file_open_rounded), "File Exported!");
+								// } else {
+								// 	snk.message(
+								// 		const Icon(Icons.cancel), "Faield To Export!");
+								// }
 							}
 						),
 
@@ -445,17 +446,19 @@ void inViewNoteSheet({
 						leading: const Icon(FontAwesomeIcons.fileExport, size: 20,),
 						title: const Text("Export"),
 						onTap:() async {
-							SNK snk = SNK(context);
+							// SNK snk = SNK(context);
 							Navigator.pop(_);
-							// ignore: use_build_context_synchronously
-							bool isDone = await MDFile.write(context, note.content, note.title);
-							if(isDone){
-								snk.message(
-									const Icon(Icons.file_open_rounded), "File Exported!");
-							} else {
-								snk.message(
-									const Icon(Icons.cancel), "Faield To Export!");
-							}
+							try{
+								await MDFile.write(context, note.content, note.title);
+							}catch(_){/**/}
+							// bool isDone = await MDFile.write(context, note.content, note.title);
+							// if(isDone){
+							// 	snk.message(
+							// 		const Icon(Icons.file_open_rounded), "File Exported!");
+							// } else {
+							// 	snk.message(
+							// 		const Icon(Icons.cancel), "Faield To Export!");
+							// }
 						}
 					),
 

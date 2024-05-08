@@ -56,12 +56,13 @@ class _PreviewPageState extends State<PreviewPage> {
 						Padding(
 							padding: const EdgeInsets.only(right: 12),
 							child: IconButton(
-								icon: Icon(syncCtrl ? Icons.close: Icons.merge),
+								tooltip: syncCtrl ? "Separate Scroll": "Merge Scroll",
+								icon: Icon(syncCtrl ? Icons.call_split: Icons.merge),
 								onPressed: (){
 									setState(() => syncCtrl = !syncCtrl);
 									SNK(context).message(
-										Icon(syncCtrl ? Icons.merge : Icons.close),
-										syncCtrl ? "Synced": "Dissabled");
+										Icon(syncCtrl ? Icons.merge : Icons.call_split),
+										syncCtrl ? "Synced": "Separated");
 								},
 							)
 						)
