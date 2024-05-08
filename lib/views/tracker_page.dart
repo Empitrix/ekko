@@ -1,10 +1,9 @@
-import 'dart:async';
-import 'dart:convert';
-
+import 'package:ekko/markdown/generator.dart';
 import 'package:ekko/components/sheets.dart';
 import 'package:ekko/config/public.dart';
-import 'package:ekko/markdown/generator.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:async';
 import 'dart:io';
 
 
@@ -20,6 +19,8 @@ class _TrackerPageState extends State<TrackerPage> {
 	TextEditingController controller = TextEditingController();
 	ValueNotifier<Color> colorNotif = ValueNotifier<Color>(Colors.red);
 	ValueNotifier<String> dataNotif = ValueNotifier<String>("");
+	ScrollController scrollController = ScrollController();
+	bool autoScroll = false;
 	Timer? timer;
 
 
@@ -46,10 +47,14 @@ class _TrackerPageState extends State<TrackerPage> {
 				}catch(e){
 					dataNotif.value = "> [!CAUTION]\n> $e";
 				}
+				if(autoScroll){
+					scrollController.animateTo(
+						scrollController.position.maxScrollExtent,
+						duration: const Duration(seconds: 1), curve: Curves.ease);
+				}
 			}
 		});
 	}
-
 
 	@override
 	void initState() {
@@ -98,8 +103,13 @@ class _TrackerPageState extends State<TrackerPage> {
 								icon: const Icon(Icons.more_vert),
 								onPressed: () => inTrackSheet(
 									context: context,
+									autoScrollValue: autoScroll,
 									onFilePick: (String filePath){
 										controller.text = filePath;
+									},
+									onScrollChange: (val){
+										autoScroll = val;
+										// blabla
 									},
 									onLoad: () => setState((){},
 								)),
@@ -107,10 +117,10 @@ class _TrackerPageState extends State<TrackerPage> {
 						)
 					],
 				),
-				body: Padding(padding: const EdgeInsets.all(12), child: ScrollConfiguration(
+				body: Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: ScrollConfiguration(
 					behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
 					child: SelectionArea(child: SingleChildScrollView(
-						// controller: scrollCtrl,
+						controller: scrollController,
 						child: ValueListenableBuilder(
 							valueListenable: dataNotif,
 							builder: (BuildContext context, String data, Widget? child){

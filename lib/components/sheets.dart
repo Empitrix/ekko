@@ -323,8 +323,11 @@ void inTrackSheet({
 	required BuildContext context,
 	required Function onLoad,
 	required Function(String) onFilePick,
+	required Function(bool) onScrollChange,
+	required bool autoScrollValue,
 }){
 	ValueNotifier<bool> themeNotif = ValueNotifier<bool>(settingModes['dMode']);
+	ValueNotifier<bool> scrollNotif = ValueNotifier<bool>(autoScrollValue);
 
 	showDialog(
 		context: context,
@@ -361,11 +364,8 @@ void inTrackSheet({
 							scale: 0.75,
 							child: ValueListenableBuilder<bool>(
 								valueListenable: themeNotif,
-								builder: (BuildContext context, bool val, Widget? child){
-									return Switch(value: val,
-										onChanged: (_){}
-									);
-								}
+								builder: (BuildContext context, bool val, Widget? child) =>
+									Switch(value: val, onChanged: (_){})
 							)
 						)),
 						title: const Text("Switch Theme"),
@@ -375,6 +375,23 @@ void inTrackSheet({
 							themeNotif.value = val;
 							Provider.of<ProviderManager>(context, listen: false).changeTmode(val ? ThemeMode.dark : ThemeMode.light);
 							onLoad();
+						}
+					),
+
+					ListTile(
+						leading: const Icon(Icons.arrow_downward),
+						trailing: IgnorePointer(child: Transform.scale(
+							scale: 0.75,
+							child: ValueListenableBuilder<bool>(
+								valueListenable: scrollNotif,
+								builder: (BuildContext context, bool val, Widget? child) =>
+									Switch(value: val, onChanged: (_){})
+							)
+						)),
+						title: const Text("Auto Scroll"),
+						onTap: () async {
+							scrollNotif.value = !scrollNotif.value;
+							onScrollChange(scrollNotif.value);
 						}
 					),
 
