@@ -53,7 +53,7 @@ class _EkkoAppState extends State<EkkoApp> {
 							themeMode: Provider.of<ProviderManager>(context).tMode,
 							theme: Provider.of<ProviderManager>(context).lightTheme(context),
 							darkTheme: Provider.of<ProviderManager>(context).darkTheme(context),
-							home: isDesktop() ?
+							home: isDesktop(['linux']) ?
 								const ToolbarView(view: LandPage(folderId: 0)):
 								const LandPage(folderId: 0),
 						);

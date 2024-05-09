@@ -37,7 +37,9 @@ dependencies:
   #     ref: master
   
   awesome_text_field:
-    path: "F:/Flutter/awesome_text_field"
+    # path: "F:/Flutter/awesome_text_field"
+    git:
+      url: "https://github.com/empitrix/awesome_text_field"
   cached_network_image: ^3.3.1
   jovial_svg: ^1.1.20
   http: ^1.2.0
@@ -69,10 +71,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets\icon\icon.png
-    - assets\icon\icon.svg
-    - assets\icon\ekko.png
-    - assets\gemoji\data.json
+    - assets/icon/icon.png
+    - assets/icon/icon.svg
+    - assets/icon/ekko.png
+    - assets/gemoji/data.json
 
   fonts:
     - family: Rubik

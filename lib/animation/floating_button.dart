@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ekko/animation/expand.dart';
 import 'package:flutter/material.dart';
 
@@ -19,19 +21,21 @@ class AnimatedFloatingButton extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		// Auto Hide
-		double lastOffset = 0.0;
-		controller.addListener(() async {
-			if(controller.offset > lastOffset){
-				if(animation.animation.value.round() == 1){
-					animation.controller.reverse();
+		if(!Platform.isLinux){
+			double lastOffset = 0.0;
+			controller.addListener(() async {
+				if(controller.offset > lastOffset){
+					if(animation.animation.value.round() == 1){
+						animation.controller.reverse();
+					}
+				} else {
+					if(animation.animation.value.round() == 0){
+						animation.controller.forward(from: 0.8);
+					}
 				}
-			} else {
-				if(animation.animation.value.round() == 0){
-					animation.controller.forward(from: 0.8);
-				}
-			}
-			lastOffset = controller.offset;
-		});
+				lastOffset = controller.offset;
+			});
+		}
 
 		// Main Button
 		return expandAnimation(

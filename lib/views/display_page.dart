@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
@@ -151,8 +153,8 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										return <Widget>[
 											SliverAppBar(
 												floating: false,
-												pinned: false,
-												// title: const Text("Display"),
+												// pinned: false,
+												pinned: Platform.isLinux,
 												title: Column(
 													mainAxisAlignment: MainAxisAlignment.start,
 													crossAxisAlignment: CrossAxisAlignment.start,

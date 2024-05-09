@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/shortcuts.dart';
 import 'package:ekko/components/editor/buffer.dart';
@@ -229,6 +231,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 				double appbarHeight = (appbarKey.currentContext!.findRenderObject() as RenderBox).size.height;
 				double bufferHeight = 20.0;
 				double platformHeight = isDesktop() ? 33 : 0;
+				platformHeight = platformHeight + (Platform.isLinux ? -31 : 0);
 				wh = (headerHeight + appbarHeight + bufferHeight) + platformHeight;
 				wh = MediaQuery.of(context).size.height - wh;
 				wh = wh - MediaQuery.of(context).viewInsets.bottom;

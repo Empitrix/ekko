@@ -56,7 +56,7 @@ void changeView(
 
 		Widget? view;
 
-		if(isDesktop()){
+		if(isDesktop(['linux'])){
 			 view = ToolbarView(view: screen);
 		} else {
 			view = screen;
