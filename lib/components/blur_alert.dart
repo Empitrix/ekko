@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
@@ -72,41 +74,49 @@ class BlurAlertDialog extends StatelessWidget {
 				borderRadius: BorderRadius.circular(12)
 			),
 			child: ClipRect(
-				child: BackdropFilter(
-					filter: ImageFilter.blur(sigmaX: blurValue, sigmaY: blurValue),
-					child: Container(
-						padding: const EdgeInsets.all(12),
-						width: 200, height: 200,
-						constraints: const BoxConstraints(
-							minWidth: 200, minHeight: 200
-						),
-						decoration: BoxDecoration(
-							color: (settingModes['dMode'] ? Colors.black : Colors.white).withOpacity(0.5),
-							borderRadius: BorderRadius.circular(12),
-						),
-						// child: title
-						child: Column(
-							crossAxisAlignment: CrossAxisAlignment.start,
-							children: [
-								titleWidget,
-								const SizedBox(height: 5),
-								contentWidget,
-								const Expanded(child: SizedBox()),
-								Row(
-									mainAxisAlignment: MainAxisAlignment.end,
-									children: [
-										for(Widget action in actions) Row(
-											children: [
-												const SizedBox(width: 12),
-												action
-											],
-										)
-									]
-								)
-							],
-						)
-					),
-				),
+				child: Builder(
+					builder: (BuildContext context){
+						Widget dialogWidget = Container(
+							padding: const EdgeInsets.all(12),
+							width: 200, height: 200,
+							constraints: const BoxConstraints(
+								minWidth: 200, minHeight: 200
+							),
+							decoration: BoxDecoration(
+								color: (settingModes['dMode'] ? Colors.black : Colors.white).withOpacity(0.5),
+								borderRadius: BorderRadius.circular(12),
+							),
+							// child: title
+							child: Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: [
+									titleWidget,
+									const SizedBox(height: 5),
+									contentWidget,
+									const Expanded(child: SizedBox()),
+									Row(
+										mainAxisAlignment: MainAxisAlignment.end,
+										children: [
+											for(Widget action in actions) Row(
+												children: [
+													const SizedBox(width: 12),
+													action
+												],
+											)
+										]
+									)
+								],
+							)
+						);
+						if(Platform.isLinux){
+							return dialogWidget;
+						}
+						return BackdropFilter(
+							filter: ImageFilter.blur(sigmaX: blurValue, sigmaY: blurValue),
+							child: dialogWidget,
+						);
+					}
+				)
 			)
 		);
 	}
