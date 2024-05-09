@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/backend/shortcuts.dart';
 import 'package:ekko/components/editor/buffer.dart';
+import 'package:ekko/components/sheets/modify.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +18,7 @@ import 'package:ekko/models/file_out.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'dart:io';
 
 
 class ModifyPage extends StatefulWidget {
@@ -54,7 +53,7 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 		LineStatus(lineNumber: 0, lineHeight: 20, currentLine: 0, currentCol: 0));
 	FocusNode contentF = FocusNode();
 	bool isPinned = false;
-	NoteMode mode = NoteMode.copy;
+	NoteMode mode = NoteMode.markdown;
 	bool isLoaded = false;  // For imported notes
 
 	bool oneTime = true;
@@ -288,26 +287,26 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 						onPressed: () => _backClose(),
 					),
 					actions: [
-						Container(
-							margin: const EdgeInsets.all(5),
-							child: IconButton(
-								tooltip: "Import",
-								icon: const Icon(Icons.input, size: 20),
-								onPressed: () async {
-									if(!TxtCtrl(title, description, content).isAllEmpty()){
-										Dialogs(context).ask(
-											title: "Replace",
-											content: "Did you want to replace all?",
-											action: () async {
-												await _updateFiledWithOutterFile();
-											}
-										);
-									} else {
-										await _updateFiledWithOutterFile();
-									}
-								}
-							),
-						),
+						// Container(
+						// 	margin: const EdgeInsets.all(5),
+						// 	child: IconButton(
+						// 		tooltip: "Import",
+						// 		icon: const Icon(Icons.input, size: 20),
+						// 		onPressed: () async {
+						// 			if(!TxtCtrl(title, description, content).isAllEmpty()){
+						// 				Dialogs(context).ask(
+						// 					title: "Replace",
+						// 					content: "Did you want to replace all?",
+						// 					action: () async {
+						// 						await _updateFiledWithOutterFile();
+						// 					}
+						// 				);
+						// 			} else {
+						// 				await _updateFiledWithOutterFile();
+						// 			}
+						// 		}
+						// 	),
+						// ),
 						Container(
 							margin: const EdgeInsets.only(
 								left: 5, top: 5, bottom: 5, right: 12
@@ -327,6 +326,35 @@ class ModifyPageState extends State<ModifyPage> with TickerProviderStateMixin{
 											Colors.amber
 									))),
 								onPressed: () => submit(),
+							),
+						),
+						Padding(
+							padding: const EdgeInsets.only(right: 8),
+							child: IconButton(
+								icon: const Icon(Icons.more_vert),
+								onPressed: () => inModifySheet(
+									context: context,
+									mode: mode,
+									editMode: widget.note != null,
+									onSubmit: submit,
+									onImport: () async {
+										if(!TxtCtrl(title, description, content).isAllEmpty()){
+											Dialogs(context).ask(
+												title: "Replace",
+												content: "Did you want to replace all?",
+												action: () async {
+													await _updateFiledWithOutterFile();
+												}
+											);
+										} else {
+											await _updateFiledWithOutterFile();
+										}
+									},
+									onModeChange: (NoteMode newMode) => setState(() => mode = newMode)
+									// onModeChange: (NoteMode newMode){
+									// 	debugPrint(newMode.name);
+									// }
+								),
 							),
 						),
 					],

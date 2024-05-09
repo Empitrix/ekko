@@ -1,11 +1,12 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/nf_icons.dart';
-import 'package:ekko/components/sheets.dart';
+import 'package:ekko/components/sheets/small_note.dart';
 import 'package:ekko/components/tag.dart';
 import 'package:ekko/config/manager.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/utils/modes.dart';
 import 'package:ekko/views/display_page.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
@@ -162,10 +163,29 @@ class NoteItem extends StatelessWidget {
 								},
 							),
 							*/
-							Padding(
-								padding: const EdgeInsets.only(top: 25),
-								child: Align(
-									child: Text(
+							// Padding(
+							// 	padding: const EdgeInsets.only(top: 25),
+							// 	child: Align(
+							// 		child: Text(
+							// 			formatizeVDate(differenceFromNow(note.lastEdit)),
+							// 			style: Provider.of<ProviderManager>(context).defaultStyle.merge(
+							// 				TextStyle(
+							// 					fontSize: 12,
+							// 					color: settingModes['dMode'] ? Colors.teal : Colors.teal[800],
+							// 					fontWeight: FontWeight.w700
+							// 				)
+							// 			),
+							// 		),
+							// 	)
+							// ),
+
+							Column(
+								crossAxisAlignment: CrossAxisAlignment.end,
+								children: [
+									const SizedBox(height: 2),
+									Align(alignment: Alignment.topRight, child: Icon(modeIcon(note.mode), size: 12)),
+									const SizedBox(height: 12),
+									Text(
 										formatizeVDate(differenceFromNow(note.lastEdit)),
 										style: Provider.of<ProviderManager>(context).defaultStyle.merge(
 											TextStyle(
@@ -174,15 +194,23 @@ class NoteItem extends StatelessWidget {
 												fontWeight: FontWeight.w700
 											)
 										),
-									),
-								)
+									)
+									// Align(
+									// 	child: Text(
+									// 		formatizeVDate(differenceFromNow(note.lastEdit)),
+									// 		style: Provider.of<ProviderManager>(context).defaultStyle.merge(
+									// 			TextStyle(
+									// 				fontSize: 12,
+									// 				color: settingModes['dMode'] ? Colors.teal : Colors.teal[800],
+									// 				fontWeight: FontWeight.w700
+									// 			)
+									// 		),
+									// 	),
+									// )
+
+								],
 							),
 
-							// IconButton(
-							// 	icon: Icon(noteModeIcon(note.mode)),
-							// 	color: Theme.of(context).primaryColor,
-							// 	onPressed: (){/* Note Actons */},
-							// ),
 						],
 					),
 				),

@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/in_loading_page.dart';
-import 'package:ekko/components/sheets.dart';
+import 'package:ekko/components/sheets/note.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:ekko/config/navigator.dart';
@@ -16,6 +14,8 @@ import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
+
 
 class DisplayPage extends StatefulWidget {
 	final SmallNote smallNote;

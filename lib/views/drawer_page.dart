@@ -3,7 +3,7 @@ import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/dialogs.dart';
 import 'package:ekko/components/drawer_header.dart';
 import 'package:ekko/components/nf_icons.dart';
-import 'package:ekko/components/sheets.dart';
+import 'package:ekko/components/sheets/folder.dart';
 import 'package:ekko/config/navigator.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/models/folder.dart';

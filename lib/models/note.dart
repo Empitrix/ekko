@@ -1,27 +1,23 @@
+import 'package:ekko/backend/extensions.dart';
 import 'package:ekko/database/database.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 
 enum NoteMode {
 	copy,
-	web
+	web,
+	markdown,
+	plaintext
 }
 
-String _parseMode(NoteMode mode){
-	return mode
-		.toString()
-		.replaceAll("NoteMode.", "");
-}
 
 NoteMode _fromNode(String modeStr){
-	switch(modeStr){
-		case "copy":
-			return NoteMode.copy;
-		case "web":
-			return NoteMode.web;
-		default:
-			return NoteMode.copy;
+	for(NoteMode m in NoteMode.values){
+		if(m.name.mini() == modeStr.mini()){
+			return m;
+		}
 	}
+	return NoteMode.markdown;
 }
 
 String _parseDate(DateTime date) {
@@ -87,7 +83,7 @@ class Note {
 			"content": content,
 			"lastEdit": _parseDate(lastEdit),
 			"isPinned": isPinned ? 1 : 0,  // convert to bit
-			"mode": _parseMode(mode)
+			"mode": mode.name
 		};
 	}
 }
@@ -144,7 +140,7 @@ class SmallNote {
 			"description": description,
 			"lastEdit": _parseDate(lastEdit),
 			"isPinned": isPinned ? 1 : 0,  // convert to bit
-			"mode": _parseMode(mode)
+			"mode": mode.name
 		};
 	}
 }
@@ -165,20 +161,5 @@ class LoadedNote {
 		required this.mode,
 		required this.isPinned
 	});
-}
-
-
-IconData noteModeIcon(NoteMode mode){
-	switch(mode){
-		case NoteMode.copy:{
-			return Icons.copy;
-		}
-		case NoteMode.web:{
-			return Icons.language;
-		}
-		default:{
-			return Icons.copy;
-		}
-	}
 }
 
