@@ -2,7 +2,7 @@ import 'package:ekko/animation/expand.dart';
 import 'package:ekko/animation/floating_button.dart';
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/in_loading_page.dart';
-import 'package:ekko/components/sheets/note.dart';
+import 'package:ekko/components/nested.dart';
 import 'package:ekko/components/shortcut/intents.dart';
 import 'package:ekko/components/shortcut/scaffold.dart';
 import 'package:ekko/config/navigator.dart';
@@ -10,11 +10,11 @@ import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/generator.dart';
 import 'package:ekko/models/note.dart';
+import 'package:ekko/plain/renderer.dart';
 import 'package:ekko/views/land_page.dart';
 import 'package:ekko/views/modify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
 
 
 class DisplayPage extends StatefulWidget {
@@ -44,7 +44,13 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 	GenAnimation? floatingButtonAnim;
 	FocusNode contextFocus = FocusNode();
 	TextSelectionControls? selectionControl;
-	
+	TextEditingController searchCtrl = TextEditingController();
+	ValueNotifier<String> searchNotif = ValueNotifier<String>("");
+
+	NestedSearchObj searchObj = NestedSearchObj(keys: [], current: 0);
+
+
+
 	void _backToPreviousPage(){
 		widget.loadAll();
 		changeView(context, const LandPage(), "LandPage",  isPush: false);
@@ -82,6 +88,16 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 			),
 			"ModifyPage"
 		);
+	}
+
+
+	void moveTo(GlobalKey? k) async {
+		if(k != null){
+			await Scrollable.ensureVisible(
+				k.currentContext!,
+				duration: const Duration(milliseconds: 200)
+			);
+		}
 	}
 
 	@override
@@ -145,6 +161,71 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 							builder:(context){
 								if(!isLoaded){ return const InLoadingPage(); }
 								contextFocus.requestFocus(); // Update Foucs
+
+								return NestedList(
+									controller: scrollCtrl,
+									note: note!,
+									searchObj: searchObj,
+									onNext: (){
+										moveTo(searchObj.next());
+									},
+									onPrevius: (){
+										moveTo(searchObj.previus());
+									},
+									onChanged: (_){
+										moveTo(searchObj.first());
+									},
+									searchController: searchCtrl,
+									searchNotifier: searchNotif,
+									contextFocus: contextFocus,
+									onClose: _backToPreviousPage,
+									selectionControls: selectionControl!,
+
+									child: note!.mode == NoteMode.plaintext ? ListenableBuilder(
+										// valueListenable: searchNotif,
+										listenable: searchObj,
+										builder: (context, child){
+											WidgetsBinding.instance.addPostFrameCallback((_){
+												searchObj.clear();
+											});
+											return ValueListenableBuilder(
+												// listenable: searchObj,
+												valueListenable: searchNotif,
+												builder: (context, value, child){
+													return PlainRenderer(
+														content: note!.content,
+														onMatchAdd: (GlobalKey k){
+															WidgetsBinding.instance.addPostFrameCallback((_){
+																searchObj.addKey(k);
+															});
+														},
+														search: value,
+														index: searchObj.current
+													);
+												}
+											);
+											// return PlainRenderer(
+											// 	content: note!.content,
+											// 	onMatchAdd: (GlobalKey k){
+											// 		WidgetsBinding.instance.addPostFrameCallback((_){
+											// 			searchObj.addKey(k);
+											// 		});
+											// 	},
+											// 	search: value,
+											// 	index: searchObj.current
+											// );
+										}
+									): MDGenerator(
+										content: note!.content,
+										noteId: note!.id,
+										hotRefresh: () async {
+											note!.content = (await DB().loadThisNote(note!.id)).content;
+											setState(() {});
+										},
+									)
+								);
+								
+								/*
 								return NestedScrollView(
 									controller: scrollCtrl,
 									floatHeaderSlivers: true,
@@ -153,12 +234,21 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										return <Widget>[
 											SliverAppBar(
 												floating: false,
-												// pinned: false,
 												pinned: Platform.isLinux,
+												primary: false,
 												title: Column(
 													mainAxisAlignment: MainAxisAlignment.start,
 													crossAxisAlignment: CrossAxisAlignment.start,
-													children: [
+													children: note!.mode == NoteMode.plaintext ? [
+														TextField(
+															style: const TextStyle(fontSize: 18),
+															decoration: InputDecoration(
+																hintText: "Search",
+																hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+																border: InputBorder.none
+															),
+														),
+													] : [
 														Text(
 															note!.title,
 															overflow: TextOverflow.fade,
@@ -191,11 +281,9 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 												forceElevated: false,
 												leading: IconButton(
 													icon: const Icon(Icons.close),
-													onPressed: (){
-														_backToPreviousPage();
-													},
+													onPressed: _backToPreviousPage,
 												),
-											)
+											),
 										];
 									},
 									body: SelectionArea(
@@ -224,6 +312,7 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										),
 									)
 								);
+								*/
 							}
 						),
 					)
