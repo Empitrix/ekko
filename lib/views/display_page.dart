@@ -95,7 +95,8 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 		if(k != null){
 			await Scrollable.ensureVisible(
 				k.currentContext!,
-				duration: const Duration(milliseconds: 200)
+				duration: const Duration(milliseconds: 500)
+				// duration: Duration.zero
 			);
 		}
 	}
@@ -131,8 +132,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 			child: Container(
 				color: Theme.of(context).appBarTheme.backgroundColor,
 				child: SafeArea(
-					// child: Scaffold(
-					// GoToEditPageIntent
 					child: ShortcutScaffold(
 						focusNode: screenShortcutFocus["DisplayPage"],
 						shortcuts: const <ShortcutActivator, Intent>{
@@ -157,39 +156,30 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 							child: const Icon(Icons.edit),
 							onPressed: () => _goToModifyPage(),
 						),
+
 						body: Builder(
 							builder:(context){
 								if(!isLoaded){ return const InLoadingPage(); }
 								contextFocus.requestFocus(); // Update Foucs
-
 								return NestedList(
 									controller: scrollCtrl,
 									note: note!,
 									searchObj: searchObj,
-									onNext: (){
-										moveTo(searchObj.next());
-									},
-									onPrevius: (){
-										moveTo(searchObj.previus());
-									},
-									onChanged: (_){
-										moveTo(searchObj.first());
-									},
+									onNext: () => moveTo(searchObj.next()),
+									onPrevius: () => moveTo(searchObj.previus()),
+									onChanged: (_) => moveTo(searchObj.first()),
 									searchController: searchCtrl,
 									searchNotifier: searchNotif,
 									contextFocus: contextFocus,
 									onClose: _backToPreviousPage,
 									selectionControls: selectionControl!,
-
 									child: note!.mode == NoteMode.plaintext ? ListenableBuilder(
-										// valueListenable: searchNotif,
 										listenable: searchObj,
 										builder: (context, child){
 											WidgetsBinding.instance.addPostFrameCallback((_){
 												searchObj.clear();
 											});
 											return ValueListenableBuilder(
-												// listenable: searchObj,
 												valueListenable: searchNotif,
 												builder: (context, value, child){
 													return PlainRenderer(
@@ -204,16 +194,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 													);
 												}
 											);
-											// return PlainRenderer(
-											// 	content: note!.content,
-											// 	onMatchAdd: (GlobalKey k){
-											// 		WidgetsBinding.instance.addPostFrameCallback((_){
-											// 			searchObj.addKey(k);
-											// 		});
-											// 	},
-											// 	search: value,
-											// 	index: searchObj.current
-											// );
 										}
 									): MDGenerator(
 										content: note!.content,
@@ -224,95 +204,6 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 										},
 									)
 								);
-								
-								/*
-								return NestedScrollView(
-									controller: scrollCtrl,
-									floatHeaderSlivers: true,
-									physics: const ScrollPhysics(),
-									headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
-										return <Widget>[
-											SliverAppBar(
-												floating: false,
-												pinned: Platform.isLinux,
-												primary: false,
-												title: Column(
-													mainAxisAlignment: MainAxisAlignment.start,
-													crossAxisAlignment: CrossAxisAlignment.start,
-													children: note!.mode == NoteMode.plaintext ? [
-														TextField(
-															style: const TextStyle(fontSize: 18),
-															decoration: InputDecoration(
-																hintText: "Search",
-																hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-																border: InputBorder.none
-															),
-														),
-													] : [
-														Text(
-															note!.title,
-															overflow: TextOverflow.fade,
-															style: Theme.of(context).appBarTheme.titleTextStyle
-														),
-														Text(
-															differenceFromNow(note!.lastEdit),
-															style: TextStyle(
-																fontSize: 14,
-																overflow: TextOverflow.fade,
-																color: settingModes['dMode'] ? Colors.grey : Colors.grey[400]
-															)
-														)
-													],
-												),
-												actions: [
-													Container(
-														margin: const EdgeInsets.all(5),
-														child: IconButton(
-															icon: const Icon(Icons.more_vert),
-															onPressed: (){
-																inViewNoteSheet(
-																	context: context,
-																	note: note!
-																);
-															}
-														),
-													)
-												],
-												forceElevated: false,
-												leading: IconButton(
-													icon: const Icon(Icons.close),
-													onPressed: _backToPreviousPage,
-												),
-											),
-										];
-									},
-									body: SelectionArea(
-										focusNode: contextFocus,
-										selectionControls: selectionControl!,
-										contextMenuBuilder: (context, editableTextState) => AdaptiveTextSelectionToolbar.buttonItems(
-											anchors: editableTextState.contextMenuAnchors,
-											buttonItems: editableTextState.contextMenuButtonItems,
-										),
-										child: ListView(
-											padding: const EdgeInsets.only(
-												right: 12, left: 12,
-												top: 12, bottom: 85
-											),
-											children: [
-												const SizedBox(height: 10),
-												MDGenerator(
-													content: note!.content,
-													noteId: note!.id,
-													hotRefresh: () async {
-														note!.content = (await DB().loadThisNote(note!.id)).content;
-														setState(() {});
-													},
-												)
-											],
-										),
-									)
-								);
-								*/
 							}
 						),
 					)

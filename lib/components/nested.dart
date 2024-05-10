@@ -61,42 +61,19 @@ class NestedSearchObj extends ChangeNotifier{
 }
 
 
-// class NestedSearchObj{
-// 	final Function next;
-// 	final Function previus;
-// 	final int current;
-// 	final int all;
-// 
-// 	NestedSearchObj({
-// 		required this.next,
-// 		required this.previus,
-// 		required this.all,
-// 		required this.current
-// 	});
-// 
-// 	@override
-// 	String toString() {
-// 		return "$current/$all";
-// 	}
-// }
-
 class NestedList extends StatelessWidget {
 	final ScrollController controller;
 	final Note note;
 	final FocusNode contextFocus;
 	final void Function() onClose;
 	final TextSelectionControls selectionControls;
-	final Widget child;
-
 	final TextEditingController searchController;
 	final ValueNotifier<String> searchNotifier;
 	final void Function(String)? onChanged;
-
-	// final ValueNotifier<NestedSearchObj> searchObj;
 	final NestedSearchObj searchObj;
-
 	final void Function() onNext;
 	final void Function() onPrevius;
+	final Widget child;
 
 	const NestedList({super.key,
 		required this.controller,
@@ -111,11 +88,89 @@ class NestedList extends StatelessWidget {
 		required this.onNext,
 		required this.onPrevius,
 		this.onChanged,
-
 	});
 
 	@override
 	Widget build(BuildContext context) {
+
+		if(note.mode == NoteMode.plaintext){
+			return Column(
+				children: [
+					AppBar(
+						title: Column(
+							mainAxisAlignment: MainAxisAlignment.start,
+							crossAxisAlignment: CrossAxisAlignment.start,
+							children: [
+								TextField(
+									controller: searchController,
+									onChanged: (String txt){
+										if(onChanged != null){
+											onChanged!(txt);
+										}
+										searchNotifier.value = txt;
+									},
+									style: const TextStyle(fontSize: 18),
+									decoration: InputDecoration(
+										hintText: "Search",
+										hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+										border: InputBorder.none
+									),
+								),
+							]
+						),
+						actions: [
+							ListenableBuilder(
+								listenable: searchObj,
+								builder: (context, child){
+									return Text(searchObj.toString());
+								}
+							),
+							SizedBox(height:double.infinity, width: 28, child: InkWell(
+								onTap: onPrevius,
+								child: const Icon(Icons.arrow_drop_up),
+							)),
+							SizedBox(height:double.infinity, width: 28, child: InkWell(
+								onTap: onNext,
+								child: const Icon(Icons.arrow_drop_down),
+							)),
+							Container(
+								margin: const EdgeInsets.all(5),
+								child: IconButton(
+									icon: const Icon(Icons.more_vert),
+									onPressed: (){
+										inViewNoteSheet(
+											context: context,
+											note: note
+										);
+									}
+								),
+							)
+						],
+						leading: IconButton(
+							icon: const Icon(Icons.close),
+							onPressed: onClose,
+						),
+					),
+					Expanded(child: SelectionArea(
+						focusNode: contextFocus,
+						selectionControls: selectionControls,
+						contextMenuBuilder: (context, editableTextState) => AdaptiveTextSelectionToolbar.buttonItems(
+							anchors: editableTextState.contextMenuAnchors,
+							buttonItems: editableTextState.contextMenuButtonItems,
+						),
+						child: ListView(
+							controller: controller,
+							padding: const EdgeInsets.only(
+								right: 12, left: 12,
+								top: 12, bottom: 85
+							),
+							children: [const SizedBox(height: 10), child],
+						),
+					))
+				],
+			);
+		}
+
 		return NestedScrollView(
 			controller: controller,
 			floatHeaderSlivers: true,
@@ -125,7 +180,6 @@ class NestedList extends StatelessWidget {
 					SliverAppBar(
 						floating: false,
 						pinned: Platform.isLinux || note.mode == NoteMode.plaintext,
-						primary: false,
 						title: Column(
 							mainAxisAlignment: MainAxisAlignment.start,
 							crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,28 +218,12 @@ class NestedList extends StatelessWidget {
 						actions: [
 							if(note.mode == NoteMode.plaintext) Row(
 								children: [
-									// ValueListenableBuilder(
-									// 	valueListenable: searchObj,
-									// 	builder: (context, value, child){
-									// 		return Text(value.toString());
-									// 	}
-									// ),
-
-									// MultiProvider(providers:[ChangeNotifierProvider(
-									// 	create: (_) => ProviderManager(),
-									// 	builder: (context, child){
-									// 		ProviderManager skm = Provider.of<ProviderManager>(context);
-									// 		return Text(skm.text());
-									// 	},
-									// )]),
-									// Text(Provider.of<ProviderManager>(context, listen: false).text()),
 									ListenableBuilder(
 										listenable: searchObj,
 										builder: (context, child){
 											return Text(searchObj.toString());
 										}
 									),
-
 									SizedBox(height:double.infinity, width: 28, child: InkWell(
 										onTap: onPrevius,
 										child: const Icon(Icons.arrow_drop_up),
@@ -194,7 +232,6 @@ class NestedList extends StatelessWidget {
 										onTap: onNext,
 										child: const Icon(Icons.arrow_drop_down),
 									)),
-
 								],
 							),
 							Container(
@@ -230,18 +267,7 @@ class NestedList extends StatelessWidget {
 						right: 12, left: 12,
 						top: 12, bottom: 85
 					),
-					children: [
-						const SizedBox(height: 10),
-						child,
-						// MDGenerator(
-						// 	content: note.content,
-						// 	noteId: note.id,
-						// 	hotRefresh: () async {
-						// 		note.content = (await DB().loadThisNote(note.id)).content;
-						// 		setState((){});
-						// 	},
-						// )
-					],
+					children: [const SizedBox(height: 10), child],
 				),
 			)
 		);

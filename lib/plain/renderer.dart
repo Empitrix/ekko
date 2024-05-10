@@ -24,33 +24,33 @@ class PlainRenderer extends StatelessWidget {
 		// Styles
 		TextStyle defualtStyle = Provider.of<ProviderManager>(context).defaultStyle;
 		TextStyle matchStyle = defualtStyle.merge(
-			const TextStyle(color: Colors.black, backgroundColor: Colors.amber));
+			const TextStyle(color: Colors.black, backgroundColor: Colors.amberAccent));
 		TextStyle currentMatchStyle = defualtStyle.merge(
-			const TextStyle(color: Colors.black, backgroundColor: Colors.orange));
+			const TextStyle(color: Colors.black, backgroundColor: Colors.deepOrange));
 
 		if(search.trim().isEmpty){ return Text(content, style: defualtStyle); }
 
 		content.splitMapJoin(
 			RegExp.escape(search),
 			onMatch: (Match match){
+				String text = match.group(0)!;
 				GlobalKey k = GlobalKey();
 				if(idx == index){
 					spans.add(WidgetSpan(
 						child: Text.rich(
-							TextSpan(text: match.group(0)!, style: currentMatchStyle),
+							TextSpan(text: text, style: currentMatchStyle),
 							key: k,
 						)
 					));
 				} else {
 					spans.add(WidgetSpan(
 						child: Text.rich(
-							TextSpan(text: match.group(0)!, style: matchStyle),
+							TextSpan(text: text, style: matchStyle),
 							key: k,
 						)
 					));
-					// spans.add(TextSpan(text: match.group(0)!, style: matchStyle));
 				}
-				if(match.group(0)!.trim().isNotEmpty){
+				if(text.trim().isNotEmpty){
 					onMatchAdd(k);
 					idx++;
 				}
@@ -63,6 +63,7 @@ class PlainRenderer extends StatelessWidget {
 		);
 
 		return Text.rich(TextSpan(children: spans));
+		// return SelectableText.rich(TextSpan(children: spans));
 	}
 }
 
