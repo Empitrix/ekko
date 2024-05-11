@@ -18,7 +18,8 @@ Map<String, dynamic> settingModes = {
 	"editorWrapMode": false,
 	"checkListCheckable": false,
 	"markdownThemeName": "gruvbox-dark",
-	"tabSize": 2
+	"tabSize": 2,
+	"plainFontFamily": "RobotoMono"
 };
 
 // Wait for loading size (Page Navigator Loadings) (ms)

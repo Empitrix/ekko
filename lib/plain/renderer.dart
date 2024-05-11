@@ -1,4 +1,5 @@
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/config/public.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,9 @@ class PlainRenderer extends StatelessWidget {
 		int idx = 0;
 
 		// Styles
-		TextStyle defualtStyle = Provider.of<ProviderManager>(context).defaultStyle;
+		TextStyle defualtStyle = Provider.of<ProviderManager>(context).defaultStyle.copyWith(
+			fontFamily: settingModes['plainFontFamily']
+		);
 		TextStyle matchStyle = defualtStyle.merge(
 			const TextStyle(color: Colors.black, backgroundColor: Colors.amberAccent));
 		TextStyle currentMatchStyle = defualtStyle.merge(

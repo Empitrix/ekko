@@ -45,11 +45,13 @@ Future<void> essentialLoading(BuildContext context)async{
 	settingModes['editorWrapMode'] = await _db.readBool("editorWrapMode");
 	settingModes['checkListCheckable'] = await _db.readBool("checkableCheckList");
 	settingModes['tabSize'] = await _db.readInt('tabSize');
+	settingModes['plainFontFamily'] = await _db.readString('plainFontFamily');
 
 	double opacity = await _db.readAcrylicOpacity();
 
 	// Text-Style
 	TextStyle userStyle = await _db.readTextStyle();
+
 
 
 	// ignore: use_build_context_synchronously

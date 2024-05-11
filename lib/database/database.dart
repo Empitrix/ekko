@@ -23,6 +23,7 @@ class DB {
 				checkableCheckList BIT,
 				acrylicOpacity FLOAT,
 				fontFamily TEXT,
+				plainFontFamily TEXT,
 				fontSize FLOAT,
 				tabSize INT,
 				fontWeight INT,
@@ -54,23 +55,6 @@ class DB {
 			)
 		""");
 
-
-		// Map<String, Object?> initData = {
-		// 	"darkMode": 1,  // Default: DARK-MODE
-		// 	"acrylicMode": 0,
-		// 	"wrapCodeMode": 0,
-		// 	"editorWrapMode" : 0, // New
-		// 	"checkableCheckList": 0,
-		// 	"acrylicOpacity": 1.0,
-		// 	"markdownThemeName": "gruvbox-dark",
-		// 	// About font
-		// 	"fontFamily": "Rubik",
-		// 	"fontSize": 16,
-		// 	"fontWeight": 400,
-		// 	"fontHeight": 1.4,
-		// 	"letterSpacing": 0.7,
-		// };  // Init table
-
 		Map<String, List> initData = {
 			"darkMode": ["BIT", 1],
 			"acrylicMode": ["BIT", 0],
@@ -80,6 +64,7 @@ class DB {
 			"acrylicOpacity": ["FLOAT", 1.0],
 			"markdownThemeName": ["TEXT", "gruvbox-dark"],
 			"fontFamily": ["TEXT", "Rubik"],
+			"plainFontFamily": ["TEXT", "RobotoMono"],
 			"fontSize": ["FLOAT", 16],
 			"tabSize": ["INT", 2],
 			"fontWeight": ["INT", 400],
@@ -361,6 +346,17 @@ class DB {
 	Future<void> updateMarkdownTheme(String newName) async {
 		await updateTable('local',
 			{"markdownThemeName": newName});
+	}
+
+
+	// {{ STRING }}
+	Future<String> readString(String name) async {
+		Map data = await getQuery("local");
+		return data[name] as String;
+	}
+
+	Future<void> updateString(String name, String value) async {
+		await updateTable('local', {name: value});
 	}
 
 

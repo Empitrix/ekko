@@ -2,6 +2,7 @@ import 'package:ekko/backend/backend.dart';
 import 'package:ekko/components/settings/router.dart';
 import 'package:ekko/components/sheets/select.dart';
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -219,6 +220,43 @@ class SettingFont extends SettingObject{
 						);
 					},
 				),
+
+				const Divider(),
+
+				ListTile(
+					leading: const Icon(Icons.font_download),
+					trailing: Container(
+						padding: const EdgeInsets.all(5),
+						decoration: BoxDecoration(
+							color: Theme.of(context).colorScheme.secondaryContainer,
+							borderRadius: BorderRadius.circular(5)
+						),
+						child: Text(
+							settingModes['plainFontFamily'],
+							style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, fontFamily: "RobotoMono"),
+						),
+					),
+					title: const Text("Plain Font Family"),
+					onTap: (){
+						selectSheet(
+							context: context,
+							items: [
+								for(String name in ["Rubik", "SauceCodeProNerdFont", "RobotoMono"]) ListTile(
+									title: Text(name),
+									trailing: settingModes['plainFontFamily'] == name ?
+										const Icon(Icons.check):
+										null,
+									onTap: () async {
+										Navigator.pop(context);
+										await db.updateString("plainFontFamily", name);
+										setState(() => settingModes["plainFontFamily"] = name);
+									},
+								)
+							]
+						);
+					},
+				)
+
 			],
 		);
 	}
