@@ -122,7 +122,8 @@ class NestedList extends StatelessWidget {
 							ListenableBuilder(
 								listenable: searchObj,
 								builder: (context, child){
-									return Text(searchObj.toString());
+									return Text(searchObj.toString(),
+										style: const TextStyle(color: Colors.white));
 								}
 							),
 							SizedBox(height:double.infinity, width: 28, child: InkWell(
