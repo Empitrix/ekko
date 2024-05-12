@@ -19,7 +19,8 @@ Map<String, dynamic> settingModes = {
 	"checkListCheckable": false,
 	"markdownThemeName": "gruvbox-dark",
 	"tabSize": 2,
-	"plainFontFamily": "RobotoMono"
+	"plainFontFamily": "RobotoMono",
+	"plainBionicMode": true
 };
 
 // Wait for loading size (Page Navigator Loadings) (ms)

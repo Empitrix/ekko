@@ -4,6 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
+List<InlineSpan> applyBionic(String txt, TextStyle style){
+	List<InlineSpan> spans = [];
+
+	TextStyle bionicStyle = style.copyWith(
+		fontWeight: FontWeight.bold,
+		color: settingModes['dMode'] ?
+			const Color(0xfff3f3f3):
+			const Color(0xff030303)
+	);
+
+	txt.splitMapJoin(
+		RegExp(r'\w+'),
+		onMatch: (Match match){
+			String txt = match.group(0)!;
+			int idx = (txt.length / 2).ceil();
+			String before = txt.substring(0, idx);
+			String after = txt.substring(idx, txt.length);
+
+			spans.add(TextSpan(children: [
+				TextSpan(text: before, style: bionicStyle),
+				TextSpan(text: after, style: style),
+			]));
+			return "";
+		},
+		onNonMatch: (String non){
+			spans.add(TextSpan(text: non, style: style));
+			return "";
+		}
+	);
+	return spans;
+}
+
+
 class PlainRenderer extends StatelessWidget {
 	final String content;
 	final String search;
@@ -31,7 +64,14 @@ class PlainRenderer extends StatelessWidget {
 		TextStyle currentMatchStyle = defualtStyle.merge(
 			const TextStyle(color: Colors.black, backgroundColor: Colors.deepOrange));
 
-		if(search.trim().isEmpty){ return Text(content, style: defualtStyle); }
+		if(search.trim().isEmpty){
+			if(settingModes['plainBionicMode']){
+				return Text.rich(TextSpan(children: applyBionic(content, defualtStyle)));
+			} else {
+				return Text(content, style: defualtStyle);
+			}
+		}
+
 
 		content.splitMapJoin(
 			RegExp.escape(search),
@@ -60,7 +100,11 @@ class PlainRenderer extends StatelessWidget {
 				return "";
 			},
 			onNonMatch: (String non){
-				spans.add(TextSpan(text: non, style: defualtStyle));
+				if(settingModes['plainBionicMode']){
+					spans.add(TextSpan(children: applyBionic(non, defualtStyle)));
+				} else {
+					spans.add(TextSpan(text: non, style: defualtStyle));
+				}
 				return "";
 			}
 		);

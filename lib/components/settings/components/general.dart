@@ -48,6 +48,18 @@ class SettingGeneral extends SettingObject{
 					}
 				),
 
+
+				// Wrap Mode
+				SwitchTile(
+					leading: const Icon(Icons.format_bold),
+					title: const Text("Plain Text Bionic Mode"),
+					value: settingModes['plainBionicMode'],
+					onChange: (bool newMode) async {
+						setState(() => settingModes['plainBionicMode'] = newMode );
+						await db.writeBool("plainBionicMode", newMode);
+					}
+				),
+
 				// Markdown theme
 				ListTile(
 					leading: const Icon(Icons.color_lens),

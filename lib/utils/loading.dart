@@ -46,6 +46,7 @@ Future<void> essentialLoading(BuildContext context)async{
 	settingModes['checkListCheckable'] = await _db.readBool("checkableCheckList");
 	settingModes['tabSize'] = await _db.readInt('tabSize');
 	settingModes['plainFontFamily'] = await _db.readString('plainFontFamily');
+	settingModes['plainBionicMode'] = await _db.readBool('plainBionicMode');
 
 	double opacity = await _db.readAcrylicOpacity();
 
