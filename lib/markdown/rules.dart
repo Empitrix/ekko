@@ -62,6 +62,7 @@ List<HighlightRule> allSyntaxRules({required GeneralOption gOpt}){
 			label: "divider",
 			regex: RegExp(r'^(\-\-\-|\+\+\+|\*\*\*)$'),
 			trimNext: true,
+			// ignore: no_wildcard_variable_uses
 			action: (_, __) => InlineDivder(__, gOpt).span(_),
 		),
 

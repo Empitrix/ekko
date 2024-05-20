@@ -72,6 +72,7 @@ void inViewNoteSheet({
 						title: const Text("Export"),
 						onTap:() async {
 							// SNK snk = SNK(context);
+							// ignore: no_wildcard_variable_uses
 							Navigator.pop(_);
 							await MDFile.write(context, note.content, note.title);
 							// bool isDone = await MDFile.write(context, note.content, note.title);
