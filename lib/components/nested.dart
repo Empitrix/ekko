@@ -63,6 +63,7 @@ class NestedSearchObj extends ChangeNotifier{
 
 class NestedList extends StatelessWidget {
 	final ScrollController controller;
+	final ScrollController? listController;
 	final Note note;
 	final FocusNode contextFocus;
 	final void Function() onClose;
@@ -74,9 +75,11 @@ class NestedList extends StatelessWidget {
 	final void Function() onNext;
 	final void Function() onPrevius;
 	final Widget child;
+	final GlobalKey<NestedScrollViewState>? nestedKey;
 
 	const NestedList({super.key,
 		required this.controller,
+		this.listController,
 		required this.note,
 		required this.child,
 		required this.contextFocus,
@@ -88,6 +91,7 @@ class NestedList extends StatelessWidget {
 		required this.onNext,
 		required this.onPrevius,
 		this.onChanged,
+		this.nestedKey,
 	});
 
 	@override
@@ -173,6 +177,7 @@ class NestedList extends StatelessWidget {
 		}
 
 		return NestedScrollView(
+			key: nestedKey,
 			controller: controller,
 			floatHeaderSlivers: true,
 			physics: const ScrollPhysics(),
@@ -263,7 +268,33 @@ class NestedList extends StatelessWidget {
 					anchors: editableTextState.contextMenuAnchors,
 					buttonItems: editableTextState.contextMenuButtonItems,
 				),
+				/*
+				child: CustomScrollView(
+				slivers: [
+						SliverList(
+							delegate: SliverChildBuilderDelegate(
+								(BuildContext context, int i) => Builder(builder: (context){
+									return Padding(
+										padding: const EdgeInsets.only(
+											right: 12, left: 12,
+											top: 12, bottom: 85
+										),
+										child: Column(
+											crossAxisAlignment: CrossAxisAlignment.start,
+											children: [
+												const SizedBox(height: 10), child
+											],
+										),
+									); 
+								}),
+								childCount: 1,
+							),
+						),
+					],
+				),
+				*/
 				child: ListView(
+					// controller: listController,
 					padding: const EdgeInsets.only(
 						right: 12, left: 12,
 						top: 12, bottom: 85

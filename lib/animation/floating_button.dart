@@ -24,6 +24,7 @@ class AnimatedFloatingButton extends StatelessWidget {
 		if(!Platform.isLinux){
 			double lastOffset = 0.0;
 			controller.addListener(() async {
+				// debugPrint(controller.offset.toString());
 				if(controller.offset > lastOffset){
 					if(animation.animation.value.round() == 1){
 						animation.controller.reverse();

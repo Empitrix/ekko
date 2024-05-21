@@ -41,13 +41,15 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 
 	// Floating Action Button
 	ScrollController scrollCtrl = ScrollController();
+	ScrollController listController = ScrollController();
 	GenAnimation? floatingButtonAnim;
 	FocusNode contextFocus = FocusNode();
 	TextSelectionControls? selectionControl;
 	TextEditingController searchCtrl = TextEditingController();
 	ValueNotifier<String> searchNotif = ValueNotifier<String>("");
-
 	NestedSearchObj searchObj = NestedSearchObj(keys: [], current: 0);
+
+	final GlobalKey<NestedScrollViewState> nestedKey = GlobalKey();
 
 
 
@@ -136,7 +138,8 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 						focusNode: screenShortcutFocus["DisplayPage"],
 						shortcuts: const <ShortcutActivator, Intent>{
 							SingleActivator(LogicalKeyboardKey.keyE, control: true): GoToEditPageIntent(),
-							SingleActivator(LogicalKeyboardKey.escape): ClosePageIntent(),
+							SingleActivator(LogicalKeyboardKey.arrowDown): MoveDownIntent(),
+							SingleActivator(LogicalKeyboardKey.arrowUp): MoveUpIntent(),
 						},
 						// contextFocus
 						actions: <Type, Action<Intent>>{
@@ -148,6 +151,22 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 								onInvoke: (ClosePageIntent intent) => {
 									_backToPreviousPage()
 								}),
+							MoveDownIntent: CallbackAction<MoveDownIntent>(
+								onInvoke: (MoveDownIntent intent) => {
+									nestedKey.currentState!.innerController.animateTo(
+										nestedKey.currentState!.innerController.offset + 170,
+										duration: const Duration(milliseconds: 100),
+										curve: Curves.ease)
+								}
+							),
+							MoveUpIntent: CallbackAction<MoveUpIntent>(
+								onInvoke: (MoveUpIntent intent) => {
+									nestedKey.currentState!.innerController.animateTo(
+										nestedKey.currentState!.innerController.offset - 170,
+										duration: const Duration(milliseconds: 100),
+										curve: Curves.ease)
+								}
+							),
 						},
 						floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
 						floatingActionButton: AnimatedFloatingButton(
@@ -162,6 +181,8 @@ class _DisplayPageState extends State<DisplayPage> with TickerProviderStateMixin
 								if(!isLoaded){ return const InLoadingPage(); }
 								contextFocus.requestFocus(); // Update Foucs
 								return NestedList(
+									nestedKey: nestedKey,
+									listController: listController,
 									controller: scrollCtrl,
 									note: note!,
 									searchObj: searchObj,

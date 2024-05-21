@@ -25,3 +25,12 @@ class GoToEditPageIntent extends Intent {
 class ClosePageIntent extends Intent {
 	const ClosePageIntent();
 }
+
+// Scroll Moving
+class MoveDownIntent extends Intent {
+	const MoveDownIntent();
+}
+
+class MoveUpIntent extends Intent {
+	const MoveUpIntent();
+}
