@@ -82,11 +82,11 @@ class EditorBuffer extends StatelessWidget {
 											children: note.data!.content == controller.text ? [
 												const Icon(Icons.circle, size: 10, color: Colors.green),
 												const SizedBox(width: 5),
-												const Text("Modified"),
+												const Text("Saved"),
 											] : [
 												const Icon(Icons.circle, size: 10, color: Colors.red),
 												const SizedBox(width: 5),
-												const Text("Not Modified"),
+												const Text("Not Saved"),
 											],
 										);
 									}
