@@ -47,6 +47,7 @@ Future<void> essentialLoading(BuildContext context)async{
 	settingModes['tabSize'] = await _db.readInt('tabSize');
 	settingModes['plainFontFamily'] = await _db.readString('plainFontFamily');
 	settingModes['plainBionicMode'] = await _db.readBool('plainBionicMode');
+	settingModes['renderMode'] = await _db.getRenderMode();
 
 	double opacity = await _db.readAcrylicOpacity();
 

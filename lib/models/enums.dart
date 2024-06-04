@@ -1,0 +1,1 @@
+enum RenderMode { fast, fancy }

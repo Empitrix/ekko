@@ -1,5 +1,6 @@
 import 'package:ekko/backend/backend.dart';
 import 'package:ekko/config/manager.dart';
+import 'package:ekko/models/enums.dart';
 import 'package:ekko/models/folder.dart';
 import 'package:ekko/models/note.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class DB {
 				plainFontFamily TEXT,
 				fontSize FLOAT,
 				tabSize INT,
+				renderMode INT,
 				fontWeight INT,
 				fontHeight FLOAT,
 				letterSpacing FLOAT,
@@ -69,6 +71,7 @@ class DB {
 			"plainFontFamily": ["TEXT", "RobotoMono"],
 			"fontSize": ["FLOAT", 16],
 			"tabSize": ["INT", 2],
+			"renderMode": ["INT", 0],
 			"fontWeight": ["INT", 400],
 			"fontHeight": ["FLOAT", 1.4],
 			"letterSpacing": ["FLOAT", 0.7],
@@ -388,5 +391,16 @@ class DB {
 		);
 	}
 
+
+	/* Render Mode */
+	Future<RenderMode> getRenderMode() async {
+		Map data = await getQuery("local");
+		return numToRMode(data["renderMode"]);
+	}
+
+	Future<void> setRenderMode(int numMode) async {
+		RenderMode newMode = numToRMode(numMode);
+		await updateTable('local', { "renderMode": newMode });
+	}
 
 }

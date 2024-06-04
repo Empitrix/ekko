@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:ekko/config/public.dart';
+import 'package:ekko/models/enums.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sq;
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
@@ -43,3 +44,22 @@ class TempOffice{
 	}
 }
 
+
+RenderMode numToRMode(int num){
+	late RenderMode mode;
+	switch(num){
+		case 0:{
+			mode = RenderMode.fancy;
+			break;
+		}
+		case 1:{
+			mode = RenderMode.fast;
+			break;
+		}
+		default: {
+			mode = RenderMode.fancy;
+			break;
+		}
+	}
+	return mode;
+}

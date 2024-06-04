@@ -20,7 +20,8 @@ Map<String, dynamic> settingModes = {
 	"markdownThemeName": "gruvbox-dark",
 	"tabSize": 2,
 	"plainFontFamily": "RobotoMono",
-	"plainBionicMode": true
+	"plainBionicMode": true,
+	"renderMode": 0,
 };
 
 // Wait for loading size (Page Navigator Loadings) (ms)
