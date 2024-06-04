@@ -399,8 +399,7 @@ class DB {
 	}
 
 	Future<void> setRenderMode(int numMode) async {
-		RenderMode newMode = numToRMode(numMode);
-		await updateTable('local', { "renderMode": newMode });
+		await updateTable('local', { "renderMode": numMode });
 	}
 
 }

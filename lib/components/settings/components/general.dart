@@ -1,10 +1,12 @@
 import 'package:ekko/backend/extensions.dart';
+import 'package:ekko/components/selector.dart';
 import 'package:ekko/components/settings/router.dart';
 import 'package:ekko/components/sheets/select_markdown.dart';
 import 'package:ekko/components/tiles.dart';
 import 'package:ekko/config/public.dart';
 import 'package:ekko/database/database.dart';
 import 'package:ekko/markdown/markdown_themes.dart';
+import 'package:ekko/models/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -13,10 +15,22 @@ class SettingGeneral extends SettingObject{
 	SettingGeneral(super.context, super.ticker, super.setState);
 
 	late DB db;
+	late TextEditingController rModeCtrl;
 
 	@override
 	void init(){
 		db = DB();
+		rModeCtrl = TextEditingController();
+		rModeCtrl.text = (settingModes['renderMode'] as RenderMode).name.title();
+		rModeCtrl.addListener(() async {
+			if(rModeCtrl.text.mini() == "fast"){
+				await db.setRenderMode(1);
+				settingModes['renderMode'] = RenderMode.fast;
+			} else if (rModeCtrl.text.mini() == "fancy"){
+				await db.setRenderMode(0);
+				settingModes['renderMode'] = RenderMode.fancy;
+			}
+		});
 	}
 
 	@override
@@ -58,6 +72,19 @@ class SettingGeneral extends SettingObject{
 						setState(() => settingModes['plainBionicMode'] = newMode );
 						await db.writeBool("plainBionicMode", newMode);
 					}
+				),
+
+
+				ListTile(
+					title: const Text("Redner Mode"),
+					leading: const Icon(Icons.view_day),
+					trailing: InputSelector(
+						controller: rModeCtrl,
+						width: 50,
+						height: 28,
+						enabled: false,
+						arguments: const ["Fancy", "Fast"]
+					)
 				),
 
 				// Markdown theme

@@ -63,3 +63,22 @@ RenderMode numToRMode(int num){
 	}
 	return mode;
 }
+
+int rModeToInt(RenderMode num){
+	late int mode;
+	switch(num){
+		case RenderMode.fancy:{
+			mode = 0;
+			break;
+		}
+		case RenderMode.fast:{
+			mode = 1;
+			break;
+		}
+		default: {
+			mode = 0;
+			break;
+		}
+	}
+	return mode;
+}
