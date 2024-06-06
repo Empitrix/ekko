@@ -73,6 +73,12 @@ class MarkdownWidget extends StatelessWidget {
 	/* Widgets */
 	Widget header(BuildContext context){
 		ValueNotifier<bool> onCopyNotifier = ValueNotifier<bool>(false);
+
+		Future<void> blink() async {
+			onCopyNotifier.value = true;
+			await Future.delayed(const Duration(seconds: 1));
+			onCopyNotifier.value = false;
+		}
 		
 		return Container(
 			padding: const EdgeInsets.only(
@@ -80,9 +86,6 @@ class MarkdownWidget extends StatelessWidget {
 				right: 5
 			),
 			decoration: BoxDecoration(
-				// color: dMode ?
-				// 	Theme.of(context).colorScheme.background.aae(context, lessOpt) :
-				// 	Theme.of(context).colorScheme.onBackground.aae(context, lessOpt),
 				color: settingModes['dMode'] ?
 					Theme.of(context).colorScheme.surface.aae(context, lessOpt) :
 					Theme.of(context).colorScheme.onSurface.aae(context, lessOpt),
@@ -110,8 +113,10 @@ class MarkdownWidget extends StatelessWidget {
 					Container(
 						margin: const EdgeInsets.all(2),
 						width: 30, height: 30,
-						child: IconButton(
-							icon: ValueListenableBuilder(
+						// child: IconButton(
+						child: Material(borderRadius: BorderRadius.circular(15), child: InkWell(
+							borderRadius: BorderRadius.circular(15),
+							child: ValueListenableBuilder(
 								valueListenable: onCopyNotifier,
 								builder: (_, onCopy, __) => Icon(
 									onCopy ? Icons.check : FontAwesomeIcons.solidCopy,
@@ -119,14 +124,16 @@ class MarkdownWidget extends StatelessWidget {
 									size: 15,  // DFLT:17
 								),
 							),
-							onPressed: () async {
-								CCB.copy(_markdownData());
-								onCopyNotifier.value = true;
-								await Future.delayed(const Duration(seconds: 1));
-								onCopyNotifier.value = false;
+							onTap: () async {
+								await CCB.copy(_markdownData());
+								await blink();
+							},
+							onLongPress: () async {
+								await CCB.copy("```${_langName(content).toLowerCase()}\n${_markdownData()}\n```");
+								await blink();
 							},
 						)
-					)
+					))
 				],
 			),
 		);
