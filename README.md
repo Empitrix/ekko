@@ -13,6 +13,26 @@
 
 ## Build
 ```shell
+# Clone the projct
+git clone https://github.com/empitrix/ekko
+
+# Move to 'ekko'
+cd ./ekko
+
+# Create a 'flutter' project
 flutter create .
+
+# Update the project
+flutter pub get
 ```
+
+Run the project by given `platform`:
+```bash
+flutter run -d <PLATFORM>
+```
+
+### Supported Platforms
+- Linux
+- Windows
+- Android
 
